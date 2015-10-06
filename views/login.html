@@ -1,0 +1,16 @@
+<%- include header.html %>
+  <div class="form-container">
+    <p class="form-header">Login</p>
+    <% if(error){ %>
+    <p><%= error %></p>
+    <% } %>
+    <form method="POST">
+      <input type="hidden" name="_csrf" value="<%=_csrf %>">
+      <label>Email:</label>
+      <input type="email" name="email"><br>
+      <label>Password:</label>
+      <input type="password" name="password"><br>
+      <input type="submit" value="Login">
+    </form>
+  </div>
+<%- include footer.html %>
