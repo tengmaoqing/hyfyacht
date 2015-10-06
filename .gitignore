@@ -3,8 +3,8 @@ log
 *.log
 npm-debug.log*
 
-#Runtime
-bin
-
 #Dependency Directory
 node_modules
+
+#IDE
+.idea

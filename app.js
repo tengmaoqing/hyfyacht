@@ -9,8 +9,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var csurf = require('csurf');
 var expressValidator = require('express-validator');
-var FileStreamRotator = require('file-stream-rotator');
-var fs = require('fs');
+//var FileStreamRotator = require('file-stream-rotator');
+//var fs = require('fs');
 
 //config
 var config = require('./config');
@@ -23,18 +23,18 @@ var app = express();
 //app.set('env', 'production');
 
 //Access Log
-var accessLogDirectory = __dirname + '/log/access';
-
-fs.existsSync(accessLogDirectory) || fs.mkdirSync(accessLogDirectory);
-
-var accessLogStream = FileStreamRotator.getStream({
-  filename: accessLogDirectory + '/access-%DATE%.log',
-  frequency: 'daily',
-  verbose: false,
-  date_format: 'YYYYMMDD'
-});
-
-app.use(logger('combined', {stream: accessLogStream}));
+//var accessLogDirectory = __dirname + '/log/access';
+//
+//fs.existsSync(accessLogDirectory) || fs.mkdirSync(accessLogDirectory);
+//
+//var accessLogStream = FileStreamRotator.getStream({
+//  filename: accessLogDirectory + '/access-%DATE%.log',
+//  frequency: 'daily',
+//  verbose: false,
+//  date_format: 'YYYYMMDD'
+//});
+//
+//app.use(logger('combined', {stream: accessLogStream}));
 
 //console log
 app.use(logger('dev'));
