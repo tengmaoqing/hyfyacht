@@ -1,6 +1,7 @@
 var express = require('express');
+var util = require('util');
 var path = require('path');
-var favicon = require('serve-favicon');
+//var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
@@ -9,8 +10,6 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var csurf = require('csurf');
 var expressValidator = require('express-validator');
-//var FileStreamRotator = require('file-stream-rotator');
-//var fs = require('fs');
 
 //config
 var config = require('./config');
@@ -22,25 +21,11 @@ var app = express();
 //Environment mode
 //app.set('env', 'production');
 
-//Access Log
-//var accessLogDirectory = __dirname + '/log/access';
-//
-//fs.existsSync(accessLogDirectory) || fs.mkdirSync(accessLogDirectory);
-//
-//var accessLogStream = FileStreamRotator.getStream({
-//  filename: accessLogDirectory + '/access-%DATE%.log',
-//  frequency: 'daily',
-//  verbose: false,
-//  date_format: 'YYYYMMDD'
-//});
-//
-//app.use(logger('combined', {stream: accessLogStream}));
-
 //console log
 app.use(logger('dev'));
 
 // mongodb connection
-var conn = mongoose.connect(config.dbPath);
+mongoose.connect(config.dbPath);
 
 // view engine setup
 app.engine('.html', require('ejs').__express);
@@ -54,7 +39,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator());
 app.use(cookieParser(config.cookieSecret));
-app.use(express.static(path.join(__dirname, 'public')));
+
+if(config.staticMode === 'express') {
+  app.use(express.static(path.join(__dirname, 'public')));
+}
 
 app.use(expressSession({
   secret: config.sessionSecret,
@@ -73,6 +61,21 @@ app.use(csurf());
 
 app.use(function(req, res, next){
   res.locals._csrf = req.csrfToken();
+  next();
+});
+
+app.use(function(req, res, next){
+  var _render = res.render;
+
+  res.render = function(view, options, fn){
+    util._extend(options, {
+      preset: {
+        staticHost: config.staticMode === 'express' ? '' : 'http://static.' + req.hostname
+      }
+    });
+    _render.call(this, view, options, fn);
+  };
+
   next();
 });
 

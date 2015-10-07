@@ -8,3 +8,6 @@ node_modules
 
 #IDE
 .idea
+
+#Config file
+config.js
