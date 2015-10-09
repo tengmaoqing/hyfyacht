@@ -11,3 +11,14 @@ node_modules
 
 #Config file
 config.js
+
+#bootstrap
+bootstrap.*
+bootstrap-theme*
+npm.js
+
+#Image
+public/img
+
+#OS temp
+.DS_Store

@@ -1,0 +1,76 @@
+body {
+  font-family: "Heiti SC", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.navbar {
+  margin-bottom:0;
+}
+
+.embed-responsive-8by3 {
+  padding-bottom: 37.5%;
+}
+
+.jumbotron p, .jumbotron p.text-muted {
+  font-size:14px;
+  line-height: 20px;
+}
+
+.jumbotron.columns, footer.jumbotron {
+  margin-bottom: 0;
+}
+
+footer.jumbotron {
+  color:#fff;
+  background: #565a5c;
+}
+
+footer.jumbotron section {
+  margin-bottom: 10px;
+}
+
+footer.jumbotron h3 {
+  font-size:16px;
+  margin-top: 0;
+}
+
+footer.jumbotron p.text-muted {
+  color:#ccc;
+}
+
+ul.list-layout {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+ul.list-layout li {
+  margin: 6px 0;
+}
+
+ul.list-layout li a {
+  color:#fff;
+}
+
+ul.list-layout li a:hover {
+  color: #ccc;
+  text-decoration: none;
+}
+
+.footer-divider {
+  border-top: 1px solid #999;
+  height: 0;
+}
+
+.column h3 {
+  margin-bottom: 20px;
+}
+
+.columns .cell {
+  margin-bottom: 10px;
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1020px;
+  }
+}

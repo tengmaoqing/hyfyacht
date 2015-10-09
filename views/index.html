@@ -1,5 +1,124 @@
 <%- include header.html -%>
 <%- include nav.html -%>
-  <h1><%= title %></h1>
-  <p><%= username ? username + ', ' : '' %>Welcome to <%= title %></p>
+<div class="embed-responsive embed-responsive-8by3">
+  <img class="embed-responsive-item" src="/img/bg_yacht2.jpg">
+</div>
+<div class="jumbotron columns">
+  <div class="container">
+    <h1><%= __('hello') %></h1>
+    <section class="column text-center">
+      <div class="btn-group">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">您想去哪里？<span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a href="#">深圳</a></li>
+            <li><a href="#">香港</a></li>
+          </ul>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">您想去哪里？<span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a href="#">深圳</a></li>
+            <li><a href="#">香港</a></li>
+          </ul>
+        </div>
+        <button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span> 搜索</button>
+      </div>
+    </section>
+    <section class="column">
+      <h3>热门</h3>
+      <div class="row">
+        <div class="col-md-4 col-sm-6 cell">
+          <img class="img-responsive" src="/img/yacht01.jpg" alt="yacht01">
+          <h4>Rainbow</h4>
+        </div>
+        <div class="col-md-4 col-sm-6 cell">
+          <img class="img-responsive" src="/img/yacht02.jpg" alt="yacht02">
+          <h4>Hoifai</h4>
+        </div>
+        <div class="col-md-4 col-sm-6 cell">
+          <img class="img-responsive" src="/img/yacht03.jpg" alt="yacht03">
+          <h4>Yacht</h4>
+        </div>
+        <div class="col-md-4 col-sm-6 cell">
+          <img class="img-responsive" src="/img/yacht02.jpg" alt="yacht01">
+          <h4>Rainbow</h4>
+        </div>
+        <div class="col-md-4 col-sm-6 cell">
+          <img class="img-responsive" src="/img/yacht03.jpg" alt="yacht02">
+          <h4>Hoifai</h4>
+        </div>
+        <div class="col-md-4 col-sm-6 cell">
+          <img class="img-responsive" src="/img/yacht01.jpg" alt="yacht03">
+          <h4>Yacht</h4>
+        </div>
+      </div>
+    </section>
+    <section class="column">
+      <h3>出海玩什么</h3>
+      <div class="row">
+        <div class="col-md-4 col-sm-6 cell">
+          <img class="img-responsive" src="/img/yacht03.jpg" alt="yacht03">
+          <h4>海钓</h4>
+        </div>
+        <div class="col-md-4 col-sm-6 cell">
+          <img class="img-responsive" src="/img/yacht01.jpg" alt="yacht03">
+          <h4>滑水</h4>
+        </div>
+        <div class="col-md-4 col-sm-6 cell">
+          <img class="img-responsive" src="/img/yacht02.jpg" alt="yacht03">
+          <h4>浮潜</h4>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<footer class="jumbotron">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 col-sm-6">
+        <section>
+          <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              English <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#">English</a></li>
+              <li><a href="#">中文(简体)</a></li>
+              <li><a href="#">中文(繁體)</a></li>
+            </ul>
+          </div>
+        </section>
+        <section>
+          <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              CNY <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#">CNY</a></li>
+              <li><a href="#">HKD</a></li>
+              <li><a href="#">USD</a></li>
+            </ul>
+          </div>
+        </section>
+        <section>
+          <p>服务热线：400-008-3731</p>
+        </section>
+      </div>
+      <div class="col-md-4 col-sm-6">
+        <h3>公司信息</h3>
+        <ul class="list-layout">
+          <li><a href="#">关于我们</a></li>
+          <li><a href="#">联系我们</a></li>
+          <li><a href="#">服务条款</a></li>
+          <li><a href="#">隐私政策</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="footer-divider hidden-xs">
+    <div class="text-center">
+      <p class="text-muted">&copy; 海云帆</p>
+    </div>
+  </div>
+</footer>
 <%- include footer.html -%>

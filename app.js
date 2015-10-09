@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var csurf = require('csurf');
 var expressValidator = require('express-validator');
+var i18n = require('i18n');
 
 //config
 var config = require('./config');
@@ -31,6 +32,16 @@ mongoose.connect(config.dbPath);
 app.engine('.html', require('ejs').__express);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
+
+//i18n
+i18n.configure({
+  locales:['en', 'zh-cn', 'zh-hk', 'zh-tw'],
+  directory: path.join(__dirname, 'locales'),
+  updateFiles: false,
+  extension: '.js'
+});
+
+app.use(i18n.init);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -65,12 +76,22 @@ app.use(function(req, res, next){
 });
 
 app.use(function(req, res, next){
+  console.log(req.acceptsLanguages());
   var _render = res.render;
+
+  var username = false;
+
+  if(req.session.username){
+    username = req.session.username;
+  }else if(req.signedCookies['client_attributes']){
+    username = req.signedCookies['client_attributes'];
+  }
 
   res.render = function(view, options, fn){
     util._extend(options, {
       preset: {
-        staticHost: config.staticMode === 'express' ? '' : 'http://static.' + req.hostname
+        staticHost: config.staticMode === 'express' ? '' : 'http://static.' + req.hostname,
+        username: username
       }
     });
     _render.call(this, view, options, fn);

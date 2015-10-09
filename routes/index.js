@@ -3,15 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  var username = false;
-
-  if(req.session.username){
-    username = req.session.username;
-  }else if(req.signedCookies['client_attributes']){
-    username = req.signedCookies['client_attributes'];
-  }
-
-  res.render('index', { title: 'HYF Yacht', username: username });
+  res.render('index', { title: 'HYF Yacht' });
 });
 
 router.get('/signup', function(req, res, next){
