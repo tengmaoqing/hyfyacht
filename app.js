@@ -29,16 +29,18 @@ app.use(logger('dev'));
 mongoose.connect(config.dbPath);
 
 // view engine setup
-app.engine('.html', require('ejs').__express);
+app.engine('.html', require('swig').renderFile);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
 
 //i18n
 i18n.configure({
-  locales:['en', 'zh-cn', 'zh-hk', 'zh-tw'],
+  locales: ['en', 'zh-cn', 'zh-hk', 'zh-tw'],
+  defaultLocale: 'zh-cn',
   directory: path.join(__dirname, 'locales'),
   updateFiles: false,
-  extension: '.js'
+  extension: '.js',
+  objectNotation: true
 });
 
 app.use(i18n.init);
@@ -76,7 +78,6 @@ app.use(function(req, res, next){
 });
 
 app.use(function(req, res, next){
-  console.log(req.acceptsLanguages());
   var _render = res.render;
 
   var username = false;

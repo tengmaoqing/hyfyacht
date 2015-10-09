@@ -1,3 +1,5 @@
 {
-  "hello": "Hello"
+  "site": {
+    "title": "HG Boating"
+  }
 }

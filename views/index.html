@@ -1,11 +1,14 @@
-<%- include header.html -%>
-<%- include nav.html -%>
+{% extends './layout.html' %}
+
+{% block content %}
+
+{% include './nav.html' %}
+
 <div class="embed-responsive embed-responsive-8by3">
   <img class="embed-responsive-item" src="/img/bg_yacht2.jpg">
 </div>
 <div class="jumbotron columns">
   <div class="container">
-    <h1><%= __('hello') %></h1>
     <section class="column text-center">
       <div class="btn-group">
         <div class="btn-group">
@@ -121,4 +124,4 @@
     </div>
   </div>
 </footer>
-<%- include footer.html -%>
+{% endblock %}

@@ -16,6 +16,7 @@ config.js
 bootstrap.*
 bootstrap-theme*
 npm.js
+public/fonts
 
 #Image
 public/img
