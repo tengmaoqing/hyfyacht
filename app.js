@@ -11,11 +11,14 @@ var mongoose = require('mongoose');
 var csurf = require('csurf');
 var expressValidator = require('express-validator');
 var i18n = require('i18n');
+var swig = require('swig');
 
 //config
 var config = require('./config');
 
+//routes
 var routes = require('./routes/index');
+var boat = require('./routes/boat');
 
 var app = express();
 
@@ -29,14 +32,18 @@ app.use(logger('dev'));
 mongoose.connect(config.dbPath);
 
 // view engine setup
-app.engine('.html', require('swig').renderFile);
+app.engine('.html', swig.renderFile);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
+
+app.set('view cache', false);
+swig.setDefaults({ cache: false });
 
 //i18n
 i18n.configure({
   locales: ['en', 'zh-cn', 'zh-hk', 'zh-tw'],
   defaultLocale: 'zh-cn',
+  cookie: 'client_locale',
   directory: path.join(__dirname, 'locales'),
   updateFiles: false,
   extension: '.js',
@@ -89,6 +96,8 @@ app.use(function(req, res, next){
   }
 
   res.render = function(view, options, fn){
+    options = options || {};
+
     util._extend(options, {
       preset: {
         staticHost: config.staticMode === 'express' ? '' : 'http://static.' + req.hostname,
@@ -102,6 +111,7 @@ app.use(function(req, res, next){
 });
 
 app.use('/', routes);
+app.use('/boat', boat);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

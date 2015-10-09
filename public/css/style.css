@@ -19,6 +19,14 @@ body {
   margin-bottom: 0;
 }
 
+.search-field {
+  margin-bottom: 20px;
+}
+
+.dropdown-menu-justified {
+  width: 100%;
+}
+
 footer.jumbotron {
   color:#fff;
   background: #565a5c;
@@ -35,6 +43,10 @@ footer.jumbotron h3 {
 
 footer.jumbotron p.text-muted {
   color:#ccc;
+}
+
+.width80 {
+  width: 80%;
 }
 
 ul.list-layout {
@@ -67,6 +79,10 @@ ul.list-layout li a:hover {
 
 .columns .cell {
   margin-bottom: 10px;
+}
+
+.thumbnail {
+  padding: 0;
 }
 
 @media (min-width: 1200px) {

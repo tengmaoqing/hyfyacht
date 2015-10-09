@@ -1,0 +1,202 @@
+{% extends './layout.html' %}
+
+{% block content %}
+
+{% include './nav.html' %}
+
+<div class="jumbotron columns">
+  <div class="container">
+    <section class="column">
+      <div class="row search-field">
+        <div class="col-md-2">
+          <label>地点</label>
+        </div>
+        <div class="col-md-6">
+          <div class="btn-group btn-group-justified">
+            <div class="btn-group"><button type="button" class="btn btn-default">全部</button></div>
+            <div class="btn-group"><button type="button" class="btn btn-primary">深圳</button></div>
+            <div class="btn-group"><button type="button" class="btn btn-default">香港</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="row search-field">
+        <div class="col-md-2">
+          <label>价格范围</label>
+        </div>
+        <div class="col-md-2">
+          <div class="btn-group btn-group-justified">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">不限 <span class="caret"></span></button>
+              <ul class="dropdown-menu dropdown-menu-justified">
+                <li><a href="#">不限</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-yen"></span>5000 - 10000</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-yen"></span>10000 － 15000</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-yen"></span>15000 － 20000</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row search-field">
+        <div class="col-md-2">
+          <label>人数</label>
+        </div>
+        <div class="col-md-2">
+          <div class="btn-group btn-group-justified">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                10 － 20 人 <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-justified">
+                <li><a href="#">不限</a></li>
+                <li><a href="#">10 人以下</a></li>
+                <li><a href="#">10 － 20 人</a></li>
+                <li><a href="#">20 － 30 人</a></li>
+                <li><a href="#">30 － 40 人</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row search-field">
+        <div class="col-md-2">
+          <label>活动</label>
+        </div>
+        <div class="col-md-2 col-sm-3 col-xs-4">
+          <label class="checkbox-inline">
+            <input type="checkbox" value="option1"> 夜钓
+          </label>
+        </div>
+        <div class="col-md-2 col-sm-3 col-xs-4">
+          <label class="checkbox-inline">
+            <input type="checkbox" value="option1"> 滑水
+          </label>
+        </div>
+        <div class="col-md-2 col-sm-3 col-xs-4">
+          <label class="checkbox-inline">
+            <input type="checkbox" value="option1"> 香蕉船
+          </label>
+        </div>
+        <div class="col-md-2 col-sm-3 col-xs-4">
+          <label class="checkbox-inline">
+            <input type="checkbox" value="option1"> 浮潜
+          </label>
+        </div>
+      </div>
+      <div class="row search-field">
+        <div class="col-md-2">
+          <label>其他</label>
+        </div>
+        <div class="col-md-2 col-sm-3 col-xs-4">
+          <label class="checkbox-inline">
+            <input type="checkbox" value="option1"> 午餐
+          </label>
+        </div>
+        <div class="col-md-2 col-sm-3 col-xs-4">
+          <label class="checkbox-inline">
+            <input type="checkbox" value="option1"> 饮料
+          </label>
+        </div>
+      </div>
+    </section>
+    <section class="column">
+      <h3>为您找到 9 艘船：</h3>
+      <div class="row">
+        <div class="col-md-4 col-sm-6 cell">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="/img/yacht01.jpg" alt="yacht01">
+              <div class="caption">
+                <h4>Rainbow</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 cell">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="/img/yacht02.jpg" alt="yacht02">
+              <div class="caption">
+                <h4>Hoifai</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 cell">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="/img/yacht03.jpg" alt="yacht03">
+              <div class="caption">
+                <h4>Yacht</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 cell">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="/img/yacht02.jpg" alt="yacht01">
+              <div class="caption">
+                <h4>Rainbow</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 cell">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="/img/yacht03.jpg" alt="yacht02">
+              <div class="caption">
+                <h4>Hoifai</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 cell">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="/img/yacht01.jpg" alt="yacht03">
+              <div class="caption">
+                <h4>Yacht</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 cell">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="/img/yacht03.jpg" alt="yacht03">
+              <div class="caption">
+                <h4>海钓</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 cell">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="/img/yacht01.jpg" alt="yacht03">
+              <div class="caption">
+                <h4>滑水</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 cell">
+          <div class="thumbnail">
+            <a href="#">
+              <img src="/img/yacht02.jpg" alt="yacht03">
+              <div class="caption">
+                <h4>浮潜</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+{% include './footer.html' %}
+
+{% endblock %}
