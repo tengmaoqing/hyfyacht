@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>{% block title %}{{ __('site.title') }}{% endblock %}</title>
 
     <!-- Bootstrap -->
@@ -28,6 +27,13 @@
     <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{ preset.staticHost }}/js/bootstrap.min.js"></script>
+    <script>
+      $(".dropdown-menu").dropdown();
+
+      $(".dropdown-menu li a").click(function(){
+        $(this).parent().parent().parent().find('.dropdown-toggle').html($(this).html() + ' <span class="caret"></span>');
+      });
+    </script>
     {% block foot %}{% endblock %}
   </body>
 </html>

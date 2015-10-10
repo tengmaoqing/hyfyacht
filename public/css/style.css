@@ -41,7 +41,7 @@ footer.jumbotron h3 {
   margin-top: 0;
 }
 
-footer.jumbotron p.text-muted {
+footer.jumbotron p.text-muted, footer.jumbotron p.text-muted a {
   color:#ccc;
 }
 

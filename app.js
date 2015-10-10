@@ -1,4 +1,5 @@
 var express = require('express');
+var URI = require('urijs');
 var util = require('util');
 var path = require('path');
 //var favicon = require('serve-favicon');
@@ -18,7 +19,7 @@ var config = require('./config');
 
 //routes
 var routes = require('./routes/index');
-var boat = require('./routes/boat');
+var boats = require('./routes/boats');
 
 var app = express();
 
@@ -37,11 +38,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
 
 app.set('view cache', false);
-swig.setDefaults({ cache: false });
+swig.setDefaults({
+  cache: false
+});
 
-//i18n
+//i18n init
 i18n.configure({
-  locales: ['en', 'zh-cn', 'zh-hk', 'zh-tw'],
+  locales: ['en', 'zh-cn', 'zh-hk'],
   defaultLocale: 'zh-cn',
   cookie: 'client_locale',
   directory: path.join(__dirname, 'locales'),
@@ -84,6 +87,22 @@ app.use(function(req, res, next){
   next();
 });
 
+//set i18n
+app.use(function(req, res, next){
+  var lang = req.query.lang || req.cookies['client_locale'];
+  if(lang){
+    req.setLocale(lang);
+    res.cookie('client_locale', lang, config.unsignedCookieOption);
+  }
+
+  if(i18n.fallbacks && i18n.fallbacks[lang]){
+    req.setLocale(i18n.fallbacks[lang]);
+  }
+
+  next();
+});
+
+//set default var before view engine render views
 app.use(function(req, res, next){
   var _render = res.render;
 
@@ -95,13 +114,20 @@ app.use(function(req, res, next){
     username = req.signedCookies['client_attributes'];
   }
 
+  console.log(req.getLocale());
+
   res.render = function(view, options, fn){
     options = options || {};
 
     util._extend(options, {
       preset: {
         staticHost: config.staticMode === 'express' ? '' : 'http://static.' + req.hostname,
-        username: username
+        originalUrl: req.originalUrl,
+        username: username,
+        locale: req.getLocale(),
+        getUrlWithQuery: function(key, value){
+          return URI(req.url).setQuery(key, value).toString();
+        }
       }
     });
     _render.call(this, view, options, fn);
@@ -111,7 +137,7 @@ app.use(function(req, res, next){
 });
 
 app.use('/', routes);
-app.use('/boat', boat);
+app.use('/boats', boats);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

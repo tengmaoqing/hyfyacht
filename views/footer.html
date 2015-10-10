@@ -5,24 +5,27 @@
         <section>
           <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              English <span class="caret"></span>
+              {% if preset.locale == 'en' %}English
+              {% elseif preset.locale == 'zh-hk' %}中文(繁體)
+              {% else %}中文(简体)
+              {% endif %} <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu dropdown-menu-justified">
-              <li><a href="#">English</a></li>
-              <li><a href="#">中文(简体)</a></li>
-              <li><a href="#">中文(繁體)</a></li>
+            <ul class="dropdown-menu disabled">
+              <li><a href="{{ preset.getUrlWithQuery('lang','en') }}">English</a></li>
+              <li><a href="{{ preset.getUrlWithQuery('lang','zh-cn') }}">中文(简体)</a></li>
+              <li><a href="{{ preset.getUrlWithQuery('lang','zh-hk') }}">中文(繁體)</a></li>
             </ul>
           </div>
         </section>
         <section>
           <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              CNY <span class="caret"></span>
+              ￥ CNY <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu">
-              <li><a href="#">CNY</a></li>
-              <li><a href="#">HKD</a></li>
-              <li><a href="#">USD</a></li>
+            <ul class="dropdown-menu disabled">
+              <li><a href="#">￥ CNY</a></li>
+              <li><a href="#">＄ HKD</a></li>
+              <li><a href="#">＄ USD</a></li>
             </ul>
           </div>
         </section>
@@ -42,7 +45,7 @@
     </div>
     <hr class="footer-divider hidden-xs">
     <div class="text-center">
-      <p class="text-muted">&copy; 海云帆</p>
+      <p class="text-muted">&copy; 海云帆 <a href="http://www.miitbeian.gov.cn">粤ICP备1234567号</a></p>
     </div>
   </div>
 </footer>

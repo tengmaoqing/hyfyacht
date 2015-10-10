@@ -1,0 +1,3 @@
+{% macro item(label, link, active) %}
+  <li {% if active %} class="active"{% endif %} ><a href="{{ link }}">{{ label }} {% if active %} <span class="sr-only">(current)</span>{% endif %}</a></li>
+{% endmacro %}

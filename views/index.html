@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% include './nav.html' %}
+{% include './nav.html' with {view_active:'home'} %}
 
 <div class="embed-responsive embed-responsive-8by3">
   <img class="embed-responsive-item" src="/img/bg_yacht2.jpg">
@@ -14,17 +14,17 @@
         <div class="btn-group">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">您想去哪里？<span class="caret"></span></button>
           <ul class="dropdown-menu">
-            <li><a href="#">深圳</a></li>
-            <li><a href="#">香港</a></li>
+            <li><a href="#" data-value="深圳">深圳</a></li>
+            <li><a href="#" data-value="香港">香港</a></li>
           </ul>
         </div>
         <div class="btn-group">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">您的预算是多少？<span class="caret"></span></button>
           <ul class="dropdown-menu">
             <li><a href="#">不限</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-yen"></span>5000 - 10000</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-yen"></span>10000 － 15000</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-yen"></span>15000 － 20000</a></li>
+            <li><a href="#">￥5000 - 10000</a></li>
+            <li><a href="#">￥10000 － 15000</a></li>
+            <li><a href="#">￥15000 － 20000</a></li>
           </ul>
         </div>
         <button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span> 搜索</button>
@@ -44,9 +44,9 @@
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">您的预算是多少？<span class="caret"></span></button>
             <ul class="dropdown-menu dropdown-menu-justified">
               <li><a href="#">不限</a></li>
-              <li><a href="#"><span class="glyphicon glyphicon-yen"></span>5000 - 10000</a></li>
-              <li><a href="#"><span class="glyphicon glyphicon-yen"></span>10000 － 15000</a></li>
-              <li><a href="#"><span class="glyphicon glyphicon-yen"></span>15000 － 20000</a></li>
+              <li><a href="#">￥5000 - 10000</a></li>
+              <li><a href="#">￥10000 － 15000</a></li>
+              <li><a href="#">￥15000 － 20000</a></li>
             </ul>
           </div>
         </div>

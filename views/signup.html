@@ -1,15 +1,19 @@
-<%- include header.html -%>
-  <div class="form-container">
-    <p class="form-header">Sign Up</p>
-    <form method="POST">
-      <input type="hidden" name="_csrf" value="<%=_csrf %>">
-      <label>Username:</label>
-      <input type="text" name="username"><br>
-      <label>Password:</label>
-      <input type="password" name="password"><br>
-      <label>Email:</label>
-      <input type="email" name="email"><br>
-      <input type="submit" value="Register">
-    </form>
-  </div>
-<%- include footer.html -%>
+{% extends './layout.html' %}
+
+{% block content %}
+
+<div class="form-container">
+  <p class="form-header">Sign Up</p>
+  <form method="POST">
+    <input type="hidden" name="_csrf" value="{{ _csrf }}">
+    <label>Username:</label>
+    <input type="text" name="username"><br>
+    <label>Password:</label>
+    <input type="password" name="password"><br>
+    <label>Email:</label>
+    <input type="email" name="email"><br>
+    <input type="submit" value="Register">
+  </form>
+</div>
+
+{% endblock %}
