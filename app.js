@@ -19,7 +19,7 @@ var config = require('./config');
 
 //routes
 var routes = require('./routes/index');
-var boats = require('./routes/boats');
+var boat = require('./routes/boat');
 
 var app = express();
 
@@ -95,10 +95,6 @@ app.use(function(req, res, next){
     res.cookie('client_locale', lang, config.unsignedCookieOption);
   }
 
-  if(i18n.fallbacks && i18n.fallbacks[lang]){
-    req.setLocale(i18n.fallbacks[lang]);
-  }
-
   next();
 });
 
@@ -114,8 +110,6 @@ app.use(function(req, res, next){
     username = req.signedCookies['client_attributes'];
   }
 
-  console.log(req.getLocale());
-
   res.render = function(view, options, fn){
     options = options || {};
 
@@ -126,7 +120,7 @@ app.use(function(req, res, next){
         username: username,
         locale: req.getLocale(),
         getUrlWithQuery: function(key, value){
-          return URI(req.url).setQuery(key, value).toString();
+          return URI(req.originalUrl).setQuery(key, value).toString();
         }
       }
     });
@@ -137,7 +131,7 @@ app.use(function(req, res, next){
 });
 
 app.use('/', routes);
-app.use('/boats', boats);
+app.use('/boat', boat);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

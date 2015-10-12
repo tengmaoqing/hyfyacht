@@ -1,3 +1,7 @@
 {% macro item(label, link, active) %}
   <li {% if active %} class="active"{% endif %} ><a href="{{ link }}">{{ label }} {% if active %} <span class="sr-only">(current)</span>{% endif %}</a></li>
 {% endmacro %}
+
+{% macro localeItem(label, link, active) %}
+  <li><a href="{% if active %}javascript:void(0);{% else %} {{ link }} {% endif %}">{{ label }}</a></li>
+{% endmacro %}

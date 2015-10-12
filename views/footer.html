@@ -1,49 +1,54 @@
+{% import './macros/menu.html' as menu %}
+
 <footer class="jumbotron">
   <div class="container">
     <div class="row">
-      <div class="col-md-4 col-sm-6 col-xs-12">
-        <section>
-          <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {% if preset.locale == 'en' %}English
-              {% elseif preset.locale == 'zh-hk' %}中文(繁體)
-              {% else %}中文(简体)
-              {% endif %} <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu disabled">
-              <li><a href="{{ preset.getUrlWithQuery('lang','en') }}">English</a></li>
-              <li><a href="{{ preset.getUrlWithQuery('lang','zh-cn') }}">中文(简体)</a></li>
-              <li><a href="{{ preset.getUrlWithQuery('lang','zh-hk') }}">中文(繁體)</a></li>
+      <div class="col-md-10 col-md-offset-1">
+        <div class="row">
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <section>
+              <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {% if preset.locale == 'en' %}English
+                  {% elseif preset.locale == 'zh-hk' %}中文(繁體)
+                  {% else %}中文(简体)
+                  {% endif %} <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu disabled">
+                  {{ menu.localeItem('English', preset.getUrlWithQuery('lang','en'), preset.locale == 'en') }}
+                  {{ menu.localeItem('中文(简体)', preset.getUrlWithQuery('lang','zh-cn'), preset.locale == 'zh-cn') }}
+                  {{ menu.localeItem('中文(繁體)', preset.getUrlWithQuery('lang','zh-hk'), preset.locale == 'zh-hk') }}
+                </ul>
+              </div>
+            </section>
+            <section>
+              <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  ￥ CNY <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu disabled">
+                  <li><a href="#">￥ CNY</a></li>
+                  <li><a href="#">＄ HKD</a></li>
+                </ul>
+              </div>
+            </section>
+            <section>
+              <p>{{ __('site.hotline') }}：400-008-3731</p>
+            </section>
+          </div>
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <h3>{{ __('site.info.company') }}</h3>
+            <ul class="list-layout">
+              <li><a href="#">{{ __('site.info.about') }}</a></li>
+              <li><a href="#">{{ __('site.info.contact') }}</a></li>
+              <li><a href="#">{{ __('site.info.terms') }}</a></li>
+              <li><a href="#">{{ __('site.info.privacy') }}</a></li>
             </ul>
           </div>
-        </section>
-        <section>
-          <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              ￥ CNY <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu disabled">
-              <li><a href="#">￥ CNY</a></li>
-              <li><a href="#">＄ HKD</a></li>
-              <li><a href="#">＄ USD</a></li>
-            </ul>
-          </div>
-        </section>
-        <section>
-          <p>服务热线：400-008-3731</p>
-        </section>
-      </div>
-      <div class="col-md-4 col-sm-6 col-xs-12">
-        <h3>公司信息</h3>
-        <ul class="list-layout">
-          <li><a href="#">关于我们</a></li>
-          <li><a href="#">联系我们</a></li>
-          <li><a href="#">服务条款</a></li>
-          <li><a href="#">隐私政策</a></li>
-        </ul>
-      </div>
+        </div>
+      </div >
     </div>
-    <hr class="footer-divider hidden-xs">
+    <hr class="hr-divider hidden-xs">
     <div class="text-center">
       <p class="text-muted">&copy; 海云帆 <a href="http://www.miitbeian.gov.cn">粤ICP备1234567号</a></p>
     </div>

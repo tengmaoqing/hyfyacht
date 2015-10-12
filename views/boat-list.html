@@ -12,10 +12,16 @@
           <label>地点</label>
         </div>
         <div class="col-md-6">
-          <div class="btn-group btn-group-justified">
-            <div class="btn-group"><button type="button" class="btn btn-default">全部</button></div>
-            <div class="btn-group"><button type="button" class="btn btn-primary">深圳</button></div>
-            <div class="btn-group"><button type="button" class="btn btn-default">香港</button></div>
+          <div class="btn-group btn-group-justified radios" data-toggle="buttons">
+            <label class="btn btn-default active">
+              <input type="radio" autocomplete="off">全部
+            </label>
+            <label class="btn btn-default">
+              <input type="radio" autocomplete="off">深圳
+            </label>
+            <label class="btn btn-default">
+              <input type="radio" autocomplete="off">香港
+            </label>
           </div>
         </div>
       </div>
@@ -63,24 +69,36 @@
           <label>活动</label>
         </div>
         <div class="col-md-2 col-sm-3 col-xs-4">
-          <label class="checkbox-inline">
-            <input type="checkbox" value="option1"> 夜钓
-          </label>
+          <div class="btn-group checkboxs" data-toggle="buttons">
+            <label class="btn btn-default">
+              <span class="glyphicon glyphicon-unchecked"></span>
+              <input type="checkbox" autocomplete="off" value="option1"> 夜钓
+            </label>
+          </div>
         </div>
         <div class="col-md-2 col-sm-3 col-xs-4">
-          <label class="checkbox-inline">
-            <input type="checkbox" value="option1"> 滑水
-          </label>
+          <div class="btn-group checkboxs" data-toggle="buttons">
+            <label class="btn btn-default">
+              <span class="glyphicon glyphicon-unchecked"></span>
+              <input type="checkbox" autocomplete="off" value="option1"> 滑水
+            </label>
+          </div>
         </div>
         <div class="col-md-2 col-sm-3 col-xs-4">
-          <label class="checkbox-inline">
-            <input type="checkbox" value="option1"> 香蕉船
-          </label>
+          <div class="btn-group checkboxs" data-toggle="buttons">
+            <label class="btn btn-default">
+              <span class="glyphicon glyphicon-unchecked"></span>
+              <input type="checkbox" autocomplete="off" value="option1"> 香蕉船
+            </label>
+          </div>
         </div>
         <div class="col-md-2 col-sm-3 col-xs-4">
-          <label class="checkbox-inline">
-            <input type="checkbox" value="option1"> 浮潜
-          </label>
+          <div class="btn-group checkboxs" data-toggle="buttons">
+            <label class="btn btn-default">
+              <span class="glyphicon glyphicon-unchecked"></span>
+              <input type="checkbox" autocomplete="off" value="option1"> 浮潜
+            </label>
+          </div>
         </div>
       </div>
       <div class="row search-field">
@@ -88,14 +106,20 @@
           <label>其他</label>
         </div>
         <div class="col-md-2 col-sm-3 col-xs-4">
-          <label class="checkbox-inline">
-            <input type="checkbox" value="option1"> 午餐
-          </label>
+          <div class="btn-group checkboxs" data-toggle="buttons">
+            <label class="btn btn-default">
+              <span class="glyphicon glyphicon-unchecked"></span>
+              <input type="checkbox" autocomplete="off" value="option1"> 午餐
+            </label>
+          </div>
         </div>
         <div class="col-md-2 col-sm-3 col-xs-4">
-          <label class="checkbox-inline">
-            <input type="checkbox" value="option1"> 饮料
-          </label>
+          <div class="btn-group checkboxs" data-toggle="buttons">
+            <label class="btn btn-default">
+              <span class="glyphicon glyphicon-unchecked"></span>
+              <input type="checkbox" autocomplete="off" value="option1"> 饮料
+            </label>
+          </div>
         </div>
       </div>
     </section>
@@ -198,5 +222,19 @@
 </div>
 
 {% include './footer.html' %}
+
+{% endblock %}
+
+{% block foot %}
+
+<script>
+  $('.checkboxs .btn').click(function(){
+    if($(this).hasClass('active')){
+      $(this).find('.glyphicon').removeClass('glyphicon-ok').addClass('glyphicon-unchecked');
+    }else {
+      $(this).find('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-ok');
+    }
+  });
+</script>
 
 {% endblock %}

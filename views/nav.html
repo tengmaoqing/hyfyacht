@@ -1,4 +1,5 @@
 {% import './macros/menu.html' as menu %}
+
 <nav class="navbar navbar-default">
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -14,25 +15,24 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="hyf-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        {{ menu.item(__( 'nav.home' ), '/', view_active == 'home') }}
-        {{ menu.item(__( 'nav.boat' ), '/boats', view_active == 'boat') }}
+        {{ menu.item(__('nav.home'), '/', view_active == 'home') }}
+        {{ menu.item(__('nav.boat'), '/boat', view_active == 'boat') }}
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if preset.username %}
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> {{ preset.username }}</a>
           <ul class="dropdown-menu disabled">
-            <li><a href="/user"><span class="glyphicon glyphicon-home"></span> 我的主页</a></li>
-            <li><a href="/user/order"><span class="glyphicon glyphicon-list-alt"></span> 我的订单</a></li>
-            <li><a href="/user/setting"><span class="glyphicon glyphicon-cog"></span> 设置</a></li>
+            <li><a href="/user/order"><span class="glyphicon glyphicon-list-alt"></span> {{ __('user.bookings') }}</a></li>
+            <li><a href="/user/setting"><span class="glyphicon glyphicon-cog"></span> {{ __('user.settings') }}</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> 注销</a></li>
+            <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> {{ __('common.logout') }}</a></li>
           </ul>
         </li>
         {% else %}
-        <li><a href="#">我是船东</a></li>
-        <li><a href="/login">登录</a></li>
-        <li><a href="/signup">注册</a></li>
+        <li><a href="#">{{ __('nav.become_a_host') }}</a></li>
+        <li><a href="/login">{{ __('common.login') }}</a></li>
+        <li><a href="/signup">{{ __('common.signup') }}</a></li>
         {% endif %}
       </ul>
     </div><!-- /.navbar-collapse -->
