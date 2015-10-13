@@ -20,6 +20,7 @@ var config = require('./config');
 //routes
 var routes = require('./routes/index');
 var boat = require('./routes/boat');
+var booking = require('./routes/booking');
 
 var app = express();
 
@@ -132,6 +133,7 @@ app.use(function(req, res, next){
 
 app.use('/', routes);
 app.use('/boat', boat);
+app.use('/booking', booking);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

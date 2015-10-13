@@ -14,7 +14,7 @@ config.js
 
 #bootstrap
 bootstrap.*
-bootstrap-theme*
+bootstrap-*
 npm.js
 public/fonts
 

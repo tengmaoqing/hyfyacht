@@ -9,12 +9,12 @@
     <section class="column">
       <div class="row search-field">
         <div class="col-md-2">
-          <label>地点</label>
+          <label>{{ __('common.location') }}</label>
         </div>
         <div class="col-md-6">
           <div class="btn-group btn-group-justified radios" data-toggle="buttons">
             <label class="btn btn-default active">
-              <input type="radio" autocomplete="off">全部
+              <input type="radio" autocomplete="off">{{ __('common.all') }}
             </label>
             <label class="btn btn-default">
               <input type="radio" autocomplete="off">深圳
@@ -27,14 +27,14 @@
       </div>
       <div class="row search-field">
         <div class="col-md-2">
-          <label>价格范围</label>
+          <label>{{ __('common.price_range') }}</label>
         </div>
         <div class="col-md-3">
           <div class="btn-group btn-group-justified">
             <div class="btn-group">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">不限 <span class="caret"></span></button>
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('common.unlimited') }} <span class="caret"></span></button>
               <ul class="dropdown-menu dropdown-menu-justified">
-                <li><a href="#">不限</a></li>
+                <li><a href="#">{{ __('common.unlimited') }}</a></li>
                 <li><a href="#">￥5000 - 10000</a></li>
                 <li><a href="#">￥10000 － 15000</a></li>
                 <li><a href="#">￥15000 － 20000</a></li>
@@ -45,7 +45,7 @@
       </div>
       <div class="row search-field">
         <div class="col-md-2">
-          <label>人数</label>
+          <label>{{ __('common.number_of_people') }}</label>
         </div>
         <div class="col-md-2">
           <div class="btn-group btn-group-justified">
@@ -54,7 +54,7 @@
                 10 － 20 人 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-justified">
-                <li><a href="#">不限</a></li>
+                <li><a href="#">{{ __('common.unlimited') }}</a></li>
                 <li><a href="#">10 人以下</a></li>
                 <li><a href="#">10 － 20 人</a></li>
                 <li><a href="#">20 － 30 人</a></li>
@@ -66,7 +66,7 @@
       </div>
       <div class="row search-field">
         <div class="col-md-2">
-          <label>活动</label>
+          <label>{{ __('common.entertainments') }}</label>
         </div>
         <div class="col-md-2 col-sm-3 col-xs-4">
           <div class="btn-group checkboxs" data-toggle="buttons">
@@ -103,7 +103,7 @@
       </div>
       <div class="row search-field">
         <div class="col-md-2">
-          <label>其他</label>
+          <label>{{ __('common.extra') }}</label>
         </div>
         <div class="col-md-2 col-sm-3 col-xs-4">
           <div class="btn-group checkboxs" data-toggle="buttons">
@@ -124,7 +124,7 @@
       </div>
     </section>
     <section class="column">
-      <h3>为您找到 9 艘船：</h3>
+      <h3>{{ __n('boat.list.find %d boat', 'boat.list.find %d boat', 2) }}</h3>
       <div class="row">
         <div class="col-md-4 col-sm-6 cell">
           <div class="thumbnail">

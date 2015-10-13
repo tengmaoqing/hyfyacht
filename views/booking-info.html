@@ -1,0 +1,228 @@
+{% extends './layout.html' %}
+
+{% block head %}
+
+<link rel="stylesheet" href="{{ preset.staticHost }}/css/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.css">
+
+{% endblock %}
+
+{% block content %}
+
+{% include './nav.html' %}
+
+<div class="container boat-info">
+  <div class="page-header">
+    <h1>预定信息</h1>
+  </div>
+  <div class="panel panel-info">
+    <div class="panel-heading">船只信息</div>
+    <div class="panel-body">
+      <dl class="dl-horizontal">
+        <dt><span class="glyphicon glyphicon-pushpin"></span> 预定船只</dt>
+        <dd>rainbow</dd>
+        <dt><span class="glyphicon glyphicon-user"></span> 船东</dt>
+        <dd>Mr.Shek</dd>
+        <dt><span class="glyphicon glyphicon-map-marker"></span> 地点</dt>
+        <dd>香港 西贡码头</dd>
+        <dt><span class="glyphicon glyphicon-tag"></span> 类型</dt>
+        <dd>西式游艇</dd>
+        <dt><span class="glyphicon glyphicon-asterisk"></span> 载客人数</dt>
+        <dd>50</dd>
+      </dl>
+    </div>
+  </div>
+  <div class="panel panel-info">
+    <div class="panel-heading">产品信息</div>
+    <div class="panel-body">
+      <dl class="dl-horizontal">
+        <dt><span class="glyphicon glyphicon-pushpin"></span> 预定产品</dt>
+        <dd>日间船河</dd>
+        <dt><span class="glyphicon glyphicon-time"></span> 游玩时间</dt>
+        <dd>8 小时</dd>
+        <dt><span class="glyphicon glyphicon-dashboard"></span> 可选时间段</dt>
+        <dd>9:00 - 18:00</dd>
+      </dl>
+    </div>
+  </div>
+  <div class="panel panel-info">
+    <div class="panel-heading">选择时间</div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
+          <div id="calendar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-info">
+    <div class="panel-heading">人数</div>
+    <div class="panel-body">
+      <input type="number" class="form-control" placeholder="出游人数" max="50" min="1" value="35">
+    </div>
+  </div>
+  <div class="panel panel-info">
+    <div class="panel-heading">套餐</div>
+    <div class="panel-body">
+      <h4>套餐信息</h4>
+      <strong>套餐A (￥8000)</strong>
+      <p>
+        包含25人的午餐以及水上活动, 25人之后每位$200<br><br>
+        水上活动：滑水、香蕉船<br><br>
+        午餐 － 25人基本，餐单如下：<br><br>
+        水蟹粥<br>
+        白灼虾<br>
+        。。。<br>
+      </p>
+      <strong>额外项目</strong>
+      <p>
+        额外人员￥200/位<br>
+        水上飞行￥2000<br>
+        。。。<br>
+      </p>
+      <table class="table">
+        <caption>套餐选项</caption>
+        <tr><th>选择</th><th>项目</th><th>数量</th><th>价格</th></tr>
+        <tr>
+          <td>
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn disabled">
+                <span class="glyphicon glyphicon-check"></span>
+                <input type="checkbox" autocomplete="off" value="option1">
+              </label>
+            </div>
+          </td>
+          <td><strong>套餐A ￥8000</strong></td>
+          <td><strong>1</strong></td>
+          <td><strong>￥8000.00</strong></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn disabled">
+                <span class="glyphicon glyphicon-check"></span>
+                <input type="checkbox" autocomplete="off" value="option1">
+              </label>
+            </div>
+          </td>
+          <td>
+            <strong>额外人员 ￥200</strong>
+          </td>
+          <td><strong>10</strong></td>
+          <td><strong>￥2000.00</strong></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn">
+                <span class="glyphicon glyphicon-check"></span>
+                <input type="checkbox" autocomplete="off" value="option1">
+              </label>
+            </div>
+          </td>
+          <td>
+            <strong>水上飞行 ￥2000</strong>
+          </td>
+          <td><strong>1</strong></td>
+          <td><strong>￥2000.00</strong></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn">
+                <span class="glyphicon glyphicon-unchecked"></span>
+                <input type="checkbox" autocomplete="off" value="option1">
+              </label>
+            </div>
+          </td>
+          <td>
+            <strong>啤酒 ￥20</strong>
+          </td>
+          <td>
+            <input type="number" placeholder="0" max="50" min="0" value="0">
+          </td>
+          <td><strong>￥0.00</strong></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td><strong>合计</strong></td>
+          <td><h4>￥14000.00</h4></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="panel panel-info">
+    <div class="panel-heading">联系信息</div>
+    <div class="panel-body">
+      <label>联系人</label>
+      <div class="input-group">
+        <span class="input-group-addon">
+          <span class="glyphicon glyphicon-user"></span>
+        </span>
+        <input type="text" class="form-control" placeholder="请输入联系人姓名">
+      </div>
+      <label>手机号码</label>
+      <div class="input-group">
+        <span class="input-group-addon">
+          <span class="glyphicon glyphicon-phone"></span>
+        </span>
+        <input type="text" class="form-control" placeholder="请输入联系人手机号码">
+      </div>
+      <label>电子邮箱</label>
+      <div class="input-group">
+        <span class="input-group-addon">
+          @
+        </span>
+        <input type="text" class="form-control" placeholder="请输入联系人邮箱地址">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10 col-sm-4 col-sm-offset-8 col-xs-6 col-xs-offset-6">
+      <a href="/booking" class="btn btn-danger btn-block">{{ __('booking.submit') }}</a>
+    </div>
+  </div>
+</div>
+{% include './footer.html' %}
+
+{% endblock %}
+
+{% block foot %}
+
+<script src="{{ preset.staticHost }}/js/bootstrap-datetimepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/lang/zh-cn.js"></script>
+<script>
+//  $("#datetimepicker").datetimepicker();
+  $("#calendar").fullCalendar({
+    contentHeight: "auto",
+    lang: "zh-CN",
+    viewRender: function(view, element){
+      $(".fc-toolbar .fc-button").addClass("btn btn-default").removeClass("fc-state-default");
+      $(".fc-toolbar .fc-button-group").addClass("btn-group");
+      $(".fc-prev-button").html('<span class="glyphicon glyphicon-menu-left"></span>');
+      $(".fc-next-button").html('<span class="glyphicon glyphicon-menu-right"></span>');
+    },
+    dayClick: function(date, jsEvent, view){
+      alert(date.format());
+    },
+    eventClick: function(calEvent, jsEvent, view){
+      if(calEvent.customVar){
+        alert(calEvent.customVar);
+      }else{
+        alert("no custom var");
+      }
+    },
+    events:[
+      {
+        title: " ",
+        start: "2015-10-14T09:00",
+        allDay: false,
+        customVar: "Haha"
+      }
+    ]
+  });
+</script>
+{% endblock %}

@@ -21,7 +21,9 @@
     "price_range": "价格范围",
     "number_of_people": "人数",
     "entertainments": "活动",
-    "extra": "其他"
+    "extra": "其他",
+    "capacity": "载客人数",
+    "packages": "套餐"
   },
   "nav": {
     "home": "首页",
@@ -44,16 +46,22 @@
   },
   "boat": {
     "list": {
-      "find %s boat": "为您找到 %s 艘船",
-      "find %s boats": "为您找到 %s 艘船"
+      "find %d boat": {
+        "one": "为您找到 %d 艘船：",
+        "other": "为您找到 %d 艘船："
+      }
     },
     "detail": {
+      "about": "关于此船只",
       "instant_book": "立即预定",
       "from %s": "%s起",
       "facilities": "附属设备",
-      "products": "可预定项目",
+      "products": "可预定产品",
       "info": "基本信息",
-      "desc": "项目介绍"
+      "desc": "产品介绍"
     }
+  },
+  "booking": {
+    "submit": "提交预定"
   }
 }

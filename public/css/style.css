@@ -2,8 +2,24 @@ body {
   font-family: "Heiti SC", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+dt, dd {
+  font-size: 16px;
+}
+
+dd {
+  margin: 10px 0;
+}
+
 .navbar {
   margin-bottom:0;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+  vertical-align: middle;
+}
+
+.table>tbody>tr>td:nth-child(3), .table>tbody>tr>th:nth-child(3),.table>tbody>tr>td:nth-child(4), .table>tbody>tr>th:nth-child(4) {
+  text-align: right;
 }
 
 .embed-responsive-8by3 {
@@ -41,6 +57,13 @@ body {
   margin-bottom: 10px;
 }
 
+.package {
+  border: 1px solid #999;
+  border-radius: 4px;
+  background: #fff;
+  margin: 10px 0;
+  padding: 10px;
+}
 
 footer.jumbotron {
   color:#fff;
@@ -118,4 +141,12 @@ dl.dl-horizontal dt {
   .container {
     width: 1020px;
   }
+}
+
+/*full Calendar*/
+
+.fc-left h2 {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 30px;
 }

@@ -21,7 +21,9 @@
     "price_range": "Price Range",
     "number_of_people": "Number of People",
     "entertainments": "Entertainments",
-    "extra": "Extra"
+    "extra": "Extra",
+    "capacity": "Capacity",
+    "packages": "Packages"
   },
   "nav": {
     "home": "Home",
@@ -44,16 +46,22 @@
   },
   "boat": {
     "list": {
-      "find %s boat": "Find %s boat for you",
-      "find %s boats": "Find %s boats for you"
+      "find %d boat": {
+        "one": "Find %d boat for you:",
+        "other": "Find %d boats for you:"
+      }
     },
     "detail": {
-      "instant_book": "Instant Book",
+      "about": "About this boat",
+      "instant_book": "Book Now",
       "from %s": "From %s",
       "facilities": "Facilities",
       "products": "Products",
       "info": "Info",
       "desc": "Description"
     }
+  },
+  "booking": {
+    "submit": "Submit"
   }
 }
