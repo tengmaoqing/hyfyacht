@@ -224,17 +224,3 @@
 {% include './footer.html' %}
 
 {% endblock %}
-
-{% block foot %}
-
-<script>
-  $('.checkboxs .btn').click(function(){
-    if($(this).hasClass('active')){
-      $(this).find('.glyphicon').removeClass('glyphicon-ok').addClass('glyphicon-unchecked');
-    }else {
-      $(this).find('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-ok');
-    }
-  });
-</script>
-
-{% endblock %}

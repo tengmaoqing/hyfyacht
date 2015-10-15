@@ -31,226 +31,218 @@
 </div>
 <div class="jumbotron columns">
   <div class="container">
+    <h3>{{ __('boat.detail.about') }}</h3>
+    <p>在西貢十分搶眼的西式遊艇，提供一流的服務。</p>
+    <h3>{{ __('boat.detail.facilities') }}</h3>
     <div class="row">
-      <div class="col-md-8">
-        <h3>{{ __('boat.detail.about') }}</h3>
-        <p>在西貢十分搶眼的西式遊艇，提供一流的服務。</p>
-        <h3>{{ __('boat.detail.facilities') }}</h3>
-        <div class="row">
-          <div class="col-md-6 col-sm-6 col-xs-6">
-            <ul class="list-layout">
-              <li><span class="glyphicon glyphicon-check"></span> 空调</li>
-              <li><span class="glyphicon glyphicon-check"></span> 卡拉OK</li>
-              <li><span class="glyphicon glyphicon-check"></span> 快艇</li>
-              <li><span class="glyphicon glyphicon-check"></span> 香蕉船</li>
-              <li><span class="glyphicon glyphicon-check"></span> 飞碟</li>
-            </ul>
-          </div>
-          <div class="col-md-6 col-sm-6 col-xs-6">
-            <ul class="list-layout">
-              <li><span class="glyphicon glyphicon-check"></span> 厨房</li>
-              <li><span class="glyphicon glyphicon-check"></span> BBQ</li>
-              <li><span class="glyphicon glyphicon-check"></span> 冰箱</li>
-              <li><span class="glyphicon glyphicon-check"></span> 麻将</li>
-              <li><span class="glyphicon glyphicon-check"></span> 扑克</li>
-            </ul>
-          </div>
-        </div>
-        <h3 id="products">{{ __('boat.detail.products') }}</h3>
-        <ul class="nav nav-pills" role="tablist">
-          <li role="presentation" class="active"><a href="#product1" role="tab" data-toggle="tab">日间船河 (￥8000起)</a></li>
-          <li role="presentation"><a href="#product2" role="tab" data-toggle="tab">夜钓墨鱼 (￥4000起)</a></li>
-          <li role="presentation"><a href="#product3" role="tab" data-toggle="tab">夜游维港 (￥3000起)</a></li>
-        </ul>
-        <hr class="hr-divider">
-        <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="product1">
-            <div class="navbar-fixed-bottom fix-container">
-              <div class="container">
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+        <span class="glyphicon glyphicon-check"></span> 空调
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+        <span class="glyphicon glyphicon-check"></span> 卡拉OK
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+        <span class="glyphicon glyphicon-check"></span> 快艇
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+        <span class="glyphicon glyphicon-check"></span> 香蕉船
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+        <span class="glyphicon glyphicon-check"></span> 飞碟
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+        <span class="glyphicon glyphicon-check"></span> 厨房
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+        <span class="glyphicon glyphicon-check"></span> BBQ
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+        <span class="glyphicon glyphicon-check"></span> 冰箱
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+        <span class="glyphicon glyphicon-check"></span> 麻将
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+        <span class="glyphicon glyphicon-check"></span> 扑克
+      </div>
+    </div>
+    <h3 id="products">{{ __('boat.detail.products') }}</h3>
+    <ul class="nav nav-pills" role="tablist">
+      <li role="presentation" class="active"><a href="#product1" role="tab" data-toggle="tab">日间船河 (￥8000起)</a></li>
+      <li role="presentation"><a href="#product2" role="tab" data-toggle="tab">夜钓墨鱼 (￥4000起)</a></li>
+      <li role="presentation"><a href="#product3" role="tab" data-toggle="tab">夜游维港 (￥3000起)</a></li>
+    </ul>
+    <hr class="hr-divider">
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="product1">
+        <h4>{{ __('boat.detail.info') }}</h4>
+        <dl class="dl-horizontal">
+          <dt><span class="glyphicon glyphicon-time"></span> 游玩时间</dt>
+          <dd>8 小时</dd>
+          <dt><span class="glyphicon glyphicon-dashboard"></span> 可选时间段</dt>
+          <dd>9:00 - 18:00</dd>
+        </dl>
+        <h4>{{ __('common.packages') }}</h4>
+        <div class="panel-group" id="package-accordion" role="tablist">
+          <div class="panel panel-info">
+            <div class="panel-heading" role="tab" id="package-heading-1">
+              <h4 class="panel-title">
+                <a class="btn-block" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-1" aria-expanded="true" aria-controls="package-collapse-1">
+                  平日套餐A (￥8000)
+                </a>
+              </h4>
+            </div>
+            <div id="package-collapse-1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="package-heading-1">
+              <div class="panel-body">
+                <p>
+                包含25人的午餐以及水上活动, 25人之后每位￥200<br><br>
+                水上活动：滑水、香蕉船<br><br>
+                午餐 － 25人基本，餐单如下：<br><br>
+                水蟹粥<br>
+                白灼虾<br>
+                。。。<br>
+                </p>
+                <strong>额外项目</strong>
+                <p>
+                额外人员￥200/位<br>
+                水上飞行￥2000<br>
+                。。。<br>
+                </p>
                 <div class="row">
-                  <div class="col-lg-2 col-lg-offset-8 col-md-2 col-md-offset-8 col-sm-4 col-sm-offset-4 col-xs-6 col-xs-offset-3">
+                  <div class="col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10 col-sm-3 col-sm-offset-9 col-xs-5 col-xs-offset-7">
                     <a href="/booking" class="btn btn-danger btn-block">{{ __('boat.detail.instant_book') }}</a>
                   </div>
                 </div>
               </div>
             </div>
-            <h4>{{ __('boat.detail.info') }}</h4>
-            <dl class="dl-horizontal">
-              <dt><span class="glyphicon glyphicon-time"></span> 游玩时间</dt>
-              <dd>8 小时</dd>
-              <dt><span class="glyphicon glyphicon-dashboard"></span> 可选时间段</dt>
-              <dd>9:00 - 18:00</dd>
-            </dl>
-            <h4>{{ __('common.packages') }}</h4>
+          </div>
+          <div class="panel panel-info">
+            <div class="panel-heading" role="tab" id="package-heading-2">
+              <h4 class="panel-title">
+                <a class="btn-block" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-2" aria-expanded="false" aria-controls="package-collapse-2">
+                  平日套餐B (￥12000)
+                </a>
+              </h4>
+            </div>
+            <div id="package-collapse-2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="package-heading-2">
+              <div class="panel-body">
+                <p>
+                  包含25人的午餐以及水上活动, 25人之后每位￥200<br><br>
+                  水上活动：滑水、香蕉船<br><br>
+                  午餐 － 25人基本，餐单如下：<br><br>
+                  水蟹粥<br>
+                  白灼虾<br>
+                  。。。<br>
+                </p>
+                <strong>额外项目</strong>
+                <p>
+                  额外人员￥200/位<br>
+                  水上飞行￥2000<br>
+                  。。。<br>
+                </p>
+                <div class="row">
+                  <div class="col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10 col-sm-3 col-sm-offset-9 col-xs-5 col-xs-offset-7">
+                    <a href="/booking" class="btn btn-danger btn-block">{{ __('boat.detail.instant_book') }}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-info">
+            <div class="panel-heading" role="tab" id="package-heading-3">
+              <h4 class="panel-title">
+                <a class="btn-block" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-3" aria-expanded="false" aria-controls="package-collapse-3">
+                  周末及假日套餐 (￥16000)
+                </a>
+              </h4>
+            </div>
+            <div id="package-collapse-3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="package-heading-3">
+              <div class="panel-body">
+                <p>
+                  包含25人的午餐以及水上活动, 25人之后每位￥200<br><br>
+                  水上活动：滑水、香蕉船<br><br>
+                  午餐 － 25人基本，餐单如下：<br><br>
+                  水蟹粥<br>
+                  白灼虾<br>
+                  。。。<br>
+                </p>
+                <strong>额外项目</strong>
+                <p>
+                  额外人员￥200/位<br>
+                  水上飞行￥2000<br>
+                  。。。<br>
+                </p>
+                <div class="row">
+                  <div class="col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10 col-sm-3 col-sm-offset-9 col-xs-5 col-xs-offset-7">
+                    <a href="/booking" class="btn btn-danger btn-block">{{ __('boat.detail.instant_book') }}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h4>{{ __('boat.detail.desc') }}</h4>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203049417.jpg">
+        <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203049417.jpg">
+        <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203049417.jpg">
+        <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="product2">
+        <div class="navbar-fixed-bottom fix-container">
+          <div class="container">
             <div class="row">
-              <div class="col-md-4 col-sm-4 col-xs-12">
-                <div class="package">
-                  <strong>套餐A (￥8000)</strong>
-                  <p>
-                    包含25人的午餐以及水上活动, 25人之后每位￥200<br><br>
-                    水上活动：滑水、香蕉船<br><br>
-                    午餐 － 25人基本，餐单如下：<br><br>
-                    水蟹粥<br>
-                    白灼虾<br>
-                    。。。<br>
-                  </p>
-                  <strong>额外项目</strong>
-                  <p>
-                    额外人员￥200/位<br>
-                    水上飞行￥2000<br>
-                    。。。<br>
-                  </p>
-                  <div class="row">
-                    <div class="col-lg-10 col-lg-offset－1 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-6 col-xs-offset-3">
-                      <a href="/booking" class="btn btn-danger btn-block">{{ __('boat.detail.instant_book') }}</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 col-sm-4 col-xs-12">
-                <div class="package">
-                  <strong>套餐B (￥12000)</strong>
-                  <p>
-                    包含25人的午餐以及水上活动, 25人之后每位￥200<br><br>
-                    水上活动：滑水、香蕉船<br><br>
-                    午餐 － 25人基本，餐单如下：<br><br>
-                    水蟹粥<br>
-                    白灼虾<br>
-                    。。。<br>
-                  </p>
-                  <strong>额外项目</strong>
-                  <p>
-                    额外人员￥200/位<br>
-                  </p>
-                  <div class="row">
-                    <div class="col-lg-10 col-lg-offset－1 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-6 col-xs-offset-3">
-                      <a href="/booking" class="btn btn-danger btn-block">{{ __('boat.detail.instant_book') }}</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 col-sm-4 col-xs-12">
-                <div class="package">
-                  <strong>套餐A (￥16000)</strong>
-                  <p>
-                    包含25人的午餐以及水上活动, 25人之后每位￥200<br><br>
-                    水上活动：滑水、香蕉船<br><br>
-                    午餐 － 25人基本，餐单如下：<br><br>
-                    水蟹粥<br>
-                    白灼虾<br>
-                    。。。<br>
-                  </p>
-                  <strong>额外项目</strong>
-                  <p>
-                    额外人员￥200/位<br>
-                    水上飞行￥2000<br>
-                    。。。<br>
-                    额外人员￥200/位<br>
-                    水上飞行￥2000<br>
-                    。。。<br>
-                  </p>
-                  <div class="row">
-                    <div class="col-lg-10 col-lg-offset－1 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-6 col-xs-offset-3">
-                      <a href="/booking" class="btn btn-danger btn-block">{{ __('boat.detail.instant_book') }}</a>
-                    </div>
-                  </div>
-                </div>
+              <div class="col-lg-2 col-lg-offset-8 col-md-2 col-md-offset-8 col-sm-4 col-sm-offset-4 col-xs-6 col-xs-offset-3">
+                <a href="/booking" class="btn btn-danger btn-block">{{ __('boat.detail.instant_book') }}</a>
               </div>
             </div>
-            <h4>{{ __('boat.detail.desc') }}</h4>
-            <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203049417.jpg">
-            <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
-            <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203049417.jpg">
-            <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
-            <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203049417.jpg">
-            <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
-          </div>
-          <div role="tabpanel" class="tab-pane" id="product2">
-            <div class="navbar-fixed-bottom fix-container">
-              <div class="container">
-                <div class="row">
-                  <div class="col-lg-2 col-lg-offset-8 col-md-2 col-md-offset-8 col-sm-4 col-sm-offset-4 col-xs-6 col-xs-offset-3">
-                    <a href="/booking" class="btn btn-danger btn-block">{{ __('boat.detail.instant_book') }}</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <h4>{{ __('boat.detail.info') }}</h4>
-            <dl class="dl-horizontal">
-              <dt><span class="glyphicon glyphicon-time"></span> 游玩时间</dt>
-              <dd>4 小时</dd>
-              <dt><span class="glyphicon glyphicon-dashboard"></span> 可选时间段</dt>
-              <dd>19:00 - 23:00</dd>
-            </dl>
-            <h4>{{ __('boat.detail.desc') }}</h4>
-            <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203058297.jpg">
-            <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
-            <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203058297.jpg">
-            <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
-            <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203058297.jpg">
-            <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
-            <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203058297.jpg">
-            <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
-          </div>
-          <div role="tabpanel" class="tab-pane" id="product3">
-            <div class="navbar-fixed-bottom fix-container">
-              <div class="container">
-                <div class="row">
-                  <div class="col-lg-2 col-lg-offset-8 col-md-2 col-md-offset-8 col-sm-4 col-sm-offset-4 col-xs-6 col-xs-offset-3">
-                    <a href="/booking" class="btn btn-danger btn-block">{{ __('boat.detail.instant_book') }}</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <h4>{{ __('boat.detail.info') }}</h4>
-            <dl class="dl-horizontal">
-              <dt><span class="glyphicon glyphicon-time"></span> 游玩时间</dt>
-              <dd>3 小时</dd>
-              <dt><span class="glyphicon glyphicon-dashboard"></span> 可选时间段</dt>
-              <dd>17:00 - 23:00</dd>
-            </dl>
-            <h4>{{ __('boat.detail.desc') }}</h4>
-            <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203136942.jpg">
-            <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
-            <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203136942.jpg">
-            <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
           </div>
         </div>
+        <h4>{{ __('boat.detail.info') }}</h4>
+        <dl class="dl-horizontal">
+          <dt><span class="glyphicon glyphicon-time"></span> 游玩时间</dt>
+          <dd>4 小时</dd>
+          <dt><span class="glyphicon glyphicon-dashboard"></span> 可选时间段</dt>
+          <dd>19:00 - 23:00</dd>
+        </dl>
+        <h4>{{ __('boat.detail.desc') }}</h4>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203058297.jpg">
+        <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203058297.jpg">
+        <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203058297.jpg">
+        <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203058297.jpg">
+        <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="product3">
+        <div class="navbar-fixed-bottom fix-container">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-2 col-lg-offset-8 col-md-2 col-md-offset-8 col-sm-4 col-sm-offset-4 col-xs-6 col-xs-offset-3">
+                <a href="/booking" class="btn btn-danger btn-block">{{ __('boat.detail.instant_book') }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h4>{{ __('boat.detail.info') }}</h4>
+        <dl class="dl-horizontal">
+          <dt><span class="glyphicon glyphicon-time"></span> 游玩时间</dt>
+          <dd>3 小时</dd>
+          <dt><span class="glyphicon glyphicon-dashboard"></span> 可选时间段</dt>
+          <dd>17:00 - 23:00</dd>
+        </dl>
+        <h4>{{ __('boat.detail.desc') }}</h4>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203136942.jpg">
+        <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523203136942.jpg">
+        <p>蓝天白云、水清沙幼…这样的景色不只在马尔代夫找到，香港也有这样的一个美景—浪茄湾。由于这儿海浪侵蚀力量较弱，细小的沙粒便沉积于此；加上这儿位处偏僻，一直并未受人类污染，所以这里真是可以媲美菲济群岛！西贡浪茄沙滩沙幼水清，四周风光如画，是都市人抛开一切烦忧，洗涤心灵的好地方。海风轻吹，令人心旷神怡。浪茄湾获由香港郊野公园之友会、国际狮子总会港澳三0三区及渔农自然护理署举办，“香港十大胜景选举”第五名。</p>
       </div>
     </div>
   </div>
 </div>
 
 {% include './footer.html' %}
-
-{% endblock %}
-
-{% block foot %}
-
-<script>
-  (function($, w) {
-    $.fn.hadScrollToEl = function () {
-      var win = $(w);
-      var viewport = {
-        top: win.scrollTop(),
-      };
-      viewport.bottom = viewport.top + win.height();
-
-      var bounds = this.offset();
-      bounds.bottom = bounds.top + this.outerHeight();
-
-      return !(viewport.bottom < bounds.top);
-    };
-
-//    $(w).scroll(function () {
-//      if ($('.tab-content').hadScrollToEl()) {
-//        $('.fix-container').show();
-//      } else {
-//        $('.fix-container').hide();
-//      }
-//    });
-  })(jQuery, window);
-
-</script>
 
 {% endblock %}

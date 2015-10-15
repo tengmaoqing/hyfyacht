@@ -50,6 +50,13 @@
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
           <div id="calendar"></div>
+          <div class="calendar-controller text-right">
+            <button id="calendar-month" type="button" class="btn btn-default invisible">选择日期</button>
+            <div class="btn-group">
+              <button id="calendar-prev" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button>
+              <button id="calendar-next" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button>
+            </div>
+          </div>
           <ul class="list-group">
             <li class="list-group-item">
               <label>开始时间</label>
@@ -116,7 +123,7 @@
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
               <div class="row">
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>套餐A ￥8000</strong></div>
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>x1</strong></div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>1</strong></div>
               </div>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
@@ -137,7 +144,7 @@
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
               <div class="row">
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>额外人员 ￥200</strong></div>
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>x10</strong></div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>10</strong></div>
               </div>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
@@ -158,7 +165,7 @@
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
               <div class="row">
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>水上飞行 ￥2000</strong></div>
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>x1</strong></div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>1</strong></div>
               </div>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
@@ -230,7 +237,73 @@
   </div>
   <div class="row">
     <div class="col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10 col-sm-4 col-sm-offset-8 col-xs-6 col-xs-offset-6">
-      <a href="#" class="btn btn-danger btn-block">{{ __('booking.submit') }}</a>
+      <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#booking-confirm-modal">{{ __('booking.submit') }}</button>
+    </div>
+  </div>
+</div>
+<div id="booking-confirm-modal" class="modal fade">
+  <div class="modal-table">
+    <div class="modal-table-cell">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">确认定单</h4>
+          </div>
+          <div class="modal-body">
+            <dl class="dl-horizontal">
+              <dt>预定船只</dt>
+              <dd>rainbow</dd>
+              <dt>船东</dt>
+              <dd>Mr.Shek</dd>
+              <dt>地点</dt>
+              <dd>香港 西贡码头</dd>
+              <dt>预定产品</dt>
+              <dd>日间船河</dd>
+              <dt>开始时间</dt>
+              <dd>2015年10月17日 上午 10:00</dd>
+              <dt>结束时间</dt>
+              <dd>2015年10月17日 下午 5:00</dd>
+              <dt>人数</dt>
+              <dd>35</dd>
+              <dt>套餐</dt>
+              <dd>套餐A (￥8000)</dd>
+              <dt>联系人</dt>
+              <dd>吴雪方</dd>
+              <dt>手机号码</dt>
+              <dd>13500000000</dd>
+              <dt>电子邮箱</dt>
+              <dd>wxf@hgboating.com</dd>
+            </dl>
+            <table class="table table-summary">
+              <caption>价格清单</caption>
+              <tr><th>项目</th><th>数量</th><th>价格</th></tr>
+              <tr><td>套餐A ￥8000</td><td>1</td><td>￥8000.00</td></tr>
+              <tr><td>额外人员 ￥200</td><td>10</td><td>￥2000.00</td></tr>
+              <tr><td>水上飞行 ￥2000</td><td>1</td><td>￥2000.00</td></tr>
+            </table>
+            <div class="text-right">
+              <h4>合计：￥14000.00</h4>
+            </div>
+            <div class="alert alert-warning text-right">
+              <!--<span class="glyphicon glyphicon-info-sign"></span>-->
+              <!--<label>-->
+                <!--提交定单即表示同意<a href="#">《海龟租船租赁协议》</a>-->
+              <!--</label>-->
+              <label><input name="payway" type="checkbox" autocomplete="off"> 我已阅读并同意</label><a href="#" target="_blank">《海龟租船租赁协议》</a>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <div class="col-xs-4 col-xs-offset-4">
+                <button type="button" class="btn btn-primary btn-block" data-dismiss="modal">{{ __('common.cancel') }}</button>
+              </div>
+              <div class="col-xs-4">
+                <a href="/booking/result" class="btn btn-danger btn-block">{{ __('common.submit') }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -262,13 +335,16 @@
     lang: "zh-CN",
     header: {
       left: "title",
-      right: "today,month,prev,next"
+      right: "today"
     },
     eventLimit: 3,
     eventLimitClick: "agendaDay",
+    allDayText: "节日",
     minTime: "09:00:00",
     maxTime: "18:00:00",
     slotDuration: "01:00:00",
+    slotLabelFormat: "HH:00",
+//    hiddenDays: [0,6],
     selectable: true,
     selectOverlap: false,
     unselectAuto: false,
@@ -278,21 +354,30 @@
       $(".fc-prev-button").html('<span class="glyphicon glyphicon-menu-left"></span>');
       $(".fc-next-button").html('<span class="glyphicon glyphicon-menu-right"></span>');
     },
+    dayRender: function(date, cell){
+      if(date < moment()){
+        $(cell).addClass("fc-day-disable");
+      }
+    },
     dayClick: function(date, jsEvent, view){
-      if(view.name == "agendaDay"){
-        return;
+      if(date < moment().hour(0).minute(0).second(0)){
+        return false;
       }
 
       $("#calendar").fullCalendar("gotoDate", date);
       $("#calendar").fullCalendar("changeView", "agendaDay");
+
+      $("#calendar-month").removeClass("invisible");
     },
     eventClick: function(calEvent, jsEvent, view){
-      if(view.name == "agendaDay"){
+      if(view.name == "agendaDay" || calEvent.start < moment()){
         return;
       }
 
       $("#calendar").fullCalendar("gotoDate", calEvent.start);
       $("#calendar").fullCalendar("changeView", "agendaDay");
+
+      $("#calendar-month").removeClass("invisible");
     },
     select: function(start, end, jsEvent, view){
       if(view.name == "month"){
@@ -300,7 +385,7 @@
       }
 
       if(start < moment()){
-        alert("此时间已不可预定。");
+        $("#hyf-modal-alert").CustomAlert("此时间不可预定。");
         return false;
       }
 
@@ -336,26 +421,26 @@
     events:[
       {
         title: "已预定",
-        start: "2015-10-14T13:00",
-        end: "2015-10-14T14:00",
+        start: "2015-10-16T13:00",
+        end: "2015-10-16T14:00",
         allDay: false
       },
       {
         title: "已预定",
-        start: "2015-10-14T15:00",
-        end: "2015-10-14T16:00",
+        start: "2015-10-16T15:00",
+        end: "2015-10-16T16:00",
         allDay: false
       },
       {
         title: "已预定",
-        start: "2015-10-14T16:00",
-        end: "2015-10-14T17:00",
+        start: "2015-10-16T16:00",
+        end: "2015-10-16T17:00",
         allDay: false
       },
       {
         title: "已预定",
-        start: "2015-10-14T10:00",
-        end: "2015-10-14T11:00",
+        start: "2015-10-16T10:00",
+        end: "2015-10-16T11:00",
         allDay: false
       },
       {
@@ -368,12 +453,21 @@
     ]
   });
 
-  $('.checkboxs .btn').click(function(){
-    if($(this).hasClass('active')){
-      $(this).find('.glyphicon').removeClass('glyphicon-ok').addClass('glyphicon-unchecked');
-    }else {
-      $(this).find('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-ok');
-    }
+  $("#calendar-month").click(function(){
+    selectedStart = false;
+    $("#calendar").fullCalendar("changeView", "month");
+    $(this).addClass("invisible");
   });
+
+  $("#calendar-prev").click(function(){
+    selectedStart = false;
+    $("#calendar").fullCalendar("prev");
+  });
+
+  $("#calendar-next").click(function(){
+    selectedStart = false;
+    $("#calendar").fullCalendar("next");
+  });
+
 </script>
 {% endblock %}

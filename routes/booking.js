@@ -8,4 +8,8 @@ router.get('/', function(req, res, next){
   res.render('booking-info');
 });
 
+router.get('/result', function(req, res, next){
+  res.render('booking-result');
+});
+
 module.exports = router;

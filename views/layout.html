@@ -23,15 +23,53 @@
   </head>
   <body>
     {% block content %}{% endblock %}
+    <div id="hyf-modal-alert" class="modal fade">
+      <div class="modal-table">
+        <div class="modal-table-cell">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">{{ __('site.title') }}</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <div class="row">
+              <div class="col-xs-6 col-xs-offset-6">
+                <button type="button" class="btn btn-primary btn-block" data-dismiss="modal">{{ __('common.close') }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script>
+      $.fn.CustomAlert = function(msg){
+        if(!msg || !$(this).hasClass("modal")){
+          return;
+        }
+
+        $(this).find(".modal-body").text(msg);
+        $(this).modal();
+      };
+
       $(".dropdown-menu").dropdown();
 
       $(".dropdown-menu li a").click(function(){
         $(this).parent().parent().parent().find('.dropdown-toggle').html($(this).html() + ' <span class="caret"></span>');
+      });
+
+      $('.checkboxs .btn').click(function(){
+        if($(this).hasClass('active')){
+          $(this).find('.glyphicon').removeClass('glyphicon-ok').addClass('glyphicon-unchecked');
+        }else {
+          $(this).find('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-ok');
+        }
       });
     </script>
     {% block foot %}{% endblock %}
