@@ -67,5 +67,12 @@
   },
   "booking": {
     "submit": "確認提交"
+  },
+  "owner": {
+    "nav": {
+      "home": "首頁",
+      "booking": "定單管理",
+      "boat": "船隻管理"
+    }
   }
 }

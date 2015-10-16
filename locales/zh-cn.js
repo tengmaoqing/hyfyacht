@@ -36,7 +36,7 @@
   },
   "user": {
     "bookings": "我的预定",
-    "settings": "账户设置"
+    "settings": "个人设置"
   },
   "index": {
     "search": {
@@ -67,5 +67,12 @@
   },
   "booking": {
     "submit": "提交预定"
+  },
+  "owner": {
+    "nav": {
+      "home": "首页",
+      "booking": "定单管理",
+      "boat": "船只管理"
+    }
   }
 }

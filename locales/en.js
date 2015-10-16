@@ -67,5 +67,12 @@
   },
   "booking": {
     "submit": "Submit"
+  },
+  "owner": {
+    "nav": {
+      "home": "Home",
+      "booking": "Booking",
+      "boat": "Boats"
+    }
   }
 }
