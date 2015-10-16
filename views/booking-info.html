@@ -285,10 +285,6 @@
               <h4>合计：￥14000.00</h4>
             </div>
             <div class="alert alert-warning text-right">
-              <!--<span class="glyphicon glyphicon-info-sign"></span>-->
-              <!--<label>-->
-                <!--提交定单即表示同意<a href="#">《海龟租船租赁协议》</a>-->
-              <!--</label>-->
               <label><input name="payway" type="checkbox" autocomplete="off"> 我已阅读并同意</label><a href="#" target="_blank">《海龟租船租赁协议》</a>
             </div>
           </div>
@@ -346,9 +342,15 @@
     slotLabelFormat: "HH:00",
 //    hiddenDays: [0,6],
     selectable: true,
-    selectOverlap: false,
+//    selectOverlap: false,
     unselectAuto: false,
     viewRender: function(view, element){
+      if(view.name == "month"){
+        $("#calendar-month").addClass("invisible");
+      }else{
+        $("#calendar-month").removeClass("invisible");
+      }
+
       $(".fc-toolbar .fc-button").addClass("btn btn-default btn-lg").removeClass("fc-state-default");
       $(".fc-toolbar .fc-button-group").addClass("btn-group");
       $(".fc-prev-button").html('<span class="glyphicon glyphicon-menu-left"></span>');
@@ -366,8 +368,6 @@
 
       $("#calendar").fullCalendar("gotoDate", date);
       $("#calendar").fullCalendar("changeView", "agendaDay");
-
-      $("#calendar-month").removeClass("invisible");
     },
     eventClick: function(calEvent, jsEvent, view){
       if(view.name == "agendaDay" || calEvent.start < moment()){
@@ -376,8 +376,6 @@
 
       $("#calendar").fullCalendar("gotoDate", calEvent.start);
       $("#calendar").fullCalendar("changeView", "agendaDay");
-
-      $("#calendar-month").removeClass("invisible");
     },
     select: function(start, end, jsEvent, view){
       if(view.name == "month"){
@@ -421,31 +419,38 @@
     events:[
       {
         title: "已预定",
-        start: "2015-10-16T13:00",
-        end: "2015-10-16T14:00",
+        start: "2015-10-18T13:00",
+        end: "2015-10-18T14:00",
         allDay: false
       },
       {
         title: "已预定",
-        start: "2015-10-16T15:00",
-        end: "2015-10-16T16:00",
+        start: "2015-10-18T15:00",
+        end: "2015-10-18T16:00",
         allDay: false
       },
       {
         title: "已预定",
-        start: "2015-10-16T16:00",
-        end: "2015-10-16T17:00",
+        start: "2015-10-18T16:00",
+        end: "2015-10-18T17:00",
         allDay: false
       },
       {
         title: "已预定",
-        start: "2015-10-16T10:00",
-        end: "2015-10-16T11:00",
+        start: "2015-10-18T10:00",
+        end: "2015-10-18T11:00",
         allDay: false
       },
       {
         title: "国庆",
         start: new Date(2015, 9, 1),
+        allDay: true,
+        backgroundColor: "#d43f3a",
+        borderColor: "#d43f3a"
+      },
+      {
+        title: "国庆",
+        start: new Date(2015, 10, 1),
         allDay: true,
         backgroundColor: "#d43f3a",
         borderColor: "#d43f3a"
@@ -456,7 +461,6 @@
   $("#calendar-month").click(function(){
     selectedStart = false;
     $("#calendar").fullCalendar("changeView", "month");
-    $(this).addClass("invisible");
   });
 
   $("#calendar-prev").click(function(){

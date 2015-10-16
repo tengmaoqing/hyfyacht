@@ -1,3 +1,19 @@
-<h1>{{ message }}</h1>
-<h2>{{ error.status }}</h2>
-<pre>{{ error.stack }}</pre>
+{% extends './layout.html' %}
+
+{% block content %}
+
+<div class="container">
+  <div class="page-header text-center text-danger">
+    <h2><span class="glyphicon glyphicon-exclamation-sign"></span> {{ error.status }}</h2>
+  </div>
+  <div class="alert alert-danger">
+    <p>{{ message }}</p>
+  </div>
+  {% if error.stack %}
+  <pre class="alert alert-warning">
+    {{ error.stack }}
+  </pre>
+  {% endif %}
+</div>
+
+{% endblock %}
