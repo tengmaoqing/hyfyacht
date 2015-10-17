@@ -14,8 +14,15 @@
     "login": "登入",
     "logout": "登出",
     "signup": "註冊",
+    "forgotpass": "忘記密碼",
+    "mobile": "手提电话",
     "username": "用戶名",
     "password": "密碼",
+    "confirmPassword": "確認密碼",
+    "smscode": "SMS 驗證碼",
+    "getsmscode": "獲取 SMS 驗證碼",
+    "readandagree": "我已閱讀並同意",
+    "termsandprivacy": "服務條款與隱私政策",
     "email": "E-mail",
     "close": "關閉",
     "submit": "提交",
@@ -31,6 +38,15 @@
     "extra": "其他",
     "capacity": "載客人數",
     "packages": "套餐"
+  },
+  "error": {
+    "login": {
+      "donotmatch": "無此用戶或者密碼錯誤。"
+    },
+    "signup": {
+      "sms": "SMS 驗證碼錯誤。",
+      "registered": "此手提電話已經註冊。"
+    }
   },
   "nav": {
     "home": "首頁",
@@ -76,6 +92,19 @@
       "home": "首頁",
       "booking": "定單管理",
       "boat": "船隻管理"
+    }
+  },
+  "db": {
+    "location": {
+      "city": {
+        "sz": "深圳",
+        "hk": "香港"
+      }
+    },
+    "boat": {
+      "type": {
+        "yacht": "遊艇"
+      }
     }
   }
 }

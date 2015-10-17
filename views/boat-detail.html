@@ -5,34 +5,34 @@
 {% include './nav.html' %}
 
 <div class="embed-responsive embed-responsive-8by3">
-  <img class="embed-responsive-item" src="/img/bg_yacht2.jpg">
+  <img class="embed-responsive-item" src="{{ boat.photos[0] }}">
 </div>
 <div class="container">
-  <h2>{{ id }}</h2>
+  <h2>{{ boat.name }}</h2>
   <div class="row">
     <div class="col-md-4 col-sm-6 col-xs-12">
-      <p><span class="glyphicon glyphicon-map-marker"></span> 香港 西贡码头</p>
+      <p><span class="glyphicon glyphicon-map-marker"></span> {{ __(boat.location.city) }}</p>
       <div class="row">
         <div class="col-md-6 col-sm-6 col-xs-6">
-          <p><span class="glyphicon glyphicon-tag"></span> 西式游艇
+          <p><span class="glyphicon glyphicon-tag"></span> {{ __(boat.type) }}
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6">
-          <span class="glyphicon glyphicon-asterisk"></span> 载客人数：50</p>
+          <span class="glyphicon glyphicon-asterisk"></span> {{ __('common.capacity') }}：{{ boat.capacity }}</p>
         </div>
       </div>
     </div>
     <div class="col-md-4 col-sm-6 col-xs-12">
-      <p><span class="glyphicon glyphicon-user"></span> Mr.Shek</p>
+      <p><span class="glyphicon glyphicon-user"></span> {{ boat.owner.nickname }}</p>
     </div>
     <div class="col-md-4 col-sm-12 col-xs-12">
-      <a href="#products" class="btn btn-danger">{{ __('boat.detail.instant_book') }}({{ __('boat.detail.from %s', '￥8000') }})</a>
+      <a href="#products" class="btn btn-danger">{{ __('boat.detail.instant_book') }}({{ __('boat.detail.from %s', '$' + boat.baseCharge) }})</a>
     </div>
   </div>
   <hr class="hr-divider">
 </div>
 <div class="container">
   <h3>{{ __('boat.detail.about') }}</h3>
-  <p>在西貢十分搶眼的西式遊艇，提供一流的服務。</p>
+  <p>{{ boat.description }}</p>
   <h3>{{ __('boat.detail.facilities') }}</h3>
   <div class="row">
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">

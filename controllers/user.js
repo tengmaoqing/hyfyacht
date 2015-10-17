@@ -13,10 +13,9 @@ function hashPassword(password){
 
 exports.signup = function(req, res, next){
   req.checkBody({
-    'email': {
+    'mobile': {
       notEmpty: true,
-      isEmail: true,
-      errorMessage: 'Invalid Email'
+      errorMessage: 'Invalid Mobile Number'
     },
     'password': {
       notEmpty: true,
@@ -25,12 +24,9 @@ exports.signup = function(req, res, next){
       },
       errorMessage: 'Invalid Password'
     },
-    'username': {
+    'code': {
       notEmpty: true,
-      isLength: {
-        options: [1, 30]
-      },
-      errorMessage: 'Invalid Username'
+      errorMessage: 'Invalid SMS Code'
     }
   });
 
@@ -41,32 +37,51 @@ exports.signup = function(req, res, next){
     return next(err);
   }
 
-  var user = new User({
-    username: req.body.username,
-    email: req.body.email,
-    hashedPassword: hashPassword(req.body.password)
-  });
+  //request sms code api
+  if(false){
+    res.render('signup', { error: 'error.signup.sms' });
+    return;
+  }
 
-  user.save(function (err) {
-    if (err) {
+  User.findOne({
+    mobile: req.body.mobile
+  }, 'mobile', function(err, user){
+    if(err){
       err.status = 400;
       return next(err);
-    } else {
-      req.session.username = user.username;
-      res.cookie('client_attributes', user.id, config.cookieOption);
-      res.cookie('client_uid', randomString({length: 6}), config.cookieOption);
+    }else{
+      if(user){
+        res.render('signup', { error: 'error.signup.registered' });
+        return;
+      }
 
-      res.redirect('/');
+      var newUser = new User({
+        mobile: req.body.mobile,
+        hashedPassword: hashPassword(req.body.password),
+        role: "client"
+      });
+
+      newUser.save(function (err) {
+        if (err) {
+          err.status = 400;
+          return next(err);
+        } else {
+          req.session.username = newUser.mobile;
+          res.cookie('client_attributes', newUser.id, config.cookieOption);
+          res.cookie('client_uid', randomString({length: 6}), config.cookieOption);
+
+          res.redirect('/');
+        }
+      });
     }
   });
 };
 
 exports.login = function(req, res, next){
   req.checkBody({
-    'email': {
+    'mobile': {
       notEmpty: true,
-      isEmail: true,
-      errorMessage: 'Invalid Email'
+      errorMessage: 'Invalid Mobile'
     },
     'password': {
       notEmpty: true,
@@ -85,16 +100,16 @@ exports.login = function(req, res, next){
   }
 
   User.findOne({
-    email: req.body.email
-  }, 'username hashedPassword', function(err, user){
+    mobile: req.body.mobile
+  }, 'mobile hashedPassword', function(err, user){
     if(err){
       err.status = 400;
       return next(err);
     }else{
       if (!user || hashPassword(req.body.password) != user.hashedPassword) {
-        res.render('login', { title: 'Login', error: 'Invalid Email or Password.' });
+        res.render('login', { error: 'error.login.donotmatch' });
       } else {
-        req.session.username = user.username;
+        req.session.username = user.mobile;
         res.cookie('client_attributes', user.id, config.cookieOption);
         res.cookie('client_uid', randomString({length: 6}), config.cookieOption);
 

@@ -4,12 +4,12 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', function(req, res, next){
-  res.render('boat-list');
-});
+var boat = require('../controllers/boat');
 
-router.get('/:id', function(req, res, next){
-  res.render('boat-detail', {id: req.params.id});
-});
+router.get('/', boat.getBoats);
+
+router.get('/:id', boat.getBoat);
+
+router.get('/m/add', boat.insert);
 
 module.exports = router;

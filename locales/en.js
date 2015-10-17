@@ -14,8 +14,15 @@
     "login": "Log In",
     "logout": "Log Out",
     "signup": "Sign Up",
+    "forgotpass": "Forgot password",
+    "mobile": "Mobile",
     "username": "Username",
     "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "smscode": "SMS Code",
+    "getsmscode": "Get SMS Code",
+    "readandagree": "I have read and agree",
+    "termsandprivacy": "Service terms & Privacy policy",
     "email": "E-mail",
     "close": "Close",
     "submit": "Submit",
@@ -31,6 +38,15 @@
     "extra": "Extra",
     "capacity": "Capacity",
     "packages": "Packages"
+  },
+  "error": {
+    "login": {
+      "donotmatch": "Invalid mobile no. or password."
+    },
+    "signup": {
+      "sms": "Invalid SMS Code.",
+      "registered": "This mobile no. has been registered."
+    }
   },
   "nav": {
     "home": "Home",
@@ -76,6 +92,19 @@
       "home": "Home",
       "booking": "Booking",
       "boat": "Boats"
+    }
+  },
+  "db": {
+    "location": {
+      "city": {
+        "sz": "Shenzhen",
+        "hk": "Hong Kong"
+      }
+    },
+    "boat": {
+      "type": {
+        "yacht": "Yacht"
+      }
     }
   }
 }

@@ -14,8 +14,15 @@
     "login": "登录",
     "logout": "注销",
     "signup": "注册",
+    "forgotpass": "忘记密码",
+    "mobile": "手机号码",
     "username": "用户名",
     "password": "密码",
+    "confirmPassword": "确认密码",
+    "smscode": "短信验证码",
+    "getsmscode": "获取短信验证码",
+    "readandagree": "我已阅读并同意",
+    "termsandprivacy": "服务条款与隐私政策",
     "email": "电子邮箱",
     "close": "关闭",
     "submit": "提交",
@@ -31,6 +38,15 @@
     "extra": "其他",
     "capacity": "载客人数",
     "packages": "套餐"
+  },
+  "error": {
+    "login": {
+      "donotmatch": "无此用户或者密码错误。"
+    },
+    "signup": {
+      "sms": "短信验证码错误。",
+      "registered": "此手机号码已经注册。"
+    }
   },
   "nav": {
     "home": "首页",
@@ -76,6 +92,19 @@
       "home": "首页",
       "booking": "定单管理",
       "boat": "船只管理"
+    }
+  },
+  "db": {
+    "location": {
+      "city": {
+        "sz": "深圳",
+        "hk": "香港"
+      }
+    },
+    "boat": {
+      "type": {
+        "yacht": "游艇"
+      }
     }
   }
 }

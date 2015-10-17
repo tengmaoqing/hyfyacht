@@ -130,98 +130,21 @@
 </div>
 <div class="jumbotron columns">
   <div class="container">
-    <h3>{{ __n('boat.list.find %d boat', 'boat.list.find %d boat', 2) }}</h3>
+    <h3>{{ __n('boat.list.find %d boat', 'boat.list.find %d boat', boats.length) }}</h3>
     <div class="row">
+      {% for boat in boats %}
       <div class="col-md-4 col-sm-6 cell">
         <div class="thumbnail">
-          <a href="#">
-            <img src="/img/yacht01.jpg" alt="yacht01">
+          <a href="/boat/{{ boat.serialNumber }}">
+            <img src="{{ boat.photos[0] }}" alt="yacht01">
             <div class="caption">
-              <h4>Rainbow</h4>
+              <h4>{{ boat.name }}</h4>
+              <p>{{ __(boat.location.city) }}</p>
             </div>
           </a>
         </div>
       </div>
-      <div class="col-md-4 col-sm-6 cell">
-        <div class="thumbnail">
-          <a href="#">
-            <img src="/img/yacht02.jpg" alt="yacht02">
-            <div class="caption">
-              <h4>Hoifai</h4>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 cell">
-        <div class="thumbnail">
-          <a href="#">
-            <img src="/img/yacht03.jpg" alt="yacht03">
-            <div class="caption">
-              <h4>Yacht</h4>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 cell">
-        <div class="thumbnail">
-          <a href="#">
-            <img src="/img/yacht02.jpg" alt="yacht01">
-            <div class="caption">
-              <h4>Rainbow</h4>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 cell">
-        <div class="thumbnail">
-          <a href="#">
-            <img src="/img/yacht03.jpg" alt="yacht02">
-            <div class="caption">
-              <h4>Hoifai</h4>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 cell">
-        <div class="thumbnail">
-          <a href="#">
-            <img src="/img/yacht01.jpg" alt="yacht03">
-            <div class="caption">
-              <h4>Yacht</h4>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 cell">
-        <div class="thumbnail">
-          <a href="#">
-            <img src="/img/yacht03.jpg" alt="yacht03">
-            <div class="caption">
-              <h4>海钓</h4>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 cell">
-        <div class="thumbnail">
-          <a href="#">
-            <img src="/img/yacht01.jpg" alt="yacht03">
-            <div class="caption">
-              <h4>滑水</h4>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 cell">
-        <div class="thumbnail">
-          <a href="#">
-            <img src="/img/yacht02.jpg" alt="yacht03">
-            <div class="caption">
-              <h4>浮潜</h4>
-            </div>
-          </a>
-        </div>
-      </div>
+      {% endfor %}
     </div>
   </div>
   <nav class="container">
