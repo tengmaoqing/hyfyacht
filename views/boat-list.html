@@ -1,3 +1,5 @@
+{% import './macros/boat.html' as boat %}
+
 {% extends './layout.html' %}
 
 {% block content %}
@@ -11,16 +13,10 @@
       <label>{{ __('common.location') }}</label>
     </div>
     <div class="col-md-6">
-      <div class="btn-group btn-group-justified radios" data-toggle="buttons">
-        <label class="btn btn-default active">
-          <input type="radio" autocomplete="off">{{ __('common.all') }}
-        </label>
-        <label class="btn btn-default">
-          <input type="radio" autocomplete="off">深圳
-        </label>
-        <label class="btn btn-default">
-          <input type="radio" autocomplete="off">香港
-        </label>
+      <div class="btn-group btn-group-justified">
+        <a href="/boat/all/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.location == 'all' %}btn-primary{% else %}btn-default{% endif %}">{{ __('common.all') }}</a>
+        <a href="/boat/sz/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.location == 'sz' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.city.sz') }}</a>
+        <a href="/boat/hk/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.location == 'hk' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.city.hk') }}</a>
       </div>
     </div>
   </div>
@@ -31,12 +27,12 @@
     <div class="col-md-3">
       <div class="btn-group btn-group-justified">
         <div class="btn-group">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('common.unlimited') }} <span class="caret"></span></button>
-          <ul class="dropdown-menu dropdown-menu-justified">
-            <li><a href="#">{{ __('common.unlimited') }}</a></li>
-            <li><a href="#">￥5000 - 10000</a></li>
-            <li><a href="#">￥10000 － 15000</a></li>
-            <li><a href="#">￥15000 － 20000</a></li>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if params.price == 'all' %}{{ __('common.unlimited') }}{% else %}￥{{ params.price }}{% endif %} <span class="caret"></span></button>
+          <ul class="dropdown-menu dropdown-menu-justified disabled">
+            <li><a href="/boat/{{ params.location }}/all/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">{{ __('common.unlimited') }}</a></li>
+            <li><a href="/boat/{{ params.location }}/5000-10000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥5000-10000</a></li>
+            <li><a href="/boat/{{ params.location }}/10000-15000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥10000-15000</a></li>
+            <li><a href="/boat/{{ params.location }}/15000-20000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥15000-20000</a></li>
           </ul>
         </div>
       </div>
@@ -50,14 +46,14 @@
       <div class="btn-group btn-group-justified">
         <div class="btn-group">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            10 － 20 人 <span class="caret"></span>
+            {% if params.capacity == 'all' %}{{ __('common.unlimited') }}{% else %}{{ params.capacity }}{% endif %} <span class="caret"></span>
           </button>
-          <ul class="dropdown-menu dropdown-menu-justified">
-            <li><a href="#">{{ __('common.unlimited') }}</a></li>
-            <li><a href="#">10 人以下</a></li>
-            <li><a href="#">10 － 20 人</a></li>
-            <li><a href="#">20 － 30 人</a></li>
-            <li><a href="#">30 － 40 人</a></li>
+          <ul class="dropdown-menu dropdown-menu-justified disabled">
+            <li><a href="/boat/{{ params.location }}/{{ params.price }}/all/{{ params.entertainments }}/{{ params.extras }}">{{ __('common.unlimited') }}</a></li>
+            <li><a href="/boat/{{ params.location }}/{{ params.price }}/1-10/{{ params.entertainments }}/{{ params.extras }}">1-10</a></li>
+            <li><a href="/boat/{{ params.location }}/{{ params.price }}/10-20/{{ params.entertainments }}/{{ params.extras }}">10-20</a></li>
+            <li><a href="/boat/{{ params.location }}/{{ params.price }}/20-30/{{ params.entertainments }}/{{ params.extras }}">20-30</a></li>
+            <li><a href="/boat/{{ params.location }}/{{ params.price }}/30-40/{{ params.entertainments }}/{{ params.extras }}">30-40</a></li>
           </ul>
         </div>
       </div>
@@ -68,36 +64,16 @@
       <label>{{ __('common.entertainments') }}</label>
     </div>
     <div class="col-md-2 col-sm-3 col-xs-4">
-      <div class="btn-group checkboxs" data-toggle="buttons">
-        <label class="btn btn-default">
-          <span class="glyphicon glyphicon-unchecked"></span>
-          <input type="checkbox" autocomplete="off" value="option1"> 夜钓
-        </label>
-      </div>
+      {{ boat.etmItem(params, 'ktv', __('db.boat.etm.ktv')) }}
     </div>
     <div class="col-md-2 col-sm-3 col-xs-4">
-      <div class="btn-group checkboxs" data-toggle="buttons">
-        <label class="btn btn-default">
-          <span class="glyphicon glyphicon-unchecked"></span>
-          <input type="checkbox" autocomplete="off" value="option1"> 滑水
-        </label>
-      </div>
+      {{ boat.etmItem(params, 'wakeboard', __('db.boat.etm.wakeboard')) }}
     </div>
     <div class="col-md-2 col-sm-3 col-xs-4">
-      <div class="btn-group checkboxs" data-toggle="buttons">
-        <label class="btn btn-default">
-          <span class="glyphicon glyphicon-unchecked"></span>
-          <input type="checkbox" autocomplete="off" value="option1"> 香蕉船
-        </label>
-      </div>
+      {{ boat.etmItem(params, 'bananaboat', __('db.boat.etm.bananaboat')) }}
     </div>
     <div class="col-md-2 col-sm-3 col-xs-4">
-      <div class="btn-group checkboxs" data-toggle="buttons">
-        <label class="btn btn-default">
-          <span class="glyphicon glyphicon-unchecked"></span>
-          <input type="checkbox" autocomplete="off" value="option1"> 浮潜
-        </label>
-      </div>
+      {{ boat.etmItem(params, 'speedboat', __('db.boat.etm.speedboat')) }}
     </div>
   </div>
   <div class="row search-field">
@@ -105,37 +81,22 @@
       <label>{{ __('common.extra') }}</label>
     </div>
     <div class="col-md-2 col-sm-3 col-xs-4">
-      <div class="btn-group checkboxs" data-toggle="buttons">
-        <label class="btn btn-default">
-          <span class="glyphicon glyphicon-unchecked"></span>
-          <input type="checkbox" autocomplete="off" value="option1"> 午餐
-        </label>
-      </div>
+      {{ boat.extrasItem(params, 'launch', __('db.boat.extras.launch')) }}
     </div>
     <div class="col-md-2 col-sm-3 col-xs-4">
-      <div class="btn-group checkboxs" data-toggle="buttons">
-        <label class="btn btn-default">
-          <span class="glyphicon glyphicon-unchecked"></span>
-          <input type="checkbox" autocomplete="off" value="option1"> 饮料
-        </label>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-2 col-lg-offset-2 col-md-2 col-md-offset-2 col-sm-4 col-sm-offset-4 col-xs-6 col-xs-offset-3">
-      <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#booking-confirm-modal">{{ __('common.search') }}</button>
+      {{ boat.extrasItem(params, 'bbq', __('db.boat.extras.bbq')) }}
     </div>
   </div>
   <hr class="hr-divider">
 </div>
 <div class="jumbotron columns">
   <div class="container">
-    <h3>{{ __n('boat.list.find %d boat', 'boat.list.find %d boat', boats.length) }}</h3>
+    <h3>{{ __n('boat.list.find %d boat', 'boat.list.find %d boat', itemCount) }}</h3>
     <div class="row">
       {% for boat in boats %}
       <div class="col-md-4 col-sm-6 cell">
         <div class="thumbnail">
-          <a href="/boat/{{ boat.serialNumber }}">
+          <a href="/boat/{{ boat.bid }}">
             <img src="{{ boat.photos[0] }}" alt="yacht01">
             <div class="caption">
               <h4>{{ boat.name }}</h4>
@@ -154,11 +115,9 @@
           <span aria-hidden="true">&laquo;</span>
         </a>
       </li>
-      <li><a href="#">1</a></li>
-      <li><a href="#">2</a></li>
-      <li><a href="#">3</a></li>
-      <li><a href="#">4</a></li>
-      <li><a href="#">5</a></li>
+      {% for i in pager %}
+      <li><a href="{{ i.url }}">{{ i.page }}</a></li>
+      {% endfor %}
       <li>
         <a href="#" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>

@@ -1,0 +1,11 @@
+{% macro etmItem(params, code, label) %}
+<div class="btn-group">
+  <a href="/boat/{{ params.location }}/{{ params.price }}/{{ params.capacity }}/{{ params.getItemPath(code,'etmArray') }}/{{ params.extras }}" class="btn {% if params.itemActived(code,'etmArray') %}btn-primary{% else %}btn-default{% endif %}"><span class="glyphicon {% if params.itemActived(code,'etmArray') %}glyphicon-ok{% else %}glyphicon-unchecked{% endif %}"></span> {{ label }}</a>
+</div>
+{% endmacro %}
+
+{% macro extrasItem(params, code, label) %}
+<div class="btn-group">
+  <a href="/boat/{{ params.location }}/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.getItemPath(code,'extrasArray') }}" class="btn {% if params.itemActived(code,'extrasArray') %}btn-primary{% else %}btn-default{% endif %}"><span class="glyphicon {% if params.itemActived(code,'extrasArray') %}glyphicon-ok{% else %}glyphicon-unchecked{% endif %}"></span> {{ label }}</a>
+</div>
+{% endmacro %}

@@ -31,7 +31,7 @@
         </li>
         {% else %}
         <li><a href="/owner">{{ __('nav.become_a_host') }}</a></li>
-        <li><a href="/login">{{ __('common.login') }}</a></li>
+        <li><a href="/login?from={{ preset.originalUrl }}">{{ __('common.login') }}</a></li>
         <li><a href="/signup">{{ __('common.signup') }}</a></li>
         {% endif %}
       </ul>

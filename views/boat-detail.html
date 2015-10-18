@@ -11,7 +11,7 @@
   <h2>{{ boat.name }}</h2>
   <div class="row">
     <div class="col-md-4 col-sm-6 col-xs-12">
-      <p><span class="glyphicon glyphicon-map-marker"></span> {{ __(boat.location.city) }}</p>
+      <p><span class="glyphicon glyphicon-map-marker"></span> {{ __(boat.location.city) }} - {{ __(boat.location.pier) }}</p>
       <div class="row">
         <div class="col-md-6 col-sm-6 col-xs-6">
           <p><span class="glyphicon glyphicon-tag"></span> {{ __(boat.type) }}
@@ -33,38 +33,29 @@
 <div class="container">
   <h3>{{ __('boat.detail.about') }}</h3>
   <p>{{ boat.description }}</p>
-  <h3>{{ __('boat.detail.facilities') }}</h3>
+  <h4>{{ __('boat.detail.facilities') }}</h4>
   <div class="row">
+    {% for item in boat.baseFacilities %}
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-      <span class="glyphicon glyphicon-check"></span> 空调
+      <span class="glyphicon glyphicon-check"></span> {{ __(item) }}
     </div>
+    {% endfor %}
+  </div>
+  <h4>{{ __('boat.detail.entertainments') }}</h4>
+  <div class="row">
+    {% for item in boat.entertainments %}
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-      <span class="glyphicon glyphicon-check"></span> 卡拉OK
+      <span class="glyphicon glyphicon-check"></span> {{ __(item) }}
     </div>
+    {% endfor %}
+  </div>
+  <h4>{{ __('boat.detail.extras') }}</h4>
+  <div class="row">
+    {% for item in boat.extras %}
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-      <span class="glyphicon glyphicon-check"></span> 快艇
+      <span class="glyphicon glyphicon-check"></span> {{ __(item) }}
     </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-      <span class="glyphicon glyphicon-check"></span> 香蕉船
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-      <span class="glyphicon glyphicon-check"></span> 飞碟
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-      <span class="glyphicon glyphicon-check"></span> 厨房
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-      <span class="glyphicon glyphicon-check"></span> BBQ
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-      <span class="glyphicon glyphicon-check"></span> 冰箱
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-      <span class="glyphicon glyphicon-check"></span> 麻将
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-      <span class="glyphicon glyphicon-check"></span> 扑克
-    </div>
+    {% endfor %}
   </div>
   <h3 id="products">{{ __('boat.detail.products') }}</h3>
   <ul class="nav nav-pills" role="tablist">

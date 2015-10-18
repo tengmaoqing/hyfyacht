@@ -78,7 +78,9 @@
       "about": "关于此船只",
       "instant_book": "立即预定",
       "from %s": "%s起",
-      "facilities": "附属设备",
+      "facilities": "基础设备",
+      "entertainments": "娱乐设施",
+      "extras": "其他",
       "products": "可预定产品",
       "info": "基本信息",
       "desc": "产品介绍"
@@ -99,11 +101,30 @@
       "city": {
         "sz": "深圳",
         "hk": "香港"
+      },
+      "pier": {
+        "saikung": "西贡",
+        "szw": "深圳湾"
       }
     },
     "boat": {
       "type": {
         "yacht": "游艇"
+      },
+      "base": {
+        "ac": "空调",
+        "kitchen": "厨房"
+      },
+      "etm": {
+        "mahjong": "麻将",
+        "ktv": "KTV",
+        "speedboat": "快艇",
+        "wakeboard": "滑水",
+        "bananaboat": "香蕉船"
+      },
+      "extras": {
+        "launch": "午餐",
+        "bbq": "烧烤"
       }
     }
   }

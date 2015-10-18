@@ -78,6 +78,8 @@ exports.signup = function(req, res, next){
 };
 
 exports.login = function(req, res, next){
+  var from = req.query.from || false;
+
   req.checkBody({
     'mobile': {
       notEmpty: true,
@@ -113,7 +115,11 @@ exports.login = function(req, res, next){
         res.cookie('client_attributes', user.id, config.cookieOption);
         res.cookie('client_uid', randomString({length: 6}), config.cookieOption);
 
-        res.redirect('/');
+        if(!from) {
+          res.redirect('/');
+        }else{
+          res.redirect(from);
+        }
       }
     }
   });

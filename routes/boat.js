@@ -10,6 +10,8 @@ router.get('/', boat.getBoats);
 
 router.get('/:id', boat.getBoat);
 
+router.get('/:location/:price/:capacity/:entertainments/:extras', boat.getBoats);
+
 router.get('/m/add', boat.insert);
 
 module.exports = router;

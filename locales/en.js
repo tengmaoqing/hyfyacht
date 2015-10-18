@@ -79,6 +79,8 @@
       "instant_book": "Book Now",
       "from %s": "From %s",
       "facilities": "Facilities",
+      "entertainments": "Entertainments",
+      "extras": "Extras",
       "products": "Products",
       "info": "Info",
       "desc": "Description"
@@ -99,11 +101,30 @@
       "city": {
         "sz": "Shenzhen",
         "hk": "Hong Kong"
+      },
+      "pier": {
+        "saikung": "Sai Kung",
+        "szw": "Shenzhen Bay"
       }
     },
     "boat": {
       "type": {
         "yacht": "Yacht"
+      },
+      "base": {
+        "ac": "Air Conditioner",
+        "kitchen": "Kitchen"
+      },
+      "etm": {
+        "mahjong": "Mahjong",
+        "ktv": "Karaoke",
+        "speedboat": "Speedboat",
+        "wakeboard": "Wakeboard",
+        "bananaboat": "Banana Boat"
+      },
+      "extras": {
+        "launch": "Launch",
+        "bbq": "BBQ"
       }
     }
   }

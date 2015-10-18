@@ -64,6 +64,10 @@ input[type=number]::-webkit-inner-spin-button {
   margin-bottom: 20px;
 }
 
+.search-field .btn-group {
+  margin-bottom: 10px;
+}
+
 .dropdown-menu-justified {
   width: 100%;
 }
