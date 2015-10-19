@@ -1,5 +1,6 @@
 {% macro create(pager, preset) %}
 
+{% if pager.count != 1 %}
 <nav class="container">
   <ul class="pagination">
     {% if pager.current == '1' %}
@@ -37,5 +38,6 @@
     {% endif %}
   </ul>
 </nav>
+{% endif %}
 
 {% endmacro %}

@@ -97,7 +97,7 @@
       {% for boat in boats %}
       <div class="col-md-4 col-sm-6 cell">
         <div class="thumbnail">
-          <a href="/boat/{{ boat.bid }}">
+          <a href="/boat/{{ code(boat._id.valueOf()) }}/{{ boat.name }}">
             <img src="{{ boat.photos[0] }}" alt="yacht01">
             <div class="caption">
               <h4>{{ boat.name }}</h4>

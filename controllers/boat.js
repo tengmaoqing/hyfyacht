@@ -3,6 +3,7 @@
  */
 var Boat = require('../models/boat');
 var Owner = require('../models/owner');
+var tools = require('../tools');
 
 exports.getBoatByCustomLink = function(req, res, next){
   Boat.findOne({customLink:req.params.link}).populate('owner', 'nickname').exec(function(err, boat){
@@ -22,7 +23,7 @@ exports.getBoatByCustomLink = function(req, res, next){
 };
 
 exports.getBoat = function(req, res, next){
-  Boat.findOne({serialNumber:req.params.id}).populate('owner', 'nickname').exec(function(err, boat){
+  Boat.findOne({_id:tools.decode(req.params.id)}).populate('owner', 'nickname').exec(function(err, boat){
     if(err){
       err.status = 400;
       return next(err);
@@ -135,8 +136,8 @@ exports.getBoats = function(req, res, next){
   //with mongoose-paginate
   Boat.paginate(query, {
     page: page,
-    limit: 1,
-    columns: 'bid name baseCharge location photos'
+    limit: 12,
+    columns: '_id name baseCharge location photos'
   },function(err, boats, pageCount, itemCount){
     if(err){
       err.status = 400;
@@ -151,8 +152,7 @@ exports.getBoats = function(req, res, next){
         for(var i = 1; i <= pageCount; i++){
           pager.pages.push(i);
         }
-        console.log(pager);
-        res.render('boat-list', {params: params, boats: boats, pager: pager, itemCount: itemCount});
+        res.render('boat-list', {params: params, boats: boats, pager: pager, itemCount: itemCount, code: tools.code});
       }
     }
   });

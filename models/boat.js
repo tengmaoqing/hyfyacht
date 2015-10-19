@@ -6,7 +6,6 @@ var mongoose = require('mongoose'),
   mongoosePaginate = require('mongoose-paginate');
 
 var BoatSchema = new Schema({
-  bid: String,
   serialNumber: String,
   owner: {type: Schema.Types.ObjectId, ref: "Owner"},
   name: String,
