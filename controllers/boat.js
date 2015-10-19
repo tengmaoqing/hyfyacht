@@ -44,6 +44,8 @@ exports.getBoats = function(req, res, next){
   params.etmArray = [];
   params.extrasArray = [];
 
+  var page = req.query.page || 1;
+
   if(req.params.location && req.params.location != 'all'){
     query['location.city'] = 'db.location.city.' + req.params.location;
   }else{
@@ -132,7 +134,7 @@ exports.getBoats = function(req, res, next){
 
   //with mongoose-paginate
   Boat.paginate(query, {
-    page: 1,
+    page: page,
     limit: 1,
     columns: 'bid name baseCharge location photos'
   },function(err, boats, pageCount, itemCount){
@@ -141,13 +143,15 @@ exports.getBoats = function(req, res, next){
       return next(err);
     }else{
       if(boats){
-        var pager = [];
+        var pager = {
+          current: parseInt(page),
+          count: pageCount,
+          pages: []
+        };
         for(var i = 1; i <= pageCount; i++){
-          pager.push({
-            page: i,
-            url: req.originalUrl + "?page=" + i
-          })
+          pager.pages.push(i);
         }
+        console.log(pager);
         res.render('boat-list', {params: params, boats: boats, pager: pager, itemCount: itemCount});
       }
     }

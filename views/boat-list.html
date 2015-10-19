@@ -1,4 +1,5 @@
 {% import './macros/boat.html' as boat %}
+{% import './macros/pager.html' as pagerView %}
 
 {% extends './layout.html' %}
 
@@ -108,23 +109,24 @@
       {% endfor %}
     </div>
   </div>
-  <nav class="container">
-    <ul class="pagination">
-      <li>
-        <a href="#" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      {% for i in pager %}
-      <li><a href="{{ i.url }}">{{ i.page }}</a></li>
-      {% endfor %}
-      <li>
-        <a href="#" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+  {{ pagerView.create(pager, preset) }}
+  <!--<nav class="container">-->
+    <!--<ul class="pagination">-->
+      <!--<li>-->
+        <!--<a href="#" aria-label="Previous">-->
+          <!--<span aria-hidden="true">&laquo;</span>-->
+        <!--</a>-->
+      <!--</li>-->
+      <!--{% for i in pager.pages %}-->
+      <!--<li><a href="#">{{ i.page }}</a></li>-->
+      <!--{% endfor %}-->
+      <!--<li>-->
+        <!--<a href="#" aria-label="Next">-->
+          <!--<span aria-hidden="true">&raquo;</span>-->
+        <!--</a>-->
+      <!--</li>-->
+    <!--</ul>-->
+  <!--</nav>-->
 </div>
 
 {% include './footer.html' %}

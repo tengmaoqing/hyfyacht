@@ -1,0 +1,41 @@
+{% macro create(pager, preset) %}
+
+<nav class="container">
+  <ul class="pagination">
+    {% if pager.current == '1' %}
+    <li class="disabled" >
+      <a aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% else %}
+    <li>
+      <a href="{{ preset.getUrlWithQuery('page', pager.current - 1) }}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+    {% for page in pager.pages %}
+      {% if page == pager.current %}
+      <li class="active"><a>{{ page }}</a></li>
+      {% else %}
+      <li><a href="{{ preset.getUrlWithQuery('page', page) }}">{{ page }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if pager.current == pager.count %}
+    <li class="disabled">
+      <a aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% else %}
+    <li>
+      <a href="{{ preset.getUrlWithQuery('page', pager.current + 1) }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+
+{% endmacro %}
