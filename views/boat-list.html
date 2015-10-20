@@ -8,7 +8,6 @@
 {% include './nav.html' with {view_active:'boat'} %}
 
 <div class="container">
-  <hr class="hr-divider">
   <div class="row search-field">
     <div class="col-md-2">
       <label>{{ __('common.location') }}</label>
@@ -64,16 +63,16 @@
     <div class="col-md-2">
       <label>{{ __('common.entertainments') }}</label>
     </div>
-    <div class="col-md-2 col-sm-3 col-xs-4">
+    <div class="col-md-2 col-sm-4 col-xs-6">
       {{ boat.etmItem(params, 'ktv', __('db.boat.etm.ktv')) }}
     </div>
-    <div class="col-md-2 col-sm-3 col-xs-4">
+    <div class="col-md-2 col-sm-4 col-xs-6">
       {{ boat.etmItem(params, 'wakeboard', __('db.boat.etm.wakeboard')) }}
     </div>
-    <div class="col-md-2 col-sm-3 col-xs-4">
+    <div class="col-md-2 col-sm-4 col-xs-6">
       {{ boat.etmItem(params, 'bananaboat', __('db.boat.etm.bananaboat')) }}
     </div>
-    <div class="col-md-2 col-sm-3 col-xs-4">
+    <div class="col-md-2 col-sm-4 col-xs-6">
       {{ boat.etmItem(params, 'speedboat', __('db.boat.etm.speedboat')) }}
     </div>
   </div>
@@ -81,27 +80,30 @@
     <div class="col-md-2">
       <label>{{ __('common.extra') }}</label>
     </div>
-    <div class="col-md-2 col-sm-3 col-xs-4">
+    <div class="col-md-2 col-sm-4 col-xs-6">
       {{ boat.extrasItem(params, 'launch', __('db.boat.extras.launch')) }}
     </div>
-    <div class="col-md-2 col-sm-3 col-xs-4">
+    <div class="col-md-2 col-sm-4 col-xs-6">
       {{ boat.extrasItem(params, 'bbq', __('db.boat.extras.bbq')) }}
     </div>
   </div>
-  <hr class="hr-divider">
 </div>
 <div class="jumbotron columns">
   <div class="container">
-    <h3>{{ __n('boat.list.find %d boat', 'boat.list.find %d boat', itemCount) }}</h3>
+    <h4>{{ __n('boat.list.find %d boat', 'boat.list.find %d boat', itemCount) }}</h4>
     <div class="row">
       {% for boat in boats %}
       <div class="col-md-4 col-sm-6 cell">
         <div class="thumbnail">
           <a href="/boat/{{ code(boat._id.valueOf()) }}/{{ boat.name }}">
-            <img src="{{ boat.photos[0] }}" alt="yacht01">
-            <div class="caption">
-              <h4>{{ boat.name }}</h4>
-              <p>{{ __(boat.location.city) }}</p>
+            <div class="boat-thumbnail" style="background-image: url({{ boat.photos[0] }})">
+              <div class="boat-basecharge">
+                <h4>{{ boat.name }}</h4>
+                <h4 class="text-danger">{{ __('boat.detail.from %s', '$' + boat.baseCharge) }}</h4>
+              </div>
+            </div>
+            <div class="caption text-muted">
+              <span>{{ __(boat.location.city) }} - {{ __(boat.type) }}</span>
             </div>
           </a>
         </div>
@@ -110,23 +112,6 @@
     </div>
   </div>
   {{ pagerView.create(pager, preset) }}
-  <!--<nav class="container">-->
-    <!--<ul class="pagination">-->
-      <!--<li>-->
-        <!--<a href="#" aria-label="Previous">-->
-          <!--<span aria-hidden="true">&laquo;</span>-->
-        <!--</a>-->
-      <!--</li>-->
-      <!--{% for i in pager.pages %}-->
-      <!--<li><a href="#">{{ i.page }}</a></li>-->
-      <!--{% endfor %}-->
-      <!--<li>-->
-        <!--<a href="#" aria-label="Next">-->
-          <!--<span aria-hidden="true">&raquo;</span>-->
-        <!--</a>-->
-      <!--</li>-->
-    <!--</ul>-->
-  <!--</nav>-->
 </div>
 
 {% include './footer.html' %}

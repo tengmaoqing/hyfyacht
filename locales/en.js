@@ -51,7 +51,7 @@
   "nav": {
     "home": "Home",
     "boat": "Find Boats",
-    "become_a_host": "Become a Host"
+    "boatowner": "Boat Owner"
   },
   "user": {
     "bookings": "My Bookings",

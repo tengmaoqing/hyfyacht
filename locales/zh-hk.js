@@ -51,7 +51,7 @@
   "nav": {
     "home": "首頁",
     "boat": "我要租船",
-    "become_a_host": "我是船東"
+    "boatowner": "我是船東"
   },
   "user": {
     "bookings": "我的預定",

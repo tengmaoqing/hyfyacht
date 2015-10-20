@@ -2,10 +2,17 @@
 
 {% block content %}
 
-{% include './nav.html' %}
+{% include './nav.html' with {absolute: true} %}
 
-<div class="embed-responsive embed-responsive-8by3">
-  <img class="embed-responsive-item" src="{{ boat.photos[0] }}">
+<div id="hyf-carousel-index" class="carousel slide index-slide" data-ride="carousel">
+  <div class="carousel-inner" role="listbox">
+    <div class="item index-slide-item active" style="background-image: url({{ preset.staticHost }}/img/index_header01.jpg)">
+    </div>
+    <div class="item index-slide-item" style="background-image: url({{ preset.staticHost }}/img/index_header02.jpg)">
+    </div>
+    <div class="item index-slide-item" style="background-image: url({{ preset.staticHost }}/img/index_header03.jpg)">
+    </div>
+  </div>
 </div>
 <div class="container">
   <h2>{{ boat.name }}</h2>
