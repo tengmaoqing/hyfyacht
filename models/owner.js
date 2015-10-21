@@ -11,6 +11,7 @@ var OwnerSchema = new Schema({
     first: String,
     last: String
   },
+  customLink: String,
   nickname: String,
   email: String,
   hashedPassword: String,
@@ -19,7 +20,7 @@ var OwnerSchema = new Schema({
     country: String,
     city: String
   },
-  createDate: {type: Date, default: Date.now}
+  boats: [{type: Schema.Types.ObjectId, ref: "Boat"}]
 });
 
 var Owner = mongoose.model('Owner', OwnerSchema);

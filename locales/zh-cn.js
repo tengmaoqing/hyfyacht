@@ -72,7 +72,8 @@
       "find %d boat": {
         "one": "为您找到 %d 艘船：",
         "other": "为您找到 %d 艘船："
-      }
+      },
+      "boatsofowner": "此船东的船只"
     },
     "detail": {
       "about": "关于此船只",

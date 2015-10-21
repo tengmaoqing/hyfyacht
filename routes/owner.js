@@ -4,6 +4,11 @@
 var express = require('express');
 var router = express.Router();
 
+var owner = require('../controllers/owner');
+
+router.get('/:id', owner.getOwner);
+router.get('/:id/:name', owner.getOwner);
+
 router.get('/', function(req, res, next){
   res.render('owner-calendar');
 });

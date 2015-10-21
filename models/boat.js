@@ -23,8 +23,7 @@ var BoatSchema = new Schema({
   photos: [String],
   baseFacilities: [String],
   entertainments: [String],
-  extras: [String],
-  createDate: {type: Date, default: Date.now}
+  extras: [String]
 });
 
 BoatSchema.plugin(mongoosePaginate);

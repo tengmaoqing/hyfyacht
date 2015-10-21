@@ -16,16 +16,16 @@
     </div>
     <div class="index-slogan">
       <div class="index-slogan-table text-center">
-        <h1>蓝天白云, 以海为家</h1>
+        <h1>蓝天白云 以海为家</h1>
       </div>
     </div>
     <div class="index-search-field text-center">
-      <div class="btn-group">
-        <div class="btn-group ">
+      <div class="btn-group hidden-xs">
+        <div class="btn-group">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('index.search.where') }} <span class="caret"></span></button>
           <ul class="dropdown-menu">
-            <li><a href="#" data-value="深圳">深圳</a></li>
-            <li><a href="#" data-value="香港">香港</a></li>
+            <li><a href="#" data-value="深圳">{{ __('db.location.city.sz') }}</a></li>
+            <li><a href="#" data-value="香港">{{ __('db.location.city.hk') }}</a></li>
           </ul>
         </div>
         <div class="btn-group hidden-xs">
@@ -37,31 +37,19 @@
             <li><a href="#">￥15000 － 20000</a></li>
           </ul>
         </div>
-        <button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span> <span class="hidden-xs">{{ __('common.search') }}</span></button>
+        <button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span> {{ __('common.search') }}</button>
       </div>
-      <!--<div class="visible-xs">-->
-        <!--<div class="btn-group btn-group-justified search-field">-->
-          <!--<div class="btn-group">-->
-            <!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('index.search.where') }} <span class="caret"></span></button>-->
-            <!--<ul class="dropdown-menu dropdown-menu-justified">-->
-              <!--<li><a href="#">深圳</a></li>-->
-              <!--<li><a href="#">香港</a></li>-->
-            <!--</ul>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div class="btn-group btn-group-justified search-field">-->
-          <!--<div class="btn-group">-->
-            <!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('index.search.budget') }} <span class="caret"></span></button>-->
-            <!--<ul class="dropdown-menu dropdown-menu-justified">-->
-              <!--<li><a href="#">{{ __('common.unlimited') }}</a></li>-->
-              <!--<li><a href="#">￥5000 - 10000</a></li>-->
-              <!--<li><a href="#">￥10000 － 15000</a></li>-->
-              <!--<li><a href="#">￥15000 － 20000</a></li>-->
-            <!--</ul>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<button class="btn btn-primary btn-block" type="button"><span class="glyphicon glyphicon-search"></span> {{ __('common.search') }}</button>-->
-      <!--</div>-->
+      <div class="container visible-xs">
+        <div class="btn-group btn-group-justified">
+          <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('index.search.where') }} <span class="caret"></span></button>
+            <ul class="dropdown-menu dropdown-menu-justified disabled">
+            <li><a href="/boat/sz/all/all/no/no">{{ __('db.location.city.sz') }}</a></li>
+            <li><a href="/boat/hk/all/all/no/no">{{ __('db.location.city.hk') }}</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

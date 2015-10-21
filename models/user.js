@@ -19,8 +19,7 @@ var UserSchema = new Schema({
     name: String,
     mobile: Number,
     email: String
-  }],
-  createDate: {type: Date, default: Date.now}
+  }]
 });
 
 var User = mongoose.model('User', UserSchema);

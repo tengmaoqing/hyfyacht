@@ -1,0 +1,51 @@
+{% import './macros/boat.html' as boat %}
+{% import './macros/pager.html' as pagerView %}
+
+{% extends './layout.html' %}
+
+{% block title %}{{ owner.nickname }} | {% parent %}{% endblock %}
+
+{% block content %}
+
+{% include './nav.html' %}
+
+<div class="container page-header-custom">
+  <div class="row">
+    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4">
+      <img src="/img/captain.jpg" class="img-circle img-thumbnail img-responsive">
+    </div>
+    <div class="col-lg-10 col-md-10 col-sm-9 col-xs-8">
+      <h1> {{ owner.nickname }}</h1>
+      <h4 class="text-muted"><small><span class="glyphicon glyphicon-map-marker"></span> {{ __(owner.location.city) }}</small></h4>
+      <p>Captain Turtle 是在西貢十分有名的船长，提供一流的服務。</p>
+    </div>
+  </div>
+</div>
+<div class="jumbotron columns">
+  <div class="container">
+    <h4>{{ __('boat.list.boatsofowner') }}</h4>
+    <div class="row">
+      {% for boat in owner.boats %}
+      <div class="col-md-4 col-sm-6 cell">
+        <div class="thumbnail">
+          <a href="/boat/{{ code(boat._id.valueOf()) }}/{{ boat.name }}">
+            <div class="boat-thumbnail" style="background-image: url({{ boat.photos[0] }})">
+              <div class="boat-basecharge">
+                <h4>{{ boat.name }}</h4>
+                <h4 class="text-danger">{{ __('boat.detail.from %s', '$' + boat.baseCharge) }}</h4>
+              </div>
+            </div>
+            <div class="caption text-muted">
+              <span>{{ __(boat.location.city) }} - {{ __(boat.type) }}</span>
+            </div>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% include './footer.html' %}
+
+{% endblock %}

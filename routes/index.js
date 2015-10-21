@@ -26,8 +26,8 @@ var user = require('../controllers/user');
 router.post('/signup', user.signup);
 router.post('/login', user.login);
 
-var boat = require('../controllers/boat');
+var owner = require('../controllers/owner');
 
-router.get('/:link', boat.getBoatByCustomLink);
+router.get('/:link', owner.getOwnerByCustomLink);
 
 module.exports = router;

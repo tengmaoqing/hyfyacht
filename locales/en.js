@@ -72,7 +72,8 @@
       "find %d boat": {
         "one": "Find %d boat for you:",
         "other": "Find %d boats for you:"
-      }
+      },
+      "boatsofowner": "Boats of this owner"
     },
     "detail": {
       "about": "About this boat",

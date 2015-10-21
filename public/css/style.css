@@ -1,4 +1,4 @@
-body {
+body, h1, h2, h3, h4, h5, h6 {
   font-family: "Heiti SC", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -19,6 +19,15 @@ input[type=number]::-webkit-inner-spin-button {
 .btn-primary, .btn-default.active {
   background-color: #258ec7;
   border-color: #258ec7;
+}
+
+.btn-danger {
+  background-color: #ff5a5e;
+  border-color: #ff5a5e;
+}
+
+.text-danger {
+  color: #ff5a5e;
 }
 
 .nav-pills > li.active > a,
@@ -127,6 +136,17 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   color: #ccc;
 }
 
+.page-header-custom {
+  margin: 30px auto;
+}
+
+@media (max-width: 767px) {
+  .page-header-custom h1 {
+    font-size: 24px;
+    margin: 10px auto 6px;
+  }
+}
+
 #hyf-modal-alert .modal-header, #hyf-modal-alert .modal-footer {
   border: none;
 }
@@ -176,11 +196,14 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   width: 100%;
   background: #fff;
   background: rgba(255, 255, 255, .8);
+  font-size: 0;
 }
 
 .boat-basecharge h4 {
   display: inline-block;
   margin: 0;
+  line-height: 1;
+  font-size: 18px;
 }
 
 .boat-basecharge .text-danger {
@@ -288,6 +311,14 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
 
 .text-common {
   padding: 2px 15px;
+}
+
+.boat-detail p {
+  margin: 20px auto;
+}
+
+.boat-detail .row > div {
+  margin: 8px auto;
 }
 
 .package {
