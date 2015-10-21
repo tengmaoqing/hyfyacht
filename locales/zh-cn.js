@@ -110,7 +110,8 @@
     },
     "boat": {
       "type": {
-        "yacht": "游艇"
+        "yacht": "游艇",
+        "westyacht": "西式游艇"
       },
       "base": {
         "ac": "空调",

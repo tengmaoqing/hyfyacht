@@ -110,7 +110,8 @@
     },
     "boat": {
       "type": {
-        "yacht": "Yacht"
+        "yacht": "Yacht",
+        "westyacht": "Western Yacht"
       },
       "base": {
         "ac": "Air Conditioner",

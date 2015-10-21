@@ -20,6 +20,7 @@ var OwnerSchema = new Schema({
     country: String,
     city: String
   },
+  description: String,
   boats: [{type: Schema.Types.ObjectId, ref: "Boat"}]
 });
 
