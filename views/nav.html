@@ -17,6 +17,7 @@
       <ul class="nav navbar-nav">
         {{ menu.item(__('nav.home'), '/', view_active == 'home') }}
         {{ menu.item(__('nav.boat'), '/boat', view_active == 'boat') }}
+        {{ menu.item(__('nav.event'), '/event', view_active == 'event') }}
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if preset.username %}

@@ -51,6 +51,7 @@
   "nav": {
     "home": "首页",
     "boat": "我要租船",
+    "event": "发现活动",
     "boatowner": "我是船东"
   },
   "user": {

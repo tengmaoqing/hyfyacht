@@ -51,6 +51,7 @@
   "nav": {
     "home": "Home",
     "boat": "Find Boats",
+    "event": "Event",
     "boatowner": "Boat Owner"
   },
   "user": {
