@@ -7,7 +7,7 @@
 <div id="hyf-carousel-index" class="carousel slide index-slide" data-ride="carousel">
   <div class="carousel-inner" role="listbox">
     {% for photo in boat.photos %}
-    <div class="item index-slide-item {% if loop.first %}actived{% endif %}" style="background-image: url({{ photo }})">
+    <div class="item index-slide-item {% if loop.first %}active{% endif %}" style="background-image: url({{ photo }})">
     </div>
     {% endfor %}
   </div>
