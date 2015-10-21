@@ -159,6 +159,10 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   font-size: 16px;
 }
 
+#product1 img {
+  margin: 10px 0;
+}
+
 .modal-table {
   display: table;
   width: 100%;
