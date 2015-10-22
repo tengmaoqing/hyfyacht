@@ -84,6 +84,8 @@
       "entertainments": "Entertainments",
       "extras": "Extras",
       "products": "Products",
+      "duration": "Duration",
+      "workinghours": "Working hours",
       "info": "Info",
       "desc": "Description"
     }
@@ -115,7 +117,7 @@
         "westyacht": "Western Yacht"
       },
       "base": {
-        "ac": "Air Conditioner",
+        "ac": "Air Conditioning",
         "kitchen": "Kitchen"
       },
       "etm": {

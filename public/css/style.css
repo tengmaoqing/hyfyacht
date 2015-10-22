@@ -317,12 +317,36 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   padding: 2px 15px;
 }
 
+.boat-detail, .boat-detail-products {
+  padding: 20px 0;
+}
+
 .boat-detail p {
   margin: 20px auto;
 }
 
 .boat-detail .row > div {
   margin: 8px auto;
+}
+
+.boat-detail-gray {
+  background-color: #f5f5f5;
+}
+
+.boat-detail .hr-divider {
+  border-color: #ccc;
+}
+
+.boat-product h3, .boat-product h4, .boat-product p {
+  margin: 6px auto;
+}
+
+.boat-product-learn {
+  line-height: 26px;
+}
+
+.boat-product a:hover .boat-product-learn:hover {
+  color: #258ec7;
 }
 
 .package {

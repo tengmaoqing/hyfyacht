@@ -84,6 +84,8 @@
       "entertainments": "娱乐设施",
       "extras": "其他",
       "products": "可预定产品",
+      "duration": "游玩时间",
+      "workinghours": "可选时间段",
       "info": "基本信息",
       "desc": "产品介绍"
     }
