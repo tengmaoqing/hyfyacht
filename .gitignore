@@ -19,7 +19,7 @@ npm.js
 public/fonts
 
 #Image
-#public/img
+public/img
 
 #OS temp
 .DS_Store

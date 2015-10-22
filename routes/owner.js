@@ -6,9 +6,6 @@ var router = express.Router();
 
 var owner = require('../controllers/owner');
 
-router.get('/:id', owner.getOwner);
-router.get('/:id/:name', owner.getOwner);
-
 router.get('/', function(req, res, next){
   res.render('owner-calendar');
 });
@@ -20,5 +17,8 @@ router.get('/booking', function(req, res, next){
 router.get('/booking/detail', function(req, res, next){
   res.render('owner-booking-detail');
 });
+
+router.get('/:id', owner.getOwner);
+router.get('/:id/:name', owner.getOwner);
 
 module.exports = router;
