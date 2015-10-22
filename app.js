@@ -119,6 +119,7 @@ app.use(function(req, res, next){
     util._extend(options, {
       preset: {
         staticHost: config.staticMode === 'express' ? '' : 'http://static.' + req.hostname,
+        imgHost: config.staticMode === 'express' ? '/img' : 'http://img.' + req.hostname + '/base',
         originalUrl: req.originalUrl,
         username: username,
         locale: req.getLocale(),
