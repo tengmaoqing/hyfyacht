@@ -27,7 +27,7 @@ var owner = require('./routes/owner');
 var app = express();
 
 //Environment mode
-//app.set('env', 'production');
+app.set('env', config.env);
 
 //console log
 app.use(logger('dev'));
