@@ -2,10 +2,6 @@ body, h1, h2, h3, h4, h5, h6 {
   font-family: "Heiti SC", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-dt, dd {
-  font-size: 16px;
-}
-
 dd {
   margin: 10px 0;
 }
@@ -14,6 +10,15 @@ input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+a {
+  color: #258ec7;
+}
+
+.float-right {
+  display: inline-block;
+  float: right;
 }
 
 .btn-primary, .btn-default.active {
@@ -28,6 +33,33 @@ input[type=number]::-webkit-inner-spin-button {
 
 .text-danger {
   color: #ff5a5e;
+}
+
+.panel-custom {
+  border-color: #ddd;
+}
+.panel-custom > .panel-heading {
+  /*color: #fff;*/
+  /*background-color: #258ec7;*/
+  border-color: #ddd;
+}
+.panel-custom > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #ddd;
+}
+.panel-custom > .panel-heading .badge {
+  color: #d9edf7;
+  background-color: #31708f;
+}
+.panel-custom > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #ddd;
+}
+
+#product-booking .panel-title {
+  line-height: 30px;
+}
+
+#product-booking .panel-title .more .glyphicon {
+  vertical-align: middle;
 }
 
 .nav-pills > li.active > a,
@@ -81,6 +113,7 @@ input[type=number]::-webkit-inner-spin-button {
 }
 .navbar-custom .navbar-toggle {
   border-color: #258ec7;
+  color: #258ec7;
 }
 .navbar-custom .navbar-toggle:hover,
 .navbar-custom .navbar-toggle:focus {
@@ -159,8 +192,8 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   font-size: 16px;
 }
 
-#product1 img {
-  margin: 10px 0;
+#product-detail img {
+  margin: 16px 0;
 }
 
 .modal-table {
@@ -190,6 +223,11 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
 .index-slide-item, .boat-thumbnail {
   background-position: center center;
   background-size: cover;
+}
+
+.boat-thumbnail-8by3 {
+  padding-bottom: 36.25%;
+  position: relative;
 }
 
 .boat-basecharge {
@@ -261,6 +299,10 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   .index-search-field {
     padding: 10px;
   }
+
+  .boat-thumbnail-8by3 {
+    padding-bottom: 66%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -277,14 +319,6 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   margin-bottom: 20px;
 }
 
-.jumbotron p, .jumbotron p.text-muted {
-  font-size:14px;
-  line-height: 20px;
-}
-
-.jumbotron.columns, footer.jumbotron {
-  margin-bottom: 0;
-}
 
 .search-field {
   margin-top: 20px;
@@ -305,9 +339,11 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   border-color: #2e6da4;
 }
 
-.checkboxs {
+.checkboxs-multiline {
   margin-bottom: 10px;
 }
+
+
 
 .list-group-item .checkboxs, .text-common .checkboxs{
   margin: 0;
@@ -315,10 +351,6 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
 
 .text-common {
   padding: 2px 15px;
-}
-
-.boat-detail, .boat-detail-products {
-  padding: 20px 0;
 }
 
 .boat-detail p {
@@ -329,9 +361,6 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   margin: 8px auto;
 }
 
-.boat-detail-gray {
-  background-color: #f5f5f5;
-}
 
 .boat-detail .hr-divider {
   border-color: #ccc;
@@ -357,22 +386,22 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   padding: 10px;
 }
 
-footer.jumbotron {
+footer.columns {
   color:#fff;
   background: #565a5c;
   padding-bottom: 60px;
 }
 
-footer.jumbotron section {
+footer.columns section {
   margin-bottom: 10px;
 }
 
-footer.jumbotron h3 {
+footer.columns h3 {
   font-size:16px;
   margin-top: 0;
 }
 
-footer.jumbotron p.text-muted, footer.jumbotron p.text-muted a {
+footer.columns p.text-muted, footer.columns p.text-muted a {
   color:#ccc;
 }
 
@@ -429,18 +458,45 @@ dl.dl-horizontal dt {
 
 .fix-container {
   color:#000;
-  padding: 10px 0;
+  padding: 8px 0;
   background: #f8f8f8;
   background: rgba(248, 248, 248, .9);
   border-top: 1px solid #eee;
+  font-size: 0;
+}
+
+.fix-container .nav-pills {
+  display: inline-block;
+  font-size: 14px;
 }
 
 .panel-title a:hover {
   text-decoration: none;
 }
 
+.columns {
+  padding: 40px 0;
+}
+
 .columns .cell {
   margin-bottom: 10px;
+}
+
+.columns p, .columns p.text-muted {
+  font-size:14px;
+  line-height: 20px;
+}
+
+.columns-gray {
+  background-color: #f5f5f5;
+}
+
+.columns-sm {
+  padding: 20px 0;
+}
+
+.columns-sm h3 {
+  margin: 10px 0;
 }
 
 .thumbnail {

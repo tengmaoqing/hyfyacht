@@ -1,0 +1,476 @@
+{% extends './layout.html' %}
+
+{% block head %}
+
+<link rel="stylesheet" href="//cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.css">
+
+{% endblock %}
+
+{% block content %}
+
+{% include './nav.html' %}
+
+<div class="columns-sm">
+  <div class="container">
+    <ol class="breadcrumb">
+      <li><a href="/">{{ __('nav.home') }}</a></li>
+      <li><a href="/boat/c59f0b23726555bda525c943/Rainbow%20NO.1">Rainbow NO.1</a></li>
+      <li class="active">日间船河</li>
+    </ol>
+    <div id="product-base" class="thumbnail">
+      <div class="boat-thumbnail boat-thumbnail-8by3" style="background-image: url({{ preset.imgHost }}/yacht03.jpg)"></div>
+      <div class="row caption">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+          <h3>日间船河</h3>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
+          <h3 class="text-danger">￥8000起</h3>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <p>香港西贡南风洲一价全包8小时海上游艇趴</p>
+          <dl class="dl-horizontal">
+            <dt><span class="glyphicon glyphicon-time"></span> {{ __('boat.detail.duration') }}</dt>
+            <dd>8 小时</dd>
+            <dt><span class="glyphicon glyphicon-dashboard"></span> {{ __('boat.detail.workinghours') }}</dt>
+            <dd>9:00 - 18:00</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div id="product-booking" class="thumbnail">
+      <div class="caption">
+        <h3>选择时间进行预定</h3>
+        <hr class="hr-divider">
+        <p><strong>选择时间</strong></p>
+        <div id="calendar"></div>
+        <div class="calendar-controller text-right">
+          <button id="calendar-month" type="button" class="btn btn-default invisible">选择日期</button>
+          <div class="btn-group">
+            <button id="calendar-prev" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button>
+            <button id="calendar-next" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button>
+          </div>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <label>开始时间</label>
+            <p id="selectedTime-start"></p>
+          </li>
+          <li class="list-group-item">
+            <label>结束时间</label>
+            <p id="selectedTime-end"></p>
+          </li>
+        </ul>
+        <p><strong>选择套餐</strong></p>
+        <div class="panel-group" id="package-accordion" role="tablist">
+          <div class="panel panel-custom">
+            <div class="panel-heading" role="tab" id="package-heading-1">
+              <h4 class="panel-title">
+                <div class="btn-group btn-group-sm checkboxs" data-toggle="buttons">
+                  <label class="btn btn-default">
+                    <span class="glyphicon glyphicon-unchecked"></span>
+                    <input type="checkbox" autocomplete="off" value="option1">
+                  </label>
+                </div> 平日套餐A (￥8000)
+                <a class="float-right more" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-1" aria-expanded="true" aria-controls="package-collapse-1">
+                  套餐详情 <span class="glyphicon glyphicon-option-horizontal"></span>
+                </a>
+              </h4>
+            </div>
+            <div id="package-collapse-1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="package-heading-1">
+              <div class="panel-body">
+                <p>
+                  包含25人的午餐以及水上活动, 25人之后每位￥200<br><br>
+                  水上活动：滑水、香蕉船<br><br>
+                  午餐 － 25人基本，餐单如下：<br><br>
+                  水蟹粥<br>
+                  白灼虾<br>
+                  。。。<br>
+                </p>
+                <strong>额外项目</strong>
+                <p>
+                  额外人员￥200/位<br>
+                  水上飞行￥2000<br>
+                  。。。<br>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-custom">
+            <div class="panel-heading" role="tab" id="package-heading-2">
+              <h4 class="panel-title">
+                <div class="btn-group btn-group-sm checkboxs" data-toggle="buttons">
+                  <label class="btn btn-default">
+                    <span class="glyphicon glyphicon-unchecked"></span>
+                    <input type="checkbox" autocomplete="off" value="option1">
+                  </label>
+                </div> 平日套餐A (￥12000)
+                <a class="float-right more" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-2" aria-expanded="true" aria-controls="package-collapse-2">
+                  套餐详情 <span class="glyphicon glyphicon-option-horizontal"></span>
+                </a>
+              </h4>
+            </div>
+            <div id="package-collapse-2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="package-heading-2">
+              <div class="panel-body">
+                <p>
+                  包含25人的午餐以及水上活动, 25人之后每位￥200<br><br>
+                  水上活动：滑水、香蕉船<br><br>
+                  午餐 － 25人基本，餐单如下：<br><br>
+                  水蟹粥<br>
+                  白灼虾<br>
+                  。。。<br>
+                </p>
+                <strong>额外项目</strong>
+                <p>
+                  额外人员￥200/位<br>
+                  水上飞行￥2000<br>
+                  。。。<br>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-custom">
+            <div class="panel-heading" role="tab" id="package-heading-3">
+              <h4 class="panel-title">
+                <div class="btn-group btn-group-sm checkboxs" data-toggle="buttons">
+                  <label class="btn btn-default">
+                    <span class="glyphicon glyphicon-unchecked"></span>
+                    <input type="checkbox" autocomplete="off" value="option1">
+                  </label>
+                </div> 周末及假日套餐 (￥16000)
+                <a class="float-right more" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-3" aria-expanded="true" aria-controls="package-collapse-3">
+                  套餐详情 <span class="glyphicon glyphicon-option-horizontal"></span>
+                </a>
+              </h4>
+            </div>
+            <div id="package-collapse-3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="package-heading-3">
+              <div class="panel-body">
+                <p>
+                  包含25人的午餐以及水上活动, 25人之后每位￥200<br><br>
+                  水上活动：滑水、香蕉船<br><br>
+                  午餐 － 25人基本，餐单如下：<br><br>
+                  水蟹粥<br>
+                  白灼虾<br>
+                  。。。<br>
+                </p>
+                <strong>额外项目</strong>
+                <p>
+                  额外人员￥200/位<br>
+                  水上飞行￥2000<br>
+                  。。。<br>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="product-detail" class="thumbnail">
+      <div class="caption">
+        <h3>产品详情</h3>
+        <hr class="hr-divider">
+        <p><strong>套餐介绍：</strong></p>
+        <table class="table">
+          <tr><th>套餐</th><th>内容</th><th>价格</th></tr>
+          <tr>
+            <td>平日套餐A</td>
+            <td>
+              包含25人的午餐以及水上活动, 25人之后每位￥200<br><br>
+              水上活动：滑水、香蕉船<br><br>
+              午餐 － 25人基本，餐单如下：<br><br>
+              水蟹粥<br>
+              白灼虾<br>
+              。。。<br>
+              <strong>额外项目</strong><br>
+              额外人员￥200/位<br>
+              水上飞行￥2000<br>
+              。。。<br>
+            </td>
+            <td>￥8000</td>
+          </tr>
+          <tr>
+            <td>平日套餐B</td>
+            <td>
+              包含25人的午餐以及水上活动, 25人之后每位￥200<br><br>
+              水上活动：滑水、香蕉船<br><br>
+              午餐 － 25人基本，餐单如下：<br><br>
+              水蟹粥<br>
+              白灼虾<br>
+              。。。<br>
+              <strong>额外项目</strong><br>
+              额外人员￥200/位<br>
+              水上飞行￥2000<br>
+              。。。<br>
+            </td>
+            <td>￥12000</td>
+          </tr>
+          <tr>
+            <td>周末及假日套餐</td>
+            <td>
+              包含25人的午餐以及水上活动, 25人之后每位￥200<br><br>
+              水上活动：滑水、香蕉船<br><br>
+              午餐 － 25人基本，餐单如下：<br><br>
+              水蟹粥<br>
+              白灼虾<br>
+              。。。<br>
+              <strong>额外项目</strong><br>
+              额外人员￥200/位<br>
+              水上飞行￥2000<br>
+              。。。<br>
+            </td>
+            <td>￥16000</td>
+          </tr>
+        </table>
+        <p><strong>行程介绍：</strong></p>
+        <p>9：30分到达码头，登船。开船时间约40分钟至1小时，视当天天气情况来安排港湾。伙伴们若已经选好了目的地，就向目的地出发！</p>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015104223555596.jpg">
+        <p>到达海湾，先看看美丽的海湾吧！</p>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/20156241333179.jpg">
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/201510422376210.jpg">
+        <p>伙伴们，开始更衣啦、跳水、滑梯、水上大剧拉开帷幕！！！</p>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523202238118.jpg">
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523202321739.jpg">
+        <p>水上蹦蹦床！</p>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/201510422385561.jpg">
+        <p>刺激的水上娱乐 香蕉船！大人小孩的最爱，落水才是真英雄，哈！</p>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015104224020644.jpg">
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015104224039700.jpg">
+        <p>更刺激的水上娱乐 水上飞碟！真的可以飞哦，只要你够轻：）</p>
+        <img class="img-responsive" src="http://goseatrip.com/UpLoadFile/2015051510472373499.jpg">
+        <p>刺激的有点技巧的水上运动 滑水！有点技巧，你要挑战吗？</p>
+        <img class="img-responsive" src="http://goseatrip.com/UpLoadFile/2015051511224473499.jpg">
+        <p>也可以上沙滩，玩沙、及愉快的沙滩排球！</p>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015104223846820.jpg">
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/20156241360982.jpg">
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/20158131620642.jpg">
+        <p>丰盛的午餐！</p>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015104223938338.jpg">
+        <p>午餐结束，继续各种HAPPY！！！</p>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/201553116403285.jpg">
+        <p>晚上5点左右，冲水、更衣、返航！</p>
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/201581316142936.jpg">
+        <img class="img-responsive" src="http://www.goseatrip.com/EditorV8/UploadUser/201586102839477.jpg">
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/201562414512987.jpg">
+        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015531163911866.jpg">
+        <p>约6点左右到达码头，开心的一天太短暂，我们下次约起！！！</p>
+      </div>
+    </div>
+    <div id="product-include" class="thumbnail">
+      <div class="caption">
+        <h3>费用包含</h3>
+        <hr class="hr-divider">
+      </div>
+    </div>
+    <div id="product-notinclude" class="thumbnail">
+      <div class="caption">
+        <h3>费用不含</h3>
+        <hr class="hr-divider">
+      </div>
+    </div>
+    <div id="product-notice" class="thumbnail">
+      <div class="caption">
+        <h3>预定须知</h3>
+        <hr class="hr-divider">
+      </div>
+    </div>
+    <div id="product-cancel" class="thumbnail">
+      <div class="caption">
+        <h3>退定政策</h3>
+        <hr class="hr-divider">
+      </div>
+    </div>
+  </div>
+  <div class="navbar-fixed-bottom fix-container">
+    <div class="container text-center">
+        <ul class="nav nav-pills">
+          <li role="presentation" class="hidden-xs active"><a href="#product-base">基本信息</a></li>
+          <li role="presentation"><a href="#product-booking">预定</a></li>
+          <li role="presentation"><a href="#product-detail">产品详情</a></li>
+          <li role="presentation" class="hidden-xs"><a href="#product-include">费用包含</a></li>
+          <li role="presentation" class="hidden-xs"><a href="#product-notinclude">费用不含</a></li>
+          <li role="presentation"><a href="#product-notice">预定须知</a></li>
+          <li role="presentation" class="hidden-xs"><a href="#product-cancel">退定政策</a></li>
+        </ul>
+    </div>
+  </div>
+</div>
+
+{% include './footer.html' %}
+
+{% endblock %}
+
+{% block foot %}
+
+<script src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
+<script src="//cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.js"></script>
+<script src="//cdn.bootcss.com/fullcalendar/2.4.0/lang/zh-cn.js"></script>
+<script>
+  var selectedStart = false;
+
+  function setSelectedTime(start, end){
+    var tempEnd = end || moment(start);
+    if(!end){
+      tempEnd.hour(start.hour() + 1);
+    }
+
+    $("#selectedTime-start").html(start.format("YYYY年MM月DD日 a h:mm"));
+    $("#selectedTime-end").html(tempEnd.format("YYYY年MM月DD日 a h:mm"));
+  }
+
+  $("#calendar").fullCalendar({
+    contentHeight: "auto",
+    timezone: "local",
+    lang: "zh-CN",
+    header: {
+      left: "title",
+      right: "today"
+    },
+    eventLimit: 3,
+    eventLimitClick: "agendaDay",
+    allDayText: "节日",
+    minTime: "09:00:00",
+    maxTime: "18:00:00",
+    slotDuration: "01:00:00",
+    slotLabelFormat: "HH:00",
+//    hiddenDays: [0,6],
+    selectable: true,
+//    selectOverlap: false,
+    unselectAuto: false,
+    viewRender: function(view, element){
+      if(view.name == "month"){
+        $("#calendar-month").addClass("invisible");
+      }else{
+        $("#calendar-month").removeClass("invisible");
+      }
+
+      $(".fc-toolbar .fc-button").addClass("btn btn-default btn-lg").removeClass("fc-state-default");
+      $(".fc-toolbar .fc-button-group").addClass("btn-group");
+      $(".fc-prev-button").html('<span class="glyphicon glyphicon-menu-left"></span>');
+      $(".fc-next-button").html('<span class="glyphicon glyphicon-menu-right"></span>');
+    },
+    dayRender: function(date, cell){
+      if(date < moment()){
+        $(cell).addClass("fc-day-disable");
+      }
+    },
+    dayClick: function(date, jsEvent, view){
+      if(date < moment().hour(0).minute(0).second(0)){
+        return false;
+      }
+
+      $("#calendar").fullCalendar("gotoDate", date);
+      $("#calendar").fullCalendar("changeView", "agendaDay");
+    },
+    eventClick: function(calEvent, jsEvent, view){
+      if(view.name == "agendaDay" || calEvent.start < moment()){
+        return;
+      }
+
+      $("#calendar").fullCalendar("gotoDate", calEvent.start);
+      $("#calendar").fullCalendar("changeView", "agendaDay");
+    },
+    select: function(start, end, jsEvent, view){
+      if(view.name == "month"){
+        return;
+      }
+
+      if(start < moment()){
+        $("#hyf-modal-alert").CustomAlert("此时间不可预定。");
+        return false;
+      }
+
+      if(!selectedStart){
+        selectedStart = start;
+        setSelectedTime(selectedStart);
+      }else{
+        if(selectedStart < start){
+          var end = moment(start);
+          end.hour(end.hour() + 1);
+
+          //get events between selections
+          var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
+            var eventEnd = e.end || e.start;
+            return !e.allDay && e.start > selectedStart && (e.start < end);
+          });
+
+          if(clientEvents && clientEvents.length > 0) {
+            selectedStart = start;
+            setSelectedTime(selectedStart);
+            return true;
+          }
+
+          $("#calendar").fullCalendar("select", selectedStart, end);
+          setSelectedTime(selectedStart, end);
+          selectedStart = false;
+        }else{
+          selectedStart = start;
+          setSelectedTime(selectedStart);
+        }
+      }
+    },
+    events:[
+      {
+        title: "已预定",
+        start: "2015-10-18T13:00",
+        end: "2015-10-18T14:00",
+        allDay: false,
+        backgroundColor: "#258ec7",
+        borderColor: "#258ec7"
+      },
+      {
+        title: "已预定",
+        start: "2015-10-18T15:00",
+        end: "2015-10-18T16:00",
+        allDay: false,
+        backgroundColor: "#258ec7",
+        borderColor: "#258ec7"
+      },
+      {
+        title: "已预定",
+        start: "2015-10-18T16:00",
+        end: "2015-10-18T17:00",
+        allDay: false,
+        backgroundColor: "#258ec7",
+        borderColor: "#258ec7"
+      },
+      {
+        title: "已预定",
+        start: "2015-10-18T10:00",
+        end: "2015-10-18T11:00",
+        allDay: false,
+        backgroundColor: "#258ec7",
+        borderColor: "#258ec7"
+      },
+      {
+        title: "国庆",
+        start: new Date(2015, 9, 1),
+        allDay: true,
+        backgroundColor: "#ff5a5e",
+        borderColor: "#ff5a5e"
+      },
+      {
+        title: "国庆",
+        start: new Date(2015, 10, 1),
+        allDay: true,
+        backgroundColor: "#ff5a5e",
+        borderColor: "#ff5a5e"
+      }
+    ]
+  });
+
+  $("#calendar-month").click(function(){
+    selectedStart = false;
+    $("#calendar").fullCalendar("changeView", "month");
+  });
+
+  $("#calendar-prev").click(function(){
+    selectedStart = false;
+    $("#calendar").fullCalendar("prev");
+  });
+
+  $("#calendar-next").click(function(){
+    selectedStart = false;
+    $("#calendar").fullCalendar("next");
+  });
+
+</script>
+{% endblock %}

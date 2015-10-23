@@ -20,6 +20,7 @@ var config = require('./config');
 //routes
 var routes = require('./routes/index');
 var boat = require('./routes/boat');
+var product = require('./routes/product');
 var booking = require('./routes/booking');
 var user = require('./routes/user');
 var owner = require('./routes/owner');
@@ -135,6 +136,7 @@ app.use(function(req, res, next){
 });
 
 app.use('/boat', boat);
+app.use('/product', product);
 app.use('/booking', booking);
 app.use('/user', user);
 app.use('/owner', owner);
