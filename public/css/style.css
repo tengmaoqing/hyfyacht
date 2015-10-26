@@ -16,9 +16,15 @@ a {
   color: #258ec7;
 }
 
-.float-right {
+.relative-container {
+  position: relative;
+}
+
+.absolut-right-top {
   display: inline-block;
-  float: right;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .btn-primary, .btn-default.active {
@@ -60,6 +66,10 @@ a {
 
 #product-booking .panel-title .more .glyphicon {
   vertical-align: middle;
+}
+
+.product-booking-container {
+  margin-bottom: 20px;
 }
 
 .nav-pills > li.active > a,

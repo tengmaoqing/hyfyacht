@@ -23,7 +23,8 @@ var BoatSchema = new Schema({
   photos: [String],
   baseFacilities: [String],
   entertainments: [String],
-  extras: [String]
+  extras: [String],
+  products: [{type: Schema.Types.ObjectId, ref: "Product"}]
 });
 
 BoatSchema.plugin(mongoosePaginate);

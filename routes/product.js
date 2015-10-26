@@ -4,8 +4,8 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', function(req, res, next){
-  res.render('product');
-});
+var product = require('../controllers/product');
+
+router.get('/:id/:name/:boat_id/:boat_name', product.getProduct);
 
 module.exports = router;
