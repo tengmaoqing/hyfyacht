@@ -6,16 +6,18 @@ var mongoose = require('mongoose'),
 
 var ProductSchema = new Schema({
   name: String,
+  owner: {type: Schema.Types.ObjectId, ref: 'Owner'},
   photo: String,
   summary: String,
   baseCharge: Number,
+  currency: String,
   duration: Number,
   workingHours: {
     start: String,
     end: String
   },
   description: String,
-  packages: [{type: Schema.Types.ObjectId, ref: "Package"}]
+  packages: [{type: Schema.Types.ObjectId, ref: 'Package'}]
 });
 
 var Product = mongoose.model('Product', ProductSchema);

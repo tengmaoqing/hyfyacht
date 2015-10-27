@@ -118,7 +118,7 @@ exports.login = function(req, res, next){
         if(!from) {
           res.redirect('/');
         }else{
-          res.redirect(from);
+          res.redirect(encodeURI(from));
         }
       }
     }

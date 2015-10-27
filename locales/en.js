@@ -114,7 +114,9 @@
     "boat": {
       "type": {
         "yacht": "Yacht",
-        "westyacht": "Western Yacht"
+        "westyacht": "Western Yacht",
+        "cnyacht": "Chinese Yacht",
+        "westspeedboat": "Speedboat"
       },
       "base": {
         "ac": "Air Conditioning",

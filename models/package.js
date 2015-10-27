@@ -12,13 +12,8 @@ var PackageSchema = new Schema({
   workingDays: [],
   baseCharge: Number,
   basePersons: Number,
-  items: [{
-    name: String,
-    charge: Number,
-    required: Boolean,
-    type: String  //enum [single, multi, extra]
-  }],
-  boats: [{type: Schema.Types.ObjectId, ref: "Boat"}]
+  items: [],
+  boats: [{type: Schema.Types.ObjectId, ref: 'Boat'}]
 });
 
 var Package = mongoose.model('Package', PackageSchema);

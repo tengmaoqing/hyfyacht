@@ -23,3 +23,9 @@ public/img
 
 #OS temp
 .DS_Store
+
+#rsync exclude
+rsync_exclude.txt
+
+#mongodb script
+scripts

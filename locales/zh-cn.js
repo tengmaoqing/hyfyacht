@@ -114,7 +114,9 @@
     "boat": {
       "type": {
         "yacht": "游艇",
-        "westyacht": "西式游艇"
+        "westyacht": "西式游艇",
+        "cnyacht": "中式游艇",
+        "westspeedboat": "西式快艇"
       },
       "base": {
         "ac": "空调",

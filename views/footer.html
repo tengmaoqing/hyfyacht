@@ -29,6 +29,8 @@
                 <ul class="dropdown-menu disabled">
                   <li><a href="#">￥ CNY</a></li>
                   <li><a href="#">＄ HKD</a></li>
+                  {{ menu.localeItem('￥ CNY', preset.getUrlWithQuery('curr','cny'), preset.locale == 'en') }}
+                  {{ menu.localeItem('＄ HKD', preset.getUrlWithQuery('curr','hkd'), preset.locale == 'en') }}
                 </ul>
               </div>
             </section>

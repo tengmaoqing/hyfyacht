@@ -95,7 +95,7 @@
       {% for boat in boats %}
       <div class="col-md-4 col-sm-6 cell">
         <div class="thumbnail">
-          <a href="/boat/{{ code(boat._id.valueOf()) }}/{{ boat.name }}">
+          <a href="/boat/{{ preset.code(boat._id.valueOf()) }}/{{ boat.name }}">
             <div class="boat-thumbnail" style="background-image: url({{ boat.photos[0] }})">
               <div class="boat-basecharge">
                 <h4>{{ boat.name }}</h4>

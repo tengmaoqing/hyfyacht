@@ -17,6 +17,8 @@ var swig = require('swig');
 //config
 var config = require('./config');
 
+var tools = require('./tools');
+
 //routes
 var routes = require('./routes/index');
 var boat = require('./routes/boat');
@@ -102,10 +104,10 @@ app.use(function(req, res, next){
   next();
 });
 
-//set default var before view engine render views
-app.use(function(req, res, next){
-  var _render = res.render;
+var preset = {};
 
+//preset
+app.use(function(req, res, next){
   var username = false;
 
   if(req.session.username){
@@ -114,20 +116,39 @@ app.use(function(req, res, next){
     username = req.signedCookies['client_attributes'];
   }
 
+  util._extend(preset, {
+    staticHost: config.staticMode === 'express' ? '' : 'http://static.' + req.hostname,
+    imgHost: config.staticMode === 'express' ? '/img' : 'http://img.' + req.hostname + '/base',
+    originalUrl: req.originalUrl,
+    username: username,
+    locale: req.getLocale(),
+    code: tools.code,
+    getUrlWithQuery: function(key, value){
+      return URI(req.originalUrl).setQuery(key, value).toString();
+    }
+  });
+
+  next();
+});
+
+//set currency
+app.use(function(req, res, next){
+  if(req.query.curr){
+    res.cookie('client_currency', req.query.curr, config.unsignedCookieOption);
+  }
+
+  next();
+});
+
+//set default var before view engine render views
+app.use(function(req, res, next){
+  var _render = res.render;
+
   res.render = function(view, options, fn){
     options = options || {};
 
     util._extend(options, {
-      preset: {
-        staticHost: config.staticMode === 'express' ? '' : 'http://static.' + req.hostname,
-        imgHost: config.staticMode === 'express' ? '/img' : 'http://img.' + req.hostname + '/base',
-        originalUrl: req.originalUrl,
-        username: username,
-        locale: req.getLocale(),
-        getUrlWithQuery: function(key, value){
-          return URI(req.originalUrl).setQuery(key, value).toString();
-        }
-      }
+      preset: preset
     });
     _render.call(this, view, options, fn);
   };

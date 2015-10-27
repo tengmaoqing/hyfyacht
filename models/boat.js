@@ -7,9 +7,8 @@ var mongoose = require('mongoose'),
 
 var BoatSchema = new Schema({
   serialNumber: String,
-  owner: {type: Schema.Types.ObjectId, ref: "Owner"},
+  owner: {type: Schema.Types.ObjectId, ref: 'Owner'},
   name: String,
-  customLink: String,
   length: Number,
   capacity: Number,
   type: String,
@@ -19,12 +18,13 @@ var BoatSchema = new Schema({
     pier: String
   },
   baseCharge: Number,
+  currency: String,
   description: String,
   photos: [String],
   baseFacilities: [String],
   entertainments: [String],
   extras: [String],
-  products: [{type: Schema.Types.ObjectId, ref: "Product"}]
+  products: [{type: Schema.Types.ObjectId, ref: 'Product'}]
 });
 
 BoatSchema.plugin(mongoosePaginate);

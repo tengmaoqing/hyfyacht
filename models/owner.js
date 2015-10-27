@@ -21,7 +21,7 @@ var OwnerSchema = new Schema({
     city: String
   },
   description: String,
-  boats: [{type: Schema.Types.ObjectId, ref: "Boat"}]
+  boats: [{type: Schema.Types.ObjectId, ref: 'Boat'}]
 });
 
 var Owner = mongoose.model('Owner', OwnerSchema);
