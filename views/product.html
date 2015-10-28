@@ -10,7 +10,7 @@
 
 {% include './nav.html' %}
 
-<div class="columns-sm">
+<div class="columns-sm" data-ng-app="booking" data-ng-controller="bookingController">
   <div class="container">
     <ol class="breadcrumb">
       <li><a href="/">{{ __('nav.home') }}</a></li>
@@ -30,7 +30,7 @@
           <p>{{ product.summary }}</p>
           <dl class="dl-horizontal">
             <dt><span class="glyphicon glyphicon-time"></span> {{ __('boat.detail.duration') }}</dt>
-            <dd>{{ product.duration }} 小时</dd>
+            <dd>{{ __n('common.hour', 'common.hour', product.duration) }}</dd>
             <dt><span class="glyphicon glyphicon-dashboard"></span> {{ __('boat.detail.workinghours') }}</dt>
             <dd>{{ product.workingHours.start }} - {{ product.workingHours.end }}</dd>
           </dl>
@@ -64,14 +64,16 @@
         </div>
         <div id="product-booking-person" class="product-booking-container">
           <p><strong>输入出游人数</strong></p>
-          <input type="number" class="form-control" placeholder="出游人数" max="50" min="1" value="35">
+          <input type="number" class="form-control" placeholder="出游人数" data-ng-model="numberOfPerson">
         </div>
         <div id="product-booking-package" class="product-booking-container">
           <p><strong>选择套餐</strong></p>
           <div class="panel-group" id="package-accordion" role="tablist">
-            {% for package in product.packages %}
-            <div class="panel panel-custom">
-              <div class="panel-heading" role="tab" id="package-heading-1">
+            {% raw %}
+            <input id="data-selected-date-start" class="invisible navbar-fixed-bottom" type="text" data-ng-model="dateStart">
+            <input id="data-selected-date-end" class="invisible navbar-fixed-bottom" type="text" data-ng-model="dateEnd">
+            <div class="panel panel-custom" data-ng-repeat="package in packages | availableDate:dateStart">
+              <div class="panel-heading" role="tab" id="package-heading-{{ $index+1 }}">
                 <h4 class="panel-title relative-container">
                   <div class="btn-group btn-group-sm checkboxs" data-toggle="buttons">
                     <label class="btn btn-default">
@@ -79,18 +81,17 @@
                       <input type="checkbox" autocomplete="off" value="option1">
                     </label>
                   </div> {{ package.name }}
-                  <a class="absolut-right-top more" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-1" aria-expanded="true" aria-controls="package-collapse-1">
+                  <a class="absolut-right-top more" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index+1 }}" aria-expanded="true" aria-controls="package-collapse-1">
                     <span class="glyphicon glyphicon-option-horizontal"></span>
                   </a>
                 </h4>
               </div>
-              <div id="package-collapse-1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="package-heading-1">
-                <div class="panel-body">
-                  {% autoescape false %}{{ package.summary }}{% endautoescape %}
+              <div id="package-collapse-{{ $index+1 }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="package-heading-1">
+                <div class="panel-body" data-ng-bind-html="package.summary | santize">
                 </div>
               </div>
             </div>
-            {% endfor %}
+            {% endraw %}
           </div>
         </div>
         <div id="product-booking-items" class="product-booking-container">
@@ -214,21 +215,21 @@
               <span class="input-group-addon">
                 <span class="glyphicon glyphicon-user"></span>
               </span>
-              <input type="text" class="form-control" placeholder="请输入联系人姓名">
+              <input type="text" class="form-control" placeholder="请输入联系人姓名" data-ng-model="contact.name">
             </div>
             <label>手机号码</label>
             <div class="input-group">
               <span class="input-group-addon">
                 <span class="glyphicon glyphicon-phone"></span>
               </span>
-              <input type="text" class="form-control" placeholder="请输入联系人手机号码">
+              <input type="text" class="form-control" placeholder="请输入联系人手机号码" data-ng-model="contact.mobile">
             </div>
             <label>电子邮箱</label>
             <div class="input-group">
               <span class="input-group-addon">
                 <span class="glyphicon glyphicon-envelope"></span>
               </span>
-              <input type="text" class="form-control" placeholder="请输入联系人邮箱地址">
+              <input type="text" class="form-control" placeholder="请输入联系人邮箱地址" data-ng-model="contact.email">
             </div>
           </div>
         </div>
@@ -367,62 +368,63 @@
         </ul>
     </div>
   </div>
-</div>
-
-<div id="booking-confirm-modal" class="modal fade">
-  <div class="modal-table">
-    <div class="modal-table-cell">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">确认定单</h4>
-          </div>
-          <div class="modal-body">
-            <dl class="dl-horizontal">
-              <dt>预定船只</dt>
-              <dd>rainbow</dd>
-              <dt>船东</dt>
-              <dd>Mr.Shek</dd>
-              <dt>地点</dt>
-              <dd>香港 西贡码头</dd>
-              <dt>预定产品</dt>
-              <dd>日间船河</dd>
-              <dt>开始时间</dt>
-              <dd>2015年10月17日 上午 10:00</dd>
-              <dt>结束时间</dt>
-              <dd>2015年10月17日 下午 5:00</dd>
-              <dt>人数</dt>
-              <dd>35</dd>
-              <dt>套餐</dt>
-              <dd>套餐A (￥8000)</dd>
-              <dt>联系人</dt>
-              <dd>吴雪方</dd>
-              <dt>手机号码</dt>
-              <dd>13500000000</dd>
-              <dt>电子邮箱</dt>
-              <dd>wxf@hgboating.com</dd>
-            </dl>
-            <table class="table table-summary">
-              <caption>价格清单</caption>
-              <tr><th>项目</th><th>数量</th><th>价格</th></tr>
-              <tr><td>套餐A ￥8000</td><td>1</td><td>￥8000.00</td></tr>
-              <tr><td>额外人员 ￥200</td><td>10</td><td>￥2000.00</td></tr>
-              <tr><td>水上飞行 ￥2000</td><td>1</td><td>￥2000.00</td></tr>
-            </table>
-            <div class="text-right">
-              <h4>合计：￥14000.00</h4>
+  <div id="booking-confirm-modal" class="modal fade">
+    <div class="modal-table">
+      <div class="modal-table-cell">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">确认定单</h4>
             </div>
-            <div class="alert alert-warning text-right">
-              <label><input name="payway" type="checkbox" autocomplete="off"> 我已阅读并同意</label><a href="#" target="_blank">《海龟租船租赁协议》</a>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <div class="row">
-              <div class="col-xs-4 col-xs-offset-4">
-                <button type="button" class="btn btn-primary btn-block" data-dismiss="modal">{{ __('common.cancel') }}</button>
+            <div class="modal-body">
+              {% raw %}
+              <dl class="dl-horizontal">
+                <dt>预定船只</dt>
+                <dd>rainbow</dd>
+                <dt>船东</dt>
+                <dd>Mr.Shek</dd>
+                <dt>地点</dt>
+                <dd>香港 西贡码头</dd>
+                <dt>预定产品</dt>
+                <dd>日间船河</dd>
+                <dt>开始时间</dt>
+                <dd>{{ dateStart }}</dd>
+                <dt>结束时间</dt>
+                <dd>{{ dateEnd }}</dd>
+                <dt>人数</dt>
+                <dd>35</dd>
+                <dt>套餐</dt>
+                <dd>套餐A (￥8000)</dd>
+                <dt>联系人</dt>
+                <dd>{{ contact.name }}</dd>
+                <dt>手机号码</dt>
+                <dd>{{ contact.mobile }}</dd>
+                <dt>电子邮箱</dt>
+                <dd>{{ contact.email }}</dd>
+              </dl>
+              <table class="table table-summary">
+                <caption>价格清单</caption>
+                <tr><th>项目</th><th>数量</th><th>价格</th></tr>
+                <tr><td>套餐A ￥8000</td><td>1</td><td>￥8000.00</td></tr>
+                <tr><td>额外人员 ￥200</td><td>10</td><td>￥2000.00</td></tr>
+                <tr><td>水上飞行 ￥2000</td><td>1</td><td>￥2000.00</td></tr>
+              </table>
+              <div class="text-right">
+                <h4>合计：￥14000.00</h4>
               </div>
-              <div class="col-xs-4">
-                <a href="/booking/result" class="btn btn-danger btn-block">{{ __('common.submit') }}</a>
+              <div class="alert alert-warning text-right">
+                <label><input name="payway" type="checkbox" autocomplete="off"> 我已阅读并同意</label><a href="#" target="_blank">《海龟租船租赁协议》</a>
+              </div>
+              {% endraw %}
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <div class="col-xs-4 col-xs-offset-4">
+                  <button type="button" class="btn btn-primary btn-block" data-dismiss="modal">{{ __('common.cancel') }}</button>
+                </div>
+                <div class="col-xs-4">
+                  <a href="/booking/result" class="btn btn-danger btn-block">{{ __('common.submit') }}</a>
+                </div>
               </div>
             </div>
           </div>
@@ -440,7 +442,8 @@
 
 <script src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
 <script src="//cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.js"></script>
-<script src="//cdn.bootcss.com/fullcalendar/2.4.0/lang/{{ preset.locale }}.js"></script>
+<script src="//cdn.bootcss.com/fullcalendar/2.4.0/lang/{% if preset.locale == 'zh-cn' %}zh-cn{% elseif preset.locale == 'zh-hk' %}zh-tw{% elseif preset.locale == 'en' %}en-gb{% endif %}.js"></script>
+<script src="//cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
 <script>
   var selectedStart = false;
 
@@ -450,28 +453,30 @@
       tempEnd.hour(start.hour() + 1);
     }
 
-    $("#selectedTime-start").html(start.format("YYYY年MM月DD日 a h:mm"));
-    $("#selectedTime-end").html(tempEnd.format("YYYY年MM月DD日 a h:mm"));
+    $("#data-selected-date-start").val(start.format("YYYY-MM-DD HH:mm")).change();
+    $("#data-selected-date-end").val(tempEnd.format("YYYY-MM-DD HH:mm")).change();
+
+    $("#selectedTime-start").html(start.format("YYYY-MM-DD HH:mm"));
+    $("#selectedTime-end").html(tempEnd.format("YYYY-MM-DD HH:mm"));
   }
 
   $("#calendar").fullCalendar({
     contentHeight: "auto",
     timezone: "local",
-    lang: "zh-CN",
     header: {
       left: "title",
       right: "today"
     },
     eventLimit: 3,
-    eventLimitClick: "agendaDay",
-    allDayText: "节日",
-    minTime: "09:00:00",
-    maxTime: "18:00:00",
+    eventLimitClick: function(){return false},//"agendaDay",
+//    allDayText: "节日",
+    allDaySlot: false,
+    minTime: "{{ product.workingHours.start }}",
+    maxTime: "{{ product.workingHours.end }}",
     slotDuration: "01:00:00",
     slotLabelFormat: "HH:00",
 //    hiddenDays: [0,6],
     selectable: true,
-//    selectOverlap: false,
     unselectAuto: false,
     viewRender: function(view, element){
       if(view.name == "month"){
@@ -482,8 +487,6 @@
 
       $(".fc-toolbar .fc-button").addClass("btn btn-default btn-lg").removeClass("fc-state-default");
       $(".fc-toolbar .fc-button-group").addClass("btn-group");
-      $(".fc-prev-button").html('<span class="glyphicon glyphicon-menu-left"></span>');
-      $(".fc-next-button").html('<span class="glyphicon glyphicon-menu-right"></span>');
     },
     dayRender: function(date, cell){
       if(date < moment()){
@@ -548,32 +551,32 @@
     events:[
       {
         title: "已预定",
-        start: "2015-10-18T13:00",
-        end: "2015-10-18T14:00",
+        start: "2015-10-28T13:00",
+        end: "2015-10-28T14:00",
         allDay: false,
         backgroundColor: "#258ec7",
         borderColor: "#258ec7"
       },
       {
         title: "已预定",
-        start: "2015-10-18T15:00",
-        end: "2015-10-18T16:00",
+        start: "2015-10-28T15:00",
+        end: "2015-10-28T16:00",
         allDay: false,
         backgroundColor: "#258ec7",
         borderColor: "#258ec7"
       },
       {
         title: "已预定",
-        start: "2015-10-18T16:00",
-        end: "2015-10-18T17:00",
+        start: "2015-10-28T16:00",
+        end: "2015-10-28T17:00",
         allDay: false,
         backgroundColor: "#258ec7",
         borderColor: "#258ec7"
       },
       {
         title: "已预定",
-        start: "2015-10-18T10:00",
-        end: "2015-10-18T11:00",
+        start: "2015-10-28T10:00",
+        end: "2015-10-28T11:00",
         allDay: false,
         backgroundColor: "#258ec7",
         borderColor: "#258ec7"
@@ -610,8 +613,46 @@
     $("#calendar").fullCalendar("next");
   });
 
-  var packages = {{ product.packages|json|safe }};
-//  console.log(packages);
+  var today = moment();
+
+  var app = angular.module("booking", []);
+
+  app.controller("bookingController", function($scope){
+    $scope.packages = {{ product.packages|json|safe }};
+    $scope.dateStart = today.format("YYYY-MM-DD HH:mm");
+//    $scope.dateEnd = today.format("YYYY-MM-DD HH:mm");
+    $scope.numberOfPerson = 0;
+    $scope.contact = {
+      name: "",
+      mobile: "",
+      email: ""
+    };
+    $scope.togglePackage = function(p){
+      console.log("fire toggle");
+      console.log(p.name);
+    };
+  });
+
+  app.filter("santize", ["$sce", function($sce){
+    return function(htmlCode){
+      return $sce.trustAsHtml(htmlCode);
+    };
+  }]);
+
+  app.filter("availableDate", function(){
+    return function(items, date){
+      var selectedDate = moment(date, "YYYY-MM-DD HH:mm");
+
+      var result = [];
+      for(var i = 0; i < items.length; i++){
+        if(items[i].availableMonths[selectedDate.month()] && items[i].availableDays[selectedDate.day()]){
+          result.push(items[i]);
+        }
+      }
+
+      return result;
+    };
+  });
 
 </script>
 {% endblock %}

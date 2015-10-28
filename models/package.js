@@ -6,10 +6,11 @@ var mongoose = require('mongoose'),
 
 var PackageSchema = new Schema({
   name: String,
+  owner: {type: Schema.Types.ObjectId, ref: 'Owner'},
   summary: String,
   currency: String,
-  workingMonths: [],
-  workingDays: [],
+  availableMonths: [],
+  availableDays: [],
   baseCharge: Number,
   basePersons: Number,
   items: [],

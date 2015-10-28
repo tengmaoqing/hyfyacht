@@ -247,7 +247,7 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   padding: 10px 10px;
   width: 100%;
   background: #fff;
-  background: rgba(255, 255, 255, .8);
+  background: rgba(255, 255, 255, .9);
   font-size: 0;
 }
 

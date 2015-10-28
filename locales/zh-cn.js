@@ -37,7 +37,11 @@
     "entertainments": "活动",
     "extra": "其他",
     "capacity": "载客人数",
-    "packages": "套餐"
+    "packages": "套餐",
+    "hour": {
+      "one": "%d 小时",
+      "other": "%d 小时"
+    }
   },
   "error": {
     "login": {

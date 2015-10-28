@@ -37,7 +37,11 @@
     "entertainments": "Entertainments",
     "extra": "Extra",
     "capacity": "Capacity",
-    "packages": "Packages"
+    "packages": "Packages",
+    "hour": {
+      "one": "%d hour",
+      "other": "%d hours"
+    }
   },
   "error": {
     "login": {
