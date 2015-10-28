@@ -31,7 +31,7 @@
         <span class="glyphicon glyphicon-user"></span> {{ boat.owner.nickname }}
       </div>
       <div class="col-md-4 col-sm-12 col-xs-12">
-        <a href="#products" class="btn btn-danger">{{ __('boat.detail.instant_book') }}({{ __('boat.detail.from %s', '$' + boat.baseCharge) }})</a>
+        <a href="#products" class="btn btn-danger">{{ __('boat.detail.instant_book') }}({{ __('boat.detail.from %s', preset.generateCharge(boat.baseCharge, boat.currency)) }})</a>
       </div>
     </div>
     <hr class="hr-divider">
@@ -76,7 +76,7 @@
               <h4>{{ product.name }}</h4>
               <p>{{ product.summary }}</p>
               <div class="row">
-                <h3 class="col-xs-6 text-danger">￥{{ product.baseCharge }}</h3>
+                <h3 class="col-xs-6 text-danger">{{ preset.generateCharge(product.baseCharge, product.currency) }}</h3>
                 <p class="col-xs-6 text-right boat-product-learn">了解详情 <span class="glyphicon glyphicon-menu-right"></span></p>
               </div>
             </div>

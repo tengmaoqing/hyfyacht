@@ -24,7 +24,7 @@
           <h3>{{ product.name }}</h3>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
-          <h3 class="text-danger">￥{{ product.baseCharge }}</h3>
+          <h3 class="text-danger">{{ preset.generateCharge(product.baseCharge, product.currency) }}</h3>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <p>{{ product.summary }}</p>

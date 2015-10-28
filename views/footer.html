@@ -24,13 +24,13 @@
             <section>
               <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  ￥ CNY <span class="caret"></span>
+                  {% if preset.currency == 'hkd' %}＄ HKD
+                  {% else %}￥ CNY
+                  {% endif %}<span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu disabled">
-                  <li><a href="#">￥ CNY</a></li>
-                  <li><a href="#">＄ HKD</a></li>
-                  {{ menu.localeItem('￥ CNY', preset.getUrlWithQuery('curr','cny'), preset.locale == 'en') }}
-                  {{ menu.localeItem('＄ HKD', preset.getUrlWithQuery('curr','hkd'), preset.locale == 'en') }}
+                  {{ menu.localeItem('￥ CNY', preset.getUrlWithQuery('curr','cny'), preset.currency == 'cny') }}
+                  {{ menu.localeItem('＄ HKD', preset.getUrlWithQuery('curr','hkd'), preset.currency == 'hkd') }}
                 </ul>
               </div>
             </section>

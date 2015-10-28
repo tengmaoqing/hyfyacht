@@ -24,7 +24,7 @@ exports.getBoatByCustomLink = function(req, res, next){
 };
 
 exports.getBoat = function(req, res, next){
-  Boat.findOne({_id:tools.decode(req.params.id)}).populate('owner', 'nickname').populate('products', '_id name summary baseCharge photo').exec(function(err, boat){
+  Boat.findOne({_id:tools.decode(req.params.id)}).populate('owner', 'nickname').populate('products', '_id name summary baseCharge currency photo').exec(function(err, boat){
     if(err){
       err.status = 400;
       return next(err);
@@ -127,7 +127,7 @@ exports.getBoats = function(req, res, next){
   Boat.paginate(query, {
     page: page,
     limit: 12,
-    columns: '_id name type baseCharge location photos'
+    columns: '_id name type baseCharge currency location photos'
   },function(err, boats, pageCount, itemCount){
     if(err){
       err.status = 400;

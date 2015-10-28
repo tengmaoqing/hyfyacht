@@ -2,7 +2,6 @@ var express = require('express');
 var URI = require('urijs');
 var util = require('util');
 var path = require('path');
-//var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
@@ -61,9 +60,6 @@ i18n.configure({
 
 app.use(i18n.init);
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator());
@@ -75,10 +71,6 @@ if(config.staticMode === 'express') {
 
 app.use(expressSession({
   secret: config.sessionSecret,
-  //cookie: {
-  //  maxAge: 10*60*1000,
-  //  httpOnly: true
-  //},
   store: new mongoStore({
     mongooseConnection: mongoose.connection
   }),
@@ -133,9 +125,19 @@ app.use(function(req, res, next){
 
 //set currency
 app.use(function(req, res, next){
-  if(req.query.curr){
-    res.cookie('client_currency', req.query.curr, config.unsignedCookieOption);
-  }
+  var currency = req.query.curr || req.cookies['client_currency'] || ( preset.locale == 'zh-cn' ? 'cny' : 'hkd');
+
+  currency = currency == 'hkd' ? 'hkd' : 'cny';
+  var prefix = currency == 'hkd' ? '$' : '￥';
+
+  res.cookie('client_currency', currency, config.unsignedCookieOption);
+
+  util._extend(preset, {
+    currency: currency,
+    generateCharge: function(charge, baseCurrency){
+      return prefix + (charge * config.currency[currency] / config.currency[baseCurrency]).toFixed(2);
+    }
+  });
 
   next();
 });
