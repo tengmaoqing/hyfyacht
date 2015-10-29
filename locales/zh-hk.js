@@ -15,7 +15,7 @@
     "logout": "登出",
     "signup": "註冊",
     "forgotpass": "忘記密碼",
-    "mobile": "手提电话",
+    "mobile": "手提電話",
     "username": "用戶名",
     "password": "密碼",
     "confirmPassword": "確認密碼",
@@ -88,14 +88,8 @@
       "entertainments": "娛樂設施",
       "extras": "其他",
       "products": "可預訂的產品",
-      "duration": "遊玩時間",
-      "workinghours": "可選時間段",
-      "info": "基本信息",
-      "desc": "產品介紹"
+      "learn": "了解詳情"
     }
-  },
-  "booking": {
-    "submit": "確認提交"
   },
   "owner": {
     "nav": {
@@ -103,6 +97,42 @@
       "booking": "定單管理",
       "boat": "船隻管理"
     }
+  },
+  "product": {
+    "section": {
+      "info": "基本信息",
+      "booking": "預定",
+      "desc": "產品詳情"
+    },
+    "info": {
+      "duration": "遊玩時間",
+      "workinghours": "可選時段"
+    },
+    "booking": {
+      "chooseTime": "選擇時間",
+      "start": "開始時間",
+      "end": "結束時間",
+      "choosePackage": "選擇套餐",
+      "numberOfPeople": "人數",
+      "package": {
+        "items": "套餐選項",
+        "check": "選擇",
+        "item": "項目(價錢)",
+        "quantity": "數量",
+        "subtotal": "小計",
+        "base": "套餐基本",
+        "extra": "額外人員",
+        "total": "合計"
+      },
+      "contact": "聯繫方式",
+      "name": "姓名",
+      "mobile": "手提電話",
+      "email": "E-mail",
+      "book": "預定"
+    }
+  },
+  "calendar":{
+    "selectdate": "選擇日期"
   },
   "db": {
     "location": {

@@ -88,14 +88,8 @@
       "entertainments": "Entertainments",
       "extras": "Extras",
       "products": "Products",
-      "duration": "Duration",
-      "workinghours": "Working hours",
-      "info": "Info",
-      "desc": "Description"
+      "learn": "Learn more"
     }
-  },
-  "booking": {
-    "submit": "Submit"
   },
   "owner": {
     "nav": {
@@ -103,6 +97,42 @@
       "booking": "Booking",
       "boat": "Boats"
     }
+  },
+  "product": {
+    "section": {
+      "info": "Info",
+      "booking": "Booking",
+      "desc": "Description"
+    },
+    "info": {
+      "duration": "Duration",
+      "workinghours": "Working hours"
+    },
+    "booking": {
+      "chooseTime": "Choose Time",
+      "start": "Start",
+      "end": "End",
+      "choosePackage": "Choose a package",
+      "numberOfPeople": "Number of people",
+      "package": {
+        "items": "Package items",
+        "check": "Check",
+        "item": "Item(Price)",
+        "quantity": "Quantity",
+        "subtotal": "Subtotal",
+        "base": "Base",
+        "extra": "Extra people",
+        "total": "Total"
+      },
+      "contact": "Contact",
+      "name": "Name",
+      "mobile": "Mobile",
+      "email": "Email",
+      "book": "Book"
+    }
+  },
+  "calendar":{
+    "selectdate": "Month"
   },
   "db": {
     "location": {

@@ -29,9 +29,9 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <p>{{ product.summary }}</p>
           <dl class="dl-horizontal">
-            <dt><span class="glyphicon glyphicon-time"></span> {{ __('boat.detail.duration') }}</dt>
+            <dt><span class="glyphicon glyphicon-time"></span> {{ __('product.info.duration') }}</dt>
             <dd>{{ __n('common.hour', 'common.hour', product.duration) }}</dd>
-            <dt><span class="glyphicon glyphicon-dashboard"></span> {{ __('boat.detail.workinghours') }}</dt>
+            <dt><span class="glyphicon glyphicon-dashboard"></span> {{ __('product.info.workinghours') }}</dt>
             <dd>{{ product.workingHours.start }} - {{ product.workingHours.end }}</dd>
           </dl>
         </div>
@@ -39,13 +39,13 @@
     </div>
     <div id="product-booking" class="thumbnail">
       <div class="caption">
-        <h3>预定</h3>
+        <h3>{{ __('product.section.booking') }}</h3>
         <hr class="hr-divider">
         <div id="product-booking-date" class="product-booking-container">
-          <p><strong>选择时间</strong></p>
+          <p><strong>{{ __('product.booking.chooseTime') }}</strong></p>
           <div id="calendar"></div>
           <div class="calendar-controller text-right">
-            <button id="calendar-month" type="button" class="btn btn-default invisible">选择日期</button>
+            <button id="calendar-month" type="button" class="btn btn-default invisible">{{ __('calendar.month') }}</button>
             <div class="btn-group">
               <button id="calendar-prev" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button>
               <button id="calendar-next" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button>
@@ -53,40 +53,40 @@
           </div>
           <ul class="list-group">
             <li class="list-group-item">
-              <label>开始时间</label>
+              <label>{{ __('product.booking.start') }}</label>
               <p id="selectedTime-start"></p>
             </li>
             <li class="list-group-item">
-              <label>结束时间</label>
+              <label>{{ __('product.booking.end') }}</label>
               <p id="selectedTime-end"></p>
             </li>
           </ul>
         </div>
-        <div id="product-booking-person" class="product-booking-container">
-          <p><strong>输入出游人数</strong></p>
-          <input type="number" class="form-control" placeholder="出游人数" data-ng-model="numberOfPerson">
-        </div>
         <div id="product-booking-package" class="product-booking-container">
-          <p><strong>选择套餐</strong></p>
+          <p><strong>{{ __('product.booking.choosePackage') }}</strong></p>
           <div class="panel-group" id="package-accordion" role="tablist">
             {% raw %}
-            <input id="data-selected-date-start" class="invisible navbar-fixed-bottom" type="text" data-ng-model="dateStart">
+            <input id="data-selected-date-start" class="invisible navbar-fixed-bottom" type="text" data-ng-model="dateStart" data-ng-change="togglePackage(-1)">
             <input id="data-selected-date-end" class="invisible navbar-fixed-bottom" type="text" data-ng-model="dateEnd">
-            <div class="panel panel-custom" data-ng-repeat="package in packages | availableDate:dateStart">
-              <div class="panel-heading" role="tab" id="package-heading-{{ $index+1 }}">
+            <div class="panel panel-custom" data-ng-repeat="package in packages" data-ng-if="checkAvailable(package)">
+              <div class="panel-heading" role="tab" id="package-heading-{{ $index }}">
                 <h4 class="panel-title relative-container">
-                  <div class="btn-group btn-group-sm checkboxs" data-toggle="buttons">
-                    <label class="btn btn-default">
+                  <div class="btn-group btn-group-sm checkboxs" data-toggle="buttons" data-ng-click="togglePackage($index)">
+                    <label class="btn btn-default" data-ng-if="$index != currPackage">
                       <span class="glyphicon glyphicon-unchecked"></span>
-                      <input type="checkbox" autocomplete="off" value="option1">
+                      <input type="checkbox" autocomplete="off" value="option1" >
+                    </label>
+                    <label class="btn btn-primary" data-ng-if="$index == currPackage">
+                      <span class="glyphicon glyphicon-ok"></span>
+                      <input type="checkbox" autocomplete="off" value="option1" >
                     </label>
                   </div> {{ package.name }}
-                  <a class="absolut-right-top more" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index+1 }}" aria-expanded="true" aria-controls="package-collapse-1">
+                  <a class="absolut-right-top more" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index }}" aria-expanded="true" aria-controls="package-collapse-1">
                     <span class="glyphicon glyphicon-option-horizontal"></span>
                   </a>
                 </h4>
               </div>
-              <div id="package-collapse-{{ $index+1 }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="package-heading-1">
+              <div id="package-collapse-{{ $index }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="package-heading-1">
                 <div class="panel-body" data-ng-bind-html="package.summary | santize">
                 </div>
               </div>
@@ -94,19 +94,23 @@
             {% endraw %}
           </div>
         </div>
-        <div id="product-booking-items" class="product-booking-container">
-          <p><strong>套餐选项</strong></p>
+        <div id="product-booking-person" class="product-booking-container">
+          <p><strong>{{ __('product.booking.numberOfPeople') }}</strong></p>
+          <input type="number" class="form-control" data-ng-model="numberOfPersons">
+        </div>
+        <div id="product-booking-items" class="product-booking-container" data-ng-if="currPackage > -1">
+          <p><strong>{{ __('product.booking.package.items') }}</strong></p>
           <ul class="list-group list-table">
             <li class="list-group-item">
               <div class="row">
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><strong>选择</strong></div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><strong>{{ __('product.booking.package.check') }}</strong></div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
                   <div class="row">
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>项目</strong></div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right"><strong>数量</strong></div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{{ __('product.booking.package.item') }}</strong></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right"><strong>{{ __('product.booking.package.quantity') }}</strong></div>
                   </div>
                 </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right"><strong>价格</strong></div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right"><strong>{{ __('product.booking.package.subtotal') }}</strong></div>
               </div>
             </li>
             <li class="list-group-item">
@@ -121,16 +125,16 @@
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
                   <div class="row">
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>套餐A ￥8000</strong></div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{{ __('product.booking.package.base') }} {% raw %}({{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}){% endraw %}</strong></div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>1</strong></div>
                   </div>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
-                  <strong>￥8000.00</strong>
+                  <strong>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}{% endraw %}</strong>
                 </div>
               </div>
             </li>
-            <li class="list-group-item">
+            <li class="list-group-item" data-ng-if="(numberOfPersons - packages[currPackage].basePersons) > 0">
               <div class="row">
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                   <div class="btn-group btn-group-sm" data-toggle="buttons">
@@ -142,89 +146,85 @@
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
                   <div class="row">
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>额外人员 ￥200</strong></div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>10</strong></div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{{ __('product.booking.package.extra') }} ({% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge)) }}{% endraw %})</strong></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>{% raw %}{{ numberOfPersons - packages[currPackage].basePersons }}{% endraw %}</strong></div>
                   </div>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
-                  <strong>￥2000.00</strong>
+                  <strong>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge) * (numberOfPersons - packages[currPackage].basePersons)) }}{% endraw %}</strong>
                 </div>
               </div>
             </li>
-            <li class="list-group-item">
+            {% raw %}
+            <li class="list-group-item" data-ng-repeat="item in packages[currPackage].items">
               <div class="row">
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                  <div class="btn-group btn-group-sm checkboxs" data-toggle="buttons">
-                    <label class="btn btn-default active">
-                      <span class="glyphicon glyphicon-ok"></span>
-                      <input type="checkbox" autocomplete="off" value="option1">
-                    </label>
-                  </div>
-                </div>
-                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
-                  <div class="row">
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>水上飞行 ￥2000</strong></div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>1</strong></div>
-                  </div>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
-                  <strong>￥2000.00</strong>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                  <div class="btn-group btn-group-sm checkboxs" data-toggle="buttons">
-                    <label class="btn btn-default">
+                  <div class="btn-group btn-group-sm" data-toggle="buttons" data-ng-if="item.type == 'single' " data-ng-click="toggleItem(item)">
+                    <label class="btn btn-default" data-ng-if="!selectedItems[item.name]">
                       <span class="glyphicon glyphicon-unchecked"></span>
                       <input type="checkbox" autocomplete="off" value="option1">
                     </label>
+                    <label class="btn btn-primary" data-ng-if="selectedItems[item.name]">
+                      <span class="glyphicon glyphicon-ok"></span>
+                      <input type="checkbox" autocomplete="off" value="option1">
+                    </label>
+                  </div>
+                  <div class="btn-group btn-group-sm" data-toggle="buttons" data-ng-if="item.type == 'multi' ">
+                    <label class="btn btn-default disabled" data-ng-if="!selectedItems[item.name]">
+                      <span class="glyphicon glyphicon-unchecked"></span>
+                      <input type="checkbox" autocomplete="off" value="option1">
+                    </label>
+                    <label class="btn btn-primary disabled" data-ng-if="selectedItems[item.name]">
+                      <span class="glyphicon glyphicon-ok"></span>
+                      <input type="checkbox" autocomplete="off" value="option1">
+                    </label>
                   </div>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
                   <div class="row">
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>啤酒 ￥20</strong></div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }})</strong></div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right">
-                      <input type="number" class="form-control input-small" placeholder="0" max="50" min="0">
+                      <strong data-ng-if="item.type == 'single'">{{ selectedItems[item.name] ? selectedItems[item.name].amount : 0 }}</strong>
+                      <input type="number" class="form-control input-small" placeholder="0" data-ng-if="item.type == 'multi'" data-ng-model="inputValue[item.name]" data-ng-change="inputItem(item)">
                     </div>
                   </div>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
-                  <strong>￥0.00</strong>
+                  <strong>{{ selectedItems[item.name] ? displayAmount(generateCharge(selectedItems[item.name].charge) * selectedItems[item.name].amount) : displayAmount(0) }}</strong>
                 </div>
               </div>
             </li>
+            {% endraw %}
             <li class="list-group-item">
               <div class="row">
                 <div class="col-lg-10 col-md-10 col-sm-10 col-xs-7 text-right">
-                  <h4>合计</h4>
+                  <h4>{{ __('product.booking.package.total') }}</h4>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
-                  <h4>￥14000.00</h4>
+                  <h4>{% raw %}{{ displayAmount(getTotal()) }}{% endraw %}</h4>
                 </div>
               </div>
             </li>
           </ul>
         </div>
         <div id="product-booking-contact" class="product-booking-container">
-          <p><strong>联系信息</strong></p>
+          <p><strong>{{ __('product.booking.contact') }}</strong></p>
           <div>
-            <label>联系人</label>
+            <label>{{ __('product.booking.name') }}</label>
             <div class="input-group">
               <span class="input-group-addon">
                 <span class="glyphicon glyphicon-user"></span>
               </span>
               <input type="text" class="form-control" placeholder="请输入联系人姓名" data-ng-model="contact.name">
             </div>
-            <label>手机号码</label>
+            <label>{{ __('product.booking.mobile') }}</label>
             <div class="input-group">
               <span class="input-group-addon">
                 <span class="glyphicon glyphicon-phone"></span>
               </span>
               <input type="text" class="form-control" placeholder="请输入联系人手机号码" data-ng-model="contact.mobile">
             </div>
-            <label>电子邮箱</label>
+            <label>{{ __('product.booking.email') }}</label>
             <div class="input-group">
               <span class="input-group-addon">
                 <span class="glyphicon glyphicon-envelope"></span>
@@ -235,7 +235,7 @@
         </div>
         <div class="row">
           <div class="col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10 col-sm-4 col-sm-offset-8 col-xs-6 col-xs-offset-6">
-            <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#booking-confirm-modal">{{ __('booking.submit') }}</button>
+            <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#booking-confirm-modal">{{ __('product.booking.book') }}</button>
           </div>
         </div>
       </div>
@@ -244,90 +244,7 @@
       <div class="caption">
         <h3>产品详情</h3>
         <hr class="hr-divider">
-        <p><strong>套餐介绍：</strong></p>
-        <table class="table">
-          <tr><th>套餐</th><th>内容</th><th>价格</th></tr>
-          <tr>
-            <td>平日套餐A</td>
-            <td>
-              包含25人的午餐以及水上活动, 25人之后每位￥200<br><br>
-              水上活动：滑水、香蕉船<br><br>
-              午餐 － 25人基本，餐单如下：<br><br>
-              水蟹粥<br>
-              白灼虾<br>
-              。。。<br>
-              <strong>额外项目</strong><br>
-              额外人员￥200/位<br>
-              水上飞行￥2000<br>
-              。。。<br>
-            </td>
-            <td>￥8000</td>
-          </tr>
-          <tr>
-            <td>平日套餐B</td>
-            <td>
-              包含25人的午餐以及水上活动, 25人之后每位￥200<br><br>
-              水上活动：滑水、香蕉船<br><br>
-              午餐 － 25人基本，餐单如下：<br><br>
-              水蟹粥<br>
-              白灼虾<br>
-              。。。<br>
-              <strong>额外项目</strong><br>
-              额外人员￥200/位<br>
-              水上飞行￥2000<br>
-              。。。<br>
-            </td>
-            <td>￥12000</td>
-          </tr>
-          <tr>
-            <td>周末及假日套餐</td>
-            <td>
-              包含25人的午餐以及水上活动, 25人之后每位￥200<br><br>
-              水上活动：滑水、香蕉船<br><br>
-              午餐 － 25人基本，餐单如下：<br><br>
-              水蟹粥<br>
-              白灼虾<br>
-              。。。<br>
-              <strong>额外项目</strong><br>
-              额外人员￥200/位<br>
-              水上飞行￥2000<br>
-              。。。<br>
-            </td>
-            <td>￥16000</td>
-          </tr>
-        </table>
-        <p><strong>行程介绍：</strong></p>
-        <p>9：30分到达码头，登船。开船时间约40分钟至1小时，视当天天气情况来安排港湾。伙伴们若已经选好了目的地，就向目的地出发！</p>
-        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015104223555596.jpg">
-        <p>到达海湾，先看看美丽的海湾吧！</p>
-        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/20156241333179.jpg">
-        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/201510422376210.jpg">
-        <p>伙伴们，开始更衣啦、跳水、滑梯、水上大剧拉开帷幕！！！</p>
-        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523202238118.jpg">
-        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015523202321739.jpg">
-        <p>水上蹦蹦床！</p>
-        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/201510422385561.jpg">
-        <p>刺激的水上娱乐 香蕉船！大人小孩的最爱，落水才是真英雄，哈！</p>
-        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015104224020644.jpg">
-        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015104224039700.jpg">
-        <p>更刺激的水上娱乐 水上飞碟！真的可以飞哦，只要你够轻：）</p>
-        <img class="img-responsive" src="http://goseatrip.com/UpLoadFile/2015051510472373499.jpg">
-        <p>刺激的有点技巧的水上运动 滑水！有点技巧，你要挑战吗？</p>
-        <img class="img-responsive" src="http://goseatrip.com/UpLoadFile/2015051511224473499.jpg">
-        <p>也可以上沙滩，玩沙、及愉快的沙滩排球！</p>
-        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015104223846820.jpg">
-        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/20156241360982.jpg">
-        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/20158131620642.jpg">
-        <p>丰盛的午餐！</p>
-        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015104223938338.jpg">
-        <p>午餐结束，继续各种HAPPY！！！</p>
-        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/201553116403285.jpg">
-        <p>晚上5点左右，冲水、更衣、返航！</p>
-        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/201581316142936.jpg">
-        <img class="img-responsive" src="http://www.goseatrip.com/EditorV8/UploadUser/201586102839477.jpg">
-        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/201562414512987.jpg">
-        <img class="img-responsive" src="http://goseatrip.com/EditorV8/UploadUser/2015531163911866.jpg">
-        <p>约6点左右到达码头，开心的一天太短暂，我们下次约起！！！</p>
+        {% autoescape %}{{ product.description }}{% endautoescape %}
       </div>
     </div>
     <div id="product-include" class="thumbnail">
@@ -358,9 +275,9 @@
   <div class="navbar-fixed-bottom fix-container">
     <div class="container text-center">
         <ul class="nav nav-pills">
-          <li role="presentation" class="hidden-xs active"><a href="#product-base">基本信息</a></li>
-          <li role="presentation"><a href="#product-booking">预定</a></li>
-          <li role="presentation"><a href="#product-detail">产品详情</a></li>
+          <li role="presentation" class="hidden-xs active"><a href="#product-base">{{ __('product.section.info') }}</a></li>
+          <li role="presentation"><a href="#product-booking">{{ __('product.section.booking') }}</a></li>
+          <li role="presentation"><a href="#product-detail">{{ __('product.section.desc') }}</a></li>
           <li role="presentation" class="hidden-xs"><a href="#product-include">费用包含</a></li>
           <li role="presentation" class="hidden-xs"><a href="#product-notinclude">费用不含</a></li>
           <li role="presentation"><a href="#product-notice">预定须知</a></li>
@@ -392,9 +309,9 @@
                 <dt>结束时间</dt>
                 <dd>{{ dateEnd }}</dd>
                 <dt>人数</dt>
-                <dd>35</dd>
+                <dd>{{ numberOfPersons }}</dd>
                 <dt>套餐</dt>
-                <dd>套餐A (￥8000)</dd>
+                <dd>{{ packages[currPackage].name }} ({{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }})</dd>
                 <dt>联系人</dt>
                 <dd>{{ contact.name }}</dd>
                 <dt>手机号码</dt>
@@ -404,13 +321,13 @@
               </dl>
               <table class="table table-summary">
                 <caption>价格清单</caption>
-                <tr><th>项目</th><th>数量</th><th>价格</th></tr>
-                <tr><td>套餐A ￥8000</td><td>1</td><td>￥8000.00</td></tr>
-                <tr><td>额外人员 ￥200</td><td>10</td><td>￥2000.00</td></tr>
-                <tr><td>水上飞行 ￥2000</td><td>1</td><td>￥2000.00</td></tr>
+                <tr><th>项目</th><th>数量</th><th>小计</th></tr>
+                <tr><td>套餐基本 ({{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }})</td><td>1</td><td>{{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}</td></tr>
+                <tr data-ng-if="(numberOfPersons - packages[currPackage].basePersons) > 0"><td>额外人员 ({{ displayAmount(generateCharge(packages[currPackage].extraCharge)) }})</td><td>{{ numberOfPersons - packages[currPackage].basePersons }}</td><td>{{ displayAmount(generateCharge(packages[currPackage].extraCharge) * (numberOfPersons - packages[currPackage].basePersons)) }}</td></tr>
+                <tr data-ng-repeat="item in selectedItems"><td>{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }}) </td><td>{{ item.amount }}</td><td>{{ displayAmount(generateCharge(item.charge) * item.amount) }}</td></tr>
               </table>
               <div class="text-right">
-                <h4>合计：￥14000.00</h4>
+                <h4>合计：{{ displayAmount(getTotal()) }}</h4>
               </div>
               <div class="alert alert-warning text-right">
                 <label><input name="payway" type="checkbox" autocomplete="off"> 我已阅读并同意</label><a href="#" target="_blank">《海龟租船租赁协议》</a>
@@ -614,22 +531,95 @@
   });
 
   var today = moment();
+  var clientCurrency = "{{ preset.currency|safe }}";
+  var currency = {{ preset.configCurrency|json|safe }};
 
   var app = angular.module("booking", []);
 
   app.controller("bookingController", function($scope){
     $scope.packages = {{ product.packages|json|safe }};
+    $scope.baseCurrency = "{{ product.currency|safe }}";
+    $scope.prefix = clientCurrency == 'hkd' ? '$' : '￥';
     $scope.dateStart = today.format("YYYY-MM-DD HH:mm");
 //    $scope.dateEnd = today.format("YYYY-MM-DD HH:mm");
-    $scope.numberOfPerson = 0;
+    $scope.numberOfPersons = 0;
     $scope.contact = {
       name: "",
       mobile: "",
       email: ""
     };
-    $scope.togglePackage = function(p){
-      console.log("fire toggle");
-      console.log(p.name);
+    $scope.currPackage = -1;
+    $scope.selectedItems = {};
+    $scope.inputValue = {};
+
+    $scope.generateCharge = function(charge){
+      return parseFloat((charge * currency[clientCurrency] / currency[$scope.baseCurrency] / 100).toFixed(2));
+    }
+
+    $scope.displayAmount = function(amount){
+      return $scope.prefix + amount.toFixed(2);
+    };
+
+    $scope.togglePackage = function(index){
+      $scope.currPackage == index ? $scope.currPackage = -1 : $scope.currPackage = index;
+      $scope.selectedItems = {};
+    };
+
+    $scope.checkAvailable = function(package){
+      var selectedDate = moment($scope.dateStart, "YYYY-MM-DD HH:mm");
+
+      if(package.availableMonths[selectedDate.month()] && package.availableDays[selectedDate.day()]){
+        return true;
+      }
+
+      return false;
+    };
+
+    $scope.toggleItem = function(item){
+      if($scope.selectedItems[item.name]){
+        delete $scope.selectedItems[item.name];
+      }else{
+        $scope.selectedItems[item.name] = {
+          name: item.name,
+          charge: item.charge,
+          amount: 1
+        };
+      }
+    };
+
+    $scope.inputItem = function(item){
+      var value = $scope.inputValue[item.name];
+
+      if(!value){
+        delete $scope.selectedItems[item.name];
+      }else{
+        $scope.selectedItems[item.name] = {
+          name: item.name,
+          charge: item.charge,
+          amount: value
+        };
+      }
+    };
+
+    $scope.getTotal = function(){
+      var package = $scope.packages[$scope.currPackage];
+
+      if(!package){
+        return 0;
+      }
+
+      var extraPersons = $scope.numberOfPersons - package.basePersons;
+      extraPersons = extraPersons < 0 ? 0 : extraPersons;
+
+      var itemsAmount = 0;
+
+      for(var item in $scope.selectedItems){
+        if($scope.selectedItems.hasOwnProperty(item)){
+          itemsAmount += $scope.generateCharge($scope.selectedItems[item].charge) * $scope.selectedItems[item].amount;
+        }
+      }
+
+      return $scope.generateCharge(package.baseCharge) + $scope.generateCharge(package.extraCharge) * extraPersons + itemsAmount;
     };
   });
 
@@ -638,21 +628,6 @@
       return $sce.trustAsHtml(htmlCode);
     };
   }]);
-
-  app.filter("availableDate", function(){
-    return function(items, date){
-      var selectedDate = moment(date, "YYYY-MM-DD HH:mm");
-
-      var result = [];
-      for(var i = 0; i < items.length; i++){
-        if(items[i].availableMonths[selectedDate.month()] && items[i].availableDays[selectedDate.day()]){
-          result.push(items[i]);
-        }
-      }
-
-      return result;
-    };
-  });
 
 </script>
 {% endblock %}

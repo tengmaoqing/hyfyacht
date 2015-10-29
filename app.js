@@ -134,8 +134,9 @@ app.use(function(req, res, next){
 
   util._extend(preset, {
     currency: currency,
+    configCurrency: config.currency,
     generateCharge: function(charge, baseCurrency){
-      return prefix + (charge * config.currency[currency] / config.currency[baseCurrency]).toFixed(2);
+      return prefix + (charge * config.currency[currency] / config.currency[baseCurrency] / 100).toFixed(2);
     }
   });
 

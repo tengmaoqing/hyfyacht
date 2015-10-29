@@ -88,14 +88,8 @@
       "entertainments": "娱乐设施",
       "extras": "其他",
       "products": "可预定产品",
-      "duration": "游玩时间",
-      "workinghours": "可选时间段",
-      "info": "基本信息",
-      "desc": "产品介绍"
+      "learn": "了解详情"
     }
-  },
-  "booking": {
-    "submit": "提交预定"
   },
   "owner": {
     "nav": {
@@ -103,6 +97,42 @@
       "booking": "定单管理",
       "boat": "船只管理"
     }
+  },
+  "product": {
+    "section": {
+      "info": "基本信息",
+      "booking": "预定",
+      "desc": "产品详情"
+    },
+    "info": {
+      "duration": "游玩时间",
+      "workinghours": "可选时段"
+    },
+    "booking": {
+      "chooseTime": "选择时间",
+      "start": "开始时间",
+      "end": "结束时间",
+      "choosePackage": "选择套餐",
+      "numberOfPeople": "人数",
+      "package": {
+        "items": "套餐选项",
+        "check": "选择",
+        "item": "项目(价格)",
+        "quantity": "数量",
+        "subtotal": "小计",
+        "base": "套餐基本",
+        "extra": "额外人员",
+        "total": "总计"
+      },
+      "contact": "联系方式",
+      "name": "姓名",
+      "mobile": "手机号码",
+      "email": "电子邮件",
+      "book": "预定"
+    }
+  },
+  "calendar":{
+    "selectdate": "选择日期"
   },
   "db": {
     "location": {

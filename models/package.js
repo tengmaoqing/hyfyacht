@@ -12,6 +12,7 @@ var PackageSchema = new Schema({
   availableMonths: [],
   availableDays: [],
   baseCharge: Number,
+  extraCharge: Number,
   basePersons: Number,
   items: [],
   boats: [{type: Schema.Types.ObjectId, ref: 'Boat'}]
