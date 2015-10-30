@@ -16,8 +16,6 @@ var swig = require('swig');
 //config
 var config = require('./config');
 
-var tools = require('./tools');
-
 //routes
 var routes = require('./routes/index');
 var boat = require('./routes/boat');
@@ -114,7 +112,6 @@ app.use(function(req, res, next){
     originalUrl: req.originalUrl,
     username: username,
     locale: req.getLocale(),
-    code: tools.code,
     getUrlWithQuery: function(key, value){
       return URI(req.originalUrl).setQuery(key, value).toString();
     }

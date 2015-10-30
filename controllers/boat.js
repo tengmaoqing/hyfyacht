@@ -4,7 +4,6 @@
 var Boat = require('../models/boat');
 var Owner = require('../models/owner');
 var Product = require('../models/product');
-var tools = require('../tools');
 
 exports.getBoatByCustomLink = function(req, res, next){
   Boat.findOne({customLink:req.params.link}).populate('owner', 'nickname').exec(function(err, boat){
@@ -24,7 +23,7 @@ exports.getBoatByCustomLink = function(req, res, next){
 };
 
 exports.getBoat = function(req, res, next){
-  Boat.findOne({_id:tools.decode(req.params.id)}).populate('owner', 'nickname').populate('products', '_id name summary baseCharge currency photo').exec(function(err, boat){
+  Boat.findOne({_id:req.params.id}).populate('owner', 'nickname').populate('products', '_id name summary baseCharge currency photo').exec(function(err, boat){
     if(err){
       err.status = 400;
       return next(err);

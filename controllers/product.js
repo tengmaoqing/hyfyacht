@@ -6,12 +6,11 @@ var Boat = require('../models/boat');
 var Owner = require('../models/owner');
 var Product = require('../models/product');
 var Package = require('../models/package');
-var tools = require('../tools');
 
 exports.getProduct = function(req, res, next){
-  var boatId = tools.decode(req.params.boat_id);
+  var boatId = req.params.boat_id;
 
-  Product.findOne({_id:tools.decode(req.params.id)}).populate({
+  Product.findOne({_id:req.params.id}).populate({
     path: 'packages',
     select: '_id name summary currency baseCharge basePersons extraCharge items availableMonths availableDays',
     match: {

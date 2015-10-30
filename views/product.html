@@ -11,12 +11,12 @@
 {% include './nav.html' %}
 
 <div class="columns-sm" data-ng-app="booking" data-ng-controller="bookingController">
-  <form name="booking" novalidate>
+  <form name="booking" method="post" novalidate>
     <input type="hidden" name="_csrf" value="{{ _csrf }}">
     <div class="container">
       <ol class="breadcrumb">
         <li><a href="/">{{ __('nav.home') }}</a></li>
-        <li><a href="/boat/{{ preset.code(boat.id) }}/{{ boat.name }}">{{ boat.name }}</a></li>
+        <li><a href="/boat/{{ boat.id }}/{{ boat.name }}">{{ boat.name }}</a></li>
         <li class="active">{{ product.name }}</li>
       </ol>
       <div id="product-base" class="thumbnail">
@@ -102,7 +102,7 @@
             <div class="alert alert-danger" data-ng-show="booking.numberOfPersons.$dirty && booking.numberOfPersons.$invalid">
               <ul class="list-layout">
                 <li data-ng-show="booking.numberOfPersons.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.required') }}</li>
-                <li data-ng-show="booking.numberOfPersons.$error.min || booking.numberOfPersons.$error.max"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.outOfRange') }}</span>
+                <li data-ng-show="booking.numberOfPersons.$error.min || booking.numberOfPersons.$error.max"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.outOfRange') }}</li>
                 <li data-ng-show="booking.numberOfPersons.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.invaild') }}</li>
               </ul>
             </div>
@@ -259,17 +259,19 @@
               </div>
             </div>
           </div>
-          <div class="alert alert-danger" data-ng-show="booking.$invalid && submitted">
-            <ul class="list-layout">
-              <li data-ng-show="booking.dateEnd.$invalid"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.time') }}</li>
-              <li data-ng-show="booking.currPackage.$error.min"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.package') }}</li>
-              <li data-ng-show="booking.numberOfPersons.$invalid"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.numberOfPeople') }}</li>
-              <li data-ng-show="booking.contact.$invalid || booking.mobile.$invalid || booking.email.$invalid"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.contact') }}</li>
-            </ul>
-          </div>
-          <div class="row">
-            <div class="col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10 col-sm-4 col-sm-offset-8 col-xs-6 col-xs-offset-6">
-              <button class="btn btn-danger btn-block" data-ng-click="validate()">{{ __('product.booking.book') }}</button>
+          <div class="product-booking-container">
+            <div class="alert alert-danger" data-ng-show="booking.$invalid && submitted">
+              <ul class="list-layout">
+                <li data-ng-show="booking.dateEnd.$invalid"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.time') }}</li>
+                <li data-ng-show="booking.currPackage.$error.min"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.package') }}</li>
+                <li data-ng-show="booking.numberOfPersons.$invalid"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.numberOfPeople') }}</li>
+                <li data-ng-show="booking.contact.$invalid || booking.mobile.$invalid || booking.email.$invalid"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.contact') }}</li>
+              </ul>
+            </div>
+            <div class="row">
+              <div class="col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10 col-sm-4 col-sm-offset-8 col-xs-6 col-xs-offset-6">
+                <button class="btn btn-danger btn-block" data-ng-click="validate()">{{ __('product.booking.book') }}</button>
+              </div>
             </div>
           </div>
         </div>
@@ -308,8 +310,8 @@
     </div>
     <div class="navbar-fixed-bottom fix-container">
       <div class="container text-center">
-          <ul class="nav nav-pills">
-            <li role="presentation" class="hidden-xs active"><a href="#product-base">{{ __('product.section.info') }}</a></li>
+          <ul id="product-nav" class="nav nav-pills">
+            <li role="presentation" class="hidden-xs"><a href="#product-base">{{ __('product.section.info') }}</a></li>
             <li role="presentation"><a href="#product-booking">{{ __('product.section.booking') }}</a></li>
             <li role="presentation"><a href="#product-detail">{{ __('product.section.desc') }}</a></li>
             <li role="presentation" class="hidden-xs"><a href="#product-include">费用包含</a></li>
@@ -394,7 +396,10 @@
 <script src="//cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.js"></script>
 <script src="//cdn.bootcss.com/fullcalendar/2.4.0/lang/{% if preset.locale == 'zh-cn' %}zh-cn{% elseif preset.locale == 'zh-hk' %}zh-tw{% elseif preset.locale == 'en' %}en-gb{% endif %}.js"></script>
 <script src="//cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
 <script>
+  $("#product-nav").onePageNav();
+
   var selectedStart = false;
 
   function setSelectedTime(start, end){

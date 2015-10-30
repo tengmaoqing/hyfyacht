@@ -76,10 +76,21 @@ a {
   margin-bottom: 10px;
 }
 
+.product-booking-container .alert {
+  padding: 4px 10px;
+}
+
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
   background-color: #258ec7;
+}
+
+.nav-pills > li.current > a,
+.nav-pills > li.current > a:hover,
+.nav-pills > li.current > a:focus {
+  background-color: #258ec7;
+  color: #fff;
 }
 
 .navbar {

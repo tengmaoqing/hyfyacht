@@ -70,7 +70,7 @@
       {% for product in boat.products %}
       <div class="boat-product col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="thumbnail">
-          <a href="/product/{{ preset.code(product._id.valueOf()) }}/{{ product.name }}/{{ preset.code(boat._id.valueOf()) }}/{{ boat.name }}">
+          <a href="/product/{{ product.id }}/{{ product.name }}/{{ boat.id }}/{{ boat.name }}">
             <div class="boat-thumbnail" style="background-image: url({{ preset.imgHost }}{{ product.photo }})"></div>
             <div class="caption text-muted">
               <h4>{{ product.name }}</h4>
