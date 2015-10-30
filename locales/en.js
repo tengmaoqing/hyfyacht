@@ -41,7 +41,8 @@
     "hour": {
       "one": "%d hour",
       "other": "%d hours"
-    }
+    },
+    "owner": "Owner"
   },
   "error": {
     "login": {
@@ -126,9 +127,43 @@
       },
       "contact": "Contact",
       "name": "Name",
+      "name_plh": "Name",
       "mobile": "Mobile",
+      "mobile_plh": "Mobile No. (China or HK)",
       "email": "Email",
-      "book": "Book"
+      "email_plh": "Email",
+      "confirmBooking": "Confirm Booking",
+      "bookingBoat": "Boat",
+      "bookingProduct": "Product",
+      "bookingPackage": "Package",
+      "contract": "HGBOATING Lease Contract",
+      "book": "Book",
+      "error": {
+        "numberOfPeople": {
+          "required": "Please input number of people.",
+          "outOfRange": "Out of range.",
+          "invaild": "Invalid number."
+        },
+        "contact": {
+          "required": "Please input name of contact.",
+          "maxlength": "The name is too long."
+        },
+        "mobile": {
+          "required": "Please input mobile No.",
+          "invaild": "Invaild mobile No.",
+          "maxlength": "The No. is too long."
+        },
+        "email": {
+          "required": "Please input email.",
+          "invaild": "Invaild email."
+        },
+        "submit": {
+          "time": "Please choose time.",
+          "numberOfPeople": "Please input number of people.",
+          "package": "Please choose a package.",
+          "contact": "Invaild contact."
+        }
+      }
     }
   },
   "calendar":{

@@ -147,36 +147,3 @@ exports.getBoats = function(req, res, next){
     }
   });
 };
-
-exports.insert = function(req, res, next){
-  var boat = new Boat({
-    bid: '201504',
-    serialNumber: '201504',
-    owner: '56233e877aafe569a7c5d1e6',
-    name: 'Double X2',
-    customLink: 'doublex2',
-    length: 50,
-    capacity: 60,
-    type: 'db.boat.type.yacht',
-    location: {
-      city: 'db.location.city.hk',
-      district: '',
-      pier: 'db.location.pier.saikung'
-    },
-    baseCharge: 20000,
-    description: 'Double X2 在西貢十分搶眼的西式遊艇，提供一流的服務。',
-    photos: ['/img/bg_yacht2.jpg'],
-    baseFacilities: ['db.boat.base.ac','db.boat.base.kitchen'],
-    entertainments: ['db.boat.etm.mahjong','db.boat.etm.ktv','db.boat.etm.speedboat','db.boat.etm.wakeboard'],
-    extras: ['db.boat.extras.launch','db.boat.extras.bbq']
-  });
-
-  boat.save(function (err) {
-    if (err) {
-      err.status = 400;
-      return next(err);
-    } else {
-      res.send('OK');
-    }
-  });
-};

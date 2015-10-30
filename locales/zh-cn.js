@@ -41,7 +41,8 @@
     "hour": {
       "one": "%d 小时",
       "other": "%d 小时"
-    }
+    },
+    "owner": "船东"
   },
   "error": {
     "login": {
@@ -126,9 +127,43 @@
       },
       "contact": "联系方式",
       "name": "姓名",
+      "name_plh": "联系人",
       "mobile": "手机号码",
-      "email": "电子邮件",
-      "book": "预定"
+      "mobile_plh": "中国内地或香港的手机号码",
+      "email": "电子邮箱",
+      "email_plh": "电子邮箱地址",
+      "confirmBooking": "确认定单",
+      "bookingBoat": "预定船只",
+      "bookingProduct": "预定产品",
+      "bookingPackage": "预定套餐",
+      "contract": "《海龟租船租赁协议》",
+      "book": "预定",
+      "error": {
+        "numberOfPeople": {
+          "required": "请输入人数。",
+          "outOfRange": "人数超出范围",
+          "invaild": "请输入数字。"
+        },
+        "contact": {
+          "required": "请输入联系人姓名。",
+          "maxlength": "姓名太长。"
+        },
+        "mobile": {
+          "required": "请输入手机号码。",
+          "invaild": "手机号码错误。",
+          "maxlength": "手机号码太长。"
+        },
+        "email": {
+          "required": "请输入电子邮箱地址。",
+          "invaild": "邮箱地址错误。"
+        },
+        "submit": {
+          "time": "请选择出游时间。",
+          "numberOfPeople": "请输入人数。",
+          "package": "请选择套餐。",
+          "contact": "联系人信息错误。"
+        }
+      }
     }
   },
   "calendar":{

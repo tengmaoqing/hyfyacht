@@ -11,336 +11,369 @@
 {% include './nav.html' %}
 
 <div class="columns-sm" data-ng-app="booking" data-ng-controller="bookingController">
-  <div class="container">
-    <ol class="breadcrumb">
-      <li><a href="/">{{ __('nav.home') }}</a></li>
-      <li><a href="/boat/{{ boat.id }}/{{ boat.name }}">{{ boat.name }}</a></li>
-      <li class="active">{{ product.name }}</li>
-    </ol>
-    <div id="product-base" class="thumbnail">
-      <div class="boat-thumbnail boat-thumbnail-8by3" style="background-image: url({{ preset.imgHost }}{{ product.photo }})"></div>
-      <div class="row caption">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-          <h3>{{ product.name }}</h3>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
-          <h3 class="text-danger">{{ preset.generateCharge(product.baseCharge, product.currency) }}</h3>
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <p>{{ product.summary }}</p>
-          <dl class="dl-horizontal">
-            <dt><span class="glyphicon glyphicon-time"></span> {{ __('product.info.duration') }}</dt>
-            <dd>{{ __n('common.hour', 'common.hour', product.duration) }}</dd>
-            <dt><span class="glyphicon glyphicon-dashboard"></span> {{ __('product.info.workinghours') }}</dt>
-            <dd>{{ product.workingHours.start }} - {{ product.workingHours.end }}</dd>
-          </dl>
-        </div>
-      </div>
-    </div>
-    <div id="product-booking" class="thumbnail">
-      <div class="caption">
-        <h3>{{ __('product.section.booking') }}</h3>
-        <hr class="hr-divider">
-        <div id="product-booking-date" class="product-booking-container">
-          <p><strong>{{ __('product.booking.chooseTime') }}</strong></p>
-          <div id="calendar"></div>
-          <div class="calendar-controller text-right">
-            <button id="calendar-month" type="button" class="btn btn-default invisible">{{ __('calendar.month') }}</button>
-            <div class="btn-group">
-              <button id="calendar-prev" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button>
-              <button id="calendar-next" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button>
-            </div>
+  <form name="booking" novalidate>
+    <input type="hidden" name="_csrf" value="{{ _csrf }}">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li><a href="/">{{ __('nav.home') }}</a></li>
+        <li><a href="/boat/{{ preset.code(boat.id) }}/{{ boat.name }}">{{ boat.name }}</a></li>
+        <li class="active">{{ product.name }}</li>
+      </ol>
+      <div id="product-base" class="thumbnail">
+        <div class="boat-thumbnail boat-thumbnail-8by3" style="background-image: url({{ preset.imgHost }}{{ product.photo }})"></div>
+        <div class="row caption">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <h3>{{ product.name }}</h3>
           </div>
-          <ul class="list-group">
-            <li class="list-group-item">
-              <label>{{ __('product.booking.start') }}</label>
-              <p id="selectedTime-start"></p>
-            </li>
-            <li class="list-group-item">
-              <label>{{ __('product.booking.end') }}</label>
-              <p id="selectedTime-end"></p>
-            </li>
-          </ul>
-        </div>
-        <div id="product-booking-package" class="product-booking-container">
-          <p><strong>{{ __('product.booking.choosePackage') }}</strong></p>
-          <div class="panel-group" id="package-accordion" role="tablist">
-            {% raw %}
-            <input id="data-selected-date-start" class="invisible navbar-fixed-bottom" type="text" data-ng-model="dateStart" data-ng-change="togglePackage(-1)">
-            <input id="data-selected-date-end" class="invisible navbar-fixed-bottom" type="text" data-ng-model="dateEnd">
-            <div class="panel panel-custom" data-ng-repeat="package in packages" data-ng-if="checkAvailable(package)">
-              <div class="panel-heading" role="tab" id="package-heading-{{ $index }}">
-                <h4 class="panel-title relative-container">
-                  <div class="btn-group btn-group-sm checkboxs" data-toggle="buttons" data-ng-click="togglePackage($index)">
-                    <label class="btn btn-default" data-ng-if="$index != currPackage">
-                      <span class="glyphicon glyphicon-unchecked"></span>
-                      <input type="checkbox" autocomplete="off" value="option1" >
-                    </label>
-                    <label class="btn btn-primary" data-ng-if="$index == currPackage">
-                      <span class="glyphicon glyphicon-ok"></span>
-                      <input type="checkbox" autocomplete="off" value="option1" >
-                    </label>
-                  </div> {{ package.name }}
-                  <a class="absolut-right-top more" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index }}" aria-expanded="true" aria-controls="package-collapse-1">
-                    <span class="glyphicon glyphicon-option-horizontal"></span>
-                  </a>
-                </h4>
-              </div>
-              <div id="package-collapse-{{ $index }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="package-heading-1">
-                <div class="panel-body" data-ng-bind-html="package.summary | santize">
-                </div>
-              </div>
-            </div>
-            {% endraw %}
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
+            <h3 class="text-danger">{{ preset.generateCharge(product.baseCharge, product.currency) }}</h3>
           </div>
-        </div>
-        <div id="product-booking-person" class="product-booking-container">
-          <p><strong>{{ __('product.booking.numberOfPeople') }}</strong></p>
-          <input type="number" class="form-control" data-ng-model="numberOfPersons">
-        </div>
-        <div id="product-booking-items" class="product-booking-container" data-ng-if="currPackage > -1">
-          <p><strong>{{ __('product.booking.package.items') }}</strong></p>
-          <ul class="list-group list-table">
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><strong>{{ __('product.booking.package.check') }}</strong></div>
-                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
-                  <div class="row">
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{{ __('product.booking.package.item') }}</strong></div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right"><strong>{{ __('product.booking.package.quantity') }}</strong></div>
-                  </div>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right"><strong>{{ __('product.booking.package.subtotal') }}</strong></div>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                  <div class="btn-group btn-group-sm" data-toggle="buttons">
-                    <label class="btn btn-default disabled">
-                      <span class="glyphicon glyphicon-ok"></span>
-                      <input type="checkbox" autocomplete="off" value="option1">
-                    </label>
-                  </div>
-                </div>
-                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
-                  <div class="row">
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{{ __('product.booking.package.base') }} {% raw %}({{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}){% endraw %}</strong></div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>1</strong></div>
-                  </div>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
-                  <strong>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}{% endraw %}</strong>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item" data-ng-if="(numberOfPersons - packages[currPackage].basePersons) > 0">
-              <div class="row">
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                  <div class="btn-group btn-group-sm" data-toggle="buttons">
-                    <label class="btn btn-default disabled">
-                      <span class="glyphicon glyphicon-ok"></span>
-                      <input type="checkbox" autocomplete="off" value="option1">
-                    </label>
-                  </div>
-                </div>
-                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
-                  <div class="row">
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{{ __('product.booking.package.extra') }} ({% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge)) }}{% endraw %})</strong></div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>{% raw %}{{ numberOfPersons - packages[currPackage].basePersons }}{% endraw %}</strong></div>
-                  </div>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
-                  <strong>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge) * (numberOfPersons - packages[currPackage].basePersons)) }}{% endraw %}</strong>
-                </div>
-              </div>
-            </li>
-            {% raw %}
-            <li class="list-group-item" data-ng-repeat="item in packages[currPackage].items">
-              <div class="row">
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                  <div class="btn-group btn-group-sm" data-toggle="buttons" data-ng-if="item.type == 'single' " data-ng-click="toggleItem(item)">
-                    <label class="btn btn-default" data-ng-if="!selectedItems[item.name]">
-                      <span class="glyphicon glyphicon-unchecked"></span>
-                      <input type="checkbox" autocomplete="off" value="option1">
-                    </label>
-                    <label class="btn btn-primary" data-ng-if="selectedItems[item.name]">
-                      <span class="glyphicon glyphicon-ok"></span>
-                      <input type="checkbox" autocomplete="off" value="option1">
-                    </label>
-                  </div>
-                  <div class="btn-group btn-group-sm" data-toggle="buttons" data-ng-if="item.type == 'multi' ">
-                    <label class="btn btn-default disabled" data-ng-if="!selectedItems[item.name]">
-                      <span class="glyphicon glyphicon-unchecked"></span>
-                      <input type="checkbox" autocomplete="off" value="option1">
-                    </label>
-                    <label class="btn btn-primary disabled" data-ng-if="selectedItems[item.name]">
-                      <span class="glyphicon glyphicon-ok"></span>
-                      <input type="checkbox" autocomplete="off" value="option1">
-                    </label>
-                  </div>
-                </div>
-                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
-                  <div class="row">
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }})</strong></div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right">
-                      <strong data-ng-if="item.type == 'single'">{{ selectedItems[item.name] ? selectedItems[item.name].amount : 0 }}</strong>
-                      <input type="number" class="form-control input-small" placeholder="0" data-ng-if="item.type == 'multi'" data-ng-model="inputValue[item.name]" data-ng-change="inputItem(item)">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
-                  <strong>{{ selectedItems[item.name] ? displayAmount(generateCharge(selectedItems[item.name].charge) * selectedItems[item.name].amount) : displayAmount(0) }}</strong>
-                </div>
-              </div>
-            </li>
-            {% endraw %}
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-7 text-right">
-                  <h4>{{ __('product.booking.package.total') }}</h4>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
-                  <h4>{% raw %}{{ displayAmount(getTotal()) }}{% endraw %}</h4>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div id="product-booking-contact" class="product-booking-container">
-          <p><strong>{{ __('product.booking.contact') }}</strong></p>
-          <div>
-            <label>{{ __('product.booking.name') }}</label>
-            <div class="input-group">
-              <span class="input-group-addon">
-                <span class="glyphicon glyphicon-user"></span>
-              </span>
-              <input type="text" class="form-control" placeholder="请输入联系人姓名" data-ng-model="contact.name">
-            </div>
-            <label>{{ __('product.booking.mobile') }}</label>
-            <div class="input-group">
-              <span class="input-group-addon">
-                <span class="glyphicon glyphicon-phone"></span>
-              </span>
-              <input type="text" class="form-control" placeholder="请输入联系人手机号码" data-ng-model="contact.mobile">
-            </div>
-            <label>{{ __('product.booking.email') }}</label>
-            <div class="input-group">
-              <span class="input-group-addon">
-                <span class="glyphicon glyphicon-envelope"></span>
-              </span>
-              <input type="text" class="form-control" placeholder="请输入联系人邮箱地址" data-ng-model="contact.email">
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10 col-sm-4 col-sm-offset-8 col-xs-6 col-xs-offset-6">
-            <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#booking-confirm-modal">{{ __('product.booking.book') }}</button>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <p>{{ product.summary }}</p>
+            <dl class="dl-horizontal">
+              <dt><span class="glyphicon glyphicon-time"></span> {{ __('product.info.duration') }}</dt>
+              <dd>{{ __n('common.hour', 'common.hour', product.duration) }}</dd>
+              <dt><span class="glyphicon glyphicon-dashboard"></span> {{ __('product.info.workinghours') }}</dt>
+              <dd>{{ product.workingHours.start }} - {{ product.workingHours.end }}</dd>
+            </dl>
           </div>
         </div>
       </div>
-    </div>
-    <div id="product-detail" class="thumbnail">
-      <div class="caption">
-        <h3>产品详情</h3>
-        <hr class="hr-divider">
-        {% autoescape %}{{ product.description }}{% endautoescape %}
-      </div>
-    </div>
-    <div id="product-include" class="thumbnail">
-      <div class="caption">
-        <h3>费用包含</h3>
-        <hr class="hr-divider">
-      </div>
-    </div>
-    <div id="product-notinclude" class="thumbnail">
-      <div class="caption">
-        <h3>费用不含</h3>
-        <hr class="hr-divider">
-      </div>
-    </div>
-    <div id="product-notice" class="thumbnail">
-      <div class="caption">
-        <h3>预定须知</h3>
-        <hr class="hr-divider">
-      </div>
-    </div>
-    <div id="product-cancel" class="thumbnail">
-      <div class="caption">
-        <h3>退定政策</h3>
-        <hr class="hr-divider">
-      </div>
-    </div>
-  </div>
-  <div class="navbar-fixed-bottom fix-container">
-    <div class="container text-center">
-        <ul class="nav nav-pills">
-          <li role="presentation" class="hidden-xs active"><a href="#product-base">{{ __('product.section.info') }}</a></li>
-          <li role="presentation"><a href="#product-booking">{{ __('product.section.booking') }}</a></li>
-          <li role="presentation"><a href="#product-detail">{{ __('product.section.desc') }}</a></li>
-          <li role="presentation" class="hidden-xs"><a href="#product-include">费用包含</a></li>
-          <li role="presentation" class="hidden-xs"><a href="#product-notinclude">费用不含</a></li>
-          <li role="presentation"><a href="#product-notice">预定须知</a></li>
-          <li role="presentation" class="hidden-xs"><a href="#product-cancel">退定政策</a></li>
-        </ul>
-    </div>
-  </div>
-  <div id="booking-confirm-modal" class="modal fade">
-    <div class="modal-table">
-      <div class="modal-table-cell">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title" id="myModalLabel">确认定单</h4>
+      <div id="product-booking" class="thumbnail">
+        <div class="caption">
+          <h3>{{ __('product.section.booking') }}</h3>
+          <hr class="hr-divider">
+          <div id="product-booking-date" class="product-booking-container">
+            <p><strong>{{ __('product.booking.chooseTime') }}</strong></p>
+            <div id="calendar"></div>
+            <div class="calendar-controller text-right">
+              <button id="calendar-month" type="button" class="btn btn-default invisible">{{ __('calendar.selectdate') }}</button>
+              <div class="btn-group">
+                <button id="calendar-prev" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button>
+                <button id="calendar-next" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button>
+              </div>
             </div>
-            <div class="modal-body">
+            <ul class="list-group">
+              <li class="list-group-item">
+                <label>{{ __('product.booking.start') }}</label>
+                <p id="selectedTime-start"></p>
+              </li>
+              <li class="list-group-item">
+                <label>{{ __('product.booking.end') }}</label>
+                <p id="selectedTime-end"></p>
+              </li>
+            </ul>
+          </div>
+          <div id="product-booking-package" class="product-booking-container">
+            <p><strong>{{ __('product.booking.choosePackage') }}</strong></p>
+            <div class="panel-group" id="package-accordion" role="tablist">
               {% raw %}
-              <dl class="dl-horizontal">
-                <dt>预定船只</dt>
-                <dd>rainbow</dd>
-                <dt>船东</dt>
-                <dd>Mr.Shek</dd>
-                <dt>地点</dt>
-                <dd>香港 西贡码头</dd>
-                <dt>预定产品</dt>
-                <dd>日间船河</dd>
-                <dt>开始时间</dt>
-                <dd>{{ dateStart }}</dd>
-                <dt>结束时间</dt>
-                <dd>{{ dateEnd }}</dd>
-                <dt>人数</dt>
-                <dd>{{ numberOfPersons }}</dd>
-                <dt>套餐</dt>
-                <dd>{{ packages[currPackage].name }} ({{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }})</dd>
-                <dt>联系人</dt>
-                <dd>{{ contact.name }}</dd>
-                <dt>手机号码</dt>
-                <dd>{{ contact.mobile }}</dd>
-                <dt>电子邮箱</dt>
-                <dd>{{ contact.email }}</dd>
-              </dl>
-              <table class="table table-summary">
-                <caption>价格清单</caption>
-                <tr><th>项目</th><th>数量</th><th>小计</th></tr>
-                <tr><td>套餐基本 ({{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }})</td><td>1</td><td>{{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}</td></tr>
-                <tr data-ng-if="(numberOfPersons - packages[currPackage].basePersons) > 0"><td>额外人员 ({{ displayAmount(generateCharge(packages[currPackage].extraCharge)) }})</td><td>{{ numberOfPersons - packages[currPackage].basePersons }}</td><td>{{ displayAmount(generateCharge(packages[currPackage].extraCharge) * (numberOfPersons - packages[currPackage].basePersons)) }}</td></tr>
-                <tr data-ng-repeat="item in selectedItems"><td>{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }}) </td><td>{{ item.amount }}</td><td>{{ displayAmount(generateCharge(item.charge) * item.amount) }}</td></tr>
-              </table>
-              <div class="text-right">
-                <h4>合计：{{ displayAmount(getTotal()) }}</h4>
-              </div>
-              <div class="alert alert-warning text-right">
-                <label><input name="payway" type="checkbox" autocomplete="off"> 我已阅读并同意</label><a href="#" target="_blank">《海龟租船租赁协议》</a>
+              <input id="data-selected-date-start" name="dateStart" class="invisible navbar-fixed-bottom" type="text" data-ng-model="dateStart" data-ng-change="togglePackage(-1)" required>
+              <input id="data-selected-date-end" name="dateEnd" class="invisible navbar-fixed-bottom" type="text" data-ng-model="dateEnd" required>
+              <input name="currPackage" class="invisible navbar-fixed-bottom" type="number" data-ng-model="currPackage" min="0" required>
+              <div class="panel panel-custom" data-ng-repeat="package in packages" data-ng-if="checkAvailable(package)">
+                <div class="panel-heading" role="tab" id="package-heading-{{ $index }}">
+                  <h4 class="panel-title relative-container">
+                    <div class="btn-group btn-group-sm checkboxs" data-toggle="buttons" data-ng-click="togglePackage($index)">
+                      <label class="btn btn-default" data-ng-if="$index != currPackage">
+                        <span class="glyphicon glyphicon-unchecked"></span>
+                        <input type="checkbox" autocomplete="off">
+                      </label>
+                      <label class="btn btn-primary" data-ng-if="$index == currPackage">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        <input type="checkbox" autocomplete="off">
+                      </label>
+                    </div> {{ package.name }}
+                    <a class="absolut-right-top more" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index }}" aria-expanded="true" aria-controls="package-collapse-1">
+                      <span class="glyphicon glyphicon-option-horizontal"></span>
+                    </a>
+                  </h4>
+                </div>
+                <div id="package-collapse-{{ $index }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="package-heading-1">
+                  <div class="panel-body" data-ng-bind-html="package.summary | santize">
+                  </div>
+                </div>
               </div>
               {% endraw %}
             </div>
-            <div class="modal-footer">
-              <div class="row">
-                <div class="col-xs-4 col-xs-offset-4">
-                  <button type="button" class="btn btn-primary btn-block" data-dismiss="modal">{{ __('common.cancel') }}</button>
+          </div>
+          <div id="product-booking-person" class="product-booking-container">
+            <p><strong>{{ __('product.booking.numberOfPeople') }} (1 - {{ boat.capacity }})</strong></p>
+            <div class="alert alert-danger" data-ng-show="booking.numberOfPersons.$dirty && booking.numberOfPersons.$invalid">
+              <ul class="list-layout">
+                <li data-ng-show="booking.numberOfPersons.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.required') }}</li>
+                <li data-ng-show="booking.numberOfPersons.$error.min || booking.numberOfPersons.$error.max"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.outOfRange') }}</span>
+                <li data-ng-show="booking.numberOfPersons.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.invaild') }}</li>
+              </ul>
+            </div>
+            <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" min="1" max="{{ boat.capacity }}" required>
+          </div>
+          <div id="product-booking-items" class="product-booking-container" data-ng-if="currPackage > -1">
+            <p><strong>{{ __('product.booking.package.items') }}</strong></p>
+            <ul class="list-group list-table">
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><strong>{{ __('product.booking.package.check') }}</strong></div>
+                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
+                    <div class="row">
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{{ __('product.booking.package.item') }}</strong></div>
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right"><strong>{{ __('product.booking.package.quantity') }}</strong></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right"><strong>{{ __('product.booking.package.subtotal') }}</strong></div>
                 </div>
-                <div class="col-xs-4">
-                  <a href="/booking/result" class="btn btn-danger btn-block">{{ __('common.submit') }}</a>
+              </li>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <div class="btn-group btn-group-sm" data-toggle="buttons">
+                      <label class="btn btn-default disabled">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        <input type="checkbox" autocomplete="off">
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
+                    <div class="row">
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{{ __('product.booking.package.base') }} {% raw %}({{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}){% endraw %}</strong></div>
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>1</strong></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
+                    <strong>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}{% endraw %}</strong>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item" data-ng-if="(numberOfPersons - packages[currPackage].basePersons) > 0">
+                <div class="row">
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <div class="btn-group btn-group-sm" data-toggle="buttons">
+                      <label class="btn btn-default disabled">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        <input type="checkbox" autocomplete="off">
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
+                    <div class="row">
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{{ __('product.booking.package.extra') }} ({% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge)) }}{% endraw %})</strong></div>
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>{% raw %}{{ numberOfPersons - packages[currPackage].basePersons }}{% endraw %}</strong></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
+                    <strong>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge) * (numberOfPersons - packages[currPackage].basePersons)) }}{% endraw %}</strong>
+                  </div>
+                </div>
+              </li>
+              {% raw %}
+              <li class="list-group-item" data-ng-repeat="item in packages[currPackage].items">
+                <div class="row">
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <div class="btn-group btn-group-sm" data-toggle="buttons" data-ng-if="item.type == 'single' " data-ng-click="toggleItem(item)">
+                      <label class="btn btn-default" data-ng-if="!selectedItems[item.name]">
+                        <span class="glyphicon glyphicon-unchecked"></span>
+                        <input type="checkbox" autocomplete="off">
+                      </label>
+                      <label class="btn btn-primary" data-ng-if="selectedItems[item.name]">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        <input type="checkbox" autocomplete="off">
+                      </label>
+                    </div>
+                    <div class="btn-group btn-group-sm" data-toggle="buttons" data-ng-if="item.type == 'multi' ">
+                      <label class="btn btn-default disabled" data-ng-if="!selectedItems[item.name]">
+                        <span class="glyphicon glyphicon-unchecked"></span>
+                        <input type="checkbox" autocomplete="off">
+                      </label>
+                      <label class="btn btn-primary disabled" data-ng-if="selectedItems[item.name]">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        <input type="checkbox" autocomplete="off">
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
+                    <div class="row">
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }})</strong></div>
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right">
+                        <strong data-ng-if="item.type == 'single'">{{ selectedItems[item.name] ? selectedItems[item.name].amount : 0 }}</strong>
+                        <input type="number" class="form-control input-small" placeholder="0" data-ng-if="item.type == 'multi'" data-ng-model="inputValue[item.name]" data-ng-change="inputItem(item)">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
+                    <strong>{{ selectedItems[item.name] ? displayAmount(generateCharge(selectedItems[item.name].charge) * selectedItems[item.name].amount) : displayAmount(0) }}</strong>
+                  </div>
+                </div>
+              </li>
+              {% endraw %}
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-lg-10 col-md-10 col-sm-10 col-xs-7 text-right">
+                    <h4>{{ __('product.booking.package.total') }}</h4>
+                  </div>
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
+                    <h4>{% raw %}{{ displayAmount(getTotal()) }}{% endraw %}</h4>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div id="product-booking-contact" class="product-booking-container">
+            <p><strong>{{ __('product.booking.contact') }}</strong></p>
+            <div>
+              <div class="alert alert-danger" data-ng-show="booking.contact.$dirty && booking.contact.$invalid">
+                <ul class="list-layout">
+                  <li data-ng-show="booking.contact.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.contact.required') }}</li>
+                  <li data-ng-show="booking.contact.$error.maxlength"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.contact.maxlength') }}</li>
+                </ul>
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-user"></span>
+                </span>
+                <input type="text" class="form-control" name="contact" placeholder="{{ __('product.booking.name_plh') }}" data-ng-model="contact.name" maxlength="50" required>
+              </div>
+              <div class="alert alert-danger" data-ng-show="booking.mobile.$dirty && booking.mobile.$invalid">
+                <ul class="list-layout">
+                  <li data-ng-show="booking.mobile.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.required') }}</li>
+                  <li data-ng-show="booking.mobile.$error.maxlength"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.maxlength') }}</li>
+                  <li data-ng-show="booking.mobile.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.invaild') }}</li>
+                </ul>
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-phone"></span>
+                </span>
+                <input type="number" class="form-control" name="mobile" placeholder="{{ __('product.booking.mobile_plh') }}" data-ng-model="contact.mobile" maxlength="15" required>
+              </div>
+              <div class="alert alert-danger" data-ng-show="booking.email.$dirty && booking.email.$invalid">
+                <ul class="list-layout">
+                  <li data-ng-show="booking.email.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.email.required') }}</li>
+                  <li data-ng-show="booking.email.$error.pattern"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.email.invaild') }}</li>
+                </ul>
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-envelope"></span>
+                </span>
+                <input type="email" class="form-control" name="email" placeholder="{{ __('product.booking.email_plh') }}" data-ng-model="contact.email" data-maxlength="100" data-ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" required>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-danger" data-ng-show="booking.$invalid && submitted">
+            <ul class="list-layout">
+              <li data-ng-show="booking.dateEnd.$invalid"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.time') }}</li>
+              <li data-ng-show="booking.currPackage.$error.min"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.package') }}</li>
+              <li data-ng-show="booking.numberOfPersons.$invalid"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.numberOfPeople') }}</li>
+              <li data-ng-show="booking.contact.$invalid || booking.mobile.$invalid || booking.email.$invalid"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.contact') }}</li>
+            </ul>
+          </div>
+          <div class="row">
+            <div class="col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10 col-sm-4 col-sm-offset-8 col-xs-6 col-xs-offset-6">
+              <button class="btn btn-danger btn-block" data-ng-click="validate()">{{ __('product.booking.book') }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="product-detail" class="thumbnail">
+        <div class="caption">
+          <h3>{{ __('product.section.desc') }}</h3>
+          <hr class="hr-divider">
+          {% autoescape %}{{ product.description }}{% endautoescape %}
+        </div>
+      </div>
+      <div id="product-include" class="thumbnail">
+        <div class="caption">
+          <h3>费用包含</h3>
+          <hr class="hr-divider">
+        </div>
+      </div>
+      <div id="product-notinclude" class="thumbnail">
+        <div class="caption">
+          <h3>费用不含</h3>
+          <hr class="hr-divider">
+        </div>
+      </div>
+      <div id="product-notice" class="thumbnail">
+        <div class="caption">
+          <h3>预定须知</h3>
+          <hr class="hr-divider">
+        </div>
+      </div>
+      <div id="product-cancel" class="thumbnail">
+        <div class="caption">
+          <h3>退定政策</h3>
+          <hr class="hr-divider">
+        </div>
+      </div>
+    </div>
+    <div class="navbar-fixed-bottom fix-container">
+      <div class="container text-center">
+          <ul class="nav nav-pills">
+            <li role="presentation" class="hidden-xs active"><a href="#product-base">{{ __('product.section.info') }}</a></li>
+            <li role="presentation"><a href="#product-booking">{{ __('product.section.booking') }}</a></li>
+            <li role="presentation"><a href="#product-detail">{{ __('product.section.desc') }}</a></li>
+            <li role="presentation" class="hidden-xs"><a href="#product-include">费用包含</a></li>
+            <li role="presentation" class="hidden-xs"><a href="#product-notinclude">费用不含</a></li>
+            <li role="presentation"><a href="#product-notice">预定须知</a></li>
+            <li role="presentation" class="hidden-xs"><a href="#product-cancel">退定政策</a></li>
+          </ul>
+      </div>
+    </div>
+    <div id="booking-confirm-modal" class="modal fade">
+      <div class="modal-table">
+        <div class="modal-table-cell">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">{{ __('product.booking.confirmBooking') }}</h4>
+              </div>
+              <div class="modal-body">
+                <dl class="dl-horizontal">
+                  <dt>{{ __('product.booking.bookingBoat') }}</dt>
+                  <dd>{{ boat.name }}</dd>
+                  <dt>{{ __('common.owner') }}</dt>
+                  <dd>{{ boat.owner.nickname }}</dd>
+                  <dt>{{ __('common.location') }}</dt>
+                  <dd>{{ __(boat.location.city) }} {% if boat.location.pier %}- {{ __(boat.location.pier) }}{% endif %}</dd>
+                  <dt>{{ __('product.booking.bookingProduct') }}</dt>
+                  <dd>{{ product.name }}</dd>
+                  <dt>{{ __('product.booking.start') }}</dt>
+                  <dd>{% raw %}{{ dateStart }}{% endraw %}</dd>
+                  <dt>{{ __('product.booking.end') }}</dt>
+                  <dd>{% raw %}{{ dateEnd }}{% endraw %}</dd>
+                  <dt>{{ __('product.booking.numberOfPeople') }}</dt>
+                  <dd>{% raw %}{{ numberOfPersons }}{% endraw %}</dd>
+                  <dt>{{ __('product.booking.bookingPackage') }}</dt>
+                  <dd>{% raw %}{{ packages[currPackage].name }} ({{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}){% endraw %}</dd>
+                  <dt>{{ __('product.booking.name') }}</dt>
+                  <dd>{% raw %}{{ contact.name }}{% endraw %}</dd>
+                  <dt>{{ __('product.booking.mobile') }}</dt>
+                  <dd>{% raw %}{{ contact.mobile }}{% endraw %}</dd>
+                  <dt>{{ __('product.booking.email') }}</dt>
+                  <dd>{% raw %}{{ contact.email }}{% endraw %}</dd>
+                </dl>
+                <table class="table table-summary">
+                  <caption>{{ __('product.booking.package.items') }}</caption>
+                  <tr><th>{{ __('product.booking.package.item') }}</th><th>{{ __('product.booking.package.quantity') }}</th><th>{{ __('product.booking.package.subtotal') }}</th></tr>
+                  <tr><td>{{ __('product.booking.package.base') }} ({% raw %}{{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}{% endraw %})</td><td>1</td><td>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}{% endraw %}</td></tr>
+                  <tr data-ng-if="(numberOfPersons - packages[currPackage].basePersons) > 0"><td>{{ __('product.booking.package.extra') }} ({% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge)) }}{% endraw %})</td><td>{% raw %}{{ numberOfPersons - packages[currPackage].basePersons }}{% endraw %}</td><td>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge) * (numberOfPersons - packages[currPackage].basePersons)) }}{% endraw %}</td></tr>
+                  <tr data-ng-repeat="item in selectedItems"><td>{% raw %}{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }}){% endraw %}</td><td>{% raw %}{{ item.amount }}{% endraw %}</td><td>{% raw %}{{ displayAmount(generateCharge(item.charge) * item.amount) }}{% endraw %}</td></tr>
+                </table>
+                <div class="text-right">
+                  <h4>{{ __('product.booking.package.total') }} {% raw %}{{ displayAmount(getTotal()) }}{% endraw %}</h4>
+                </div>
+                <div class="alert alert-warning text-right">
+                  <label><input type="checkbox" autocomplete="off"> {{ __('common.readandagree') }}</label> <a href="#" target="_blank">{{ __('product.booking.contract') }}</a>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <div class="row">
+                  <div class="col-xs-4 col-xs-offset-4">
+                    <button type="button" class="btn btn-primary btn-block" data-dismiss="modal">{{ __('common.cancel') }}</button>
+                  </div>
+                  <div class="col-xs-4">
+                    <a href="/booking/result" class="btn btn-danger btn-block">{{ __('common.submit') }}</a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -348,7 +381,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </form>
 </div>
 
 {% include './footer.html' %}
@@ -542,7 +575,7 @@
     $scope.prefix = clientCurrency == 'hkd' ? '$' : '￥';
     $scope.dateStart = today.format("YYYY-MM-DD HH:mm");
 //    $scope.dateEnd = today.format("YYYY-MM-DD HH:mm");
-    $scope.numberOfPersons = 0;
+    $scope.numberOfPersons = 1;
     $scope.contact = {
       name: "",
       mobile: "",
@@ -551,6 +584,7 @@
     $scope.currPackage = -1;
     $scope.selectedItems = {};
     $scope.inputValue = {};
+    $scope.submitted = false;
 
     $scope.generateCharge = function(charge){
       return parseFloat((charge * currency[clientCurrency] / currency[$scope.baseCurrency] / 100).toFixed(2));
@@ -620,6 +654,14 @@
       }
 
       return $scope.generateCharge(package.baseCharge) + $scope.generateCharge(package.extraCharge) * extraPersons + itemsAmount;
+    };
+
+    $scope.validate = function(){
+      if(!$scope.booking.$valid){
+        $scope.submitted = true;
+      }else{
+        $("#booking-confirm-modal").modal("show");
+      }
     };
   });
 

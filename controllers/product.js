@@ -9,15 +9,13 @@ var Package = require('../models/package');
 var tools = require('../tools');
 
 exports.getProduct = function(req, res, next){
-  var boat = {
-    id: req.params.boat_id,
-    name: req.params.boat_name
-  };
+  var boatId = tools.decode(req.params.boat_id);
 
   Product.findOne({_id:tools.decode(req.params.id)}).populate({
     path: 'packages',
+    select: '_id name summary currency baseCharge basePersons extraCharge items availableMonths availableDays',
     match: {
-      boats: tools.decode(boat.id)
+      boats: boatId
     }
   }).exec(function(err, product){
     if(err){
@@ -25,7 +23,20 @@ exports.getProduct = function(req, res, next){
       return next(err);
     }else{
       if(product){
-        res.render('product', {product: product, boat: boat, code: tools.code});
+        Boat.findOne({_id:boatId}).select('_id name owner capacity location').populate('owner', 'nickname').exec(function(err, boat){
+          if(err){
+            err.status = 400;
+            return next(err);
+          }else{
+            if(boat){
+              res.render('product', {product: product, boat: boat});
+            }else{
+              var err = new Error('Not Found');
+              err.status = 404;
+              next(err);
+            }
+          }
+        });
       }else{
         var err = new Error('Not Found');
         err.status = 404;

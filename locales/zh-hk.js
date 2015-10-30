@@ -41,7 +41,8 @@
     "hour": {
       "one": "%d 小時",
       "other": "%d 小時"
-    }
+    },
+    "owner": "船東"
   },
   "error": {
     "login": {
@@ -126,9 +127,43 @@
       },
       "contact": "聯繫方式",
       "name": "姓名",
+      "name_plh": "聯繫人",
       "mobile": "手提電話",
+      "mobile_plh": "中國內地或香港的手提電話",
       "email": "E-mail",
-      "book": "預定"
+      "email_plh": "E-mail地址",
+      "confirmBooking": "確認定單",
+      "bookingBoat": "預定船隻",
+      "bookingProduct": "預定產品",
+      "bookingPackage": "預定套餐",
+      "contract": "《海龜租船租賃協議》",
+      "book": "預定",
+      "error": {
+        "numberOfPeople": {
+          "required": "請輸入人數。",
+          "outOfRange": "人數超出範圍。",
+          "invaild": "請輸入數字。"
+        },
+        "contact": {
+          "required": "請輸入聯繫人姓名。",
+          "maxlength": "姓名太長。"
+        },
+        "mobile": {
+          "required": "請輸入手提電話號碼。",
+          "invaild": "錯誤的手提電話號碼。",
+          "maxlength": "手提電話號碼太長。"
+        },
+        "email": {
+          "required": "請輸入Email。",
+          "invaild": "錯誤的Email。"
+        },
+        "submit": {
+          "time": "請選擇出遊時間。",
+          "numberOfPeople": "請輸入人數。",
+          "package": "請選擇一個套餐。",
+          "contact": "聯繫人信息錯誤。"
+        }
+      }
     }
   },
   "calendar":{
