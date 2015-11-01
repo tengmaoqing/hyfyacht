@@ -20,6 +20,8 @@ var UserSchema = new Schema({
     mobile: Number,
     email: String
   }]
+}, {
+  versionKey: false
 });
 
 var User = mongoose.model('User', UserSchema);

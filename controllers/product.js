@@ -12,7 +12,7 @@ exports.getProduct = function(req, res, next){
 
   Product.findOne({_id:req.params.id}).populate({
     path: 'packages',
-    select: '_id name summary currency baseCharge basePersons extraCharge items availableMonths availableDays',
+    select: 'id name summary currency baseCharge basePersons extraCharge items availableMonths availableDays',
     match: {
       boats: boatId
     }
@@ -22,7 +22,7 @@ exports.getProduct = function(req, res, next){
       return next(err);
     }else{
       if(product){
-        Boat.findOne({_id:boatId}).select('_id name owner capacity location').populate('owner', 'nickname').exec(function(err, boat){
+        Boat.findOne({_id:boatId}).select('id name owner capacity location').populate('owner', 'id nickname').exec(function(err, boat){
           if(err){
             err.status = 400;
             return next(err);

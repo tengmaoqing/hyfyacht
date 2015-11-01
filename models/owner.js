@@ -22,6 +22,8 @@ var OwnerSchema = new Schema({
   },
   description: String,
   boats: [{type: Schema.Types.ObjectId, ref: 'Boat'}]
+}, {
+  versionKey: false
 });
 
 var Owner = mongoose.model('Owner', OwnerSchema);

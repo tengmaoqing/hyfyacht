@@ -5,8 +5,8 @@ var Boat = require('../models/boat');
 var Owner = require('../models/owner');
 var Product = require('../models/product');
 
-exports.getBoatByCustomLink = function(req, res, next){
-  Boat.findOne({customLink:req.params.link}).populate('owner', 'nickname').exec(function(err, boat){
+exports.getBoat = function(req, res, next){
+  Boat.findOne({_id:req.params.id}).populate('owner', 'nickname').populate('products', 'id name summary baseCharge currency photo').exec(function(err, boat){
     if(err){
       err.status = 400;
       return next(err);
@@ -21,23 +21,6 @@ exports.getBoatByCustomLink = function(req, res, next){
     }
   });
 };
-
-exports.getBoat = function(req, res, next){
-  Boat.findOne({_id:req.params.id}).populate('owner', 'nickname').populate('products', '_id name summary baseCharge currency photo').exec(function(err, boat){
-    if(err){
-      err.status = 400;
-      return next(err);
-    }else{
-      if(boat){
-        res.render('boat-detail', {boat: boat});
-      }else{
-        var err = new Error('Not Found');
-        err.status = 404;
-        next(err);
-      }
-    }
-  });
-}
 
 exports.getBoats = function(req, res, next){
   var query = {};
