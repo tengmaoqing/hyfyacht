@@ -14,6 +14,7 @@ router.get('/result', function(req, res, next){
   res.render('booking-result');
 });
 
-router.get('/insert', booking.insert);
+
+router.post('/submit', booking.checkBooking);
 
 module.exports = router;

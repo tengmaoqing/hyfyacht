@@ -11,8 +11,10 @@
 {% include './nav.html' %}
 
 <div class="columns-sm" data-ng-app="booking" data-ng-controller="bookingController">
-  <form name="booking" method="post" novalidate>
+  <form name="booking" method="post" action="/booking/submit" novalidate>
     <input type="hidden" name="_csrf" value="{{ _csrf }}">
+    <input type="hidden" name="productId" value="{{ product.id }}">
+    <input type="hidden" name="boatId" value="{{ boat.id }}">
     <div class="container">
       <ol class="breadcrumb">
         <li><a href="/">{{ __('nav.home') }}</a></li>
@@ -71,6 +73,9 @@
               <input id="data-selected-date-start" name="dateStart" class="invisible navbar-fixed-bottom" type="text" data-ng-model="dateStart" data-ng-change="togglePackage(-1)" required>
               <input id="data-selected-date-end" name="dateEnd" class="invisible navbar-fixed-bottom" type="text" data-ng-model="dateEnd" required>
               <input name="currPackage" class="invisible navbar-fixed-bottom" type="number" data-ng-model="currPackage" min="0" required>
+              <input name="packageId" class="invisible navbar-fixed-bottom" type="text" data-ng-model="packages[currPackage]._id">
+              <input name="items" class="invisible navbar-fixed-bottom" type="text" value="{{ getItems() }}">
+              <input name="total" class="invisible navbar-fixed-bottom" type="text" value="{{ getTotal() }}">
               <div class="panel panel-custom" data-ng-repeat="package in packages" data-ng-if="checkAvailable(package)">
                 <div class="panel-heading" role="tab" id="package-heading-{{ $index }}">
                   <h4 class="panel-title relative-container">
@@ -243,7 +248,7 @@
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-phone"></span>
                 </span>
-                <input type="text" class="form-control" name="mobile" placeholder="{{ __('product.booking.mobile_plh') }}" data-ng-model="contact.mobile" maxlength="15" required>
+                <input type="number" class="form-control" name="mobile" placeholder="{{ __('product.booking.mobile_plh') }}" data-ng-model="contact.mobile" maxlength="15" required>
               </div>
               <div class="alert alert-danger" data-ng-show="booking.email.$dirty && booking.email.$invalid">
                 <ul class="list-layout">
@@ -270,7 +275,7 @@
             </div>
             <div class="row">
               <div class="col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10 col-sm-4 col-sm-offset-8 col-xs-6 col-xs-offset-6">
-                <button class="btn btn-danger btn-block" data-ng-click="validate()">{{ __('product.booking.book') }}</button>
+                <button type="button" class="btn btn-danger btn-block" data-ng-click="validate()">{{ __('product.booking.book') }}</button>
               </div>
             </div>
           </div>
@@ -365,7 +370,7 @@
                   <h4>{{ __('product.booking.package.total') }} {% raw %}{{ displayAmount(getTotal()) }}{% endraw %}</h4>
                 </div>
                 <div class="alert alert-warning text-right">
-                  <label><input type="checkbox" autocomplete="off"> {{ __('common.readandagree') }}</label> <a href="#" target="_blank">{{ __('product.booking.contract') }}</a>
+                  <label><input type="checkbox" name="contract" autocomplete="off"> {{ __('common.readandagree') }}</label> <a href="#" target="_blank">{{ __('product.booking.contract') }}</a>
                 </div>
               </div>
               <div class="modal-footer">
@@ -374,7 +379,7 @@
                     <button type="button" class="btn btn-primary btn-block" data-dismiss="modal">{{ __('common.cancel') }}</button>
                   </div>
                   <div class="col-xs-4">
-                    <a href="/booking/result" class="btn btn-danger btn-block">{{ __('common.submit') }}</a>
+                    <button type="submit" class="btn btn-danger btn-block">{{ __('common.submit') }}</button>
                   </div>
                 </div>
               </div>
@@ -396,10 +401,7 @@
 <script src="//cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.js"></script>
 <script src="//cdn.bootcss.com/fullcalendar/2.4.0/lang/{% if preset.locale == 'zh-cn' %}zh-cn{% elseif preset.locale == 'zh-hk' %}zh-tw{% elseif preset.locale == 'en' %}en-gb{% endif %}.js"></script>
 <script src="//cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
-<script src="//cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
 <script>
-  $("#product-nav").onePageNav();
-
   var selectedStart = false;
 
   function setSelectedTime(start, end){
@@ -661,6 +663,10 @@
       return $scope.generateCharge(package.baseCharge) + $scope.generateCharge(package.extraCharge) * extraPersons + itemsAmount;
     };
 
+    $scope.getItems = function() {
+      return JSON.stringify($scope.selectedItems);
+    };
+
     $scope.validate = function(){
       if(!$scope.booking.$valid){
         $scope.submitted = true;
@@ -675,6 +681,9 @@
       return $sce.trustAsHtml(htmlCode);
     };
   }]);
-
+</script>
+<script src="//cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
+<script>
+  $("#product-nav").onePageNav();
 </script>
 {% endblock %}

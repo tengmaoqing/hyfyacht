@@ -124,3 +124,26 @@ exports.login = function(req, res, next){
     }
   });
 };
+
+exports.autoLogin = function(req, res, next){
+  var uid = req.signedCookies['client_attributes'];
+
+  if(uid){
+    User.findOne({
+      _id: uid
+    }, 'mobile', function(err, user){
+      if(err){
+        err.status = 400;
+        return next(err);
+      }else{
+        if (user) {
+          req.session.username = user.mobile;
+          res.cookie('client_attributes', user.id, config.cookieOption);
+          res.cookie('client_uid', randomString({length: 6}), config.cookieOption);
+        }
+      }
+    });
+  }
+
+  next();
+};

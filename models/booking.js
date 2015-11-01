@@ -7,21 +7,22 @@ var mongoose = require('mongoose'),
 
 var BookingSchema = new Schema({
   bookingId: String,
-  boatId: ObjectId,
-  ownerId: ObjectId,
-  productId: ObjectId,
-  packageId: ObjectId,
+  boatId: Schema.Types.ObjectId,
+  ownerId: Schema.Types.ObjectId,
+  productId: Schema.Types.ObjectId,
+  packageId: Schema.Types.ObjectId,
   items: [],
-  timeStart: Date,
-  timeEnd: Date,
-  numberOfPeople: number,
-  total: number,
+  dateStart: Date,
+  dateEnd: Date,
+  numberOfPersons: Number,
+  total: Number,
   currency: String,
   contact: {
     name: String,
     mobile: String,
     email: String
-  }
+  },
+  status: String
 }, {
   versionKey: false
 });
