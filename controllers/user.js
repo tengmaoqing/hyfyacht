@@ -11,6 +11,13 @@ function hashPassword(password){
   return crypto.createHash('sha256').update(password).digest('base64').toString();
 }
 
+function setSessionAndCookie(req, res, user){
+  req.session.userId = user.id;
+  res.cookie('client_username', user.nickname, config.cookieOption);
+  res.cookie('client_attributes', user.id, config.cookieOption);
+  res.cookie('client_uid', randomString({length: 6}), config.cookieOption);
+}
+
 exports.signup = function(req, res, next){
   req.checkBody({
     'mobile': {
@@ -57,8 +64,8 @@ exports.signup = function(req, res, next){
 
       var newUser = new User({
         mobile: req.body.mobile,
-        hashedPassword: hashPassword(req.body.password),
-        role: "client"
+        nickname: req.body.mobile,
+        hashedPassword: hashPassword(req.body.password)
       });
 
       newUser.save(function (err) {
@@ -66,9 +73,7 @@ exports.signup = function(req, res, next){
           err.status = 400;
           return next(err);
         } else {
-          req.session.username = newUser.mobile;
-          res.cookie('client_attributes', newUser.id, config.cookieOption);
-          res.cookie('client_uid', randomString({length: 6}), config.cookieOption);
+          setSessionAndCookie(req, res, newUser);
 
           res.redirect('/');
         }
@@ -103,7 +108,7 @@ exports.login = function(req, res, next){
 
   User.findOne({
     mobile: req.body.mobile
-  }, 'mobile hashedPassword', function(err, user){
+  }, 'nickname hashedPassword', function(err, user){
     if(err){
       err.status = 400;
       return next(err);
@@ -111,9 +116,7 @@ exports.login = function(req, res, next){
       if (!user || hashPassword(req.body.password) != user.hashedPassword) {
         res.render('login', { error: 'error.login.donotmatch' });
       } else {
-        req.session.username = user.mobile;
-        res.cookie('client_attributes', user.id, config.cookieOption);
-        res.cookie('client_uid', randomString({length: 6}), config.cookieOption);
+        setSessionAndCookie(req, res, user);
 
         if(!from) {
           res.redirect('/');
@@ -128,20 +131,13 @@ exports.login = function(req, res, next){
 exports.autoLogin = function(req, res, next){
   var uid = req.signedCookies['client_attributes'];
 
-  if(uid){
+  if(!req.session.userId && uid){
     User.findOne({
       _id: uid
-    }, 'mobile', function(err, user){
-      if(err){
-        err.status = 400;
-        return next(err);
-      }else{
-        if (user) {
-          req.session.username = user.mobile;
-          res.cookie('client_attributes', user.id, config.cookieOption);
-          res.cookie('client_uid', randomString({length: 6}), config.cookieOption);
+    }, 'nickname', function(err, user){
+        if (!err && user) {
+          setSessionAndCookie(req, res, user);
         }
-      }
     });
   }
 

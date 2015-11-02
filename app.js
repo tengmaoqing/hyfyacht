@@ -24,7 +24,10 @@ var booking = require('./routes/booking');
 var user = require('./routes/user');
 var owner = require('./routes/owner');
 
+var userController = require('./controllers/user');
+
 var app = express();
+app.set('trust proxy', 1);
 
 //Environment mode
 app.set('env', config.env);
@@ -72,6 +75,9 @@ app.use(expressSession({
   store: new mongoStore({
     mongooseConnection: mongoose.connection
   }),
+  cookie:{
+    maxAge: 20 * 60 * 1000
+  },
   resave: false,
   saveUninitialized: false
 }));
@@ -94,16 +100,17 @@ app.use(function(req, res, next){
   next();
 });
 
-var preset = {};
+//auto login
+app.use(userController.autoLogin);
 
 //preset
+var preset = {};
+
 app.use(function(req, res, next){
   var username = false;
 
-  if(req.session.username){
-    username = req.session.username;
-  }else if(req.signedCookies['client_attributes']){
-    username = req.signedCookies['client_attributes'];
+  if(req.signedCookies['client_username']){
+    username = req.signedCookies['client_username'];
   }
 
   util._extend(preset, {
@@ -123,6 +130,8 @@ app.use(function(req, res, next){
 //set currency
 app.use(function(req, res, next){
   var currency = req.query.curr || req.cookies['client_currency'] || ( preset.locale == 'zh-cn' ? 'cny' : 'hkd');
+
+  req.session.currency = currency;
 
   currency = currency == 'hkd' ? 'hkd' : 'cny';
   var prefix = currency == 'hkd' ? '$' : '￥';

@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 var PackageSchema = new Schema({
   name: String,
   owner: {type: Schema.Types.ObjectId, ref: 'Owner'},
+  product: {type: Schema.Types.ObjectId, ref: 'Product'},
   summary: String,
   currency: String,
   availableMonths: [],

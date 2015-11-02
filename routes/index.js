@@ -16,6 +16,7 @@ router.get('/login', function(req, res, next){
 
 router.get('/logout', function(req, res, next){
   res.clearCookie('client_uid');
+  res.clearCookie('client_username');
   res.clearCookie('client_attributes');
   req.session.destroy();
   res.redirect('/');

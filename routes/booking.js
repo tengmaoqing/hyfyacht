@@ -15,6 +15,7 @@ router.get('/result', function(req, res, next){
 });
 
 
+router.get('/submit', booking.checkBooking);
 router.post('/submit', booking.checkBooking);
 
 module.exports = router;
