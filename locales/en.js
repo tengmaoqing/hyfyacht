@@ -163,6 +163,14 @@
           "package": "Please choose a package.",
           "contact": "Invaild contact."
         }
+      },
+      "result": {
+        "success": "Success",
+        "payment_notice": "Booking will be cancel, if you don't complete the payment.",
+        "amount": "Amount:",
+        "modeOfPayment": "Mode of payment:",
+        "bookingId": "Booking No.",
+        "status": "Status"
       }
     }
   },

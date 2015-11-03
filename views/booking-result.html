@@ -1,3 +1,5 @@
+{% import './macros/booking.html' as bookingView %}
+
 {% extends './layout.html' %}
 
 {% block content %}
@@ -6,13 +8,13 @@
 
 <div class="container boat-info">
   <div class="page-header">
-    <h1>提交成功</h1>
+    <h1>{{ __('product.booking.result.success') }}</h1>
   </div>
   <div class="alert alert-danger">
-    <span class="glyphicon glyphicon-exclamation-sign"></span> 请支付定单款项，如在30分钟未完成支付，则会取消定单。
+    <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.result.payment_notice') }}
   </div>
-  <h4>金额：￥14000.00</h4>
-  <p>选择支付方式:</p>
+  <h4>{{ __('product.booking.result.amount') }} {% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ booking.total }}</h4>
+  <p>{{ __('product.booking.result.modeOfPayment') }}</p>
   <p>
     <label class="btn btn-default">
       <input name="payway" type="radio" autocomplete="off" checked> 支付宝
@@ -31,7 +33,7 @@
   </div>
   <hr class="hr-divider">
 
-  {% include './booking-detail.html' %}
+  {{ bookingView.detail(booking) }}
 
 </div>
 {% include './footer.html' %}

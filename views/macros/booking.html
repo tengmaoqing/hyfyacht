@@ -1,0 +1,50 @@
+{% macro detail(booking) %}
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-md-8 col-sm-8 col-xs-6">
+        <h4>{{ __('product.booking.result.bookingId') }}: {{ booking.bookingId }}</h4>
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-6 text-right">
+        {{ __('product.booking.result.status') }}：未付款 <button type="button" class="btn btn-primary">{{ __('common.pay') }}</button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <dl class="dl-horizontal">
+      <dt>{{ __('product.booking.bookingBoat') }}</dt>
+      <dd>{{ booking.boatName }}</dd>
+      <dt>{{ __('common.owner') }}</dt>
+      <dd>{{ booking.ownerName }}</dd>
+      <dt>{{ __('common.location') }}</dt>
+      <dd>{{ __(booking.boatLocation.city) }} {% if booking.boatLocation.pier %}- {{ __(booking.boatLocation.pier) }}{% endif %}</dd>
+      <dt>{{ __('product.booking.bookingProduct') }}</dt>
+      <dd>{{ booking.productName }}</dd>
+      <dt>{{ __('product.booking.start') }}</dt>
+      <dd>{{ booking.dateStart }}</dd>
+      <dt>{{ __('product.booking.end') }}</dt>
+      <dd>{{ booking.dateEnd }}</dd>
+      <dt>{{ __('product.booking.numberOfPeople') }}</dt>
+      <dd>{{ booking.numberOfPersons }}</dd>
+      <dt>{{ __('product.booking.bookingPackage') }}</dt>
+      <dd>{{ booking.packageName }}</dd>
+      <dt>{{ __('product.booking.name') }}</dt>
+      <dd>{{ booking.contact.name }}</dd>
+      <dt>{{ __('product.booking.mobile') }}</dt>
+      <dd>{{ booking.contact.mobile }}</dd>
+      <dt>{{ __('product.booking.email') }}</dt>
+      <dd>{{ booking.contact.email }}</dd>
+    </dl>
+    <table class="table table-summary">
+      <caption>{{ __('product.booking.package.items') }}</caption>
+      <tr><th>{{ __('product.booking.package.item') }}</th><th>{{ __('product.booking.package.quantity') }}</th><th>{{ __('product.booking.package.subtotal') }}</th></tr>
+      {% for item in booking.items %}
+      <tr><td>{{ item.name }} ({% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ item.charge }})</td><td>{{ item.amount }}</td><td>{% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ item.subtotal }}</td></tr>
+      {% endfor %}
+    </table>
+    <div class="text-right">
+      <h4>{{ __('product.booking.package.total') }} {% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ booking.total }}</h4>
+    </div>
+  </div>
+</div>
+{% endmacro %}

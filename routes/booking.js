@@ -10,9 +10,7 @@ router.get('/', function(req, res, next){
   res.render('booking-info');
 });
 
-router.get('/result', function(req, res, next){
-  res.render('booking-result');
-});
+router.get('/result', booking.result);
 
 
 router.get('/submit', booking.checkBooking);

@@ -106,6 +106,19 @@ app.use(userController.autoLogin);
 //preset
 var preset = {};
 
+var removeSubdomain = function(req){
+  if(req.subdomains && req.subdomains.length > 0){
+    var arr = req.hostname.split('.');
+
+    var result = arr.slice(req.subdomains.length)
+
+    return result.join('.');
+
+  }else{
+    return req.hostname;
+  }
+};
+
 app.use(function(req, res, next){
   var username = false;
 
@@ -114,13 +127,16 @@ app.use(function(req, res, next){
   }
 
   util._extend(preset, {
-    staticHost: config.staticMode === 'express' ? '' : 'http://static.' + req.hostname,
-    imgHost: config.staticMode === 'express' ? '/img' : 'http://img.' + req.hostname + '/base',
+    staticHost: config.staticMode === 'express' ? '' : 'http://static.' + removeSubdomain(req),
+    imgHost: config.staticMode === 'express' ? '/img' : 'http://img.' + removeSubdomain(req) + '/base',
     originalUrl: req.originalUrl,
     username: username,
     locale: req.getLocale(),
     getUrlWithQuery: function(key, value){
       return URI(req.originalUrl).setQuery(key, value).toString();
+    },
+    getDateString: function(date){
+
     }
   });
 

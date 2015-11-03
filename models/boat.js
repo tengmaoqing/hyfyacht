@@ -20,6 +20,7 @@ var BoatSchema = new Schema({
   baseCharge: Number,
   currency: String,
   description: String,
+  thumbnail: String,
   photos: [String],
   baseFacilities: [String],
   entertainments: [String],

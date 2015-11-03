@@ -96,7 +96,7 @@
       <div class="col-md-4 col-sm-6 cell">
         <div class="thumbnail">
           <a href="/boat/{{ boat.id }}/{{ boat.name }}">
-            <div class="boat-thumbnail" style="background-image: url({{ boat.photos[0] }})">
+            <div class="boat-thumbnail" style="background-image: url({{ boat.thumbnail }})">
               <div class="boat-basecharge">
                 <h4>{{ boat.name }}</h4>
                 <h4 class="text-danger">{{ __('boat.detail.from %s', preset.generateCharge(boat.baseCharge, boat.currency)) }}</h4>

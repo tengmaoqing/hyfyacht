@@ -17,11 +17,12 @@
       <h4>我的预定</h4>
       <hr class="hr-divider">
       <div class="booking-list">
+        {% for booking in bookings %}
         <div class="panel panel-info">
           <div class="panel-heading">
             <div class="row">
               <div class="col-md-10 col-sm-10 col-xs-8">
-                <strong>定单号：2015101511001</strong>
+                <strong>{{ __('product.booking.result.bookingId') }}: {{ booking.bookingId }}</strong>
               </div>
               <div class="col-md-2 col-sm-2 col-xs-4 text-right">
                 <a href="/user/booking/detail" target="_blank" class="btn btn-default btn-sm">详情 <span class="glyphicon glyphicon-menu-right"></span></a>
@@ -40,19 +41,19 @@
                     </div>
                   </div>
                   <div class="col-md-8 col-sm-8 col-xs-8">
-                    <p><strong>rainbow - 日间船河 - 平日套餐A</strong></p>
-                    <p>开始时间: 2015年10月17日 上午 10:00</p>
-                    <p>结束时间: 2015年10月17日 下午 5:00</p>
+                    <p><strong>{{ booking.boatName }} - {{ booking.productName }} - {{ booking.packageName }}</strong></p>
+                    <p>{{ __('product.booking.start') }}: {{ booking.dateStart }}</p>
+                    <p>{{ __('product.booking.end') }}: {{ booking.dateEnd }}</p>
                   </div>
                 </div>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
                 <div class="row">
                   <div class="col-lg-4 col-md-4 col-sm-4 visible-lg visible-md visible-sm">
-                    吴雪方
+                    {{ booking.contact.name }}
                   </div>
                   <div class="col-lg-4 col-md-4 col-sm-4 visible-lg visible-md visible-sm">
-                    合计：￥14000
+                    {{ __('product.booking.package.total') }}：{% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ booking.total }}
                   </div>
                   <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 text-right">
                     <strong>未付款</strong> <button type="button" class="btn btn-primary">{{ __('common.pay') }}</button>
@@ -62,96 +63,7 @@
             </div>
           </div>
         </div>
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            <div class="row">
-              <div class="col-md-10 col-sm-10 col-xs-8">
-                <strong>定单号：2015101511001</strong>
-              </div>
-              <div class="col-md-2 col-sm-2 col-xs-4 text-right">
-                <a href="/user/booking/detail" target="_blank" class="btn btn-default btn-sm">详情 <span class="glyphicon glyphicon-menu-right"></span></a>
-              </div>
-            </div>
-          </div>
-          <div class="panel-body">
-            <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <div class="row">
-                  <div class="col-md-4 col-sm-4 col-xs-4">
-                    <div class="thumbnail">
-                      <a href="#">
-                        <img src="{{ preset.imgHost }}/yacht01.jpg" alt="yacht02">
-                      </a>
-                    </div>
-                  </div>
-                  <div class="col-md-8 col-sm-8 col-xs-8">
-                    <p><strong>rainbow - 日间船河 - 平日套餐A</strong></p>
-                    <p>开始时间: 2015年10月17日 上午 10:00</p>
-                    <p>结束时间: 2015年10月17日 下午 5:00</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
-                <div class="row">
-                  <div class="col-lg-4 col-md-4 col-sm-4 visible-lg visible-md visible-sm">
-                    吴雪方
-                  </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4 visible-lg visible-md visible-sm">
-                    合计：￥14000
-                  </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 text-right">
-                    <strong>已完成</strong>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            <div class="row">
-              <div class="col-md-10 col-sm-10 col-xs-8">
-                <strong>定单号：2015101511001</strong>
-              </div>
-              <div class="col-md-2 col-sm-2 col-xs-4 text-right">
-                <a href="/user/booking/detail" target="_blank" class="btn btn-default btn-sm">详情 <span class="glyphicon glyphicon-menu-right"></span></a>
-              </div>
-            </div>
-          </div>
-          <div class="panel-body">
-            <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <div class="row">
-                  <div class="col-md-4 col-sm-4 col-xs-4">
-                    <div class="thumbnail">
-                      <a href="#">
-                        <img src="{{ preset.imgHost }}/yacht03.jpg" alt="yacht02">
-                      </a>
-                    </div>
-                  </div>
-                  <div class="col-md-8 col-sm-8 col-xs-8">
-                    <p><strong>rainbow - 日间船河 - 平日套餐A</strong></p>
-                    <p>开始时间: 2015年10月17日 上午 10:00</p>
-                    <p>结束时间: 2015年10月17日 下午 5:00</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
-                <div class="row">
-                  <div class="col-lg-4 col-md-4 col-sm-4 visible-lg visible-md visible-sm">
-                    吴雪方
-                  </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4 visible-lg visible-md visible-sm">
-                    合计：￥14000
-                  </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 text-right">
-                    <strong>已取消</strong>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {% endfor %}
       </div>
     </div>
   </div>

@@ -163,6 +163,14 @@
           "package": "請選擇一個套餐。",
           "contact": "聯繫人信息錯誤。"
         }
+      },
+      "result": {
+        "success": "提交成功",
+        "payment_notice": "請支付定單款項，如在30分鐘內未完成支付，則會取消定單。",
+        "amount": "金額:",
+        "modeOfPayment": "付款方式:",
+        "bookingId": "定單號",
+        "status": "定單狀態"
       }
     }
   },

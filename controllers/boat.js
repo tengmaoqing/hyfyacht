@@ -109,7 +109,7 @@ exports.getBoats = function(req, res, next){
   Boat.paginate(query, {
     page: page,
     limit: 12,
-    columns: '_id name type baseCharge currency location photos'
+    columns: '_id name type baseCharge currency location thumbnail photos'
   },function(err, boats, pageCount, itemCount){
     if(err){
       err.status = 400;

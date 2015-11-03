@@ -97,6 +97,7 @@ exports.checkBooking = function(req, res, next) {
           selectedItems.push({
             name: i18n.__('product.booking.package.base'),
             charge: generateCharge(package.baseCharge),
+            originCharge: package.baseCharge,
             amount: 1,
             subtotal: generateCharge(package.baseCharge)
           });
@@ -107,6 +108,7 @@ exports.checkBooking = function(req, res, next) {
             selectedItems.push({
               name: i18n.__('product.booking.package.extra'),
               charge: generateCharge(package.extraCharge),
+              originCharge: package.extraCharge,
               amount: extraPersons,
               subtotal: generateCharge(package.extraCharge) * extraPersons
             });
@@ -120,6 +122,7 @@ exports.checkBooking = function(req, res, next) {
                 selectedItems.push({
                   name: data.name,
                   charge: generateCharge(data.charge),
+                  originCharge: data.charge,
                   amount: items[item].amount,
                   subtotal: generateCharge(data.charge) * items[item].amount
                 });
@@ -150,6 +153,7 @@ exports.checkBooking = function(req, res, next) {
 
           var booking = new Booking({
             boatId: package.boats[boatIndex].id,
+            userId: req.session.userId,
             boatName: package.boats[boatIndex].name,
             boatLocation: package.boats[boatIndex].location,
             ownerId: package.owner.id,
@@ -180,7 +184,11 @@ exports.checkBooking = function(req, res, next) {
               return next(err);
             }else{
               req.session.bookingForm = null;
-              res.redirect('/booking/result?id=' + savedBooing.bookingId);
+              req.session.bookingResult = {
+                success: true,
+                id: savedBooing.bookingId
+              };
+              res.redirect('/booking/result');
             }
           });
         }else{
@@ -188,6 +196,52 @@ exports.checkBooking = function(req, res, next) {
           err.status = 404;
           next(err);
         }
+      }
+    });
+  }
+};
+
+exports.result = function(req, res, next){
+  if(req.session.bookingResult && req.session.bookingResult.success) {
+    Booking.findOne({
+      bookingId: req.session.bookingResult.id
+    },function(err, booking){
+      if(err){
+        err.status = 400;
+        return next(err);
+      }else{
+        if(booking.userId != req.session.userId){
+          var err = new Error('Forbidden');
+          err.status = 403;
+          next(err);
+        }else {
+          res.render('booking-result', {booking: booking});
+        }
+      }
+    });
+
+  }else{
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+  }
+};
+
+exports.getBookings = function(req, res, next){
+  if (!req.session.userId) {
+    res.redirect('/login?from=' + req.originalUrl);
+  } else {
+    Booking.find({
+      userId: req.session.userId
+    }).sort( {
+      bookingId: -1
+    }).exec(
+    function(err, bookings){
+      if(err){
+        err.status = 400;
+        return next(err);
+      }else{
+        res.render('user-booking-list', {bookings: bookings});
       }
     });
   }
