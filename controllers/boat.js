@@ -12,11 +12,11 @@ exports.getBoat = function(req, res, next){
       return next(err);
     }else{
       if(boat){
-        res.render('boat-detail', {boat: boat});
+        return res.render('boat-detail', {boat: boat});
       }else{
         var err = new Error('Not Found');
         err.status = 404;
-        next(err);
+        return next(err);
       }
     }
   });
@@ -124,7 +124,7 @@ exports.getBoats = function(req, res, next){
         for(var i = 1; i <= pageCount; i++){
           pager.pages.push(i);
         }
-        res.render('boat-list', {params: params, boats: boats, pager: pager, itemCount: itemCount});
+        return res.render('boat-list', {params: params, boats: boats, pager: pager, itemCount: itemCount});
       }
     }
   });

@@ -42,8 +42,8 @@
                   </div>
                   <div class="col-md-8 col-sm-8 col-xs-8">
                     <p><strong>{{ booking.boatName }} - {{ booking.productName }} - {{ booking.packageName }}</strong></p>
-                    <p>{{ __('product.booking.start') }}: {{ booking.dateStart }}</p>
-                    <p>{{ __('product.booking.end') }}: {{ booking.dateEnd }}</p>
+                    <p>{{ __('product.booking.start') }}: {{ preset.getDateString(booking.dateStart) }}</p>
+                    <p>{{ __('product.booking.end') }}: {{ preset.getDateString(booking.dateEnd) }}</p>
                   </div>
                 </div>
               </div>

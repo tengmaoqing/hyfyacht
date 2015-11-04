@@ -48,11 +48,17 @@
           <div id="product-booking-date" class="product-booking-container">
             <p><strong>{{ __('product.booking.chooseTime') }}</strong></p>
             <div id="calendar"></div>
-            <div class="calendar-controller text-right">
-              <button id="calendar-month" type="button" class="btn btn-default invisible">{{ __('calendar.selectdate') }}</button>
-              <div class="btn-group">
-                <button id="calendar-prev" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button>
-                <button id="calendar-next" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button>
+            <div class="row calendar-controller">
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <span class="glyphicon glyphicon-stop calendar-event-icon"></span>
+                {{ __('calendar.booked') }}
+              </div>
+              <div class="col-md-8 col-sm-6 col-xs-12 text-right">
+                <button id="calendar-month" type="button" class="btn btn-default invisible">{{ __('calendar.selectdate') }}</button>
+                <div class="btn-group">
+                  <button id="calendar-prev" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button>
+                  <button id="calendar-next" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button>
+                </div>
               </div>
             </div>
             <ul class="list-group">
@@ -432,7 +438,6 @@
     maxTime: "{{ product.workingHours.end }}",
     slotDuration: "01:00:00",
     slotLabelFormat: "HH:00",
-//    hiddenDays: [0,6],
     selectable: true,
     unselectAuto: false,
     viewRender: function(view, element){
@@ -505,54 +510,11 @@
         }
       }
     },
-    events:[
-      {
-        title: "已预定",
-        start: "2015-10-28T13:00",
-        end: "2015-10-28T14:00",
-        allDay: false,
-        backgroundColor: "#258ec7",
-        borderColor: "#258ec7"
-      },
-      {
-        title: "已预定",
-        start: "2015-10-28T15:00",
-        end: "2015-10-28T16:00",
-        allDay: false,
-        backgroundColor: "#258ec7",
-        borderColor: "#258ec7"
-      },
-      {
-        title: "已预定",
-        start: "2015-10-28T16:00",
-        end: "2015-10-28T17:00",
-        allDay: false,
-        backgroundColor: "#258ec7",
-        borderColor: "#258ec7"
-      },
-      {
-        title: "已预定",
-        start: "2015-10-28T10:00",
-        end: "2015-10-28T11:00",
-        allDay: false,
-        backgroundColor: "#258ec7",
-        borderColor: "#258ec7"
-      },
-      {
-        title: "国庆",
-        start: new Date(2015, 9, 1),
-        allDay: true,
-        backgroundColor: "#ff5a5e",
-        borderColor: "#ff5a5e"
-      },
-      {
-        title: "国庆",
-        start: new Date(2015, 10, 1),
-        allDay: true,
-        backgroundColor: "#ff5a5e",
-        borderColor: "#ff5a5e"
-      }
-    ]
+    events:"/booking/cal/{{ boat.id }}",
+    eventColor: "#258ec7",
+    eventRender: function(event, element){
+      $(element).find(".fc-time").text(moment(event.start).format("HH:mm") + "-" + moment(event.end).format("HH:mm"));
+    }
   });
 
   $("#calendar-month").click(function(){

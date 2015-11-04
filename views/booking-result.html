@@ -7,6 +7,14 @@
 {% include './nav.html' %}
 
 <div class="container boat-info">
+  {% if error %}
+  <div class="page-header">
+    <h1>{{ __('product.booking.result.fail') }}</h1>
+  </div>
+  <div class="alert alert-danger">
+    <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __(error) }}
+  </div>
+  {% else %}
   <div class="page-header">
     <h1>{{ __('product.booking.result.success') }}</h1>
   </div>
@@ -34,7 +42,7 @@
   <hr class="hr-divider">
 
   {{ bookingView.detail(booking) }}
-
+  {% endif %}
 </div>
 {% include './footer.html' %}
 

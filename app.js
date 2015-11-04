@@ -12,6 +12,7 @@ var csurf = require('csurf');
 var expressValidator = require('express-validator');
 var i18n = require('i18n');
 var swig = require('swig');
+var moment = require('moment');
 
 //config
 var config = require('./config');
@@ -136,7 +137,7 @@ app.use(function(req, res, next){
       return URI(req.originalUrl).setQuery(key, value).toString();
     },
     getDateString: function(date){
-
+      return moment(date).format('YYYY-MM-DD HH:mm');
     }
   });
 

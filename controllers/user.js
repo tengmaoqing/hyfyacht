@@ -46,8 +46,7 @@ exports.signup = function(req, res, next){
 
   //request sms code api
   if(false){
-    res.render('signup', { error: 'error.signup.sms' });
-    return;
+    return res.render('signup', { error: 'error.signup.sms' });
   }
 
   User.findOne({
@@ -58,8 +57,7 @@ exports.signup = function(req, res, next){
       return next(err);
     }else{
       if(user){
-        res.render('signup', { error: 'error.signup.registered' });
-        return;
+        return res.render('signup', { error: 'error.signup.registered' });
       }
 
       var newUser = new User({
@@ -75,7 +73,7 @@ exports.signup = function(req, res, next){
         } else {
           setSessionAndCookie(req, res, newUser);
 
-          res.redirect('/');
+          return res.redirect('/');
         }
       });
     }
@@ -114,14 +112,14 @@ exports.login = function(req, res, next){
       return next(err);
     }else{
       if (!user || hashPassword(req.body.password) != user.hashedPassword) {
-        res.render('login', { error: 'error.login.donotmatch' });
+        return res.render('login', { error: 'error.login.donotmatch' });
       } else {
         setSessionAndCookie(req, res, user);
 
         if(!from) {
-          res.redirect('/');
+          return res.redirect('/');
         }else{
-          res.redirect(encodeURI(from));
+          return res.redirect(encodeURI(from));
         }
       }
     }
@@ -135,11 +133,12 @@ exports.autoLogin = function(req, res, next){
     User.findOne({
       _id: uid
     }, 'nickname', function(err, user){
-        if (!err && user) {
-          setSessionAndCookie(req, res, user);
-        }
+      if (!err && user) {
+        setSessionAndCookie(req, res, user);
+      }
+      return next();
     });
+  }else{
+    return next();
   }
-
-  next();
 };

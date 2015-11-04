@@ -11,11 +11,11 @@ exports.getOwnerByCustomLink = function(req, res, next) {
       return next(err);
     }else{
       if(owner){
-        res.render('owner-boat-list', {owner: owner});
+        return res.render('owner-boat-list', {owner: owner});
       }else{
         var err = new Error('Not Found');
         err.status = 404;
-        next(err);
+        return next(err);
       }
     }
   });
@@ -28,11 +28,11 @@ exports.getOwner = function(req, res, next) {
       return next(err);
     }else{
       if(owner){
-        res.render('owner-boat-list', {owner: owner});
+        return res.render('owner-boat-list', {owner: owner});
       }else{
         var err = new Error('Not Found');
         err.status = 404;
-        next(err);
+        return next(err);
       }
     }
   });

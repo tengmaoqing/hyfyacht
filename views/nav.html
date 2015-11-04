@@ -2,7 +2,6 @@
 
 <nav class="navbar navbar-custom{% if absolute %} navbar-absolute{% endif %}">
   <div class="container">
-    <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#hyf-navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
@@ -10,9 +9,8 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/"><img src="{{ preset.imgHost }}/logo-light-blue{% if preset.locale == 'en' %}-en{% endif %}.png" alt="logo" width="150" height="30"></a>
+      <a class="navbar-brand" href="/"><img src="{{ preset.imgHost }}/logo-light-blue{% if preset.locale == 'en' %}-en{% endif %}.png" alt="logo" height="30"></a>
     </div>
-    <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="hyf-navbar-collapse-1">
       <ul class="nav navbar-nav">
         {{ menu.item(__('nav.home'), '/', view_active == 'home') }}
@@ -36,6 +34,6 @@
         <li><a href="/signup">{{ __('common.signup') }}</a></li>
         {% endif %}
       </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container -->
+    </div>
+  </div>
 </nav>

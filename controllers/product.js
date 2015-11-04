@@ -28,18 +28,18 @@ exports.getProduct = function(req, res, next){
             return next(err);
           }else{
             if(boat){
-              res.render('product', {product: product, boat: boat});
+              return res.render('product', {product: product, boat: boat});
             }else{
               var err = new Error('Not Found');
               err.status = 404;
-              next(err);
+              return next(err);
             }
           }
         });
       }else{
         var err = new Error('Not Found');
         err.status = 404;
-        next(err);
+        return next(err);
       }
     }
   });

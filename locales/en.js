@@ -166,7 +166,12 @@
       },
       "result": {
         "success": "Success",
-        "payment_notice": "Booking will be cancel, if you don't complete the payment.",
+        "fail": "Booking failed",
+        "error": {
+          "date": "The date is unavailable.",
+          "other": "Booking information incorrect."
+        },
+        "payment_notice": "Booking will be cancel, if you don't complete the payment in 30 minutes.",
         "amount": "Amount:",
         "modeOfPayment": "Mode of payment:",
         "bookingId": "Booking No.",
@@ -175,6 +180,7 @@
     }
   },
   "calendar":{
+    "booked": "Had been booked",
     "selectdate": "Month"
   },
   "db": {

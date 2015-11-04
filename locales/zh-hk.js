@@ -166,6 +166,11 @@
       },
       "result": {
         "success": "提交成功",
+        "fail": "預定失敗",
+        "error": {
+          "date": "此時間已經被預定",
+          "other": "預定信息錯誤"
+        },
         "payment_notice": "請支付定單款項，如在30分鐘內未完成支付，則會取消定單。",
         "amount": "金額:",
         "modeOfPayment": "付款方式:",
@@ -175,6 +180,7 @@
     }
   },
   "calendar":{
+    "booked": "已被預定",
     "selectdate": "選擇日期"
   },
   "db": {

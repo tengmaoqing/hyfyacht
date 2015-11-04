@@ -21,9 +21,9 @@
       <dt>{{ __('product.booking.bookingProduct') }}</dt>
       <dd>{{ booking.productName }}</dd>
       <dt>{{ __('product.booking.start') }}</dt>
-      <dd>{{ booking.dateStart }}</dd>
+      <dd>{{ preset.getDateString(booking.dateStart) }}</dd>
       <dt>{{ __('product.booking.end') }}</dt>
-      <dd>{{ booking.dateEnd }}</dd>
+      <dd>{{ preset.getDateString(booking.dateEnd) }}</dd>
       <dt>{{ __('product.booking.numberOfPeople') }}</dt>
       <dd>{{ booking.numberOfPersons }}</dd>
       <dt>{{ __('product.booking.bookingPackage') }}</dt>

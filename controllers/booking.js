@@ -6,6 +6,7 @@ var Package = require('../models/package');
 var config = require('../config');
 var util = require('util');
 var i18n = require('i18n');
+var moment = require('moment');
 
 exports.checkBooking = function(req, res, next) {
   if (!req.session.bookingForm) {
@@ -63,11 +64,11 @@ exports.checkBooking = function(req, res, next) {
   }
 
   if (!req.session.userId) {
-    res.redirect('/login?from=' + req.originalUrl);
+    return res.redirect('/login?from=' + req.originalUrl);
   } else {
     var bookingForm = req.session.bookingForm;
 
-    Package.findOne({_id: bookingForm.packageId}).populate('owner', 'nickname').populate('product', 'name').populate('boats', 'name location').exec(function(err, package){
+    Package.findOne({_id: bookingForm.packageId}).populate('owner', 'nickname').populate('product', 'name workingHours').populate('boats', 'name capacity location').exec(function(err, package){
       if(err){
         err.status = 400;
         return next(err);
@@ -77,18 +78,24 @@ exports.checkBooking = function(req, res, next) {
             return parseFloat((charge * config.currency[req.session.currency] / config.currency[package.currency] / 100).toFixed(2));
           };
 
+          var fail = function(error){
+            req.session.bookingForm = null;
+            req.session.bookingResult = {
+              success: false
+            };
+            return res.render('booking-result', {error: error});
+          };
+
+          //Check product
           if(package.product.id != bookingForm.productId){
-            console.log('Product Check: Fail!');
-          }else{
-            console.log('Product Check: OK!');
+            return fail('product.booking.result.error.other');
           }
 
           var boatIndex = package.boats.map(function(b){return b.id}).indexOf(bookingForm.boatId);
 
+          //Check boat
           if(boatIndex < 0){
-            console.log('Boat Check: Fail!');
-          }else{
-            console.log('Boat Check: OK!');
+            return fail('product.booking.result.error.other');
           }
 
           var items = JSON.parse(bookingForm.items);
@@ -114,6 +121,7 @@ exports.checkBooking = function(req, res, next) {
             });
           }
 
+          //Check items
           for(var item in items){
             if(items.hasOwnProperty(item)){
               var index = package.items.map(function(i){return i.name}).indexOf(items[item].name);
@@ -127,8 +135,7 @@ exports.checkBooking = function(req, res, next) {
                   subtotal: generateCharge(data.charge) * items[item].amount
                 });
               }else{
-                console.log('Items Check: Fail!');
-                break;
+                return fail('product.booking.result.error.other');
               }
             }
           }
@@ -139,62 +146,118 @@ exports.checkBooking = function(req, res, next) {
             total += selectedItems[i].subtotal;
           }
 
+          //Check total
           if(total != bookingForm.total){
-            console.log('Total Check: Fail!');
-          }else{
-            console.log('Total Check: OK!');
+            return fail('product.booking.result.error.other');
           }
 
-          if(bookingForm.numberOfPersons > package.boats[boatIndex].capacity){
-            console.log('Number Of Persons Check: Fail!');
-          }else{
-            console.log('Number Of Persons Check: OK!');
+          //Check number of persons
+          if(parseInt(bookingForm.numberOfPersons) > package.boats[boatIndex].capacity){
+            return fail('product.booking.result.error.other');
           }
 
-          var booking = new Booking({
-            boatId: package.boats[boatIndex].id,
-            userId: req.session.userId,
-            boatName: package.boats[boatIndex].name,
-            boatLocation: package.boats[boatIndex].location,
-            ownerId: package.owner.id,
-            ownerName: package.owner.nickname,
-            productId: package.product.id,
-            productName: package.product.name,
-            packageId: package.id,
-            packageName: package.name,
-            items: selectedItems,
-            dateStart: bookingForm.dateStart,
-            dateEnd: bookingForm.dateEnd,
-            numberOfPersons: bookingForm.numberOfPersons,
-            total: total,
-            currency: config.currency,
-            settlementCurrency: req.session.currency,
-            baseCurrency: package.currency,
-            contact: {
-              name: bookingForm.contact,
-              mobile: bookingForm.mobile,
-              email: bookingForm.email
+          var dateStart = moment(bookingForm.dateStart);
+          var dateEnd = moment(bookingForm.dateEnd);
+
+          var workingHoursStart = moment(package.product.workingHours.start, 'H:mm');
+          var workingHoursEnd = moment(package.product.workingHours.end, 'H:mm');
+
+          //Check working hours
+          if(dateStart.hours() < workingHoursStart.hours() || dateEnd.hours() > workingHoursEnd.hours()){
+            return fail('product.booking.result.error.other');
+          }
+
+          //Check package availableDate
+          if(!package.availableMonths[dateStart.months()] || !package.availableDays[dateStart.days()] || !package.availableMonths[dateEnd.months()] || !package.availableDays[dateEnd.days()]){
+            return fail('product.booking.result.error.other');
+          }
+
+          //Check booking date
+          Booking.count().and([
+            {
+              boatId: package.boats[boatIndex].id
             },
-            status: 'notpay'
-          });
-
-          booking.save(function(err, savedBooing){
+            {
+              $or:[
+                {
+                  $and:[
+                    {
+                      dateStart: {
+                        $gte: dateStart.toDate()
+                      }
+                    },
+                    {
+                      dateStart: {
+                        $lte: dateEnd.toDate()
+                      }
+                    }
+                ]},
+                {
+                  dateStart: {
+                    $lte: dateStart.toDate()
+                  },
+                  dateEnd: {
+                    $gte: dateStart.toDate()
+                  }
+                }
+              ]
+            }
+          ]).exec(function (err, count) {
             if(err){
               err.status = 400;
               return next(err);
             }else{
-              req.session.bookingForm = null;
-              req.session.bookingResult = {
-                success: true,
-                id: savedBooing.bookingId
-              };
-              res.redirect('/booking/result');
+              if(count > 0){
+                return fail('product.booking.result.error.date');
+              }else{
+                var booking = new Booking({
+                  boatId: package.boats[boatIndex].id,
+                  userId: req.session.userId,
+                  boatName: package.boats[boatIndex].name,
+                  boatLocation: package.boats[boatIndex].location,
+                  ownerId: package.owner.id,
+                  ownerName: package.owner.nickname,
+                  productId: package.product.id,
+                  productName: package.product.name,
+                  packageId: package.id,
+                  packageName: package.name,
+                  items: selectedItems,
+                  dateStart: bookingForm.dateStart,
+                  dateEnd: bookingForm.dateEnd,
+                  numberOfPersons: bookingForm.numberOfPersons,
+                  total: total,
+                  currency: config.currency,
+                  settlementCurrency: req.session.currency,
+                  baseCurrency: package.currency,
+                  contact: {
+                    name: bookingForm.contact,
+                    mobile: bookingForm.mobile,
+                    email: bookingForm.email
+                  },
+                  status: 'notpay'
+                });
+
+                booking.save(function(err, savedBooing){
+                  if(err){
+                    err.status = 400;
+                    return next(err);
+                  }else{
+                    req.session.bookingForm = null;
+                    req.session.bookingResult = {
+                      success: true,
+                      id: savedBooing.bookingId
+                    };
+                    return res.redirect('/booking/result');
+                  }
+                });
+              }
             }
           });
+
         }else{
           var err = new Error('Not Found');
           err.status = 404;
-          next(err);
+          return next(err);
         }
       }
     });
@@ -202,34 +265,37 @@ exports.checkBooking = function(req, res, next) {
 };
 
 exports.result = function(req, res, next){
-  if(req.session.bookingResult && req.session.bookingResult.success) {
-    Booking.findOne({
-      bookingId: req.session.bookingResult.id
-    },function(err, booking){
-      if(err){
-        err.status = 400;
-        return next(err);
-      }else{
-        if(booking.userId != req.session.userId){
-          var err = new Error('Forbidden');
-          err.status = 403;
-          next(err);
-        }else {
-          res.render('booking-result', {booking: booking});
+  if(req.session.bookingResult) {
+    if(req.session.bookingResult.success) {
+      Booking.findOne({
+        bookingId: req.session.bookingResult.id
+      }, function (err, booking) {
+        if (err) {
+          err.status = 400;
+          return next(err);
+        } else {
+          if (booking.userId != req.session.userId) {
+            var err = new Error('Forbidden');
+            err.status = 403;
+            return next(err);
+          } else {
+            return res.render('booking-result', {booking: booking});
+          }
         }
-      }
-    });
-
+      });
+    }else{
+      return res.render('booking-result');
+    }
   }else{
     var err = new Error('Not Found');
     err.status = 404;
-    next(err);
+    return next(err);
   }
 };
 
-exports.getBookings = function(req, res, next){
+exports.getBookingsByUserId = function(req, res, next){
   if (!req.session.userId) {
-    res.redirect('/login?from=' + req.originalUrl);
+    return res.redirect('/login?from=' + req.originalUrl);
   } else {
     Booking.find({
       userId: req.session.userId
@@ -241,8 +307,39 @@ exports.getBookings = function(req, res, next){
         err.status = 400;
         return next(err);
       }else{
-        res.render('user-booking-list', {bookings: bookings});
+        return res.render('user-booking-list', {bookings: bookings});
       }
     });
   }
 };
+
+exports.getBookingsForCalendarEvent = function(req, res, next){
+  Booking.find({
+    boatId: req.params.bid,
+    dateStart: {
+      $gt: new Date()
+    }
+  }).select('dateStart dateEnd').exec(function(err, bookings){
+    if(err){
+      err.status = 400;
+      return next(err);
+    }else{
+      if(!bookings){
+        var err = new Error('Not Found');
+        err.status = 404;
+        return next(err);
+      }else{
+        var events = [];
+        for(var i = 0; i < bookings.length; i++){
+          events.push({
+            title: " ",
+            start: moment(bookings[i].dateStart).format('YYYY-MM-DDTHH:mm'),
+            end: moment(bookings[i].dateEnd).format('YYYY-MM-DDTHH:mm'),
+            allDay: false
+          });
+        }
+        return res.json(events);
+      }
+    }
+  });
+}
