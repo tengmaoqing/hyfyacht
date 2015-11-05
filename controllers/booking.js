@@ -284,7 +284,7 @@ exports.result = function(req, res, next){
         }
       });
     }else{
-      return res.render('booking-result');
+      return res.render('booking-result', {error: 'product.booking.result.error.other'});
     }
   }else{
     var err = new Error('Not Found');

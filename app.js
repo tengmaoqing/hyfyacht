@@ -24,6 +24,7 @@ var product = require('./routes/product');
 var booking = require('./routes/booking');
 var user = require('./routes/user');
 var owner = require('./routes/owner');
+var pay = require('./routes/pay');
 
 var userController = require('./controllers/user');
 
@@ -76,19 +77,12 @@ app.use(expressSession({
   store: new mongoStore({
     mongooseConnection: mongoose.connection
   }),
-  cookie:{
-    maxAge: 20 * 60 * 1000
-  },
+  //cookie:{
+  //  maxAge: 20 * 60 * 1000
+  //},
   resave: false,
   saveUninitialized: false
 }));
-
-app.use(csurf());
-
-app.use(function(req, res, next){
-  res.locals._csrf = req.csrfToken();
-  next();
-});
 
 //set i18n
 app.use(function(req, res, next){
@@ -182,11 +176,19 @@ app.use(function(req, res, next){
   next();
 });
 
+app.use(csurf());
+
+app.use(function(req, res, next){
+  res.locals._csrf = req.csrfToken();
+  next();
+});
+
 app.use('/boat', boat);
 app.use('/product', product);
 app.use('/booking', booking);
 app.use('/user', user);
 app.use('/owner', owner);
+app.use('/pay', pay);
 app.use('/', routes);
 
 

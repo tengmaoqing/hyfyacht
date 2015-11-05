@@ -1,0 +1,15 @@
+{% extends '../simple.html' %}
+
+{% block content %}
+
+<form id="alipaysubmit" name="alipaysubmit" action="{{ action }}" method="get">
+  {% for param in params %}
+  <input type="hidden" name="{{ param.key }}" value="{{ param.value }}">
+  {% endfor %}
+  <input type="submit" value="submit">
+</form>
+<script>
+  document.forms["alipaysubmit"].submit();
+</script>
+
+{% endblock %}
