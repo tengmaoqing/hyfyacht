@@ -111,7 +111,7 @@ exports.checkBooking = function(req, res, next) {
 
           var extraPersons = bookingForm.numberOfPersons - package.basePersons;
 
-          if(extraPersons > 0){
+          if(extraPersons > 0 && package.extraCharge > 0){
             selectedItems.push({
               name: i18n.__('product.booking.package.extra'),
               charge: generateCharge(package.extraCharge),
@@ -168,7 +168,7 @@ exports.checkBooking = function(req, res, next) {
           }
 
           //Check package availableDate
-          if(!package.availableMonths[dateStart.months()] || !package.availableDays[dateStart.days()] || !package.availableMonths[dateEnd.months()] || !package.availableDays[dateEnd.days()]){
+          if(!package.availableMonths[dateStart.month()] || !package.availableDays[dateStart.days()] || !package.availableMonths[dateEnd.month()] || !package.availableDays[dateEnd.days()]){
             return fail('product.booking.result.error.other');
           }
 

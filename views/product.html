@@ -155,7 +155,7 @@
                   </div>
                 </div>
               </li>
-              <li class="list-group-item" data-ng-if="(numberOfPersons - packages[currPackage].basePersons) > 0">
+              <li class="list-group-item" data-ng-if="packages[currPackage].extraCharge >0 && (numberOfPersons - packages[currPackage].basePersons) > 0">
                 <div class="row">
                   <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                     <div class="btn-group btn-group-sm" data-toggle="buttons">
@@ -369,7 +369,7 @@
                   <caption>{{ __('product.booking.package.items') }}</caption>
                   <tr><th>{{ __('product.booking.package.item') }}</th><th>{{ __('product.booking.package.quantity') }}</th><th>{{ __('product.booking.package.subtotal') }}</th></tr>
                   <tr><td>{{ __('product.booking.package.base') }} ({% raw %}{{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}{% endraw %})</td><td>1</td><td>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}{% endraw %}</td></tr>
-                  <tr data-ng-if="(numberOfPersons - packages[currPackage].basePersons) > 0"><td>{{ __('product.booking.package.extra') }} ({% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge)) }}{% endraw %})</td><td>{% raw %}{{ numberOfPersons - packages[currPackage].basePersons }}{% endraw %}</td><td>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge) * (numberOfPersons - packages[currPackage].basePersons)) }}{% endraw %}</td></tr>
+                  <tr data-ng-if="packages[currPackage].extraCharge > 0 && (numberOfPersons - packages[currPackage].basePersons) > 0"><td>{{ __('product.booking.package.extra') }} ({% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge)) }}{% endraw %})</td><td>{% raw %}{{ numberOfPersons - packages[currPackage].basePersons }}{% endraw %}</td><td>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge) * (numberOfPersons - packages[currPackage].basePersons)) }}{% endraw %}</td></tr>
                   <tr data-ng-repeat="item in selectedItems"><td>{% raw %}{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }}){% endraw %}</td><td>{% raw %}{{ item.amount }}{% endraw %}</td><td>{% raw %}{{ displayAmount(generateCharge(item.charge) * item.amount) }}{% endraw %}</td></tr>
                 </table>
                 <div class="text-right">
