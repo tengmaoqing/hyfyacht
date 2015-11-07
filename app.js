@@ -25,6 +25,7 @@ var booking = require('./routes/booking');
 var user = require('./routes/user');
 var owner = require('./routes/owner');
 var pay = require('./routes/pay');
+var notify = require('./routes/notify');
 
 var userController = require('./controllers/user');
 
@@ -175,6 +176,8 @@ app.use(function(req, res, next){
 
   next();
 });
+
+app.use('/notify', notify);
 
 app.use(csurf());
 

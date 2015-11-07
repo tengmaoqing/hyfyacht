@@ -6,7 +6,6 @@ var router = express.Router();
 
 var alipay = require('../lib/alipay/alipay');
 
-router.post('/alipay', alipay.submitDirectPayByUser);
 router.post('/alipay/notify', alipay.notify);
 
 module.exports = router;
