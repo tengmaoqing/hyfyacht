@@ -21,7 +21,7 @@
     <input type="hidden" name="WIDsubject" value="{{ booking.boatName }}-{{ booking.productName }}-{{ booking.packageName }}">
     <input type="hidden" name="WIDtotal_fee" value="{{ booking.total }}">
     <input type="hidden" name="WIDbody" value="{{ booking.boatName }}-{{ booking.productName }}-{{ booking.packageName }}">
-    <input type="hidden" name="WIDshow_url" value="http://hgboating.com/product/{{ booking.productId }}/{{ booking.productName }}/{{ booking.boatId }}/{{ booking.boatName }}">
+    <input type="hidden" name="WIDshow_url" value="http://test.hgboating.com/product/{{ booking.productId.valueOf() }}/{{ booking.productName }}/{{ booking.boatId.valueOf() }}/{{ booking.boatName }}">
     <div class="page-header">
       <h1>{{ __('product.booking.result.success') }}</h1>
     </div>
