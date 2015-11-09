@@ -65,7 +65,12 @@ i18n.configure({
 app.use(i18n.init);
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  type: function(req){
+    return /x-www-form-urlencoded/.test(req.headers['content-type']);
+  },
+  extended: false
+}));
 app.use(expressValidator());
 app.use(cookieParser(config.cookieSecret));
 
