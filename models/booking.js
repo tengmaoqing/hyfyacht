@@ -31,7 +31,7 @@ var BookingSchema = new Schema({
     email: String
   },
   status: String,
-  payment: Object
+  payment: {type: Schema.Types.ObjectId, ref: 'Payment'}
 }, {
   versionKey: false
 });
