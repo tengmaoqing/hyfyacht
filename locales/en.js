@@ -21,6 +21,7 @@
     "confirmPassword": "Confirm Password",
     "smscode": "SMS Code",
     "getsmscode": "Get SMS Code",
+    "smscodesend": "Had send",
     "readandagree": "I have read and agree",
     "termsandprivacy": "Service terms & Privacy policy",
     "email": "E-mail",
@@ -50,7 +51,9 @@
     },
     "signup": {
       "sms": "Invalid SMS Code.",
-      "registered": "This mobile no. has been registered."
+      "sms_expired": "SMS Code had expired.",
+      "registered": "This mobile no. has been registered.",
+      "input_mobile": "Please input your Mobile No."
     }
   },
   "nav": {

@@ -21,6 +21,7 @@
     "confirmPassword": "确认密码",
     "smscode": "短信验证码",
     "getsmscode": "获取短信验证码",
+    "smscodesend": "验证码已发送",
     "readandagree": "我已阅读并同意",
     "termsandprivacy": "服务条款与隐私政策",
     "email": "电子邮箱",
@@ -50,7 +51,9 @@
     },
     "signup": {
       "sms": "短信验证码错误。",
-      "registered": "此手机号码已经注册。"
+      "sms_expired": "验证码已经失效。",
+      "registered": "此手机号码已经注册。",
+      "input_mobile": "请输入手机号码。"
     }
   },
   "nav": {

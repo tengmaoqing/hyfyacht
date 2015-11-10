@@ -6,6 +6,7 @@ var User = require('../models/user');
 var config = require('../config');
 var randomString = require('random-string');
 var util = require('util');
+var moment = require('moment');
 
 function hashPassword(password){
   return crypto.createHash('sha256').update(password).digest('base64').toString();
@@ -20,6 +21,10 @@ function setSessionAndCookie(req, res, user){
 
 exports.signup = function(req, res, next){
   req.checkBody({
+    'area_code': {
+      notEmpty: true,
+      errorMessage: 'Invalid Area Code'
+    },
     'mobile': {
       notEmpty: true,
       errorMessage: 'Invalid Mobile Number'
@@ -44,13 +49,29 @@ exports.signup = function(req, res, next){
     return next(err);
   }
 
-  //request sms code api
-  if(false){
+  var mobile = req.body.area_code + req.body.mobile;
+
+  var now = moment();
+
+  if(req.session.smsLast){
+    var last = moment(req.session.smsLast);
+
+    last.add(20, 'm');
+    if(last < now){
+      return res.render('signup', { error: 'error.signup.sms_expired' });
+    }
+  }
+
+  if(!req.session.smsCode || !req.session.smsMobile || req.session.smsCode != req.body.code || req.session.smsMobile != mobile){
     return res.render('signup', { error: 'error.signup.sms' });
   }
 
+  req.session.smsLast = null;
+  req.session.smsCode = null;
+  req.session.smsMobile = null;
+
   User.findOne({
-    mobile: req.body.mobile
+    mobile: mobile
   }, 'mobile', function(err, user){
     if(err){
       err.status = 400;
@@ -61,7 +82,7 @@ exports.signup = function(req, res, next){
       }
 
       var newUser = new User({
-        mobile: req.body.mobile,
+        mobile: mobile,
         nickname: req.body.mobile,
         hashedPassword: hashPassword(req.body.password)
       });
@@ -84,6 +105,10 @@ exports.login = function(req, res, next){
   var from = req.query.from || false;
 
   req.checkBody({
+    'area_code': {
+      notEmpty: true,
+      errorMessage: 'Invalid Area Code'
+    },
     'mobile': {
       notEmpty: true,
       errorMessage: 'Invalid Mobile'
@@ -104,8 +129,10 @@ exports.login = function(req, res, next){
     return next(err);
   }
 
+  var mobile = req.body.area_code + req.body.mobile;
+
   User.findOne({
-    mobile: req.body.mobile
+    mobile: mobile
   }, 'nickname hashedPassword', function(err, user){
     if(err){
       err.status = 400;

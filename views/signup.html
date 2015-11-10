@@ -14,9 +14,19 @@
       <form class="form-horizontal" method="POST">
         <input type="hidden" name="_csrf" value="{{ _csrf }}">
         <div class="form-group">
-          <label class="col-sm-4 control-label">{{ __('common.mobile') }}</label>
-          <div class="col-sm-8">
-            <input type="number" class="form-control" name="mobile">
+          <label class="col-sm-4 col-xs-12 control-label">{{ __('common.mobile') }}</label>
+          <div class="col-sm-2 col-xs-4">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">+86 <span class="caret"></span></button>
+              <input id="input_area_code" type="hidden" class="dropdown-menu-selected" name="area_code" value="86">
+              <ul class="dropdown-menu">
+                <li><a href="#" data-value="86">+86</a></li>
+                <li><a href="#" data-value="852">+852</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-sm-6 col-xs-8">
+            <input id="input_mobile" type="number" class="form-control" name="mobile">
           </div>
         </div>
         <div class="form-group">
@@ -37,7 +47,7 @@
             <input type="number" class="form-control" name="code">
           </div>
           <div class="col-sm-4 col-xs-8">
-            <button type="button" class="btn btn-primary btn-block">{{ __('common.getsmscode') }}</button>
+            <button id="btn-getsmscode" type="button" class="btn btn-primary btn-block">{{ __('common.getsmscode') }}</button>
           </div>
         </div>
         <div class="form-group">
@@ -57,4 +67,44 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block foot %}
+<script>
+  (function ($) {
+    var second = 60;
+
+    function countDown() {
+      if (second > 0) {
+        $("#btn-getsmscode").text("{{ __('common.smscodesend') }}(" + second + ")");
+        second--;
+        setTimeout(function () {
+          countDown();
+        }, 1000);
+      } else {
+        $("#btn-getsmscode").text("{{ __('common.getsmscode') }}").prop("disabled", false);
+      }
+    }
+
+    $("#btn-getsmscode").click(function () {
+      var area_code = $("#input_area_code").val();
+      var mobile = $("#input_mobile").val();
+
+      if (!area_code || !mobile) {
+        $("#hyf-modal-alert").CustomAlert("{{ __('error.signup.input_mobile') }}");
+        return;
+      }
+
+      var url = "/sms/get?mobile=" + area_code + mobile;
+
+      $.getJSON(url, function (result) {
+        $("#btn-getsmscode").prop("disabled", true);
+
+        second = 60;
+
+        countDown();
+      });
+    });
+  })(jQuery);
+</script>
 {% endblock %}

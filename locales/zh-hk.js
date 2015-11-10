@@ -21,6 +21,7 @@
     "confirmPassword": "確認密碼",
     "smscode": "SMS 驗證碼",
     "getsmscode": "獲取 SMS 驗證碼",
+    "smscodesend": "驗證碼已發送",
     "readandagree": "我已閱讀並同意",
     "termsandprivacy": "服務條款與隱私政策",
     "email": "E-mail",
@@ -50,7 +51,9 @@
     },
     "signup": {
       "sms": "SMS 驗證碼錯誤。",
-      "registered": "此手提電話已經註冊。"
+      "sms_expired": "SMS 驗證碼已經失效。",
+      "registered": "此手提電話已經註冊。",
+      "input_mobile": "請輸入手提電話。"
     }
   },
   "nav": {

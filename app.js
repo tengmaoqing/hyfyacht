@@ -26,6 +26,7 @@ var user = require('./routes/user');
 var owner = require('./routes/owner');
 var pay = require('./routes/pay');
 var notify = require('./routes/notify');
+var sms = require('./routes/sms');
 
 var userController = require('./controllers/user');
 
@@ -197,6 +198,7 @@ app.use('/booking', booking);
 app.use('/user', user);
 app.use('/owner', owner);
 app.use('/pay', pay);
+app.use('/sms', sms);
 app.use('/', routes);
 
 
