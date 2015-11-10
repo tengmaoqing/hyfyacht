@@ -1,0 +1,17 @@
+{% extends './layout.html' %}
+
+{% block content %}
+
+{% include './nav.html' %}
+<div class="container">
+  <div class="page-header">
+    {% if result == 'success' %}
+    <h1>{{ __('product.booking.pay.success') }}</h1>
+    {% else %}
+    <h1>{{ __('product.booking.pay.fail') }}</h1>
+    {% endif %}
+  </div>
+</div>
+{% include './footer.html' %}
+
+{% endblock %}

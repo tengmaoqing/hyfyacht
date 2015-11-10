@@ -179,6 +179,10 @@
         "modeOfPayment": "付款方式:",
         "bookingId": "定單號",
         "status": "定單狀態"
+      },
+      "pay": {
+        "success": "付款成功",
+        "fail": "付款失敗"
       }
     }
   },
@@ -187,6 +191,11 @@
     "selectdate": "選擇日期"
   },
   "db": {
+    "booking": {
+      "wait_to_pay": "等待付款",
+      "pay_success": "已付款",
+      "cancel": "已取消"
+    },
     "location": {
       "city": {
         "sz": "深圳",

@@ -179,6 +179,10 @@
         "modeOfPayment": "Mode of payment:",
         "bookingId": "Booking No.",
         "status": "Status"
+      },
+      "pay": {
+        "success": "Pay success",
+        "fail": "Pay fail"
       }
     }
   },
@@ -187,6 +191,11 @@
     "selectdate": "Month"
   },
   "db": {
+    "booking": {
+      "wait_to_pay": "Wait to pay",
+      "pay_success": "Paid",
+      "cancel": "Canceled"
+    },
     "location": {
       "city": {
         "sz": "Shenzhen",
