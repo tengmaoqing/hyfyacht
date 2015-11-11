@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var PaymentSchema = new Schema({
-  bookingId: {type: Schema.Types.ObjectId, ref: 'Booking'},
+  bookingId: String,
   type: String,
   tradeNo: String,
   status: String,

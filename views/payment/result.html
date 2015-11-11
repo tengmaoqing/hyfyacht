@@ -1,8 +1,8 @@
-{% extends './layout.html' %}
+{% extends '../layout.html' %}
 
 {% block content %}
 
-{% include './nav.html' %}
+{% include '../nav.html' %}
 <div class="container">
   <div class="page-header">
     {% if result == 'success' %}
@@ -11,7 +11,15 @@
     <h1>{{ __('product.booking.pay.fail') }}</h1>
     {% endif %}
   </div>
+  {% if result == 'fail' %}
+  <div class="alert alert-warning">付款失败可能是</div>
+  {% endif %}
+  <div>
+    <h4>{{ __('product.booking.result.bookingId') }}: {{ bookingId}}</h4>
+    <p>{{ __('product.booking.bookingProduct') }}: {{ product }}</p>
+    <p><a href="/user/booking"><span class="glyphicon glyphicon-list-alt"></span> {{ __('user.bookings') }}</a></p>
+  </div>
 </div>
-{% include './footer.html' %}
+{% include '../footer.html' %}
 
 {% endblock %}

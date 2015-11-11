@@ -234,7 +234,7 @@ exports.checkBooking = function(req, res, next) {
                     mobile: bookingForm.mobile,
                     email: bookingForm.email
                   },
-                  status: 'notpay'
+                  status: 'db.booking.wait_to_pay'
                 });
 
                 booking.save(function(err, savedBooing){
