@@ -19,7 +19,8 @@ var UserSchema = new Schema({
     name: String,
     mobile: Number,
     email: String
-  }]
+  }],
+  wechatOpenId: String
 }, {
   versionKey: false
 });

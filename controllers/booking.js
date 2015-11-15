@@ -183,21 +183,21 @@ exports.checkBooking = function(req, res, next) {
                   $and:[
                     {
                       dateStart: {
-                        $gte: dateStart.toDate()
+                        $gt: dateStart.toDate()
                       }
                     },
                     {
                       dateStart: {
-                        $lte: dateEnd.toDate()
+                        $lt: dateEnd.toDate()
                       }
                     }
                 ]},
                 {
                   dateStart: {
-                    $lte: dateStart.toDate()
+                    $lt: dateStart.toDate()
                   },
                   dateEnd: {
-                    $gte: dateStart.toDate()
+                    $gt: dateStart.toDate()
                   }
                 }
               ]
@@ -314,10 +314,13 @@ exports.getBookingsByUserId = function(req, res, next){
 };
 
 exports.getBookingsForCalendarEvent = function(req, res, next){
+  var start = new Date(req.query.start);
+  var end = new Date(req.query.end);
   Booking.find({
     boatId: req.params.bid,
     dateStart: {
-      $gt: new Date()
+      $gt: start,
+      $lt: end
     }
   }).select('dateStart dateEnd').exec(function(err, bookings){
     if(err){

@@ -7,6 +7,7 @@ var config = require('../config');
 var randomString = require('random-string');
 var util = require('util');
 var moment = require('moment');
+var wechatCore = require('../lib/wechat/wechat-core');
 
 function hashPassword(password){
   return crypto.createHash('sha256').update(password).digest('base64').toString();
@@ -154,9 +155,13 @@ exports.login = function(req, res, next){
 };
 
 exports.autoLogin = function(req, res, next){
+  if(req.session.userId){
+    return next();
+  }
+
   var uid = req.signedCookies['client_attributes'];
 
-  if(!req.session.userId && uid){
+  if(uid){
     User.findOne({
       _id: uid
     }, 'nickname', function(err, user){
@@ -166,6 +171,42 @@ exports.autoLogin = function(req, res, next){
       return next();
     });
   }else{
-    return next();
+    var userAgent = req.headers['user-agent'];
+
+    var isFromWechat = userAgent.match(/MicroMessenger/i) ? true : false;
+
+    if(isFromWechat){
+      if(req.query.state == '1' && req.query.code){
+        wechatCore.getAccessTokenByBase(req.query.code, function(data){
+          if(!data) {
+            return next();
+          }
+
+          var wechat = JSON.parse(data);
+
+          if(wechat.errcode) {
+            return next();
+          }
+
+          req.session.wechat = wechat;
+          req.session.wechatCreateTime = new Date();
+          console.log(wechat.openid);
+
+          User.findOne({
+            wechatOpenId: wechat.openid
+          }, 'nickname', function(err, user){
+            if (!err && user) {
+              setSessionAndCookie(req, res, user);
+            }
+            return next();
+          });
+        });
+      }else{
+        var origin_url = encodeURI('http://' + req.hostname + req.originalUrl);
+        return res.redirect(wechatCore.getUrlForCodeByBase(origin_url));
+      }
+    }else{
+      return next();
+    }
   }
 };
