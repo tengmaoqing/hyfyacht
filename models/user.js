@@ -8,6 +8,7 @@ var UserSchema = new Schema({
   mobile: String,
   username: String,
   nickname: String,
+  avatar: String,
   email: String,
   hashedPassword: String,
   role: String,

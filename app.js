@@ -92,6 +92,14 @@ app.use(expressSession({
   saveUninitialized: false
 }));
 
+app.use(function(req, res, next){
+  var userAgent = req.headers['user-agent'];
+
+  req.isFromWechat = userAgent.match(/MicroMessenger/i) ? true : false;
+
+  next();
+});
+
 //set i18n
 app.use(function(req, res, next){
   var lang = req.query.lang || req.cookies['client_locale'];
