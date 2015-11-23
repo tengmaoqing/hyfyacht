@@ -64,6 +64,12 @@
       <label>{{ __('common.entertainments') }}</label>
     </div>
     <div class="col-md-2 col-sm-4 col-xs-6">
+      {{ boat.etmItem(params, 'cruise', __('db.boat.etm.cruise')) }}
+    </div>
+    <div class="col-md-2 col-sm-4 col-xs-6">
+      {{ boat.etmItem(params, 'fishing', __('db.boat.etm.fishing')) }}
+    </div>
+    <div class="col-md-2 col-sm-4 col-xs-6">
       {{ boat.etmItem(params, 'ktv', __('db.boat.etm.ktv')) }}
     </div>
     <div class="col-md-2 col-sm-4 col-xs-6">
@@ -71,9 +77,6 @@
     </div>
     <div class="col-md-2 col-sm-4 col-xs-6">
       {{ boat.etmItem(params, 'bananaboat', __('db.boat.etm.bananaboat')) }}
-    </div>
-    <div class="col-md-2 col-sm-4 col-xs-6">
-      {{ boat.etmItem(params, 'speedboat', __('db.boat.etm.speedboat')) }}
     </div>
   </div>
   <div class="row search-field">

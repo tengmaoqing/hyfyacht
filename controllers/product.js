@@ -12,7 +12,7 @@ exports.getProduct = function(req, res, next){
 
   Product.findOne({_id:req.params.id}).populate({
     path: 'packages',
-    select: 'id name summary currency baseCharge basePersons extraCharge items availableMonths availableDays',
+    select: 'id name summary currency baseCharge basePersons extraCharge items availableMonths availableDays description chargeInclude chargeExclude attention',
     match: {
       boats: boatId
     }

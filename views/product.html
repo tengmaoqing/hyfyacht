@@ -22,7 +22,7 @@
         <li class="active">{{ product.name }}</li>
       </ol>
       <div id="product-base" class="thumbnail">
-        <div class="boat-thumbnail boat-thumbnail-8by3" style="background-image: url({{ preset.imgHost }}{{ product.photo }})"></div>
+        <div class="boat-thumbnail boat-thumbnail-66" style="background-image: url({{ product.photo }})"></div>
         <div class="row caption">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
             <h3>{{ product.name }}</h3>
@@ -298,24 +298,21 @@
         <div class="caption">
           <h3>费用包含</h3>
           <hr class="hr-divider">
+          {% autoescape %}{{ product.chargeInclude }}{% endautoescape %}
         </div>
       </div>
       <div id="product-notinclude" class="thumbnail">
         <div class="caption">
           <h3>费用不含</h3>
           <hr class="hr-divider">
+          {% autoescape %}{{ product.chargeExclude }}{% endautoescape %}
         </div>
       </div>
       <div id="product-notice" class="thumbnail">
         <div class="caption">
           <h3>预定须知</h3>
           <hr class="hr-divider">
-        </div>
-      </div>
-      <div id="product-cancel" class="thumbnail">
-        <div class="caption">
-          <h3>退定政策</h3>
-          <hr class="hr-divider">
+          {% autoescape %}{{ product.attention }}{% endautoescape %}
         </div>
       </div>
     </div>
@@ -328,7 +325,6 @@
             <li role="presentation" class="hidden-xs"><a href="#product-include">费用包含</a></li>
             <li role="presentation" class="hidden-xs"><a href="#product-notinclude">费用不含</a></li>
             <li role="presentation"><a href="#product-notice">预定须知</a></li>
-            <li role="presentation" class="hidden-xs"><a href="#product-cancel">退定政策</a></li>
           </ul>
       </div>
     </div>

@@ -17,6 +17,9 @@ var ProductSchema = new Schema({
     end: String
   },
   description: String,
+  chargeInclude: String,
+  chargeExclude: String,
+  attention: String,
   packages: [{type: Schema.Types.ObjectId, ref: 'Package'}]
 });
 

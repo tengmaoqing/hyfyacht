@@ -89,7 +89,7 @@
       "instant_book": "立即预定",
       "from %s": "%s起",
       "facilities": "基础设备",
-      "entertainments": "娱乐设施",
+      "entertainments": "娱乐活动",
       "extras": "其他",
       "products": "可预定产品",
       "learn": "了解详情"
@@ -203,7 +203,8 @@
       },
       "pier": {
         "saikung": "西贡",
-        "szw": "深圳湾"
+        "szw": "深圳湾",
+        "nanao": "南澳"
       }
     },
     "boat": {
@@ -222,7 +223,9 @@
         "ktv": "KTV",
         "speedboat": "快艇",
         "wakeboard": "滑水",
-        "bananaboat": "香蕉船"
+        "bananaboat": "香蕉船",
+        "fishing": "海钓",
+        "cruise": "游船河"
       },
       "extras": {
         "launch": "午餐",

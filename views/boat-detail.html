@@ -37,6 +37,7 @@
     <hr class="hr-divider">
     <h3>{{ __('boat.detail.about') }}</h3>
     <p>{{ boat.description }}</p>
+    {% if boat.baseFacilities.length > 0 %}
     <h4>{{ __('boat.detail.facilities') }}</h4>
     <div class="row">
       {% for item in boat.baseFacilities %}
@@ -45,6 +46,8 @@
       </div>
       {% endfor %}
     </div>
+    {% endif %}
+    {% if boat.entertainments.length > 0 %}
     <h4>{{ __('boat.detail.entertainments') }}</h4>
     <div class="row">
       {% for item in boat.entertainments %}
@@ -53,6 +56,8 @@
       </div>
       {% endfor %}
     </div>
+    {% endif %}
+    {% if boat.extras.length > 0 %}
     <h4>{{ __('boat.detail.extras') }}</h4>
     <div class="row">
       {% for item in boat.extras %}
@@ -61,6 +66,7 @@
       </div>
       {% endfor %}
     </div>
+    {% endif %}
   </div>
 </div>
 <div class="columns-sm columns-gray">
@@ -71,7 +77,7 @@
       <div class="boat-product col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="thumbnail">
           <a href="/product/{{ product.id }}/{{ product.name }}/{{ boat.id }}/{{ boat.name }}">
-            <div class="boat-thumbnail" style="background-image: url({{ preset.imgHost }}{{ product.photo }})"></div>
+            <div class="boat-thumbnail" style="background-image: url({{ product.photo }})"></div>
             <div class="caption text-muted">
               <h4>{{ product.name }}</h4>
               <p>{{ product.summary }}</p>

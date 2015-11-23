@@ -147,7 +147,13 @@ exports.login = function(req, res, next){
       return res.redirect(wechatCore.getUrlForCodeScopeUserInfo(origin_url));
     }
   }else if(req.isFromWechat && req.session.userId){
-    res.redirect('/');
+    var from = req.query.from || false;
+
+    if(!from) {
+      return res.redirect('/');
+    }else{
+      return res.redirect(encodeURI(from));
+    }
   } else {
     res.render('login');
   }

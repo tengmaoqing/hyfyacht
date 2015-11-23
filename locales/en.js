@@ -203,7 +203,8 @@
       },
       "pier": {
         "saikung": "Sai Kung",
-        "szw": "Shenzhen Bay"
+        "szw": "Shenzhen Bay",
+        "nanao": "Nan Ao"
       }
     },
     "boat": {
@@ -222,7 +223,9 @@
         "ktv": "Karaoke",
         "speedboat": "Speedboat",
         "wakeboard": "Wakeboard",
-        "bananaboat": "Banana Boat"
+        "bananaboat": "Banana Boat",
+        "fishing": "Fishing",
+        "cruise": "Cruise"
       },
       "extras": {
         "launch": "Launch",

@@ -56,7 +56,7 @@
                     {{ __('product.booking.package.total') }}：{% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ booking.total }}
                   </div>
                   <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 text-right">
-                    <strong>未付款</strong> <button type="button" class="btn btn-primary">{{ __('common.pay') }}</button>
+                    <strong>{{ __(booking.status) }}</strong> <button type="button" class="btn btn-primary">{{ __('common.pay') }}</button>
                   </div>
                 </div>
               </div>

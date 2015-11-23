@@ -219,6 +219,9 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
 
 #product-detail img {
   margin: 16px 0;
+  display:block;
+  max-width: 100%;
+  height: auto;
 }
 
 .modal-table {
@@ -230,6 +233,10 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
 .modal-table-cell {
   display: table-cell;
   vertical-align: middle;
+}
+
+.index-slide .row {
+  margin:auto;
 }
 
 .index-slide-item {
@@ -253,6 +260,10 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
 .boat-thumbnail-8by3 {
   padding-bottom: 36.25%;
   position: relative;
+}
+
+.boat-thumbnail-66 {
+  padding-bottom: 66%;
 }
 
 .boat-basecharge {
