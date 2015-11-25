@@ -6,7 +6,7 @@
         <h4>{{ __('product.booking.result.bookingId') }}: {{ booking.bookingId }}</h4>
       </div>
       <div class="col-md-4 col-sm-4 col-xs-6 text-right">
-        {{ __('product.booking.result.status') }}：未付款 <button type="button" class="btn btn-primary">{{ __('common.pay') }}</button>
+        {{ __('product.booking.result.status') }}：{{ __(booking.status) }} {% if booking.status == 'db.booking.wait_to_pay' %}<button type="button" class="btn btn-primary">{{ __('common.pay') }}</button>{% endif %}
       </div>
     </div>
   </div>
@@ -39,11 +39,11 @@
       <caption>{{ __('product.booking.package.items') }}</caption>
       <tr><th>{{ __('product.booking.package.item') }}</th><th>{{ __('product.booking.package.quantity') }}</th><th>{{ __('product.booking.package.subtotal') }}</th></tr>
       {% for item in booking.items %}
-      <tr><td>{{ item.name }} ({% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ item.charge }})</td><td>{{ item.amount }}</td><td>{% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ item.subtotal }}</td></tr>
+      <tr><td>{{ item.name }} ({% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ item.charge }})</td><td>{{ item.amount }}</td><td>{% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ (item.subtotal / 100).toFixed(2) }}</td></tr>
       {% endfor %}
     </table>
     <div class="text-right">
-      <h4>{{ __('product.booking.package.total') }} {% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ booking.total }}</h4>
+      <h4>{{ __('product.booking.package.total') }} {% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ (booking.total / 100).toFixed(2) }}</h4>
     </div>
   </div>
 </div>

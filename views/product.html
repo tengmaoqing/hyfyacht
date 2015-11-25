@@ -552,11 +552,11 @@
     $scope.submitted = false;
 
     $scope.generateCharge = function(charge){
-      return parseFloat((charge * currency[clientCurrency] / currency[$scope.baseCurrency] / 100).toFixed(2));
-    }
+      return parseInt(charge * currency[clientCurrency] / currency[$scope.baseCurrency]);
+    };
 
     $scope.displayAmount = function(amount){
-      return $scope.prefix + amount.toFixed(2);
+      return $scope.prefix + (amount / 100).toFixed(2);
     };
 
     $scope.togglePackage = function(index){

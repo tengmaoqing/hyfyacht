@@ -1,6 +1,7 @@
 {
   "site": {
     "title": "HG Boating",
+    "slogan": "KEEP CALM & LOVE BOATING",
     "info": {
       "company": "Company",
       "about": "About",
@@ -8,7 +9,8 @@
       "terms": "Terms",
       "privacy": "Privacy"
     },
-    "hotline": "Hotline"
+    "hotline": "Hotline",
+    "copyright": "HG Boating"
   },
   "common": {
     "login": "Log In",
@@ -225,7 +227,8 @@
         "wakeboard": "Wakeboard",
         "bananaboat": "Banana Boat",
         "fishing": "Fishing",
-        "cruise": "Cruise"
+        "cruise": "Cruise",
+        "sightseeing": "Sightseeing"
       },
       "extras": {
         "launch": "Launch",

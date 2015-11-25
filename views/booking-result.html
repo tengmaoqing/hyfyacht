@@ -19,7 +19,7 @@
     <input type="hidden" name="_csrf" value="{{ _csrf }}">
     <input type="hidden" name="WIDout_trade_no" value="{{ booking.bookingId }}">
     <input type="hidden" name="WIDsubject" value="{{ booking.boatName }}-{{ booking.productName }}-{{ booking.packageName }}">
-    <input type="hidden" name="WIDtotal_fee" value="{{ booking.total }}">
+    <input type="hidden" name="WIDtotal_fee" value="{{ (booking.total / 100).toFixed(2) }}">
     <input type="hidden" name="WIDbody" value="{{ booking.boatName }}-{{ booking.productName }}-{{ booking.packageName }}">
     <input type="hidden" name="WIDshow_url" value="http://test.hgboating.com/product/{{ booking.productId.valueOf() }}/{{ booking.productName }}/{{ booking.boatId.valueOf() }}/{{ booking.boatName }}">
     <div class="page-header">
@@ -28,7 +28,7 @@
     <div class="alert alert-danger">
       <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.result.payment_notice') }}
     </div>
-    <h4>{{ __('product.booking.result.amount') }} {% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ booking.total }}</h4>
+    <h4>{{ __('product.booking.result.amount') }} {% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ (booking.total / 100).toFixed(2) }}</h4>
     <p>{{ __('product.booking.result.modeOfPayment') }}</p>
     <p>
       <label class="btn btn-default">

@@ -156,7 +156,7 @@ app.use(function(req, res, next){
 
 //set currency
 app.use(function(req, res, next){
-  var currency = req.query.curr || req.cookies['client_currency'] || ( preset.locale == 'zh-cn' ? 'cny' : 'hkd');
+  var currency = 'cny';//req.query.curr || req.cookies['client_currency'] || ( preset.locale == 'zh-cn' ? 'cny' : 'hkd');
 
   req.session.currency = currency;
 

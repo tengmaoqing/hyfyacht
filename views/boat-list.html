@@ -8,6 +8,7 @@
 {% include './nav.html' with {view_active:'boat'} %}
 
 <div class="container">
+  {% if false %}
   <div class="row search-field">
     <div class="col-md-2">
       <label>{{ __('common.location') }}</label>
@@ -30,9 +31,12 @@
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if params.price == 'all' %}{{ __('common.unlimited') }}{% else %}￥{{ params.price }}{% endif %} <span class="caret"></span></button>
           <ul class="dropdown-menu dropdown-menu-justified disabled">
             <li><a href="/boat/{{ params.location }}/all/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">{{ __('common.unlimited') }}</a></li>
+            <li><a href="/boat/{{ params.location }}/0-1000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥1000以下</a></li>
+            <li><a href="/boat/{{ params.location }}/1000-5000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥1000-5000</a></li>
             <li><a href="/boat/{{ params.location }}/5000-10000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥5000-10000</a></li>
             <li><a href="/boat/{{ params.location }}/10000-15000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥10000-15000</a></li>
             <li><a href="/boat/{{ params.location }}/15000-20000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥15000-20000</a></li>
+            <li><a href="/boat/{{ params.location }}/20000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥20000以上</a></li>
           </ul>
         </div>
       </div>
@@ -59,15 +63,20 @@
       </div>
     </div>
   </div>
+  {% endif %}
   <div class="row search-field">
     <div class="col-md-2">
       <label>{{ __('common.entertainments') }}</label>
     </div>
     <div class="col-md-2 col-sm-4 col-xs-6">
-      {{ boat.etmItem(params, 'cruise', __('db.boat.etm.cruise')) }}
+      {{ boat.etmItem(params, 'sightseeing', __('db.boat.etm.sightseeing')) }}
     </div>
     <div class="col-md-2 col-sm-4 col-xs-6">
       {{ boat.etmItem(params, 'fishing', __('db.boat.etm.fishing')) }}
+    </div>
+    {% if false %}
+    <div class="col-md-2 col-sm-4 col-xs-6">
+      {{ boat.etmItem(params, 'cruise', __('db.boat.etm.cruise')) }}
     </div>
     <div class="col-md-2 col-sm-4 col-xs-6">
       {{ boat.etmItem(params, 'ktv', __('db.boat.etm.ktv')) }}
@@ -78,7 +87,9 @@
     <div class="col-md-2 col-sm-4 col-xs-6">
       {{ boat.etmItem(params, 'bananaboat', __('db.boat.etm.bananaboat')) }}
     </div>
+    {% endif %}
   </div>
+  {% if false %}
   <div class="row search-field">
     <div class="col-md-2">
       <label>{{ __('common.extra') }}</label>
@@ -90,6 +101,7 @@
       {{ boat.extrasItem(params, 'bbq', __('db.boat.extras.bbq')) }}
     </div>
   </div>
+  {% endif %}
 </div>
 <div class="columns columns-gray">
   <div class="container">

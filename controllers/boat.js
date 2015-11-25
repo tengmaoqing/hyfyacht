@@ -6,7 +6,10 @@ var Owner = require('../models/owner');
 var Product = require('../models/product');
 
 exports.getBoat = function(req, res, next){
-  Boat.findOne({_id:req.params.id}).populate('owner', 'nickname').populate('products', 'id name summary baseCharge currency photo').exec(function(err, boat){
+  Boat.findOne({
+    _id:req.params.id,
+    display: true
+  }).populate('owner', 'nickname').populate('products', 'id name summary baseCharge currency photo').exec(function(err, boat){
     if(err){
       err.status = 400;
       return next(err);
@@ -23,7 +26,9 @@ exports.getBoat = function(req, res, next){
 };
 
 exports.getBoats = function(req, res, next){
-  var query = {};
+  var query = {
+    display: true
+  };
   var params = req.params;
   params.etmArray = [];
   params.extrasArray = [];
@@ -38,10 +43,18 @@ exports.getBoats = function(req, res, next){
 
   if(req.params.price && req.params.price != 'all'){
     var prices = req.params.price.split('-');
-    query['baseCharge'] = {
-      $gte: prices[0],
-      $lte: prices[1]
-    };
+    prices[0] = parseInt(prices[0]) * 100;
+    if(prices.length > 1) {
+      prices[1] = parseInt(prices[1]) * 100;
+      query['baseCharge'] = {
+        $gte: prices[0],
+        $lte: prices[1]
+      };
+    }else{
+      query['baseCharge'] = {
+        $gte: prices[0]
+      };
+    }
   }else{
     params.price = 'all';
   }
@@ -109,7 +122,7 @@ exports.getBoats = function(req, res, next){
   Boat.paginate(query, {
     page: page,
     limit: 12,
-    columns: '_id name type baseCharge currency location thumbnail photos',
+    columns: '_id name type baseCharge currency location thumbnail',
     sortBy: {
       _id: -1
     }

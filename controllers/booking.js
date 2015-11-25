@@ -75,7 +75,7 @@ exports.checkBooking = function(req, res, next) {
       }else{
         if(package){
           var generateCharge = function(charge){
-            return parseFloat((charge * config.currency[req.session.currency] / config.currency[package.currency] / 100).toFixed(2));
+            return parseInt(charge * config.currency[req.session.currency] / config.currency[package.currency]);
           };
 
           var fail = function(error){
@@ -175,7 +175,8 @@ exports.checkBooking = function(req, res, next) {
           //Check booking date
           Booking.count().and([
             {
-              boatId: package.boats[boatIndex].id
+              boatId: package.boats[boatIndex].id,
+              status: {$ne: 'db.booking.cancel'}
             },
             {
               $or:[
@@ -247,6 +248,27 @@ exports.checkBooking = function(req, res, next) {
                       success: true,
                       id: savedBooing.bookingId
                     };
+                    setTimeout(function(){
+                      console.log('fire settimeout');
+                      Booking.findOne({
+                        bookingId: savedBooing.bookingId,
+                        status: 'db.booking.wait_to_pay'
+                      }, function(err, notPayBooking){
+                        if(err){
+                          console.log(err);
+                        }
+                        console.log('after found');
+                        if(notPayBooking){
+                          notPayBooking.status = 'db.booking.cancel';
+                          notPayBooking.save(function(err){
+                            if(err){
+                              console.log(err);
+                            }
+                            console.log('after saved');
+                          });
+                        }
+                      })
+                    }, 10000);
                     return res.redirect('/booking/result');
                   }
                 });
@@ -293,6 +315,38 @@ exports.result = function(req, res, next){
   }
 };
 
+exports.getBookingByBookingId = function(req, res, next){
+  if (!req.session.userId) {
+    return res.redirect('/login?from=' + req.originalUrl);
+  } else {
+    var bookingId = req.params.bookingId;
+
+    if(!bookingId){
+      var err = new Error('Not Found');
+      err.status = 404;
+      return next(err);
+    }
+
+    Booking.findOne({
+      bookingId: bookingId,
+      userId: req.session.userId
+    },function (err, booking) {
+      if (err) {
+        err.status = 400;
+        return next(err);
+      } else {
+        if (!booking){
+          var err = new Error('Not Found');
+          err.status = 404;
+          return next(err);
+        } else {
+          return res.render('user-booking-detail', {booking: booking});
+        }
+      }
+    })
+  }
+};
+
 exports.getBookingsByUserId = function(req, res, next){
   if (!req.session.userId) {
     return res.redirect('/login?from=' + req.originalUrl);
@@ -321,7 +375,8 @@ exports.getBookingsForCalendarEvent = function(req, res, next){
     dateStart: {
       $gt: start,
       $lt: end
-    }
+    },
+    status: {$ne: 'db.booking.cancel'}
   }).select('dateStart dateEnd').exec(function(err, bookings){
     if(err){
       err.status = 400;

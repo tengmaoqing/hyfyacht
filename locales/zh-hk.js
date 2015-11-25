@@ -1,14 +1,16 @@
 {
   "site": {
   "title": "海龜租船",
-    "info": {
-      "company": "公司信息",
-      "about": "關於我們",
-      "contact": "聯繫我們",
-      "terms": "服務條款",
-      "privacy": "隱私政策"
-    },
-  "hotline": "服務熱線"
+  "slogan": "藍天白雲 以海為家",
+  "info": {
+    "company": "公司信息",
+    "about": "關於我們",
+    "contact": "聯繫我們",
+    "terms": "服務條款",
+    "privacy": "隱私政策"
+  },
+  "hotline": "服務熱線",
+  "copyright": "深圳市海雲帆遊艇發展有限公司"
   },
   "common": {
     "login": "登入",
@@ -225,7 +227,8 @@
         "wakeboard": "滑水",
         "bananaboat": "香蕉船",
         "fishing": "海釣",
-        "cruise": "游船河"
+        "cruise": "游船河",
+        "sightseeing": "遊覽"
       },
       "extras": {
         "launch": "午餐",

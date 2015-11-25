@@ -1,11 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var wechatCore = require('../lib/wechat/wechat-core');
+var index = require('../controllers/index');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index');
-});
+router.get('/', index.renderIndex);
 
 router.get('/signup', function(req, res, next){
   res.render('signup');

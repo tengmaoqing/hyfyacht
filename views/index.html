@@ -7,18 +7,23 @@
 <div class="index-slide">
   <div id="hyf-carousel-index" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner" role="listbox">
-      <div class="item index-slide-item active" style="background-image: url(http://img.hgboating.com/base/index1.jpg)">
+      <!--<div class="item index-slide-item active" style="background-image: url(http://img.hgboating.com/base/index1.jpg)">-->
+      <!--</div>-->
+      <!--<div class="item index-slide-item" style="background-image: url(http://img.hgboating.com/base/index4.jpg)">-->
+      <!--</div>-->
+      <!--<div class="item index-slide-item" style="background-image: url(http://img.hgboating.com/base/index3.jpg)">-->
+      <!--</div>-->
+      {% for slide in slides %}
+      <div class="item index-slide-item {% if loop.first %}active{% endif %}" style="background-image: url({{ slide }})">
       </div>
-      <div class="item index-slide-item" style="background-image: url(http://img.hgboating.com/base/index4.jpg)">
-      </div>
-      <div class="item index-slide-item" style="background-image: url(http://img.hgboating.com/base/index3.jpg)">
-      </div>
+      {% endfor %}
     </div>
     <div class="index-slogan">
       <div class="index-slogan-table text-center">
-        <h1>蓝天白云 以海为家</h1>
+        <h1>{{ __('site.slogan') }}</h1>
       </div>
     </div>
+    {% if false %}
     <div class="index-search-field text-center">
       <div class="row">
         <div class="col-lg-offset-5 col-md-offset-5 col-sm-offset-4 col-xs-offset-2 col-lg-2 col-md-2 col-sm-4 col-xs-8">
@@ -34,6 +39,7 @@
         </div>
       </div>
     </div>
+    {% endif %}
   </div>
 </div>
 <div class="columns columns-gray">
@@ -41,104 +47,26 @@
     <section class="column">
       <h3>{{ __('index.column.hot') }}</h3>
       <div class="row">
+        {% for boat in boats %}
         <div class="col-md-4 col-sm-6 cell">
           <div class="thumbnail">
-            <a href="/boat/565066e00b02105ea0f3b8b4/南澳维斯钓鱼快艇">
-              <div class="boat-thumbnail" style="background-image: url(http://img.hgboating.com/boats/thumb/565065c20b02105ea0f3b8b3-1-t.jpg)">
+            <a href="/boat/{{ boat.id }}/{{ boat.name }}">
+              <div class="boat-thumbnail" style="background-image: url({{ boat.thumbnail }})">
                 <div class="boat-basecharge">
-                  <h4>南澳维斯钓鱼快艇</h4>
-                  <h4 class="text-danger">￥600.00起</h4>
+                  <h4>{{ boat.name }}</h4>
+                  <h4 class="text-danger">{{ __('boat.detail.from %s', preset.generateCharge(boat.baseCharge, boat.currency)) }}</h4>
                 </div>
               </div>
               <div class="caption text-muted">
-                <span>深圳 - 西式快艇</span>
+                <span>{{ __(boat.location.city) }} - {{ __(boat.type) }}</span>
               </div>
             </a>
           </div>
         </div>
-
-        <div class="col-md-4 col-sm-6 cell">
-          <div class="thumbnail">
-            <a href="/boat/562f2053a3b272ec56f63af7/Rainbow1">
-              <div class="boat-thumbnail" style="background-image: url(http://img.hgboating.com/boats/thumb/562f080e22eaa91c3f327897-21186-1.jpg)">
-                <div class="boat-basecharge">
-                  <h4>Rainbow1</h4>
-                  <h4 class="text-danger">￥6799.83起</h4>
-                </div>
-              </div>
-              <div class="caption text-muted">
-                <span>香港 - 西式游艇</span>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        <div class="col-md-4 col-sm-6 cell">
-          <div class="thumbnail">
-            <a href="/boat/562f2054a3b272ec56f63af8/Rainbow2">
-              <div class="boat-thumbnail" style="background-image: url(http://img.hgboating.com/boats/thumb/562f080e22eaa91c3f327897-21736-1.jpg)">
-                <div class="boat-basecharge">
-                  <h4>Rainbow2</h4>
-                  <h4 class="text-danger">￥6799.83起</h4>
-                </div>
-              </div>
-              <div class="caption text-muted">
-                <span>香港 - 西式游艇</span>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        <div class="col-md-4 col-sm-6 cell">
-          <div class="thumbnail">
-            <a href="/boat/562f2054a3b272ec56f63af9/海辉1">
-              <div class="boat-thumbnail" style="background-image: url(http://img.hgboating.com/boats/thumb/562f080e22eaa91c3f327898-138085-1.jpg)">
-                <div class="boat-basecharge">
-                  <h4>海辉1</h4>
-                  <h4 class="text-danger">￥10199.75起</h4>
-                </div>
-              </div>
-              <div class="caption text-muted">
-                <span>香港 - 西式游艇</span>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        <div class="col-md-4 col-sm-6 cell">
-          <div class="thumbnail">
-            <a href="/boat/562f2054a3b272ec56f63afa/海辉2">
-              <div class="boat-thumbnail" style="background-image: url(http://img.hgboating.com/boats/thumb/562f080e22eaa91c3f327898-36706-1.jpg)">
-                <div class="boat-basecharge">
-                  <h4>海辉2</h4>
-                  <h4 class="text-danger">￥11474.71起</h4>
-                </div>
-              </div>
-              <div class="caption text-muted">
-                <span>香港 - 西式游艇</span>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        <div class="col-md-4 col-sm-6 cell">
-          <div class="thumbnail">
-            <a href="/boat/562f2054a3b272ec56f63afb/21246">
-              <div class="boat-thumbnail" style="background-image: url(http://img.hgboating.com/boats/thumb/562f080e22eaa91c3f327899-21246-1.jpg)">
-                <div class="boat-basecharge">
-                  <h4>21246</h4>
-                  <h4 class="text-danger">￥5949.85起</h4>
-                </div>
-              </div>
-              <div class="caption text-muted">
-                <span>香港 - 中式游艇</span>
-              </div>
-            </a>
-          </div>
-        </div>
-
+        {% endfor %}
       </div>
     </section>
+    {% if false %}
     <section class="column">
       <h3>{{ __('index.column.entertainments') }}</h3>
       <div class="row">
@@ -189,6 +117,7 @@
         </div>
       </div>
     </section>
+    {% endif %}
   </div>
 </div>
 

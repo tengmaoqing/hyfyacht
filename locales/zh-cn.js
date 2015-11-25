@@ -1,14 +1,16 @@
 {
   "site": {
     "title": "海龟租船",
-      "info": {
-        "company": "公司信息",
-        "about": "关于我们",
-        "contact": "联系我们",
-        "terms": "服务条款",
-        "privacy": "隐私政策"
-       },
-    "hotline": "服务热线"
+    "slogan": "蓝天白云 以海为家",
+    "info": {
+      "company": "公司信息",
+      "about": "关于我们",
+      "contact": "联系我们",
+      "terms": "服务条款",
+      "privacy": "隐私政策"
+     },
+    "hotline": "服务热线",
+    "copyright": "深圳市海云帆游艇发展有限公司"
   },
   "common": {
     "login": "登录",
@@ -225,7 +227,8 @@
         "wakeboard": "滑水",
         "bananaboat": "香蕉船",
         "fishing": "海钓",
-        "cruise": "游船河"
+        "cruise": "游船河",
+        "sightseeing": "观光"
       },
       "extras": {
         "launch": "午餐",
