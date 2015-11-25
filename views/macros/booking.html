@@ -39,7 +39,7 @@
       <caption>{{ __('product.booking.package.items') }}</caption>
       <tr><th>{{ __('product.booking.package.item') }}</th><th>{{ __('product.booking.package.quantity') }}</th><th>{{ __('product.booking.package.subtotal') }}</th></tr>
       {% for item in booking.items %}
-      <tr><td>{{ item.name }} ({% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ item.charge }})</td><td>{{ item.amount }}</td><td>{% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ (item.subtotal / 100).toFixed(2) }}</td></tr>
+      <tr><td>{{ item.name }} ({% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ (item.charge / 100).toFixed(2) }})</td><td>{{ item.amount }}</td><td>{% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ (item.subtotal / 100).toFixed(2) }}</td></tr>
       {% endfor %}
     </table>
     <div class="text-right">

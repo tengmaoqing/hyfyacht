@@ -192,13 +192,22 @@ exports.checkBooking = function(req, res, next) {
                         $lt: dateEnd.toDate()
                       }
                     }
-                ]},
+                  ]
+                },
                 {
                   dateStart: {
                     $lt: dateStart.toDate()
                   },
                   dateEnd: {
                     $gt: dateStart.toDate()
+                  }
+                },
+                {
+                  dateStart: {
+                    $gte: dateStart.toDate()
+                  },
+                  dateEnd: {
+                    $lte: dateEnd.toDate()
                   }
                 }
               ]
@@ -244,32 +253,17 @@ exports.checkBooking = function(req, res, next) {
                     return next(err);
                   }else{
                     req.session.bookingForm = null;
-                    req.session.bookingResult = {
-                      success: true,
-                      id: savedBooing.bookingId
-                    };
-                    setTimeout(function(){
-                      console.log('fire settimeout');
-                      Booking.findOne({
-                        bookingId: savedBooing.bookingId,
-                        status: 'db.booking.wait_to_pay'
-                      }, function(err, notPayBooking){
-                        if(err){
-                          console.log(err);
-                        }
-                        console.log('after found');
-                        if(notPayBooking){
-                          notPayBooking.status = 'db.booking.cancel';
-                          notPayBooking.save(function(err){
-                            if(err){
-                              console.log(err);
-                            }
-                            console.log('after saved');
-                          });
-                        }
-                      })
-                    }, 10000);
-                    return res.redirect('/booking/result');
+                    //req.session.bookingResult = {
+                    //  success: true,
+                    //  id: savedBooing.bookingId
+                    //};
+                    if(savedBooing){
+                      return res.render('booking-result', {booking: savedBooing});
+                    }else{
+                      return res.render('booking-result', {error: 'product.booking.result.error.other'});
+                    }
+
+                    //return res.redirect('/booking/result');
                   }
                 });
               }
