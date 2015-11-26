@@ -10,10 +10,7 @@ router.get('/', function(req, res, next){
   res.render('booking-info');
 });
 
-router.get('/result', booking.result);
-
 router.get('/cal/:bid', booking.getBookingsForCalendarEvent);
-
 
 router.get('/submit', booking.checkBooking);
 router.post('/submit', booking.checkBooking);

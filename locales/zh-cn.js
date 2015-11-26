@@ -45,7 +45,8 @@
       "one": "%d 小时",
       "other": "%d 小时"
     },
-    "owner": "船东"
+    "owner": "船东",
+    "back_to_top": "返回顶部"
   },
   "error": {
     "login": {
@@ -108,7 +109,10 @@
     "section": {
       "info": "基本信息",
       "booking": "预定",
-      "desc": "产品详情"
+      "desc": "产品详情",
+      "include": "费用包含",
+      "exclude": "费用不含",
+      "notice": "预定须知"
     },
     "info": {
       "duration": "游玩时间",

@@ -43,6 +43,10 @@ exports.checkBooking = function(req, res, next) {
         notEmpty: true,
         errorMessage: 'Invalid Contact'
       },
+      'area_code': {
+        notEmpty: true,
+        errorMessage: 'Invalid Mobile'
+      },
       'mobile': {
         notEmpty: true,
         errorMessage: 'Invalid Mobile'
@@ -241,7 +245,7 @@ exports.checkBooking = function(req, res, next) {
                   baseCurrency: package.currency,
                   contact: {
                     name: bookingForm.contact,
-                    mobile: bookingForm.mobile,
+                    mobile: bookingForm.area_code + bookingForm.mobile,
                     email: bookingForm.email
                   },
                   status: 'db.booking.wait_to_pay'
@@ -253,17 +257,12 @@ exports.checkBooking = function(req, res, next) {
                     return next(err);
                   }else{
                     req.session.bookingForm = null;
-                    //req.session.bookingResult = {
-                    //  success: true,
-                    //  id: savedBooing.bookingId
-                    //};
+
                     if(savedBooing){
                       return res.render('booking-result', {booking: savedBooing});
                     }else{
                       return res.render('booking-result', {error: 'product.booking.result.error.other'});
                     }
-
-                    //return res.redirect('/booking/result');
                   }
                 });
               }
@@ -277,35 +276,6 @@ exports.checkBooking = function(req, res, next) {
         }
       }
     });
-  }
-};
-
-exports.result = function(req, res, next){
-  if(req.session.bookingResult) {
-    if(req.session.bookingResult.success) {
-      Booking.findOne({
-        bookingId: req.session.bookingResult.id
-      }, function (err, booking) {
-        if (err) {
-          err.status = 400;
-          return next(err);
-        } else {
-          if (booking.userId != req.session.userId) {
-            var err = new Error('Forbidden');
-            err.status = 403;
-            return next(err);
-          } else {
-            return res.render('booking-result', {booking: booking});
-          }
-        }
-      });
-    }else{
-      return res.render('booking-result', {error: 'product.booking.result.error.other'});
-    }
-  }else{
-    var err = new Error('Not Found');
-    err.status = 404;
-    return next(err);
   }
 };
 

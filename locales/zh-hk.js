@@ -45,7 +45,8 @@
       "one": "%d 小時",
       "other": "%d 小時"
     },
-    "owner": "船東"
+    "owner": "船東",
+    "back_to_top": "返回最頂"
   },
   "error": {
     "login": {
@@ -108,7 +109,10 @@
     "section": {
       "info": "基本信息",
       "booking": "預定",
-      "desc": "產品詳情"
+      "desc": "產品詳情",
+      "include": "費用包含",
+      "exclude": "費用不含",
+      "notice": "預定須知"
     },
     "info": {
       "duration": "遊玩時間",

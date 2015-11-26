@@ -16,6 +16,10 @@ a {
   color: #258ec7;
 }
 
+a, a:hover, a:active {
+  text-decoration: none;
+}
+
 .relative-container {
   position: relative;
 }
@@ -35,6 +39,12 @@ a {
 .btn-danger {
   background-color: #ff5a5e;
   border-color: #ff5a5e;
+}
+
+.btn.btn-middle {
+  border-radius: 0;
+  border-right: none;
+  margin-right: -2px;
 }
 
 .text-danger {
@@ -78,6 +88,31 @@ a {
 
 .product-booking-container .alert {
   padding: 4px 10px;
+}
+
+.static-article h1{
+  text-align: center;
+  font-size: 24px;
+}
+
+.static-article h2, .static-article p, .static-article dl, .static-article ol, .static-article ul{
+  text-align: left;
+}
+
+.static-article h2{
+  font-size: 16px;
+}
+
+.static-article p{
+  text-indent: 2em;
+}
+
+.static-article dl{
+  padding-left: 2em;
+}
+
+.static-article ul li, .static-article ol li {
+  margin-bottom: 10px;
 }
 
 .nav-pills > li.active > a,

@@ -53,8 +53,8 @@
       $(".dropdown-menu").dropdown();
 
       $(".dropdown-menu li a").click(function(){
-        $(this).parent().parent().parent().find('.dropdown-toggle').html($(this).html() + ' <span class="caret"></span>');
-        $(this).parent().parent().parent().find('.dropdown-menu-selected').val($(this).attr('data-value'));
+        $(this).parent().parent().parent().find(".dropdown-toggle").html($(this).html() + ' <span class="caret"></span>');
+        $(this).parent().parent().parent().find(".dropdown-menu-selected").val($(this).attr("data-value")).trigger("input");
       });
     </script>
     {% block foot %}{% endblock %}

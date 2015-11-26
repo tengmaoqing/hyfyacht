@@ -45,7 +45,8 @@
       "one": "%d hour",
       "other": "%d hours"
     },
-    "owner": "Owner"
+    "owner": "Owner",
+    "back_to_top": "Back to top"
   },
   "error": {
     "login": {
@@ -108,7 +109,10 @@
     "section": {
       "info": "Info",
       "booking": "Booking",
-      "desc": "Description"
+      "desc": "Description",
+      "include": "Charge Include",
+      "exclude": "Charge Exclude",
+      "notice": "Notice"
     },
     "info": {
       "duration": "Duration",

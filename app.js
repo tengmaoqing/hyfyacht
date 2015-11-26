@@ -93,10 +93,8 @@ app.use(expressSession({
 }));
 
 app.use(function(req, res, next){
-  var userAgent = req.headers['user-agent'];
-
-  req.isFromWechat = userAgent.match(/MicroMessenger/i) ? true : false;
-
+  req.isFromWechat = /MicroMessenger/.test(req.headers['user-agent']);
+  console.log(req.headers['user-agent']);
   next();
 });
 
@@ -178,16 +176,7 @@ app.use(function(req, res, next){
 
 //set default var before view engine render views
 app.use(function(req, res, next){
-  var _render = res.render;
-
-  res.render = function(view, options, fn){
-    options = options || {};
-
-    util._extend(options, {
-      preset: preset
-    });
-    _render.call(this, view, options, fn);
-  };
+  res.locals.preset = preset;
 
   next();
 });
@@ -197,7 +186,6 @@ app.use('/notify', notify);
 app.use(csurf());
 
 app.use(function(req, res, next){
-  res.cookie('XSRF-TOKEN', req.csrfToken());
   res.locals._csrf = req.csrfToken();
   next();
 });
