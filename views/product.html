@@ -437,7 +437,16 @@
       right: "today"
     },
     eventLimit: 3,
-    eventLimitClick: function(){return false},//"agendaDay",
+    eventLimitClick: function(cellInfo, jsEvent){
+      var now = moment();
+      now.date(now.date() + 1);
+      if(cellInfo.date < now.hour(0).minute(0).second(0)){
+        return false;
+      }
+
+      $("#calendar").fullCalendar("gotoDate", cellInfo.date);
+      $("#calendar").fullCalendar("changeView", "agendaDay");
+    },
 //    allDayText: "节日",
     allDaySlot: false,
     minTime: "{{ product.workingHours.start }}",
@@ -516,8 +525,12 @@
         }
       }
     },
-    events:"/booking/cal/{{ boat.id }}",
-    eventColor: "#258ec7",
+    eventSources:[
+      {
+        url: "/booking/cal/{{ boat.id }}",
+        color: "#258ec7"
+      }
+    ],
     eventRender: function(event, element){
       $(element).find(".fc-time").text(moment(event.start).format("HH:mm") + "-" + moment(event.end).format("HH:mm"));
     }

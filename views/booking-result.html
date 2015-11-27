@@ -6,7 +6,13 @@
 
 {% include './nav.html' %}
 
-<div class="container boat-info">
+<div class="container columns-sm boat-info">
+  <ol class="breadcrumb">
+    <li><a href="/">{{ __('nav.home') }}</a></li>
+    <li><a href="/boat/{{ booking.boatId.valueOf() }}/{{ booking.boatName }}">{{ booking.boatName }}</a></li>
+    <li><a href="/product/{{ booking.productId.valueOf() }}/{{ booking.productName }}/{{ booking.boatId.valueOf() }}/{{ booking.boatName }}">{{ booking.productName }}</a></li>
+    <li class="active">result</li>
+  </ol>
   {% if error %}
   <div class="page-header">
     <h1>{{ __('product.booking.result.fail') }}</h1>
@@ -15,24 +21,26 @@
     <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __(error) }}
   </div>
   {% else %}
-  <form name="payment" action="/pay/alipay" method="post" target="_blank">
+  <form name="alipay_direct" action="/pay/alipay" method="post" target="_blank">
     <input type="hidden" name="_csrf" value="{{ _csrf }}">
     <input type="hidden" name="WIDout_trade_no" value="{{ booking.bookingId }}">
     <input type="hidden" name="WIDsubject" value="{{ booking.boatName }}-{{ booking.productName }}-{{ booking.packageName }}">
     <input type="hidden" name="WIDtotal_fee" value="{{ (booking.total / 100).toFixed(2) }}">
     <input type="hidden" name="WIDbody" value="{{ booking.boatName }}-{{ booking.productName }}-{{ booking.packageName }}">
     <input type="hidden" name="WIDshow_url" value="http://test.hgboating.com/product/{{ booking.productId.valueOf() }}/{{ booking.productName }}/{{ booking.boatId.valueOf() }}/{{ booking.boatName }}">
-    <div class="page-header">
-      <h1>{{ __('product.booking.result.success') }}</h1>
-    </div>
-    <div class="alert alert-danger">
-      <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.result.payment_notice') }}
-    </div>
-    <h4>{{ __('product.booking.result.amount') }} {% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ (booking.total / 100).toFixed(2) }}</h4>
-    <p>{{ __('product.booking.result.modeOfPayment') }}</p>
-    <p>
+  </form>
+  <div class="page-header">
+    <h1>{{ __('product.booking.result.success') }}</h1>
+  </div>
+  <div class="alert alert-danger">
+    <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.result.payment_notice') }}
+  </div>
+  <h4>{{ __('product.booking.result.amount') }} {% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ (booking.total / 100).toFixed(2) }}</h4>
+  <p>{{ __('product.booking.result.modeOfPayment') }}</p>
+  <p>
+    <form id="payment-selection">
       <label class="btn btn-default">
-        <input name="payway" type="radio" autocomplete="off" checked> 支付宝
+        <input name="payway" type="radio" value="alipay_direct" autocomplete="off" checked> 支付宝
       </label>
       <label class="btn btn-default">
         <input name="payway" type="radio" autocomplete="off"> 微信支付
@@ -40,17 +48,28 @@
       <label class="btn btn-default">
         <input name="payway" type="radio" autocomplete="off"> QQ钱包
       </label>
-    </p>
-    <div class="row">
-      <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
-        <button type="submit" class="btn btn-danger btn-block" data-toggle="modal" data-target="#booking-confirm-modal">{{ __('common.pay') }}</button>
-      </div>
+    </form>
+  </p>
+  <div class="row">
+    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+      <button id="btn-pay" type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#booking-confirm-modal">{{ __('common.pay') }}</button>
     </div>
-    <hr class="hr-divider">
-  </form>
+  </div>
+  <hr class="hr-divider">
   {{ bookingView.detail(booking) }}
   {% endif %}
 </div>
+
 {% include './footer.html' %}
 
+{% endblock %}
+
+{% block foot %}
+<script>
+  $("#btn-pay").click(function(){
+    var paymentType = $("input[name=payway]:checked", "#payment-selection").val();
+
+    $("form[name=" + paymentType + "]").submit();
+  });
+</script>
 {% endblock %}

@@ -46,7 +46,8 @@
       "other": "%d hours"
     },
     "owner": "Owner",
-    "back_to_top": "Back to top"
+    "back_to_top": "Back to top",
+    "detail": "Detail"
   },
   "error": {
     "login": {
@@ -67,6 +68,7 @@
   },
   "user": {
     "bookings": "My Bookings",
+    "booking_detail": "Booking Detail",
     "settings": "Account Settings"
   },
   "index": {

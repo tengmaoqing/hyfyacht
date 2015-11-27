@@ -9,7 +9,7 @@
         <h1>{{ __('common.signup') }}</h1>
       </div>
       {% if error %}
-      <div class="alert alert-danger text-center">{{ __(error) }}</div>
+      <div class="alert alert-danger text-center"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __(error) }}</div>
       {% endif %}
       <form class="form-horizontal" method="POST">
         <input type="hidden" name="_csrf" value="{{ _csrf }}">
@@ -96,7 +96,7 @@
         return;
       }
 
-      var url = "/sms/get?mobile=" + area_code + mobile;
+      var url = "/sms/getcode?mobile=" + area_code + mobile;
 
       $.getJSON(url, function (result) {
         $("#btn-getsmscode").prop("disabled", true);

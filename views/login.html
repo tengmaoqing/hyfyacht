@@ -9,7 +9,7 @@
         <h1>{{ __('common.login') }}</h1>
       </div>
       {% if error %}
-      <div class="alert alert-danger text-center">{{ __(error) }}</div>
+      <div class="alert alert-danger text-center"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __(error) }}</div>
       {% endif %}
       <form class="form-horizontal" method="POST">
         <input type="hidden" name="_csrf" value="{{ _csrf }}">
@@ -47,7 +47,7 @@
           <a href="/">{{ __('common.forgotpass') }}</a>
         </div>
         <div class="col-sm-6 col-xs-6 text-right">
-          <a href="/signup">{{ __('common.signup') }}</a>
+          <a href="/signup{% if from %}?from={{ from }}{% endif %}">{{ __('common.signup') }}</a>
         </div>
       </div>
     </div>

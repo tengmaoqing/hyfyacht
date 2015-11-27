@@ -92,9 +92,31 @@ app.use(expressSession({
   saveUninitialized: false
 }));
 
+//preset
+var preset = {};
+
 app.use(function(req, res, next){
-  req.isFromWechat = /MicroMessenger/.test(req.headers['user-agent']);
-  console.log(req.headers['user-agent']);
+  var ua = req.headers['user-agent'];
+
+  var mobile = /mobile/ig.test(ua);
+
+  var wechat = ua.match(/micromessenger\/\d+\.\d+/ig);
+  var version = '';
+
+  if(wechat) {
+    req.isFromWechat = true;
+
+    version = String(wechat).split('/');
+    version = parseInt(version[1].split('.')[0]);
+  }
+
+  util._extend(preset,{
+    ua: {
+      mobile: mobile,
+      wechat: version
+    }
+  });
+
   next();
 });
 
@@ -111,9 +133,6 @@ app.use(function(req, res, next){
 
 //auto login
 app.use(userController.autoLogin);
-
-//preset
-var preset = {};
 
 var removeSubdomain = function(req){
   if(req.subdomains && req.subdomains.length > 0){

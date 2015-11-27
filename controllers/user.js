@@ -21,6 +21,8 @@ function setSessionAndCookie(req, res, user){
 }
 
 exports.signup = function(req, res, next){
+  var from = req.query.from || false;
+
   req.checkBody({
     'area_code': {
       notEmpty: true,
@@ -95,7 +97,11 @@ exports.signup = function(req, res, next){
         } else {
           setSessionAndCookie(req, res, newUser);
 
-          return res.redirect('/');
+          if(from){
+            return res.redirect(encodeURI(from));
+          }else {
+            return res.redirect('/');
+          }
         }
       });
     }
@@ -103,6 +109,8 @@ exports.signup = function(req, res, next){
 };
 
 exports.login = function(req, res, next){
+  var from = req.query.from || false;
+
   if(req.isFromWechat && !req.session.userId){
     if(req.query.state == '2' && req.query.code){
       var code = req.query.code;
@@ -139,7 +147,7 @@ exports.login = function(req, res, next){
             });
           });
         }else {
-          res.render('login');
+          res.render('login', { from: from});
         }
       });
     }else{
@@ -155,7 +163,7 @@ exports.login = function(req, res, next){
       return res.redirect(encodeURI(from));
     }
   } else {
-    res.render('login');
+    res.render('login', { from: from});
   }
 };
 
@@ -197,7 +205,7 @@ exports.loginSubmit = function(req, res, next){
       return next(err);
     }else{
       if (!user || hashPassword(req.body.password) != user.hashedPassword) {
-        return res.render('login', { error: 'error.login.donotmatch' });
+        return res.render('login', { error: 'error.login.donotmatch', from: from });
       } else {
         setSessionAndCookie(req, res, user);
 

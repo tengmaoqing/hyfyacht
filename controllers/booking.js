@@ -82,20 +82,28 @@ exports.checkBooking = function(req, res, next) {
             return parseInt(charge * config.currency[req.session.currency] / config.currency[package.currency]);
           };
 
+          var boatIndex = package.boats.map(function(b){return b.id}).indexOf(bookingForm.boatId);
+
           var fail = function(error){
+
+            var bookingInfo = new Booking({
+              boatId: package.boats[boatIndex].id,
+              boatName: package.boats[boatIndex].name,
+              productId: package.product.id,
+              productName: package.product.name
+            });
+
             req.session.bookingForm = null;
             req.session.bookingResult = {
               success: false
             };
-            return res.render('booking-result', {error: error});
+            return res.render('booking-result', {error: error, booking: bookingInfo});
           };
 
           //Check product
           if(package.product.id != bookingForm.productId){
             return fail('product.booking.result.error.other');
           }
-
-          var boatIndex = package.boats.map(function(b){return b.id}).indexOf(bookingForm.boatId);
 
           //Check boat
           if(boatIndex < 0){
@@ -294,7 +302,7 @@ exports.getBookingByBookingId = function(req, res, next){
     Booking.findOne({
       bookingId: bookingId,
       userId: req.session.userId
-    },function (err, booking) {
+    }, function (err, booking) {
       if (err) {
         err.status = 400;
         return next(err);
@@ -312,20 +320,38 @@ exports.getBookingByBookingId = function(req, res, next){
 };
 
 exports.getBookingsByUserId = function(req, res, next){
+  var page = req.query.page || 1;
+
   if (!req.session.userId) {
     return res.redirect('/login?from=' + req.originalUrl);
   } else {
-    Booking.find({
+    Booking.paginate({
       userId: req.session.userId
-    }).sort( {
-      bookingId: -1
-    }).exec(
-    function(err, bookings){
+    }, {
+      page: page,
+      limit: 10,
+      columns: 'bookingId boatId boatName productId productName packageName dateStart dateEnd total contact settlementCurrency status',
+      populate:[{
+        path: 'productId',
+        select: 'photo'
+      }],
+      sortBy: {
+        _id: -1
+      }
+    }, function (err, bookings, pageCount, itemCount) {
       if(err){
         err.status = 400;
         return next(err);
       }else{
-        return res.render('user-booking-list', {bookings: bookings});
+        var pager = {
+          current: parseInt(page),
+          count: pageCount,
+          pages: []
+        };
+        for(var i = 1; i <= pageCount; i++){
+          pager.pages.push(i);
+        }
+        return res.render('user-booking-list', {bookings: bookings, pager: pager, itemCount: itemCount});
       }
     });
   }

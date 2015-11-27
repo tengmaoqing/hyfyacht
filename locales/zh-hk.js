@@ -46,7 +46,8 @@
       "other": "%d 小時"
     },
     "owner": "船東",
-    "back_to_top": "返回最頂"
+    "back_to_top": "返回最頂",
+    "detail": "詳情"
   },
   "error": {
     "login": {
@@ -67,6 +68,7 @@
   },
   "user": {
     "bookings": "我的預定",
+    "booking_detail": "定單詳情",
     "settings": "帳戶設定"
   },
   "index": {

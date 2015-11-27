@@ -20,6 +20,10 @@ a, a:hover, a:active {
   text-decoration: none;
 }
 
+.page-header {
+  margin: 20px 0;
+}
+
 .relative-container {
   position: relative;
 }
@@ -563,7 +567,8 @@ dl.dl-horizontal dt {
 }
 
 .columns-sm {
-  padding: 20px 0;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .columns-sm h3 {

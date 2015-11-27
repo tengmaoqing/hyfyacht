@@ -17,7 +17,7 @@ function generateCode(){
   return code;
 }
 
-router.get('/get', function(req, res, next){
+router.get('/getcode', function(req, res, next){
   var mobile = req.query.mobile;
   if(mobile){
     var now = moment();

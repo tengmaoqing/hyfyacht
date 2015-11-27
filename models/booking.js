@@ -3,6 +3,7 @@
  */
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema,
+  mongoosePaginate = require('mongoose-paginate'),
   Counter = require('./counter');
 
 var BookingSchema = new Schema({
@@ -35,6 +36,8 @@ var BookingSchema = new Schema({
 }, {
   versionKey: false
 });
+
+BookingSchema.plugin(mongoosePaginate);
 
 BookingSchema.pre('save', function(next){
   var booking = this;
