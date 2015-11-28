@@ -3,6 +3,7 @@
  */
 var Owner = require('../models/owner');
 var Boat = require('../models/boat');
+var Booking = require('../models/booking');
 
 exports.getOwnerByCustomLink = function(req, res, next) {
   Owner.findOne({customLink:req.params.link}).select('nickname location description boats').populate('boats', 'id name type baseCharge currency location photos').exec(function(err, owner){

@@ -609,6 +609,14 @@ dl.dl-horizontal dt {
   color: #258ec7;
 }
 
+.calendar-event-icon-wait {
+  color: #f0ad4e;
+}
+
+.calendar-event-icon-unavailable {
+  color: #ff5a5e;
+}
+
 .fc-left h2 {
   font-weight: bold;
   font-size: 16px;

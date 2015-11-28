@@ -71,6 +71,14 @@
     "booking_detail": "Booking Detail",
     "settings": "Account Settings"
   },
+  "owner": {
+    "nav": {
+      "home": "Home",
+      "calendar": "Calendar",
+      "booking": "Bookings",
+      "boat": "Boats"
+    }
+  },
   "index": {
     "search": {
       "where": "Where do you want to go?",
@@ -98,13 +106,6 @@
       "extras": "Extras",
       "products": "Products",
       "learn": "Learn more"
-    }
-  },
-  "owner": {
-    "nav": {
-      "home": "Home",
-      "booking": "Booking",
-      "boat": "Boats"
     }
   },
   "product": {
@@ -150,6 +151,7 @@
       "contract": "HGBOATING Lease Contract",
       "book": "Book",
       "error": {
+        "invaild_time": "Invalid Time",
         "numberOfPeople": {
           "required": "Please input number of people.",
           "outOfRange": "Out of range.",
@@ -176,6 +178,7 @@
         }
       },
       "result": {
+        "result": "Result",
         "success": "Success",
         "fail": "Booking failed",
         "error": {
@@ -196,7 +199,12 @@
   },
   "calendar":{
     "booked": "Had been booked",
-    "selectdate": "Month"
+    "wait_to_pay": "Wait to pay",
+    "unavailable": "Unavailable",
+    "selectdate": "Month",
+    "today": "Today",
+    "select_date": "Please select the date",
+    "try_later": "Fail to set, Please try this later"
   },
   "db": {
     "booking": {

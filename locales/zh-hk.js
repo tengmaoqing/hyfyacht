@@ -1,6 +1,6 @@
 {
   "site": {
-  "title": "海龜租船",
+  "title": "HG Boating",
   "slogan": "藍天白雲 以海為家",
   "info": {
     "company": "公司信息",
@@ -71,6 +71,14 @@
     "booking_detail": "定單詳情",
     "settings": "帳戶設定"
   },
+  "owner": {
+    "nav": {
+      "home": "首頁",
+      "calendar": "船期",
+      "booking": "定單管理",
+      "boat": "船隻管理"
+    }
+  },
   "index": {
     "search": {
       "where": "您想去哪裡？",
@@ -98,13 +106,6 @@
       "extras": "其他",
       "products": "可預訂的產品",
       "learn": "了解詳情"
-    }
-  },
-  "owner": {
-    "nav": {
-      "home": "首頁",
-      "booking": "定單管理",
-      "boat": "船隻管理"
     }
   },
   "product": {
@@ -150,6 +151,7 @@
       "contract": "《海龜租船租賃協議》",
       "book": "預定",
       "error": {
+        "invaild_time": "此時間不可預定。",
         "numberOfPeople": {
           "required": "請輸入人數。",
           "outOfRange": "人數超出範圍。",
@@ -176,6 +178,7 @@
         }
       },
       "result": {
+        "result": "預定結果",
         "success": "提交成功",
         "fail": "預定失敗",
         "error": {
@@ -196,7 +199,12 @@
   },
   "calendar":{
     "booked": "已被預定",
-    "selectdate": "選擇日期"
+    "wait_to_pay": "等待付款",
+    "unavailable": "不可預定",
+    "selectdate": "選擇日期",
+    "today": "今天",
+    "select_date": "請選擇時間",
+    "try_later": "設置失敗,請稍候重試"
   },
   "db": {
     "booking": {

@@ -12,6 +12,7 @@ var UserSchema = new Schema({
   email: String,
   hashedPassword: String,
   role: String,
+  relatedOwner: {type: Schema.Types.ObjectId, ref: 'Owner'},
   currency: String,
   location: {
     city: String

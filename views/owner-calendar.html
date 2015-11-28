@@ -10,33 +10,60 @@
 
 {% include './nav-owner.html' with {view_active:'home'} %}
 
-<div class="container">
+<div class="container columns-sm">
+  <ol class="breadcrumb">
+    <li>{{ __('owner.nav.home') }}</li>
+    <li class="active">{{ __('owner.nav.calendar') }}</li>
+  </ol>
   <div class="page-header">
-    <h1>船期</h1>
+    <h1>{{ __('owner.nav.calendar') }}</h1>
   </div>
+  {% if boats.length > 0 %}
+  <ul class="nav nav-pills">
+    {% for boat in boats %}
+    <li role="presentation" {% if loop.index0 == index %}class="active"{% endif %}><a href="/owner/{{ loop.index0 }}">{{ boat.name }}</a></li>
+    {% endfor %}
+  </ul>
+  <hr class="hr-divider">
   <div id="calendar"></div>
-  <div class="calendar-controller text-right">
-    <button id="calendar-month" type="button" class="btn btn-default invisible">选择日期</button>
-    <div class="btn-group">
-      <button id="calendar-prev" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button>
-      <button id="calendar-next" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button>
+  <div class="row calendar-controller">
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <span class="glyphicon glyphicon-stop calendar-event-icon"></span>
+      {{ __('calendar.booked') }}
+      <span class="glyphicon glyphicon-stop calendar-event-icon-wait"></span>
+      {{ __('calendar.wait_to_pay') }}
+      <span class="glyphicon glyphicon-stop calendar-event-icon-unavailable"></span>
+      {{ __('calendar.unavailable') }}
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-12 text-right">
+      <button id="calendar-month" type="button" class="btn btn-default invisible">{{ __('calendar.selectdate') }}</button>
+      <button id="calendar-today" type="button" class="btn btn-default">{{ __('calendar.today') }}</button>
+      <div class="btn-group">
+        <button id="calendar-prev" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button>
+        <button id="calendar-next" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button>
+      </div>
     </div>
   </div>
   <ul class="list-group">
     <li class="list-group-item">
-      <label>开始时间</label>
+      <label>{{ __('product.booking.start') }}</label>
       <p id="selectedTime-start"></p>
     </li>
     <li class="list-group-item">
-      <label>结束时间</label>
+      <label>{{ __('product.booking.end') }}</label>
       <p id="selectedTime-end"></p>
     </li>
   </ul>
   <div class="calendar-controller text-right">
-    <button type="button" class="btn btn-primary">设置为可预定</button>
-    <button type="button" class="btn btn-danger">设置为不可预定</button>
+    <button id="btn-set-available" type="button" class="btn btn-primary">设置为可预定</button>
+    <button id="btn-set-unavailable" type="button" class="btn btn-danger">设置为不可预定</button>
   </div>
+  <input id="data-selected-date-uid" name="uid" type="hidden">
+  <input id="data-selected-date-start" name="dateStart" type="hidden">
+  <input id="data-selected-date-end" name="dateEnd" type="hidden">
+  {% endif %}
 </div>
+{% if false %}
 <div id="booking-detail-modal" class="modal fade">
   <div class="modal-table">
     <div class="modal-table-cell">
@@ -93,6 +120,8 @@
     </div>
   </div>
 </div>
+{% endif %}
+
 {% include './footer.html' %}
 
 {% endblock %}
@@ -103,6 +132,7 @@
 <script src="//cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.js"></script>
 <script src="//cdn.bootcss.com/fullcalendar/2.4.0/lang/zh-cn.js"></script>
 <script>
+(function($, window){
   var selectedStart = false;
 
   function setSelectedTime(start, end){
@@ -111,9 +141,37 @@
       tempEnd.hour(start.hour() + 1);
     }
 
-    $("#selectedTime-start").html(start.format("YYYY年MM月DD日 a h:mm"));
-    $("#selectedTime-end").html(tempEnd.format("YYYY年MM月DD日 a h:mm"));
+    $("#data-selected-date-start").val(start.format("YYYY-MM-DD HH:mm"));
+    $("#data-selected-date-end").val(tempEnd.format("YYYY-MM-DD HH:mm"));
+
+    $("#selectedTime-start").html(start.format("YYYY-MM-DD HH:mm"));
+    $("#selectedTime-end").html(tempEnd.format("YYYY-MM-DD HH:mm"));
   }
+
+  function clearSelectedTime(){
+    selectedStart = false;
+    $("#data-selected-date-uid").val("");
+    $("#data-selected-date-start").val("");
+    $("#data-selected-date-end").val("");
+
+    $("#selectedTime-start").html("");
+    $("#selectedTime-end").html("");
+  }
+
+  var sources = [
+    {
+      url: "/owner/booking/cal/{{ boats[index].id }}?type=success",
+      color: "#258ec7"
+    },
+    {
+      url: "/owner/booking/cal/{{ boats[index].id }}?type=waittopay",
+      color: "#f0ad4e"
+    },
+    {
+      url: "/owner/booking/cal/unavailable/{{ boats[index].id }}",
+      color: "#ff5a5e"
+    }
+  ];
 
   $("#calendar").fullCalendar({
     contentHeight: "auto",
@@ -121,18 +179,16 @@
     lang: "zh-CN",
     header: {
       left: "title",
-      right: "today"
+      right: ""
     },
     eventLimit: 3,
     eventLimitClick: "agendaDay",
     allDayText: "节日",
-    minTime: "09:00:00",
-    maxTime: "18:00:00",
+    minTime: "06:00:00",
+    maxTime: "20:00:00",
     slotDuration: "01:00:00",
     slotLabelFormat: "HH:00",
-//    hiddenDays: [0,6],
     selectable: true,
-//    selectOverlap: false,
     unselectAuto: false,
     viewRender: function(view, element){
       if(view.name == "month"){
@@ -155,12 +211,17 @@
     eventClick: function(calEvent, jsEvent, view){
       if(view.name == "agendaDay"){
         if(calEvent.ownerDisabled){
+          $("#data-selected-date-uid").val(calEvent.uid);
           setSelectedTime(calEvent.start, calEvent.end);
         }
 
-        if(!calEvent.ownerDisabled && !calEvent.allDay){
-          $("#booking-detail-modal").modal();
+        if(calEvent.bookingId){
+          window.location = '/owner/booking/detail/' + calEvent.bookingId;
         }
+
+//        if(!calEvent.ownerDisabled && !calEvent.allDay){
+//          $("#booking-detail-modal").modal();
+//        }
 
         return;
       }
@@ -204,69 +265,19 @@
         }
       }
     },
-    events:[
-      {
-        title: "已预定",
-        start: "2015-10-16T13:00",
-        end: "2015-10-16T14:00",
-        allDay: false,
-        backgroundColor: "#258ec7",
-        borderColor: "#258ec7"
-      },
-      {
-        title: "已预定",
-        start: "2015-10-16T15:00",
-        end: "2015-10-16T16:00",
-        allDay: false,
-        backgroundColor: "#258ec7",
-        borderColor: "#258ec7"
-      },
-      {
-        title: "已预定",
-        start: "2015-10-16T16:00",
-        end: "2015-10-16T17:00",
-        allDay: false,
-        backgroundColor: "#258ec7",
-        borderColor: "#258ec7"
-      },
-      {
-        title: "已预定",
-        start: "2015-10-16T10:00",
-        end: "2015-10-16T11:00",
-        allDay: false,
-        backgroundColor: "#258ec7",
-        borderColor: "#258ec7"
-      },
-      {
-        title: "已预定",
-        start: "2015-10-20T09:00",
-        end: "2015-10-20T17:00",
-        allDay: false,
-        backgroundColor: "#258ec7",
-        borderColor: "#258ec7"
-      },
-      {
-        title: "国庆",
-        start: new Date(2015, 9, 1),
-        allDay: true,
-        backgroundColor: "#ff5a5e",
-        borderColor: "#ff5a5e"
-      },
-      {
-        title: "已设置不可预定",
-        start: "2015-09-30T10:00",
-        end: "2015-09-30T16:00",
-        allDay: false,
-        backgroundColor: "#f2dede",
-        borderColor: "#f2dede",
-        ownerDisabled: true
-      }
-    ]
+    eventSources: sources,
+    eventRender: function(event, element){
+      $(element).find(".fc-time").text(moment(event.start).format("HH:mm") + "-" + moment(event.end).format("HH:mm"));
+    }
   });
 
   $("#calendar-month").click(function(){
     selectedStart = false;
     $("#calendar").fullCalendar("changeView", "month");
+  });
+
+  $("#calendar-today").click(function(){
+    $("#calendar").fullCalendar("today");
   });
 
   $("#calendar-prev").click(function(){
@@ -279,5 +290,50 @@
     $("#calendar").fullCalendar("next");
   });
 
+  $("#btn-set-available").click(function(){
+    var uid = $("#data-selected-date-uid").val();
+
+    if(uid){
+      $.getJSON("/owner/unavailable/remove/" + uid, function(data){
+        if(data.result){
+          $("#calendar").fullCalendar("refetchEvents");
+          clearSelectedTime();
+        }else{
+          $("#hyf-modal-alert").CustomAlert("{{ __('calendar.try_later') }}");
+          return;
+        }
+      });
+    }else{
+      $("#hyf-modal-alert").CustomAlert("{{ __('calendar.select_date') }}");
+      return;
+    }
+  });
+
+  $("#btn-set-unavailable").click(function(){
+    var boatId = "{{ boats[index].id }}";
+    var dateStart = $("#data-selected-date-start").val();
+    var dateEnd = $("#data-selected-date-end").val();
+
+    if(!boatId || !dateStart || !dateEnd){
+      $("#hyf-modal-alert").CustomAlert("{{ __('calendar.select_date') }}");
+      return;
+    }else{
+      $.post("/owner/unavailable/set", {
+        _csrf: "{{ _csrf }}",
+        boatId: boatId,
+        dateStart: dateStart,
+        dateEnd: dateEnd
+      }, function(data){
+        if(data.result){
+          $("#calendar").fullCalendar("refetchEvents");
+          clearSelectedTime();
+        }else{
+          $("#hyf-modal-alert").CustomAlert("{{ __('calendar.try_later') }}");
+          return;
+        }
+      });
+    }
+  });
+})(jQuery, window);
 </script>
 {% endblock %}

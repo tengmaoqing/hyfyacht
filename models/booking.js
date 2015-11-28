@@ -6,6 +6,14 @@ var mongoose = require('mongoose'),
   mongoosePaginate = require('mongoose-paginate'),
   Counter = require('./counter');
 
+var StatusLogsSchema = new Schema({
+  status: String,
+  description: String,
+  updateDate: Date
+},{
+  _id: false
+})
+
 var BookingSchema = new Schema({
   bookingId: String,
   userId: {type: Schema.Types.ObjectId, ref: 'User'},
@@ -32,7 +40,9 @@ var BookingSchema = new Schema({
     email: String
   },
   status: String,
-  payment: {type: Schema.Types.ObjectId, ref: 'Payment'}
+  statusLogs: [StatusLogsSchema],
+  payment: {type: Schema.Types.ObjectId, ref: 'Payment'},
+  createDate: {type: Date, default: Date.now}
 }, {
   versionKey: false
 });

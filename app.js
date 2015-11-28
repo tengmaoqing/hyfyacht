@@ -13,12 +13,14 @@ var expressValidator = require('express-validator');
 var i18n = require('i18n');
 var swig = require('swig');
 var moment = require('moment');
+var CronJob = require('cron').CronJob;
+var Booking = require('./models/booking');
 
 //config
 var config = require('./config');
 
 //routes
-var routes = require('./routes/index');
+var index = require('./routes/index');
 var boat = require('./routes/boat');
 var product = require('./routes/product');
 var booking = require('./routes/booking');
@@ -193,6 +195,20 @@ app.use(function(req, res, next){
   next();
 });
 
+app.use(function(req, res, next){
+  if(req.session.owner && req.session.owner != undefined){
+    util._extend(preset, {
+      owner: true
+    });
+  }else{
+    util._extend(preset, {
+      owner: false
+    });
+  }
+
+  next();
+});
+
 //set default var before view engine render views
 app.use(function(req, res, next){
   res.locals.preset = preset;
@@ -209,6 +225,30 @@ app.use(function(req, res, next){
   next();
 });
 
+//check user login status
+app.use('/user', function(req, res, next){
+  if (!req.session.user) {
+    return res.redirect('/login?from=' + req.originalUrl);
+  } else {
+    next();
+  }
+});
+
+//check owner login status
+app.use('/owner', function(req, res, next){
+  if (!req.session.owner) {
+    if (!req.session.user) {
+      return res.redirect('/login?from=' + req.originalUrl);
+    }else{
+      var err = new Error('Not Found');
+      err.status = 404;
+      next(err);
+    }
+  } else {
+    next();
+  }
+});
+
 app.use('/boat', boat);
 app.use('/product', product);
 app.use('/booking', booking);
@@ -217,8 +257,34 @@ app.use('/owner', owner);
 app.use('/pay', pay);
 app.use('/sms', sms);
 app.use('/wx', wx);
-app.use('/', routes);
+app.use('/', index);
 
+//check bookings, auto cancel booking if not pay after booking by 30m
+var job = new CronJob({
+  cronTime: '0 0-59/5 * * * *',
+  onTick: function(){
+    var date = moment().add(-30, 'minutes');
+    Booking.update({
+      status: 'db.booking.wait_to_pay',
+      createDate: { $lte: date.toDate() }
+    },{
+      $set:{
+        status: 'db.booking.cancel'
+      },
+      $push:{
+        statusLogs: {
+          status: 'db.booking.cancel',
+          description: 'Auto Cancel',
+          updateDate: new Date()
+        }
+      }
+    }, function(err){
+    });
+  },
+  start: false
+});
+
+job.start();
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

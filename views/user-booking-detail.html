@@ -34,9 +34,6 @@
     <label class="btn btn-default">
       <input name="payway" type="radio" autocomplete="off"> 微信支付
     </label>
-    <label class="btn btn-default">
-      <input name="payway" type="radio" autocomplete="off"> QQ钱包
-    </label>
   </form>
   </p>
   <div class="row">
@@ -53,6 +50,7 @@
 
 {% endblock %}
 
+{% if booking.status == 'db.booking.wait_to_pay' %}
 {% block foot %}
 <script>
   $("#btn-pay").click(function(){
@@ -62,3 +60,4 @@
   });
 </script>
 {% endblock %}
+{% endif %}

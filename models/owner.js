@@ -14,7 +14,6 @@ var OwnerSchema = new Schema({
   customLink: String,
   nickname: String,
   email: String,
-  hashedPassword: String,
   currency: String,
   location: {
     country: String,

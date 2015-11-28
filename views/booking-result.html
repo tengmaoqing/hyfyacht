@@ -11,7 +11,7 @@
     <li><a href="/">{{ __('nav.home') }}</a></li>
     <li><a href="/boat/{{ booking.boatId.valueOf() }}/{{ booking.boatName }}">{{ booking.boatName }}</a></li>
     <li><a href="/product/{{ booking.productId.valueOf() }}/{{ booking.productName }}/{{ booking.boatId.valueOf() }}/{{ booking.boatName }}">{{ booking.productName }}</a></li>
-    <li class="active">result</li>
+    <li class="active">{{ __('product.booking.result.result') }}</li>
   </ol>
   {% if error %}
   <div class="page-header">
@@ -44,9 +44,6 @@
       </label>
       <label class="btn btn-default">
         <input name="payway" type="radio" autocomplete="off"> 微信支付
-      </label>
-      <label class="btn btn-default">
-        <input name="payway" type="radio" autocomplete="off"> QQ钱包
       </label>
     </form>
   </p>

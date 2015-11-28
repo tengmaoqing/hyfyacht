@@ -71,6 +71,14 @@
     "booking_detail": "定单详情",
     "settings": "个人设置"
   },
+  "owner": {
+    "nav": {
+      "home": "首页",
+      "calendar": "船期",
+      "booking": "定单管理",
+      "boat": "船只管理"
+    }
+  },
   "index": {
     "search": {
       "where": "您想去哪里？",
@@ -98,13 +106,6 @@
       "extras": "其他",
       "products": "可预定产品",
       "learn": "了解详情"
-    }
-  },
-  "owner": {
-    "nav": {
-      "home": "首页",
-      "booking": "定单管理",
-      "boat": "船只管理"
     }
   },
   "product": {
@@ -150,6 +151,7 @@
       "contract": "《海龟租船租赁协议》",
       "book": "预定",
       "error": {
+        "invaild_time": "此时间不可预定。",
         "numberOfPeople": {
           "required": "请输入人数。",
           "outOfRange": "人数超出范围",
@@ -176,6 +178,7 @@
         }
       },
       "result": {
+        "result": "预定结果",
         "success": "提交成功",
         "fail": "预定失败",
         "error": {
@@ -196,7 +199,12 @@
   },
   "calendar":{
     "booked": "已被预定",
-    "selectdate": "选择日期"
+    "wait_to_pay": "等待付款",
+    "unavailable": "不可预定",
+    "selectdate": "选择日期",
+    "today": "今天",
+    "select_date": "请选择时间",
+    "try_later": "设置失败,请稍候重试"
   },
   "db": {
     "booking": {

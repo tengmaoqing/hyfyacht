@@ -55,6 +55,7 @@
               </div>
               <div class="col-md-8 col-sm-6 col-xs-12 text-right">
                 <button id="calendar-month" type="button" class="btn btn-default invisible">{{ __('calendar.selectdate') }}</button>
+                <button id="calendar-today" type="button" class="btn btn-default">{{ __('calendar.today') }}</button>
                 <div class="btn-group">
                   <button id="calendar-prev" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button>
                   <button id="calendar-next" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button>
@@ -414,6 +415,7 @@
 <script src="//cdn.bootcss.com/fullcalendar/2.4.0/lang/{% if preset.locale == 'zh-cn' %}zh-cn{% elseif preset.locale == 'zh-hk' %}zh-tw{% elseif preset.locale == 'en' %}en-gb{% endif %}.js"></script>
 <script src="//cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
 <script>
+(function($, window){
   var selectedStart = false;
 
   function setSelectedTime(start, end){
@@ -434,7 +436,7 @@
     timezone: "local",
     header: {
       left: "title",
-      right: "today"
+      right: ""
     },
     eventLimit: 3,
     eventLimitClick: function(cellInfo, jsEvent){
@@ -492,7 +494,7 @@
       }
 
       if(start < moment()){
-        $("#hyf-modal-alert").CustomAlert("此时间不可预定。");
+        $("#hyf-modal-alert").CustomAlert("{{ __('product.booking.error.invaild_time') }}");
         return false;
       }
 
@@ -529,6 +531,10 @@
       {
         url: "/booking/cal/{{ boat.id }}",
         color: "#258ec7"
+      },
+      {
+        url: "/booking/cal/unavailable/{{ boat.id }}",
+        color: "#258ec7"
       }
     ],
     eventRender: function(event, element){
@@ -539,6 +545,10 @@
   $("#calendar-month").click(function(){
     selectedStart = false;
     $("#calendar").fullCalendar("changeView", "month");
+  });
+
+  $("#calendar-today").click(function(){
+    $("#calendar").fullCalendar("today");
   });
 
   $("#calendar-prev").click(function(){
@@ -668,6 +678,7 @@
   $("#btn-contract").click(function(){
     $("#contract-container").toggleClass("hidden");
   });
+})(jQuery, window);
 </script>
 <script src="//cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
 <script>

@@ -145,3 +145,19 @@ exports.getBoats = function(req, res, next){
     }
   });
 };
+
+exports.getBoatsByOwnerId = function(req, res, next){
+  var id = req.session.owner._id;
+  var index = req.params.index || 0;
+
+  Boat.find({
+    owner: id
+  }).select('id name').exec(function(err, boats){
+    if(err){
+      err.status = 400;
+      return next(err);
+    }else{
+      return res.render('owner-calendar', {boats: boats, index: index});
+    }
+  });
+};

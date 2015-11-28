@@ -14,7 +14,12 @@ function hashPassword(password){
 }
 
 function setSessionAndCookie(req, res, user){
-  req.session.userId = user.id;
+  req.session.user = user;
+  if(user.role && user.role == 'owner'){
+    req.session.owner = user.relatedOwner;
+  }else{
+    req.session.owner = false;
+  }
   res.cookie('client_username', user.nickname, config.cookieOption);
   res.cookie('client_attributes', user.id, config.cookieOption);
   res.cookie('client_uid', randomString({length: 6}), config.cookieOption);
@@ -87,7 +92,8 @@ exports.signup = function(req, res, next){
       var newUser = new User({
         mobile: mobile,
         nickname: req.body.mobile,
-        hashedPassword: hashPassword(req.body.password)
+        hashedPassword: hashPassword(req.body.password),
+        role: 'client'
       });
 
       newUser.save(function (err) {
@@ -111,7 +117,7 @@ exports.signup = function(req, res, next){
 exports.login = function(req, res, next){
   var from = req.query.from || false;
 
-  if(req.isFromWechat && !req.session.userId){
+  if(req.isFromWechat && !req.session.user){
     if(req.query.state == '2' && req.query.code){
       var code = req.query.code;
 
@@ -125,7 +131,8 @@ exports.login = function(req, res, next){
               console.log(wechat_user);
               var user = new User({
                 nickname: wechat_user.nickname,
-                wechatOpenId: wechat.openid
+                wechatOpenId: wechat.openid,
+                role: 'client'
               });
 
               user.save(function (err) {
@@ -154,7 +161,7 @@ exports.login = function(req, res, next){
       var origin_url = encodeURI('http://' + req.hostname + req.originalUrl);
       return res.redirect(wechatCore.getUrlForCodeScopeUserInfo(origin_url));
     }
-  }else if(req.isFromWechat && req.session.userId){
+  }else if(req.isFromWechat && req.session.user){
     var from = req.query.from || false;
 
     if(!from) {
@@ -199,7 +206,7 @@ exports.loginSubmit = function(req, res, next){
 
   User.findOne({
     mobile: mobile
-  }, 'nickname hashedPassword', function(err, user){
+  }).select('nickname hashedPassword role relatedOwner').populate('relatedOwner', 'id').exec(function(err, user){
     if(err){
       err.status = 400;
       return next(err);
@@ -220,7 +227,7 @@ exports.loginSubmit = function(req, res, next){
 };
 
 exports.autoLogin = function(req, res, next){
-  if(req.session.userId){
+  if(req.session.user){
     return next();
   }
 
@@ -229,7 +236,7 @@ exports.autoLogin = function(req, res, next){
   if(uid){
     User.findOne({
       _id: uid
-    }, 'nickname', function(err, user){
+    }).select('nickname role relatedOwner').populate('relatedOwner', 'id').exec(function(err, user){
       if (!err && user) {
         setSessionAndCookie(req, res, user);
       }
@@ -255,7 +262,7 @@ exports.autoLogin = function(req, res, next){
 
           User.findOne({
             wechatOpenId: wechat.openid
-          }, 'nickname', function(err, user){
+          }).select('nickname role relatedOwner').populate('relatedOwner', 'id').exec(function(err, user){
             if (!err && user) {
               setSessionAndCookie(req, res, user);
             }

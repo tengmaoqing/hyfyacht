@@ -3,6 +3,7 @@
  */
 var Booking = require('../models/booking');
 var Package = require('../models/package');
+var Unavailable = require('../models/unavailable');
 var config = require('../config');
 var util = require('util');
 var i18n = require('i18n');
@@ -67,7 +68,7 @@ exports.checkBooking = function(req, res, next) {
     req.session.bookingForm = req.body;
   }
 
-  if (!req.session.userId) {
+  if (!req.session.user) {
     return res.redirect('/login?from=' + req.originalUrl);
   } else {
     var bookingForm = req.session.bookingForm;
@@ -78,6 +79,12 @@ exports.checkBooking = function(req, res, next) {
         return next(err);
       }else{
         if(package){
+          if(req.session.owner._id == package.owner.id){
+            var err = new Error('Forbidden');
+            err.status = 403;
+            return next(err);
+          }
+
           var generateCharge = function(charge){
             return parseInt(charge * config.currency[req.session.currency] / config.currency[package.currency]);
           };
@@ -231,45 +238,101 @@ exports.checkBooking = function(req, res, next) {
             }else{
               if(count > 0){
                 return fail('product.booking.result.error.date');
-              }else{
-                var booking = new Booking({
-                  boatId: package.boats[boatIndex].id,
-                  userId: req.session.userId,
-                  boatName: package.boats[boatIndex].name,
-                  boatLocation: package.boats[boatIndex].location,
-                  ownerId: package.owner.id,
-                  ownerName: package.owner.nickname,
-                  productId: package.product.id,
-                  productName: package.product.name,
-                  packageId: package.id,
-                  packageName: package.name,
-                  items: selectedItems,
-                  dateStart: bookingForm.dateStart,
-                  dateEnd: bookingForm.dateEnd,
-                  numberOfPersons: bookingForm.numberOfPersons,
-                  total: total,
-                  currency: config.currency,
-                  settlementCurrency: req.session.currency,
-                  baseCurrency: package.currency,
-                  contact: {
-                    name: bookingForm.contact,
-                    mobile: bookingForm.area_code + bookingForm.mobile,
-                    email: bookingForm.email
+              }else {
+                Unavailable.count().and([
+                  {
+                    boatId: package.boats[boatIndex].id
                   },
-                  status: 'db.booking.wait_to_pay'
-                });
-
-                booking.save(function(err, savedBooing){
+                  {
+                    $or:[
+                      {
+                        $and:[
+                          {
+                            dateStart: {
+                              $gt: dateStart.toDate()
+                            }
+                          },
+                          {
+                            dateStart: {
+                              $lt: dateEnd.toDate()
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        dateStart: {
+                          $lt: dateStart.toDate()
+                        },
+                        dateEnd: {
+                          $gt: dateStart.toDate()
+                        }
+                      },
+                      {
+                        dateStart: {
+                          $gte: dateStart.toDate()
+                        },
+                        dateEnd: {
+                          $lte: dateEnd.toDate()
+                        }
+                      }
+                    ]
+                  }
+                ]).exec(function (err, unavailableCount) {
                   if(err){
                     err.status = 400;
                     return next(err);
-                  }else{
-                    req.session.bookingForm = null;
+                  }else {
+                    if (unavailableCount > 0) {
+                      return fail('product.booking.result.error.date');
+                    } else {
+                      var booking = new Booking({
+                        boatId: package.boats[boatIndex].id,
+                        userId: req.session.user._id,
+                        boatName: package.boats[boatIndex].name,
+                        boatLocation: package.boats[boatIndex].location,
+                        ownerId: package.owner.id,
+                        ownerName: package.owner.nickname,
+                        productId: package.product.id,
+                        productName: package.product.name,
+                        packageId: package.id,
+                        packageName: package.name,
+                        items: selectedItems,
+                        dateStart: bookingForm.dateStart,
+                        dateEnd: bookingForm.dateEnd,
+                        numberOfPersons: bookingForm.numberOfPersons,
+                        total: total,
+                        currency: config.currency,
+                        settlementCurrency: req.session.currency,
+                        baseCurrency: package.currency,
+                        contact: {
+                          name: bookingForm.contact,
+                          mobile: bookingForm.area_code + bookingForm.mobile,
+                          email: bookingForm.email
+                        },
+                        status: 'db.booking.wait_to_pay',
+                        statusLogs: [
+                          {
+                            status: 'db.booking.wait_to_pay',
+                            description: 'create',
+                            updateDate: new Date()
+                          }
+                        ]
+                      });
 
-                    if(savedBooing){
-                      return res.render('booking-result', {booking: savedBooing});
-                    }else{
-                      return res.render('booking-result', {error: 'product.booking.result.error.other'});
+                      booking.save(function (err, savedBooing) {
+                        if (err) {
+                          err.status = 400;
+                          return next(err);
+                        } else {
+                          req.session.bookingForm = null;
+
+                          if (savedBooing) {
+                            return res.render('booking-result', {booking: savedBooing});
+                          } else {
+                            return res.render('booking-result', {error: 'product.booking.result.error.other'});
+                          }
+                        }
+                      });
                     }
                   }
                 });
@@ -288,73 +351,130 @@ exports.checkBooking = function(req, res, next) {
 };
 
 exports.getBookingByBookingId = function(req, res, next){
-  if (!req.session.userId) {
-    return res.redirect('/login?from=' + req.originalUrl);
-  } else {
-    var bookingId = req.params.bookingId;
+  var bookingId = req.params.bookingId;
 
-    if(!bookingId){
-      var err = new Error('Not Found');
-      err.status = 404;
+  if(!bookingId){
+    var err = new Error('Not Found');
+    err.status = 404;
+    return next(err);
+  }
+
+  Booking.findOne({
+    bookingId: bookingId,
+    userId: req.session.user._id
+  }, function (err, booking) {
+    if (err) {
+      err.status = 400;
       return next(err);
-    }
-
-    Booking.findOne({
-      bookingId: bookingId,
-      userId: req.session.userId
-    }, function (err, booking) {
-      if (err) {
-        err.status = 400;
+    } else {
+      if (!booking){
+        var err = new Error('Not Found');
+        err.status = 404;
         return next(err);
       } else {
-        if (!booking){
-          var err = new Error('Not Found');
-          err.status = 404;
-          return next(err);
-        } else {
-          return res.render('user-booking-detail', {booking: booking});
-        }
+        return res.render('user-booking-detail', {booking: booking});
       }
-    })
+    }
+  });
+};
+
+exports.getBookingByBookingIdForOwner = function(req, res, next){
+  var bookingId = req.params.bookingId;
+
+  if(!bookingId){
+    var err = new Error('Not Found');
+    err.status = 404;
+    return next(err);
   }
+
+  Booking.findOne({
+    bookingId: bookingId,
+    ownerId: req.session.owner._id
+  }, function (err, booking) {
+    if (err) {
+      err.status = 400;
+      return next(err);
+    } else {
+      if (!booking){
+        var err = new Error('Not Found');
+        err.status = 404;
+        return next(err);
+      } else {
+        return res.render('owner-booking-detail', {booking: booking});
+      }
+    }
+  });
 };
 
 exports.getBookingsByUserId = function(req, res, next){
   var page = req.query.page || 1;
 
-  if (!req.session.userId) {
-    return res.redirect('/login?from=' + req.originalUrl);
-  } else {
-    Booking.paginate({
-      userId: req.session.userId
-    }, {
-      page: page,
-      limit: 10,
-      columns: 'bookingId boatId boatName productId productName packageName dateStart dateEnd total contact settlementCurrency status',
-      populate:[{
-        path: 'productId',
-        select: 'photo'
-      }],
-      sortBy: {
-        _id: -1
+  Booking.paginate({
+    userId: req.session.user._id
+  }, {
+    page: page,
+    limit: 10,
+    columns: 'bookingId boatId boatName productId productName packageName dateStart dateEnd total contact settlementCurrency status',
+    populate:[{
+      path: 'productId',
+      select: 'photo'
+    }],
+    sortBy: {
+      _id: -1
+    }
+  }, function (err, bookings, pageCount, itemCount) {
+    if(err){
+      err.status = 400;
+      return next(err);
+    }else{
+      var pager = {
+        current: parseInt(page),
+        count: pageCount,
+        pages: []
+      };
+      for(var i = 1; i <= pageCount; i++){
+        pager.pages.push(i);
       }
-    }, function (err, bookings, pageCount, itemCount) {
-      if(err){
-        err.status = 400;
-        return next(err);
-      }else{
-        var pager = {
-          current: parseInt(page),
-          count: pageCount,
-          pages: []
-        };
-        for(var i = 1; i <= pageCount; i++){
-          pager.pages.push(i);
-        }
-        return res.render('user-booking-list', {bookings: bookings, pager: pager, itemCount: itemCount});
+      return res.render('user-booking-list', {bookings: bookings, pager: pager, itemCount: itemCount});
+    }
+  });
+};
+
+exports.getBookingsByOwnerId = function(req, res, next){
+  var id = req.session.owner._id;
+
+  var page = req.query.page || 1;
+
+  Booking.paginate({
+    ownerId: id,
+    status: 'db.booking.pay_success'
+  }, {
+    page: page,
+    limit: 10,
+    columns: 'bookingId boatId boatName productId productName packageName dateStart dateEnd total contact settlementCurrency status',
+    populate:[{
+      path: 'productId',
+      select: 'photo'
+    }],
+    sortBy: {
+      _id: -1
+    }
+  }, function (err, bookings, pageCount, itemCount) {
+    if(err){
+      err.status = 400;
+      return next(err);
+    }else{
+      var pager = {
+        current: parseInt(page),
+        count: pageCount,
+        pages: []
+      };
+      for(var i = 1; i <= pageCount; i++){
+        pager.pages.push(i);
       }
-    });
-  }
+      return res.render('owner-booking-list', {bookings: bookings, pager: pager, itemCount: itemCount});
+    }
+  });
 };
 
 exports.getBookingsForCalendarEvent = function(req, res, next){
@@ -370,12 +490,12 @@ exports.getBookingsForCalendarEvent = function(req, res, next){
   }).select('dateStart dateEnd').exec(function(err, bookings){
     if(err){
       err.status = 400;
-      return next(err);
+      return res.json(err);
     }else{
       if(!bookings){
         var err = new Error('Not Found');
         err.status = 404;
-        return next(err);
+        return res.json(err);
       }else{
         var events = [];
         for(var i = 0; i < bookings.length; i++){
@@ -390,4 +510,48 @@ exports.getBookingsForCalendarEvent = function(req, res, next){
       }
     }
   });
-}
+};
+
+exports.getBookingsForOwnerCalendarEvent = function(req, res, next){
+  var type = req.query.type;
+
+  if(!type){
+    return res.json({});
+  }
+
+  var status = type == 'success' ? 'db.booking.pay_success' : 'db.booking.wait_to_pay';
+
+  var start = new Date(req.query.start);
+  var end = new Date(req.query.end);
+  Booking.find({
+    boatId: req.params.bid,
+    dateStart: {
+      $gt: start,
+      $lt: end
+    },
+    status: status
+  }).select('bookingId dateStart dateEnd').exec(function(err, bookings){
+    if(err){
+      err.status = 400;
+      return res.json(err);
+    }else{
+      if(!bookings){
+        var err = new Error('Not Found');
+        err.status = 404;
+        return res.json(err);
+      }else{
+        var events = [];
+        for(var i = 0; i < bookings.length; i++){
+          events.push({
+            title: " ",
+            start: moment(bookings[i].dateStart).format('YYYY-MM-DDTHH:mm'),
+            end: moment(bookings[i].dateEnd).format('YYYY-MM-DDTHH:mm'),
+            allDay: false,
+            bookingId: bookings[i].bookingId
+          });
+        }
+        return res.json(events);
+      }
+    }
+  });
+};

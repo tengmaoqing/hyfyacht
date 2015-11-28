@@ -25,6 +25,8 @@ router.post('/login', user.loginSubmit);
 
 var owner = require('../controllers/owner');
 
+router.get('/:id', owner.getOwner);
+router.get('/:id/:name', owner.getOwner);
 router.get('/:link', owner.getOwnerByCustomLink);
 
 module.exports = router;
