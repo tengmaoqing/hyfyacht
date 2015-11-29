@@ -171,7 +171,10 @@ exports.checkBooking = function(req, res, next) {
           }
 
           //Check number of persons
-          if(parseInt(bookingForm.numberOfPersons) > package.boats[boatIndex].capacity){
+          //if(parseInt(bookingForm.numberOfPersons) > package.boats[boatIndex].capacity){
+          //  return fail('product.booking.result.error.other');
+          //}
+          if(parseInt(bookingForm.numberOfPersons) > package.maxPersons){
             return fail('product.booking.result.error.other');
           }
 
@@ -414,7 +417,7 @@ exports.getBookingsByUserId = function(req, res, next){
   }, {
     page: page,
     limit: 10,
-    columns: 'bookingId boatId boatName productId productName packageName dateStart dateEnd total contact settlementCurrency status',
+    columns: 'bookingId boatId boatName productId productName packageName dateStart dateEnd total contact settlementCurrency status createDate',
     populate:[{
       path: 'productId',
       select: 'photo'
@@ -451,7 +454,7 @@ exports.getBookingsByOwnerId = function(req, res, next){
   }, {
     page: page,
     limit: 10,
-    columns: 'bookingId boatId boatName productId productName packageName dateStart dateEnd total contact settlementCurrency status',
+    columns: 'bookingId boatId boatName productId productName packageName dateStart dateEnd total contact settlementCurrency status createDate',
     populate:[{
       path: 'productId',
       select: 'photo'

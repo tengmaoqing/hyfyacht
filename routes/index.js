@@ -5,6 +5,30 @@ var index = require('../controllers/index');
 /* GET home page. */
 router.get('/', index.renderIndex);
 
+router.get('/about.html', function(req, res, next){
+  res.render('static', {page: 'about'});
+});
+
+router.get('/contact.html', function(req, res, next){
+  res.render('static', {page: 'contact'});
+});
+
+router.get('/terms.html', function(req, res, next){
+  res.render('static', {page: 'terms'});
+});
+
+router.get('/privacy.html', function(req, res, next){
+  res.render('static', {page: 'privacy'});
+});
+
+router.get('/disclaimer.html', function(req, res, next){
+  res.render('static', {page: 'disclaimer'});
+});
+
+router.get('/copyright.html', function(req, res, next){
+  res.render('static', {page: 'copyright'});
+});
+
 router.get('/signup', function(req, res, next){
   res.render('signup');
 });
@@ -25,8 +49,9 @@ router.post('/login', user.loginSubmit);
 
 var owner = require('../controllers/owner');
 
+router.get('/:link', owner.getOwnerByCustomLink);
+
 router.get('/:id', owner.getOwner);
 router.get('/:id/:name', owner.getOwner);
-router.get('/:link', owner.getOwnerByCustomLink);
 
 module.exports = router;

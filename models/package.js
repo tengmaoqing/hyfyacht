@@ -15,6 +15,7 @@ var PackageSchema = new Schema({
   baseCharge: Number,
   extraCharge: Number,
   basePersons: Number,
+  maxPersons: Number,
   items: [],
   boats: [{type: Schema.Types.ObjectId, ref: 'Boat'}]
 });

@@ -103,6 +103,14 @@ a, a:hover, a:active {
   text-align: left;
 }
 
+.static-article .text-center {
+  text-align: center;
+}
+
+.static-article .text-right {
+  text-align: right;
+}
+
 .static-article h2{
   font-size: 16px;
 }
@@ -117,6 +125,11 @@ a, a:hover, a:active {
 
 .static-article ul li, .static-article ol li {
   margin-bottom: 10px;
+}
+
+.static-article ul {
+  list-style: none;
+  padding-left: 2em;
 }
 
 .nav-pills > li.active > a,
@@ -629,4 +642,8 @@ dl.dl-horizontal dt {
 
 .fc-day-disable {
   background: #eee;
+}
+
+#cnzz_stat_icon_1256860309 {
+  display: none;
 }

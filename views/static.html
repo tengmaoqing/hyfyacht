@@ -1,0 +1,33 @@
+{% extends './layout.html' %}
+
+{% block content %}
+
+{% include './nav.html' %}
+
+{% if page == 'about' %}
+  {% include './static/about.html' %}
+{% endif %}
+
+{% if page == 'contact' %}
+  {% include './static/contact.html' %}
+{% endif %}
+
+{% if page == 'terms' %}
+  {% include './static/terms.html' %}
+{% endif %}
+
+{% if page == 'privacy' %}
+  {% include './static/privacy.html' %}
+{% endif %}
+
+{% if page == 'disclaimer' %}
+  {% include './static/disclaimer.html' %}
+{% endif %}
+
+{% if page == 'copyright' %}
+  {% include './static/copyright.html' %}
+{% endif %}
+
+{% include './footer.html' %}
+
+{% endblock %}

@@ -55,8 +55,8 @@
     </li>
   </ul>
   <div class="calendar-controller text-right">
-    <button id="btn-set-available" type="button" class="btn btn-primary">设置为可预定</button>
-    <button id="btn-set-unavailable" type="button" class="btn btn-danger">设置为不可预定</button>
+    <button id="btn-set-available" type="button" class="btn btn-primary" disabled>设置为可预定</button>
+    <button id="btn-set-unavailable" type="button" class="btn btn-danger" disabled>设置为不可预定</button>
   </div>
   <input id="data-selected-date-uid" name="uid" type="hidden">
   <input id="data-selected-date-start" name="dateStart" type="hidden">
@@ -130,7 +130,7 @@
 
 <script src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
 <script src="//cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.js"></script>
-<script src="//cdn.bootcss.com/fullcalendar/2.4.0/lang/zh-cn.js"></script>
+<script src="//cdn.bootcss.com/fullcalendar/2.4.0/lang/{% if preset.locale == 'zh-cn' %}zh-cn{% elseif preset.locale == 'zh-hk' %}zh-tw{% elseif preset.locale == 'en' %}en-gb{% endif %}.js"></script>
 <script>
 (function($, window){
   var selectedStart = false;
@@ -149,6 +149,8 @@
   }
 
   function clearSelectedTime(){
+    $("#calendar").fullCalendar("select", false, false);
+
     selectedStart = false;
     $("#data-selected-date-uid").val("");
     $("#data-selected-date-start").val("");
@@ -213,6 +215,8 @@
         if(calEvent.ownerDisabled){
           $("#data-selected-date-uid").val(calEvent.uid);
           setSelectedTime(calEvent.start, calEvent.end);
+          $("#btn-set-unavailable").prop("disabled", true);
+          $("#btn-set-available").prop("disabled", false);
         }
 
         if(calEvent.bookingId){
@@ -235,6 +239,14 @@
       if(view.name == "month"){
         return;
       }
+
+      if(start < moment()){
+        $("#hyf-modal-alert").CustomAlert("{{ __('calendar.invaild') }}");
+        return false;
+      }
+
+      $("#btn-set-unavailable").prop("disabled", false);
+      $("#btn-set-available").prop("disabled", true);
 
       if(!selectedStart){
         selectedStart = start;

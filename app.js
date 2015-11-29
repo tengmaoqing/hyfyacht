@@ -259,7 +259,7 @@ app.use('/sms', sms);
 app.use('/wx', wx);
 app.use('/', index);
 
-//check bookings, auto cancel booking if not pay after booking by 30m
+//check bookings, auto cancel booking if user do not pay after booking by 30m
 var job = new CronJob({
   cronTime: '0 0-59/5 * * * *',
   onTick: function(){

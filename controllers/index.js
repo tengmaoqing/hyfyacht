@@ -6,11 +6,12 @@ var Boat = require('../models/boat');
 exports.renderIndex = function(req, res, next){
   var slides = [
     'http://img.hgboating.com/base/index1.jpg',
-    'http://img.hgboating.com/base/index4.jpg',
-    'http://img.hgboating.com/base/index3.jpg'
+    'http://img.hgboating.com/base/index-r-01.jpg',
+    'http://img.hgboating.com/base/index-r-02.jpg',
+    'http://img.hgboating.com/base/index-r-03.jpg'
   ];
 
-  var ids = ['565066e00b02105ea0f3b8b4'];
+  var ids = ['565066e00b02105ea0f3b8b4', '565ac53fdee4d4c83bb11137', '565ac572dee4d4c83bb11138'];
 
 
   Boat.find({

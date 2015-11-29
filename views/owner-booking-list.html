@@ -20,7 +20,7 @@
       <div class="panel-heading">
         <div class="row">
           <div class="col-md-10 col-sm-10 col-xs-8">
-            <strong>{{ __('product.booking.result.bookingId') }}: {{ booking.bookingId }}</strong>
+            <strong>{{ __('product.booking.result.bookingDate') }}: {{ preset.getDateString(booking.createDate) }} {{ __('product.booking.result.bookingId') }}: {{ booking.bookingId }}</strong>
           </div>
           <div class="col-md-2 col-sm-2 col-xs-4 text-right">
             <a href="/owner/booking/detail/{{ booking.bookingId }}" class="btn btn-default btn-sm">{{ __('common.detail') }}</a>

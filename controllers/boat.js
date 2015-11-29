@@ -124,7 +124,7 @@ exports.getBoats = function(req, res, next){
     limit: 12,
     columns: '_id name type baseCharge currency location thumbnail',
     sortBy: {
-      _id: -1
+      _id: 1
     }
   },function(err, boats, pageCount, itemCount){
     if(err){
@@ -152,7 +152,9 @@ exports.getBoatsByOwnerId = function(req, res, next){
 
   Boat.find({
     owner: id
-  }).select('id name').exec(function(err, boats){
+  }).select('id name').sort({
+    _id: 1
+  }).exec(function(err, boats){
     if(err){
       err.status = 400;
       return next(err);

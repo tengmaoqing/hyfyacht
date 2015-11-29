@@ -7,7 +7,9 @@
       "about": "About",
       "contact": "Contact",
       "terms": "Terms",
-      "privacy": "Privacy"
+      "privacy": "Privacy",
+      "disclaimer": "Disclaimer",
+      "copyright": "Copyright"
     },
     "hotline": "Hotline",
     "copyright": "HG Boating"
@@ -189,7 +191,8 @@
         "amount": "Amount:",
         "modeOfPayment": "Mode of payment:",
         "bookingId": "Booking No.",
-        "status": "Status"
+        "status": "Status",
+        "bookingDate": "Booking Date"
       },
       "pay": {
         "success": "Pay success",
@@ -204,7 +207,8 @@
     "selectdate": "Month",
     "today": "Today",
     "select_date": "Please select the date",
-    "try_later": "Fail to set, Please try this later"
+    "try_later": "Fail to set, Please try this later",
+    "invaild": "Can not select this time"
   },
   "db": {
     "booking": {
@@ -228,7 +232,8 @@
         "yacht": "Yacht",
         "westyacht": "Western Yacht",
         "cnyacht": "Chinese Yacht",
-        "westspeedboat": "Speedboat"
+        "westspeedboat": "Speedboat",
+        "cnfishingboat": "Chinese Fishing Boat"
       },
       "base": {
         "ac": "Air Conditioning",

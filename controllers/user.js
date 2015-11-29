@@ -15,6 +15,7 @@ function hashPassword(password){
 
 function setSessionAndCookie(req, res, user){
   req.session.user = user;
+
   if(user.role && user.role == 'owner'){
     req.session.owner = user.relatedOwner;
   }else{

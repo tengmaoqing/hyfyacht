@@ -7,7 +7,9 @@
       "about": "关于我们",
       "contact": "联系我们",
       "terms": "服务条款",
-      "privacy": "隐私政策"
+      "privacy": "隐私政策",
+      "disclaimer": "免责声明",
+      "copyright": "知识产权声明"
      },
     "hotline": "服务热线",
     "copyright": "深圳市海云帆游艇发展有限公司"
@@ -189,7 +191,8 @@
         "amount": "金额:",
         "modeOfPayment": "付款方式:",
         "bookingId": "定单号",
-        "status": "定单状态"
+        "status": "定单状态",
+        "bookingDate": "下单时间"
       },
       "pay": {
         "success": "付款成功",
@@ -204,7 +207,8 @@
     "selectdate": "选择日期",
     "today": "今天",
     "select_date": "请选择时间",
-    "try_later": "设置失败,请稍候重试"
+    "try_later": "设置失败,请稍候重试",
+    "invaild": "此时间不可选"
   },
   "db": {
     "booking": {
@@ -228,7 +232,8 @@
         "yacht": "游艇",
         "westyacht": "西式游艇",
         "cnyacht": "中式游艇",
-        "westspeedboat": "西式快艇"
+        "westspeedboat": "西式快艇",
+        "cnfishingboat": "中式渔船"
       },
       "base": {
         "ac": "空调",

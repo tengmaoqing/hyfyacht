@@ -22,7 +22,7 @@
         <li class="active">{{ product.name }}</li>
       </ol>
       <div id="product-base" class="thumbnail">
-        <div class="boat-thumbnail boat-thumbnail-66" style="background-image: url({{ product.photo }})"></div>
+        <div class="boat-thumbnail" style="background-image: url({{ product.photo }})"></div>
         <div class="row caption">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
             <h3>{{ product.name }}</h3>
@@ -110,7 +110,7 @@
             </div>
           </div>
           <div id="product-booking-person" class="product-booking-container">
-            <p><strong>{{ __('product.booking.numberOfPeople') }} (1 - {{ boat.capacity }})</strong></p>
+            <p><strong>{{ __('product.booking.numberOfPeople') }} (1 - {% raw %}{{ packages[currPackage].maxPersons }}{% endraw %})</strong></p>
             <div class="alert alert-danger" data-ng-show="booking.numberOfPersons.$dirty && booking.numberOfPersons.$invalid">
               <ul class="list-layout">
                 <li data-ng-show="booking.numberOfPersons.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.required') }}</li>
@@ -118,7 +118,7 @@
                 <li data-ng-show="booking.numberOfPersons.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.invaild') }}</li>
               </ul>
             </div>
-            <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" min="1" max="{{ boat.capacity }}" required>
+            <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" min="1" max="{% raw %}{{ packages[currPackage].maxPersons }}{% endraw %}" required>
           </div>
           <div id="product-booking-items" class="product-booking-container" data-ng-if="currPackage > -1">
             <p><strong>{{ __('product.booking.package.items') }}</strong></p>
