@@ -6,7 +6,7 @@ var Boat = require('../models/boat');
 var Booking = require('../models/booking');
 
 exports.getOwnerByCustomLink = function(req, res, next) {
-  Owner.findOne({customLink:req.params.link}).select('nickname location description boats').populate('boats', 'id name type baseCharge currency location photos').exec(function(err, owner){
+  Owner.findOne({customLink:req.params.link}).select('nickname location description boats').populate('boats', 'id name type baseCharge currency location thumbnail').exec(function(err, owner){
     if(err){
       err.status = 400;
       return next(err);
@@ -23,7 +23,7 @@ exports.getOwnerByCustomLink = function(req, res, next) {
 };
 
 exports.getOwner = function(req, res, next) {
-  Owner.findOne({_id:req.params.id}).select('nickname location description boats').populate('boats', 'id name type baseCharge currency location photos').exec(function(err, owner){
+  Owner.findOne({_id:req.params.id}).select('nickname location description boats').populate('boats', 'id name type baseCharge currency location thumbnail').exec(function(err, owner){
     if(err){
       err.status = 400;
       return next(err);

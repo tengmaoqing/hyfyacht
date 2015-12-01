@@ -49,7 +49,8 @@
     },
     "owner": "Owner",
     "back_to_top": "Back to top",
-    "detail": "Detail"
+    "detail": "Detail",
+    "holiday": "Holiday"
   },
   "error": {
     "login": {

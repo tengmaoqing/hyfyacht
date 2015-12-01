@@ -100,16 +100,15 @@ var preset = {};
 app.use(function(req, res, next){
   var ua = req.headers['user-agent'];
 
-  var mobile = /mobile/ig.test(ua);
+  var mobile = /mobile/i.test(ua);
 
-  var wechat = ua.match(/micromessenger\/\d+\.\d+/ig);
-  var version = '';
+  var wechat = ua.match(/micromessenger\/\d+\.\d+/i);
+  var version = false;
 
   if(wechat) {
-    req.isFromWechat = true;
-
     version = String(wechat).split('/');
     version = parseInt(version[1].split('.')[0]);
+    req.isFromWechat = version >= 5 ? true : false;
   }
 
   util._extend(preset,{
@@ -274,7 +273,7 @@ var job = new CronJob({
       $push:{
         statusLogs: {
           status: 'db.booking.cancel',
-          description: 'Auto Cancel',
+          description: 'auto_cancel',
           updateDate: new Date()
         }
       }

@@ -49,7 +49,8 @@
     },
     "owner": "船东",
     "back_to_top": "返回顶部",
-    "detail": "详情"
+    "detail": "详情",
+    "holiday": "节日"
   },
   "error": {
     "login": {

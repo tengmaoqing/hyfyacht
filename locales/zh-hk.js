@@ -49,7 +49,8 @@
     },
     "owner": "船東",
     "back_to_top": "返回最頂",
-    "detail": "詳情"
+    "detail": "詳情",
+    "holiday": "假期"
   },
   "error": {
     "login": {

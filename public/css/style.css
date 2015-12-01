@@ -644,6 +644,12 @@ dl.dl-horizontal dt {
   background: #eee;
 }
 
+td.fc-bgevent {
+  opacity: .4;
+  filter: alpha(opacity=40);
+  color: #fff;
+}
+
 #cnzz_stat_icon_1256860309 {
   display: none;
 }

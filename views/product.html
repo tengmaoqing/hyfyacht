@@ -449,13 +449,16 @@
       $("#calendar").fullCalendar("gotoDate", cellInfo.date);
       $("#calendar").fullCalendar("changeView", "agendaDay");
     },
-//    allDayText: "节日",
+//    allDayText: "{{ __('common.holiday') }}",
     allDaySlot: false,
     minTime: "{{ product.workingHours.start }}",
     maxTime: "{{ product.workingHours.end }}",
     slotDuration: "01:00:00",
     slotLabelFormat: "HH:00",
     selectable: true,
+    selectOverlap: function(event){
+      return event.rendering === "background";
+    },
     unselectAuto: false,
     viewRender: function(view, element){
       if(view.name == "month"){
@@ -527,6 +530,16 @@
         }
       }
     },
+//    events:[
+//      {
+//        title: "节日",
+//        allDay: true,
+//        start: "2015-12-01",
+//        end: "2015-12-01",
+//        rendering: "background",
+//        color: "#f00"
+//      }
+//    ],
     eventSources:[
       {
         url: "/booking/cal/{{ boat.id }}",
@@ -538,6 +551,9 @@
       }
     ],
     eventRender: function(event, element){
+      if(event.rendering === "background"){
+        element.append(event.title);
+      }
       $(element).find(".fc-time").text(moment(event.start).format("HH:mm") + "-" + moment(event.end).format("HH:mm"));
     }
   });

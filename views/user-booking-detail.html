@@ -1,4 +1,5 @@
 {% import './macros/booking.html' as bookingView %}
+{% import './macros/payment.html' as payment %}
 
 {% extends './layout.html' %}
 
@@ -16,27 +17,10 @@
     <h1>{{ __('user.booking_detail') }}</h1>
   </div>
   {% if booking.status == 'db.booking.wait_to_pay' %}
-  <form name="alipay_direct" action="/pay/alipay" method="post" target="_blank">
-    <input type="hidden" name="_csrf" value="{{ _csrf }}">
-    <input type="hidden" name="WIDout_trade_no" value="{{ booking.bookingId }}">
-    <input type="hidden" name="WIDsubject" value="{{ booking.boatName }}-{{ booking.productName }}-{{ booking.packageName }}">
-    <input type="hidden" name="WIDtotal_fee" value="{{ (booking.total / 100).toFixed(2) }}">
-    <input type="hidden" name="WIDbody" value="{{ booking.boatName }}-{{ booking.productName }}-{{ booking.packageName }}">
-    <input type="hidden" name="WIDshow_url" value="http://test.hgboating.com/product/{{ booking.productId.valueOf() }}/{{ booking.productName }}/{{ booking.boatId.valueOf() }}/{{ booking.boatName }}">
-  </form>
   <h4>{{ __('product.booking.result.amount') }} {% if booking.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ (booking.total / 100).toFixed(2) }}</h4>
   <p>{{ __('product.booking.result.modeOfPayment') }}</p>
   <p>
-  <form id="payment-selection">
-    <label class="btn btn-default">
-      <input name="payway" type="radio" value="alipay_direct" autocomplete="off" checked> 支付宝
-    </label>
-  {% if false %}
-    <label class="btn btn-default">
-      <input name="payway" type="radio" autocomplete="off"> 微信支付
-    </label>
-  {% endif %}
-  </form>
+    {{ payment.createForm(booking) }}
   </p>
   <div class="row">
     <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
@@ -52,8 +36,8 @@
 
 {% endblock %}
 
-{% if booking.status == 'db.booking.wait_to_pay' %}
 {% block foot %}
+{% if booking.status == 'db.booking.wait_to_pay' %}
 <script>
   $("#btn-pay").click(function(){
     var paymentType = $("input[name=payway]:checked", "#payment-selection").val();
@@ -61,5 +45,5 @@
     $("form[name=" + paymentType + "]").submit();
   });
 </script>
-{% endblock %}
 {% endif %}
+{% endblock %}

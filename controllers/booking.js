@@ -8,6 +8,7 @@ var config = require('../config');
 var util = require('util');
 var i18n = require('i18n');
 var moment = require('moment');
+var wechatCore = require('../lib/wechat/wechat-core');
 
 exports.checkBooking = function(req, res, next) {
   if (!req.session.bookingForm) {
@@ -330,7 +331,14 @@ exports.checkBooking = function(req, res, next) {
                           req.session.bookingForm = null;
 
                           if (savedBooing) {
-                            return res.render('booking-result', {booking: savedBooing});
+                            if(req.isFromWechat){
+                              wechatCore.unifiedorder(req, savedBooing, function(result){
+                                console.log(result);
+                                return res.render('booking-result', {booking: savedBooing});
+                              });
+                            }else {
+                              return res.render('booking-result', {booking: savedBooing});
+                            }
                           } else {
                             return res.render('booking-result', {error: 'product.booking.result.error.other'});
                           }

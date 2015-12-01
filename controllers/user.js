@@ -16,6 +16,10 @@ function hashPassword(password){
 function setSessionAndCookie(req, res, user){
   req.session.user = user;
 
+  if(user.wechatOpenId){
+    req.session.wechat = user.wechatOpenId;
+  }
+
   if(user.role && user.role == 'owner'){
     req.session.owner = user.relatedOwner;
   }else{
@@ -125,11 +129,11 @@ exports.login = function(req, res, next){
       wechatCore.getAccessToken(code, function(data){
         if(data){
           wechatCore.checkAccessTokenAndRefresh(data, function(wechat){
-            req.session.wechat = wechat;
+            req.session.wechat = wechat.openid;
             req.session.wechatCreateTime = new Date();
             wechatCore.getUserInfo(wechat.access_token, wechat.openid, function(wechat_user){
               var wechat_user = JSON.parse(wechat_user);
-              console.log(wechat_user);
+
               var user = new User({
                 nickname: wechat_user.nickname,
                 wechatOpenId: wechat.openid,
@@ -237,7 +241,7 @@ exports.autoLogin = function(req, res, next){
   if(uid){
     User.findOne({
       _id: uid
-    }).select('nickname role relatedOwner').populate('relatedOwner', 'id').exec(function(err, user){
+    }).select('nickname role relatedOwner wechatOpenId').populate('relatedOwner', 'id').exec(function(err, user){
       if (!err && user) {
         setSessionAndCookie(req, res, user);
       }
@@ -257,9 +261,8 @@ exports.autoLogin = function(req, res, next){
             return next();
           }
 
-          req.session.wechat = wechat;
+          req.session.wechat = wechat.openid;
           req.session.wechatCreateTime = new Date();
-          console.log(wechat.openid);
 
           User.findOne({
             wechatOpenId: wechat.openid
