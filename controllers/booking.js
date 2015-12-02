@@ -9,6 +9,8 @@ var util = require('util');
 var i18n = require('i18n');
 var moment = require('moment');
 var wechatCore = require('../lib/wechat/wechat-core');
+var parseXML2String = require('xml2js').parseString;
+var tools = require('../lib/tools');
 
 exports.checkBooking = function(req, res, next) {
   if (!req.session.bookingForm) {
@@ -333,8 +335,19 @@ exports.checkBooking = function(req, res, next) {
                           if (savedBooing) {
                             if(req.isFromWechat){
                               wechatCore.unifiedorder(req, savedBooing, function(result){
-                                console.log(result);
-                                return res.render('booking-result', {booking: savedBooing});
+                                parseXML2String(result, function(err, wpResult){
+                                  if(!err) {
+                                    wpResult = tools.ripXMLCDATA(wpResult.xml);
+                                    if(wechatCore.verifySign(wpResult)){
+                                      if(wpResult.return_code == 'SUCCESS' && wpResult.result_code == 'SUCCESS'){
+                                        var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
+
+                                        return res.render('booking-result', {booking: savedBooing, wpParams: wpParams});
+                                      }
+                                    }
+                                    return res.render('booking-result', {booking: savedBooing});
+                                  }
+                                });
                               });
                             }else {
                               return res.render('booking-result', {booking: savedBooing});

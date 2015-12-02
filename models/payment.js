@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
 
 var PaymentSchema = new Schema({
   bookingId: String,
+  product: String,
   type: String,
   tradeNo: String,
   status: String,

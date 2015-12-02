@@ -211,7 +211,7 @@ exports.loginSubmit = function(req, res, next){
 
   User.findOne({
     mobile: mobile
-  }).select('nickname hashedPassword role relatedOwner').populate('relatedOwner', 'id').exec(function(err, user){
+  }).select('nickname hashedPassword role relatedOwner wechatOpenId').populate('relatedOwner', 'id').exec(function(err, user){
     if(err){
       err.status = 400;
       return next(err);
@@ -266,7 +266,7 @@ exports.autoLogin = function(req, res, next){
 
           User.findOne({
             wechatOpenId: wechat.openid
-          }).select('nickname role relatedOwner').populate('relatedOwner', 'id').exec(function(err, user){
+          }).select('nickname role relatedOwner wechatOpenId').populate('relatedOwner', 'id').exec(function(err, user){
             if (!err && user) {
               setSessionAndCookie(req, res, user);
             }

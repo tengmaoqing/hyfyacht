@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
 var mongoStore = require('connect-mongo')(expressSession);
 var bodyParser = require('body-parser');
+var xmlParser = require('express-xml-bodyparser');
 var mongoose = require('mongoose');
 var csurf = require('csurf');
 var expressValidator = require('express-validator');
@@ -29,7 +30,6 @@ var owner = require('./routes/owner');
 var pay = require('./routes/pay');
 var notify = require('./routes/notify');
 var sms = require('./routes/sms');
-var wx = require('./routes/wx');
 
 var userController = require('./controllers/user');
 
@@ -75,6 +75,7 @@ app.use(bodyParser.urlencoded({
   },
   extended: false
 }));
+app.use(xmlParser());
 app.use(expressValidator());
 app.use(cookieParser(config.cookieSecret));
 
@@ -255,7 +256,6 @@ app.use('/user', user);
 app.use('/owner', owner);
 app.use('/pay', pay);
 app.use('/sms', sms);
-app.use('/wx', wx);
 app.use('/', index);
 
 //check bookings, auto cancel booking if user do not pay after booking by 30m
