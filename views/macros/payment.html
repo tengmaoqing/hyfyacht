@@ -13,7 +13,7 @@
   <form id="payment-selection">
     {% if !preset.ua.mobile %}
     <label class="btn btn-default">
-      <input name="payway" type="radio" value="alipay_direct" autocomplete="off"> 支付宝
+      <input name="payway" type="radio" value="alipay_direct" autocomplete="off"> {{ __('common.alipay') }}
     </label>
     {% endif %}
   </form>

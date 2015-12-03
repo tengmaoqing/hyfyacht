@@ -67,6 +67,8 @@ BookingSchema.pre('save', function(next){
       booking.bookingId = prefix + counter.seq;
       next();
     });
+  }else{
+    next();
   }
 });
 

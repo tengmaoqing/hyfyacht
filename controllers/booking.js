@@ -396,7 +396,25 @@ exports.getBookingByBookingId = function(req, res, next){
         err.status = 404;
         return next(err);
       } else {
-        return res.render('user-booking-detail', {booking: booking});
+        if(req.isFromWechat && booking.status == 'db.booking.wait_to_pay'){
+          wechatCore.unifiedorder(req, booking, function(result){
+            parseXML2String(result, function(err, wpResult){
+              if(!err) {
+                wpResult = tools.ripXMLCDATA(wpResult.xml);
+                if(wechatCore.verifySign(wpResult)){
+                  if(wpResult.return_code == 'SUCCESS' && wpResult.result_code == 'SUCCESS'){
+                    var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
+
+                    return res.render('user-booking-detail', {booking: booking, wpParams: wpParams});
+                  }
+                }
+                return res.render('user-booking-detail', {booking: booking});
+              }
+            });
+          });
+        }else {
+          return res.render('user-booking-detail', {booking: booking});
+        }
       }
     }
   });

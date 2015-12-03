@@ -33,6 +33,8 @@
     "submit": "Submit",
     "cancel": "Cancel",
     "pay": "Pay",
+    "wechat_pay": "Wechat Pay",
+    "alipay": "Alipay",
     "search": "Search",
     "unlimited": "All",
     "all": "All",

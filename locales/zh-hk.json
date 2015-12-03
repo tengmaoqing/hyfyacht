@@ -33,6 +33,8 @@
     "submit": "提交",
     "cancel": "取消",
     "pay": "付款",
+    "wechat_pay": "微信支付",
+    "alipay": "支付寶",
     "search": "搜索",
     "unlimited": "不限",
     "all": "全部",
