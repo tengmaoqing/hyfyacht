@@ -62,7 +62,7 @@ i18n.configure({
   cookie: 'client_locale',
   directory: path.join(__dirname, 'locales'),
   updateFiles: false,
-  extension: '.js',
+  extension: '.json',
   objectNotation: true
 });
 
