@@ -14,7 +14,8 @@ exports.getProduct = function(req, res, next){
     path: 'packages',
     select: 'id name summary currency baseCharge basePersons maxPersons extraCharge items availableMonths availableDays description chargeInclude chargeExclude attention',
     match: {
-      boats: boatId
+      boats: boatId,
+      inStock: true
     }
   }).exec(function(err, product){
     if(err){

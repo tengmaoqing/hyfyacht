@@ -35,6 +35,9 @@
     "pay": "付款",
     "wechat_pay": "微信支付",
     "alipay": "支付寶",
+    "pay_success": "已完成付款",
+    "pay_fail": "付款遇到問題",
+    "choose_pay_mode": "請選擇付款方式",
     "search": "搜索",
     "unlimited": "不限",
     "all": "全部",
@@ -227,7 +230,8 @@
       "pier": {
         "saikung": "西貢",
         "szw": "深圳灣",
-        "nanao": "南澳"
+        "nanao": "南澳",
+        "nanaoxiexiacun": "南澳斜吓村碼頭"
       }
     },
     "boat": {

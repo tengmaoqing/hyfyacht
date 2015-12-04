@@ -17,7 +17,8 @@ var PackageSchema = new Schema({
   basePersons: Number,
   maxPersons: Number,
   items: [],
-  boats: [{type: Schema.Types.ObjectId, ref: 'Boat'}]
+  boats: [{type: Schema.Types.ObjectId, ref: 'Boat'}],
+  inStock: Boolean
 });
 
 var Package = mongoose.model('Package', PackageSchema);

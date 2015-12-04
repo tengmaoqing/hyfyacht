@@ -35,6 +35,9 @@
     "pay": "Pay",
     "wechat_pay": "Wechat Pay",
     "alipay": "Alipay",
+    "pay_success": "Pay Success",
+    "pay_fail": "Pay Fail",
+    "choose_pay_mode": "Please choose pay mode",
     "search": "Search",
     "unlimited": "All",
     "all": "All",
@@ -227,7 +230,8 @@
       "pier": {
         "saikung": "Sai Kung",
         "szw": "Shenzhen Bay",
-        "nanao": "Nan Ao"
+        "nanao": "Nanao",
+        "nanaoxiexiacun": "Nanao Xiexia Village Pier"
       }
     },
     "boat": {

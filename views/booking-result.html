@@ -36,13 +36,14 @@
   </p>
   <div class="row">
     <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
-      <button id="btn-pay" type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#booking-confirm-modal">{{ __('common.pay') }}</button>
+      <button id="btn-pay" type="button" class="btn btn-danger btn-block">{{ __('common.pay') }}</button>
     </div>
   </div>
   {% else %}
   <div class="row">
     <div class="col-xs-offset-1 col-xs-10">
-      <button id="btn-wppay" type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#booking-confirm-modal">{{ __('common.wechat_pay') }}</button>
+      <a id="detail-link" href="/user/booking/detail/{{ booking.bookingId }}" class="invisible">booking</a>
+      <button id="btn-wppay" type="button" class="btn btn-success btn-block">{{ __('common.wechat_pay') }}</button>
     </div>
   </div>
   {% endif %}
@@ -50,7 +51,23 @@
   {{ bookingView.detail(booking) }}
   {% endif %}
 </div>
-
+<div id="hyf-modal-alipay" class="modal fade">
+  <div class="modal-table">
+    <div class="modal-table-cell">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">{{ __('site.title') }}</h4>
+          </div>
+          <div class="modal-body">
+            <a id="btn-pay-completed" type="button" class="btn btn-primary btn-block" href="/user/booking/detail/{{ booking.bookingId }}">{{ __('common.pay_success') }}</a><br>
+            <a id="btn-pay-notcompleted" type="button" class="btn btn-danger btn-block" href="https://help.alipay.com/hall/index.htm">{{ __('common.pay_fail') }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% include './footer.html' %}
 
 {% endblock %}
@@ -61,14 +78,8 @@
 
   function onBridgeReady(){
     WeixinJSBridge.invoke('getBrandWCPayRequest', {{ wpParams|json|safe }}, function(res){
-
-      for(var key in res){
-        if(res.hasOwnProperty(key)){
-          alert(res[key]);
-        }
-      }
-      if(res.err_msg == "get_brand_wcpay_request：ok" ) {
-
+      if(res.err_msg == "get_brand_wcpay_request:ok") {
+        document.getElementById("detail-link").click();
       }
     });
   }
@@ -88,10 +99,14 @@
 </script>
 {% endif %}
 <script>
-  $("#btn-pay").click(function(){
+  $("#btn-pay").click(function() {
     var paymentType = $("input[name=payway]:checked", "#payment-selection").val();
-
-    $("form[name=" + paymentType + "]").submit();
+    if (paymentType) {
+      $("form[name=" + paymentType + "]").submit();
+      $("#hyf-modal-alipay").modal();
+    }else{
+      $("#hyf-modal-alert").CustomAlert("{{ __('common.choose_pay_mode') }}");
+    }
   });
 </script>
 {% endblock %}

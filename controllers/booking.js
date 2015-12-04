@@ -76,7 +76,7 @@ exports.checkBooking = function(req, res, next) {
   } else {
     var bookingForm = req.session.bookingForm;
 
-    Package.findOne({_id: bookingForm.packageId}).populate('owner', 'nickname').populate('product', 'name workingHours').populate('boats', 'name capacity location').exec(function(err, package){
+    Package.findOne({_id: bookingForm.packageId, inStock: true}).populate('owner', 'nickname').populate('product', 'name workingHours').populate('boats', 'name capacity location').exec(function(err, package){
       if(err){
         err.status = 400;
         return next(err);
