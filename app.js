@@ -17,6 +17,8 @@ var moment = require('moment');
 var CronJob = require('cron').CronJob;
 var Booking = require('./models/booking');
 
+//wechat
+var wechatCore = require('./lib/wechat/wechat-core');
 //config
 var config = require('./config');
 
@@ -54,6 +56,8 @@ app.set('view cache', false);
 swig.setDefaults({
   cache: false
 });
+
+wechatCore.getAppAccessToken();
 
 //i18n init
 i18n.configure({
