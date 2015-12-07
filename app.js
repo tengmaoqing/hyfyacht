@@ -57,7 +57,7 @@ swig.setDefaults({
   cache: false
 });
 
-wechatCore.getAppAccessToken();
+//wechatCore.getAppAccessToken();
 
 //i18n init
 i18n.configure({

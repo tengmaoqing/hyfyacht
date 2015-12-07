@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container" data-ng-app="login" data-ng-controller="loginController">
   <div class="row">
     <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
       <div class="page-header text-center">
@@ -11,7 +11,7 @@
       {% if error %}
       <div class="alert alert-danger text-center"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __(error) }}</div>
       {% endif %}
-      <form class="form-horizontal" method="POST">
+      <form name="login" class="form-horizontal" method="POST" novalidate>
         <input type="hidden" name="_csrf" value="{{ _csrf }}">
         <div class="form-group">
           <label class="col-sm-4 col-xs-12 control-label">{{ __('common.mobile') }}</label>
@@ -26,18 +26,30 @@
             </div>
           </div>
           <div class="col-sm-6 col-xs-8">
-            <input id="input_mobile" type="number" class="form-control" name="mobile">
+            <input id="input_mobile" type="number" class="form-control" name="mobile" maxlength="11" data-ng-model="mobile" required>
+          </div>
+          <div class="text-danger col-sm-8 col-sm-offset-4 col-xs-12" data-ng-show="login.mobile.$dirty && login.mobile.$invalid">
+            <ul class="list-layout">
+              <li data-ng-show="login.mobile.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.input_mobile') }}</li>
+              <li data-ng-show="login.mobile.$error.maxlength"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.maxlength') }}</li>
+              <li data-ng-show="login.mobile.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.invaild') }}</li>
+            </ul>
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-4 control-label">{{ __('common.password') }}</label>
           <div class="col-sm-8">
-            <input type="password" class="form-control" name="password">
+            <input type="password" class="form-control" name="password" data-ng-model="password" required>
+          </div>
+          <div class="text-danger col-sm-8 col-sm-offset-4 col-xs-12" data-ng-show="login.password.$dirty && login.password.$invalid">
+            <ul class="list-layout">
+              <li data-ng-show="login.password.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.input_password') }}</li>
+            </ul>
           </div>
         </div>
         <div class="form-group">
           <div class="col-lg-6 col-lg-offset-4 col-md-6 col-md-offset-4 col-sm-6 col-sm-offset-4">
-            <button type="submit" class="btn btn-danger btn-block">{{ __('common.login') }}</button>
+            <button type="submit" class="btn btn-danger btn-block" data-ng-click="submit()">{{ __('common.login') }}</button>
           </div>
         </div>
       </form>
@@ -54,4 +66,19 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block foot %}
+<script src="//cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
+<script>
+  (function(angular){
+    var app = angular.module("login", []);
+
+    app.controller("loginController", function($scope){
+      $scope.submit = function(){
+        document.forms[0].submit();
+      };
+    });
+  })(angular);
+</script>
 {% endblock %}

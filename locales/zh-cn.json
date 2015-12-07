@@ -65,7 +65,12 @@
       "sms": "短信验证码错误。",
       "sms_expired": "验证码已经失效。",
       "registered": "此手机号码已经注册。",
-      "input_mobile": "请输入手机号码。"
+      "input_mobile": "请输入手机号码。",
+      "input_password": "请输入密码。",
+      "password_len": "请输入 6 至 30 位密码。",
+      "confirm_password": "两次密码输入必须相同。",
+      "input_code": "请输入验证码。",
+      "code_len": "验证码为 4 位。"
     }
   },
   "nav": {

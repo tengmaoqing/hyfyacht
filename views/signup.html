@@ -2,16 +2,16 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container" data-ng-app="signup" data-ng-controller="signupController">
   <div class="row">
     <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
       <div class="page-header text-center">
         <h1>{{ __('common.signup') }}</h1>
       </div>
       {% if error %}
-      <div class="alert alert-danger text-center"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __(error) }}</div>
+      <div class="alert alert-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __(error) }}</div>
       {% endif %}
-      <form class="form-horizontal" method="POST">
+      <form name="signup" class="form-horizontal" method="POST" novalidate>
         <input type="hidden" name="_csrf" value="{{ _csrf }}">
         <div class="form-group">
           <label class="col-sm-4 col-xs-12 control-label">{{ __('common.mobile') }}</label>
@@ -26,40 +26,65 @@
             </div>
           </div>
           <div class="col-sm-6 col-xs-8">
-            <input id="input_mobile" type="number" class="form-control" name="mobile">
+            <input id="input_mobile" type="number" class="form-control" name="mobile" data-ng-model="mobile" maxlength="11" required>
+          </div>
+          <div class="text-danger col-sm-8 col-sm-offset-4 col-xs-12" data-ng-show="signup.mobile.$dirty && signup.mobile.$invalid">
+            <ul class="list-layout">
+              <li data-ng-show="signup.mobile.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.input_mobile') }}</li>
+              <li data-ng-show="signup.mobile.$error.maxlength"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.maxlength') }}</li>
+              <li data-ng-show="signup.mobile.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.invaild') }}</li>
+            </ul>
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-4 control-label">{{ __('common.password') }}</label>
           <div class="col-sm-8">
-            <input type="password" class="form-control" name="password">
+            <input type="password" class="form-control" name="password" data-ng-model="password" pattern=".{6,30}" required>
+          </div>
+          <div class="text-danger col-sm-8 col-sm-offset-4 col-xs-12" data-ng-show="signup.password.$dirty && signup.password.$invalid">
+            <ul class="list-layout">
+              <li data-ng-show="signup.password.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.input_password') }}</li>
+              <li data-ng-show="signup.password.$error.pattern"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.password_len') }}</li>
+            </ul>
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-4 control-label">{{ __('common.confirmPassword') }}</label>
           <div class="col-sm-8">
-            <input type="password" class="form-control" name="confirmPassword">
+            <input type="password" class="form-control" name="confirmPassword" data-ng-model="confirmPassword" data-compare-to="password" required>
+          </div>
+          <div class="text-danger col-sm-8 col-sm-offset-4 col-xs-12" data-ng-show="signup.confirmPassword.$dirty && signup.confirmPassword.$invalid">
+            <ul class="list-layout">
+              <li><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.confirm_password') }}</li>
+            </ul>
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-4 col-xs-12 control-label">{{ __('common.smscode') }}</label>
           <div class="col-sm-4 col-xs-4">
-            <input type="number" class="form-control" name="code">
+            <input type="number" class="form-control" name="code" data-ng-model="code" pattern=".{4,4}" required>
           </div>
           <div class="col-sm-4 col-xs-8">
             <button id="btn-getsmscode" type="button" class="btn btn-primary btn-block">{{ __('common.getsmscode') }}</button>
+          </div>
+          <div class="text-danger col-sm-8 col-sm-offset-4 col-xs-12" data-ng-show="signup.code.$dirty && signup.code.$invalid">
+            <ul class="list-layout">
+              <li data-ng-show="signup.code.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.input_code') }}</li>
+              <li data-ng-show="signup.code.$error.pattern"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.code_len') }}</li>
+              <li data-ng-show="signup.code.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.sms') }}</li>
+            </ul>
           </div>
         </div>
         <div class="form-group">
           <div class="col-sm-8 col-sm-offset-4 col-xs-12">
             <div class="alert alert-warning">
-              <label><input name="payway" type="checkbox" autocomplete="off"> {{ __('common.readandagree') }}</label> <a href="#" target="_blank">{{ __('common.termsandprivacy') }}</a>
+              <label><input name="payway" type="checkbox" autocomplete="off" data-ng-model="agree"> {{ __('common.readandagree') }}</label> <a href="#" target="_blank">{{ __('common.termsandprivacy') }}</a>
             </div>
           </div>
         </div>
         <div class="form-group">
           <div class="col-lg-6 col-lg-offset-4 col-md-6 col-md-offset-4 col-sm-6 col-sm-offset-4">
-            <button type="submit" class="btn btn-danger btn-block">{{ __('common.signup') }}</button>
+            <button type="submit" class="btn btn-danger btn-block" data-ng-disabled="!agree || signup.$invalid" data-ng-click="submit()">{{ __('common.signup') }}</button>
           </div>
         </div>
       </form>
@@ -72,7 +97,7 @@
 {% block foot %}
 <script src="//cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
 <script>
-  (function ($) {
+  (function ($, angular) {
     var second = 60;
 
     function countDown() {
@@ -106,6 +131,35 @@
         countDown();
       });
     });
-  })(jQuery);
+
+    var app = angular.module("signup", []);
+
+    app.controller("signupController", function($scope){
+      $scope.submit = function(){
+        document.forms[0].submit();
+      };
+    });
+
+     var compareTo = function() {
+       return {
+         require: "ngModel",
+         scope: {
+           otherModelValue: "=compareTo"
+         },
+         link: function(scope, element, attributes, ngModel){
+           ngModel.$validators.compareTo = function(modelValue){
+             return modelValue == scope.otherModelValue;
+           };
+
+           scope.$watch("otherModelValue", function(){
+             ngModel.$validate();
+           });
+         }
+       };
+     };
+
+    app.directive("compareTo", compareTo);
+
+  })(jQuery, angular);
 </script>
 {% endblock %}

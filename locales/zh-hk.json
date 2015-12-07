@@ -65,7 +65,12 @@
       "sms": "SMS 驗證碼錯誤。",
       "sms_expired": "SMS 驗證碼已經失效。",
       "registered": "此手提電話已經註冊。",
-      "input_mobile": "請輸入手提電話。"
+      "input_mobile": "請輸入手提電話。",
+      "input_password": "請輸入密碼。",
+      "password_len": "請輸入 6 至 30 位密碼。",
+      "confirm_password": "兩次密碼輸入必須相同。",
+      "input_code": "請輸入SMS 驗證碼。",
+      "code_len": "SMS 驗證碼為 4 位。"
     }
   },
   "nav": {

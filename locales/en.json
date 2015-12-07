@@ -65,7 +65,12 @@
       "sms": "Invalid SMS Code.",
       "sms_expired": "SMS Code had expired.",
       "registered": "This mobile no. has been registered.",
-      "input_mobile": "Please input your Mobile No."
+      "input_mobile": "Please input your Mobile No.",
+      "input_password": "Please input password.",
+      "password_len": "Password require length 6 to 30.",
+      "confirm_password": "Passwords should be same.",
+      "input_code": "Please input SMS Code.",
+      "code_len": "SMS Code require length 4."
     }
   },
   "nav": {
