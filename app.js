@@ -15,6 +15,7 @@ var i18n = require('i18n');
 var swig = require('swig');
 var moment = require('moment');
 var CronJob = require('cron').CronJob;
+var cache = require('memory-cache');
 var Booking = require('./models/booking');
 
 //wechat
@@ -57,8 +58,8 @@ swig.setDefaults({
   cache: false
 });
 
-//wechatCore.getAppAccessToken();
-
+wechatCore.getAppAccessToken();
+//cache.put('wechatAccessToken', 'raW3m2xeOxvHUdPH1NlrPWLIVZjmMSOXy9bqGSFbdOXrrzpB_52_vVux_usUcHiGGiQbeGLn9OYFm4HgutfNYkHDNCopZIfIRv3r9VJKZFYHDChAEAXTS');
 //i18n init
 i18n.configure({
   locales: ['en', 'zh-cn', 'zh-hk'],

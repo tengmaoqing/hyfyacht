@@ -39,8 +39,9 @@ router.get('/getcode', function(req, res, next){
     req.session.smsCode = code;
     req.session.smsMobile = mobile;
     //console.log(code);
+    var message = '感谢您注册海龟租船,以下是您的验证码:' + code;
 
-    sms.sendSMS(mobile, code);
+    sms.sendSMS(mobile, message);
 
     return res.json({code: 1});
   }else {

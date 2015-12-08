@@ -3,6 +3,7 @@
  */
 var Boat = require('../models/boat');
 var wechatCore = require('../lib/wechat/wechat-core');
+var message = require('../lib/message');
 
 exports.renderIndex = function(req, res, next){
   var slides = [
@@ -26,5 +27,6 @@ exports.renderIndex = function(req, res, next){
     }
   });
 
-  wechatCore.sendMessage('tets');
+  //message.sendPaySuccessMessage('boat', '14495495571');
+
 };

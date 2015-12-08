@@ -14,6 +14,7 @@ var OwnerSchema = new Schema({
   customLink: String,
   nickname: String,
   email: String,
+  wechatOpenId: String,
   currency: String,
   location: {
     country: String,
