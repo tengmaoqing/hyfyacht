@@ -327,14 +327,14 @@
     </div>
     <div class="navbar-fixed-bottom fix-container">
       <div class="container text-center">
-          <ul id="product-nav" class="nav nav-pills">
-            <li role="presentation" class="hidden-xs"><a href="#product-base">{{ __('product.section.info') }}</a></li>
-            <li role="presentation"><a href="#product-booking">{{ __('product.section.booking') }}</a></li>
-            <li role="presentation"><a href="#product-detail">{{ __('product.section.desc') }}</a></li>
-            <li role="presentation" class="hidden-xs"><a href="#product-include">{{ __('product.section.include') }}</a></li>
-            <li role="presentation" class="hidden-xs"><a href="#product-exclude">{{ __('product.section.exclude') }}</a></li>
-            <li role="presentation"><a href="#product-notice">{{ __('product.section.notice') }}</a></li>
-          </ul>
+        <ul id="product-nav" class="nav nav-pills">
+          <li role="presentation" class="hidden-xs"><a href="#product-base">{{ __('product.section.info') }}</a></li>
+          <li role="presentation"><a href="#product-booking">{{ __('product.section.booking') }}</a></li>
+          <li role="presentation"><a href="#product-detail">{{ __('product.section.desc') }}</a></li>
+          <li role="presentation" class="hidden-xs"><a href="#product-include">{{ __('product.section.include') }}</a></li>
+          <li role="presentation" class="hidden-xs"><a href="#product-exclude">{{ __('product.section.exclude') }}</a></li>
+          <li role="presentation"><a href="#product-notice">{{ __('product.section.notice') }}</a></li>
+        </ul>
       </div>
     </div>
     <div id="booking-confirm-modal" class="modal fade">
@@ -415,121 +415,150 @@
 <script src="//cdn.bootcss.com/fullcalendar/2.4.0/lang/{% if preset.locale == 'zh-cn' %}zh-cn{% elseif preset.locale == 'zh-hk' %}zh-tw{% elseif preset.locale == 'en' %}en-gb{% endif %}.js"></script>
 <script src="//cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
 <script>
-(function($, window){
-  var selectedStart = false;
+  (function($, window){
+    var FC = $.fullCalendar;
+    var View = FC.View;
+    var CustomView = View.extend({
+      initialize: function(){
 
-  function setSelectedTime(start, end){
-    var tempEnd = end || moment(start);
-    if(!end){
-      tempEnd.hour(start.hour() + 1);
+      },
+      render: function(){
+
+      },
+      setHeight: function(height, isAuto){
+
+      },
+      renderEvents: function(events){
+
+      },
+      destroyEvents: function(){
+
+      },
+      renderSelection: function(range){
+
+      },
+      destroySelection: function(){
+
+      }
+    });
+
+    FC.views.custom = CustomView;
+
+    var selectedStart = false;
+
+    function setSelectedTime(start, end){
+      var tempEnd = end || moment(start);
+      if(!end){
+        tempEnd.hour(start.hour() + 1);
+      }
+
+      $("#data-selected-date-start").val(start.format("YYYY-MM-DD HH:mm")).change();
+      $("#data-selected-date-end").val(tempEnd.format("YYYY-MM-DD HH:mm")).change();
+
+      $("#selectedTime-start").html(start.format("YYYY-MM-DD HH:mm"));
+      $("#selectedTime-end").html(tempEnd.format("YYYY-MM-DD HH:mm"));
     }
 
-    $("#data-selected-date-start").val(start.format("YYYY-MM-DD HH:mm")).change();
-    $("#data-selected-date-end").val(tempEnd.format("YYYY-MM-DD HH:mm")).change();
+    $("#calendar").fullCalendar({
+      contentHeight: "auto",
+      timezone: "local",
+      header: {
+        left: "title",
+        right: ""
+      },
+      eventLimit: 3,
+      eventLimitClick: function(cellInfo, jsEvent){
+        var now = moment();
+        now.date(now.date() + 1);
+        if(cellInfo.date < now.hour(0).minute(0).second(0)){
+          return false;
+        }
 
-    $("#selectedTime-start").html(start.format("YYYY-MM-DD HH:mm"));
-    $("#selectedTime-end").html(tempEnd.format("YYYY-MM-DD HH:mm"));
-  }
-
-  $("#calendar").fullCalendar({
-    contentHeight: "auto",
-    timezone: "local",
-    header: {
-      left: "title",
-      right: ""
-    },
-    eventLimit: 3,
-    eventLimitClick: function(cellInfo, jsEvent){
-      var now = moment();
-      now.date(now.date() + 1);
-      if(cellInfo.date < now.hour(0).minute(0).second(0)){
-        return false;
-      }
-
-      $("#calendar").fullCalendar("gotoDate", cellInfo.date);
-      $("#calendar").fullCalendar("changeView", "agendaDay");
-    },
+        $("#calendar").fullCalendar("gotoDate", cellInfo.date);
+        $("#calendar").fullCalendar("changeView", "agendaDay");
+      },
 //    allDayText: "{{ __('common.holiday') }}",
-    allDaySlot: false,
-    minTime: "{{ product.workingHours.start }}",
-    maxTime: "{{ product.workingHours.end }}",
-    slotDuration: "01:00:00",
-    slotLabelFormat: "HH:00",
-    selectable: true,
-    selectOverlap: function(event){
-      return event.rendering === "background";
-    },
-    unselectAuto: false,
-    viewRender: function(view, element){
-      if(view.name == "month"){
-        $("#calendar-month").addClass("invisible");
-      }else{
-        $("#calendar-month").removeClass("invisible");
-      }
-
-//      $(".fc-toolbar .fc-button").addClass("btn btn-default btn-lg").removeClass("fc-state-default");
-//      $(".fc-toolbar .fc-button-group").addClass("btn-group");
-    },
-    dayRender: function(date, cell){
-      if(date < moment()){
-        $(cell).addClass("fc-day-disable");
-      }
-    },
-    dayClick: function(date, jsEvent, view){
-      if(date < moment().hour(0).minute(0).second(0)){
-        return false;
-      }
-
-      $("#calendar").fullCalendar("gotoDate", date);
-      $("#calendar").fullCalendar("changeView", "agendaDay");
-    },
-    eventClick: function(calEvent, jsEvent, view){
-      if(view.name == "agendaDay" || calEvent.start < moment()){
-        return;
-      }
-
-      $("#calendar").fullCalendar("gotoDate", calEvent.start);
-      $("#calendar").fullCalendar("changeView", "agendaDay");
-    },
-    select: function(start, end, jsEvent, view){
-      if(view.name == "month"){
-        return;
-      }
-
-      if(start < moment()){
-        $("#hyf-modal-alert").CustomAlert("{{ __('product.booking.error.invaild_time') }}");
-        return false;
-      }
-
-      if(!selectedStart){
-        selectedStart = start;
-        setSelectedTime(selectedStart);
-      }else{
-        if(selectedStart < start){
-          var end = moment(start);
-          end.hour(end.hour() + 1);
-
-          //get events between selections
-          var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
-            var eventEnd = e.end || e.start;
-            return !e.allDay && e.start > selectedStart && (e.start < end);
-          });
-
-          if(clientEvents && clientEvents.length > 0) {
-            selectedStart = start;
-            setSelectedTime(selectedStart);
-            return true;
-          }
-
-          $("#calendar").fullCalendar("select", selectedStart, end);
-          setSelectedTime(selectedStart, end);
-          selectedStart = false;
+      allDaySlot: false,
+      minTime: "{{ product.workingHours.start }}",
+      maxTime: "{{ product.workingHours.end }}",
+      slotDuration: "01:00:00",
+      slotLabelFormat: "HH:00",
+      selectable: true,
+      selectOverlap: function(event){
+        return event.rendering === "background";
+      },
+      unselectAuto: false,
+      viewRender: function(view, element){
+        if(view.name == "month"){
+          $("#calendar-month").addClass("invisible");
         }else{
+          $("#calendar-month").removeClass("invisible");
+        }
+
+//        $(".fc-toolbar .fc-button").addClass("btn btn-default btn-lg").removeClass("fc-state-default");
+//        $(".fc-toolbar .fc-button-group").addClass("btn-group");
+      },
+      dayRender: function(date, cell){
+        if(date < moment()){
+          $(cell).addClass("fc-day-disable");
+        }
+      },
+      dayClick: function(date, jsEvent, view){
+        if(date < moment().hour(0).minute(0).second(0)){
+          return false;
+        }
+
+        $("#calendar").fullCalendar("gotoDate", date);
+//        $("#calendar").fullCalendar("changeView", "agendaDay");
+        $("#calendar").fullCalendar("changeView", "custom");
+      },
+      eventClick: function(calEvent, jsEvent, view){
+        if(view.name == "agendaDay" || calEvent.start < moment()){
+          return;
+        }
+
+        $("#calendar").fullCalendar("gotoDate", calEvent.start);
+        $("#calendar").fullCalendar("changeView", "agendaDay");
+      },
+      select: function(start, end, jsEvent, view){
+        if(view.name == "month"){
+          return;
+        }
+
+        if(start < moment()){
+          $("#hyf-modal-alert").CustomAlert("{{ __('product.booking.error.invaild_time') }}");
+          return false;
+        }
+
+        if(!selectedStart){
           selectedStart = start;
           setSelectedTime(selectedStart);
+        }else{
+          if(selectedStart < start){
+            var end = moment(start);
+            end.hour(end.hour() + 1);
+
+            //get events between selections
+            var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
+              var eventEnd = e.end || e.start;
+              return !e.allDay && e.start > selectedStart && (e.start < end);
+            });
+
+            if(clientEvents && clientEvents.length > 0) {
+              selectedStart = start;
+              setSelectedTime(selectedStart);
+              return true;
+            }
+
+            $("#calendar").fullCalendar("select", selectedStart, end);
+            setSelectedTime(selectedStart, end);
+            selectedStart = false;
+          }else{
+            selectedStart = start;
+            setSelectedTime(selectedStart);
+          }
         }
-      }
-    },
+      },
 //    events:[
 //      {
 //        title: "节日",
@@ -540,161 +569,161 @@
 //        color: "#f00"
 //      }
 //    ],
-    eventSources:[
-      {
-        url: "/booking/cal/{{ boat.id }}",
-        color: "#258ec7"
-      },
-      {
-        url: "/booking/cal/unavailable/{{ boat.id }}",
-        color: "#258ec7"
-      }
-    ],
-    eventRender: function(event, element){
-      if(event.rendering === "background"){
-        element.append(event.title);
-      }
-      $(element).find(".fc-time").text(moment(event.start).format("HH:mm") + "-" + moment(event.end).format("HH:mm"));
-    }
-  });
-
-  $("#calendar-month").click(function(){
-    selectedStart = false;
-    $("#calendar").fullCalendar("changeView", "month");
-  });
-
-  $("#calendar-today").click(function(){
-    $("#calendar").fullCalendar("today");
-  });
-
-  $("#calendar-prev").click(function(){
-    selectedStart = false;
-    $("#calendar").fullCalendar("prev");
-  });
-
-  $("#calendar-next").click(function(){
-    selectedStart = false;
-    $("#calendar").fullCalendar("next");
-  });
-
-  var today = moment();
-  var clientCurrency = "{{ preset.currency|safe }}";
-  var currency = {{ preset.configCurrency|json|safe }};
-
-  var app = angular.module("booking", []);
-
-  app.controller("bookingController", function($scope){
-    $scope.packages = {{ product.packages|json|safe }};
-    $scope.baseCurrency = "{{ product.currency|safe }}";
-    $scope.prefix = clientCurrency == 'hkd' ? '$' : '￥';
-    $scope.dateStart = today.format("YYYY-MM-DD HH:mm");
-//    $scope.dateEnd = today.format("YYYY-MM-DD HH:mm");
-    $scope.numberOfPersons = 1;
-    $scope.contact = {
-      name: "",
-      areaCode: "86",
-      mobile: "",
-      email: ""
-    };
-    $scope.currPackage = -1;
-    $scope.selectedItems = {};
-    $scope.inputValue = {};
-    $scope.submitted = false;
-    $scope.agree = false;
-
-    $scope.generateCharge = function(charge){
-      return parseInt(charge * currency[clientCurrency] / currency[$scope.baseCurrency]);
-    };
-
-    $scope.displayAmount = function(amount){
-      return $scope.prefix + (amount / 100).toFixed(2);
-    };
-
-    $scope.togglePackage = function(index){
-      $scope.currPackage == index ? $scope.currPackage = -1 : $scope.currPackage = index;
-      $scope.selectedItems = {};
-    };
-
-    $scope.checkAvailable = function(package){
-      var selectedDate = moment($scope.dateStart, "YYYY-MM-DD HH:mm");
-
-      if(package.availableMonths[selectedDate.month()] && package.availableDays[selectedDate.day()]){
-        return true;
-      }
-
-      return false;
-    };
-
-    $scope.toggleItem = function(item){
-      if($scope.selectedItems[item.name]){
-        delete $scope.selectedItems[item.name];
-      }else{
-        $scope.selectedItems[item.name] = {
-          name: item.name,
-          charge: item.charge,
-          amount: 1
-        };
-      }
-    };
-
-    $scope.inputItem = function(item){
-      var value = $scope.inputValue[item.name];
-
-      if(!value){
-        delete $scope.selectedItems[item.name];
-      }else{
-        $scope.selectedItems[item.name] = {
-          name: item.name,
-          charge: item.charge,
-          amount: value
-        };
-      }
-    };
-
-    $scope.getTotal = function(){
-      var package = $scope.packages[$scope.currPackage];
-
-      if(!package){
-        return 0;
-      }
-
-      var extraPersons = $scope.numberOfPersons - package.basePersons;
-      extraPersons = extraPersons < 0 ? 0 : extraPersons;
-
-      var itemsAmount = 0;
-
-      for(var item in $scope.selectedItems){
-        if($scope.selectedItems.hasOwnProperty(item)){
-          itemsAmount += $scope.generateCharge($scope.selectedItems[item].charge) * $scope.selectedItems[item].amount;
+      eventSources:[
+        {
+          url: "/booking/cal/{{ boat.id }}",
+          color: "#258ec7"
+        },
+        {
+          url: "/booking/cal/unavailable/{{ boat.id }}",
+          color: "#258ec7"
         }
+      ],
+      eventRender: function(event, element){
+        if(event.rendering === "background"){
+          element.append(event.title);
+        }
+        $(element).find(".fc-time").text(moment(event.start).format("HH:mm") + "-" + moment(event.end).format("HH:mm"));
       }
+    });
 
-      return $scope.generateCharge(package.baseCharge) + $scope.generateCharge(package.extraCharge) * extraPersons + itemsAmount;
-    };
+    $("#calendar-month").click(function(){
+      selectedStart = false;
+      $("#calendar").fullCalendar("changeView", "month");
+    });
 
-    $scope.getItems = function() {
-      return JSON.stringify($scope.selectedItems);
-    };
+    $("#calendar-today").click(function(){
+      $("#calendar").fullCalendar("today");
+    });
 
-    $scope.validate = function(){
-      if(!$scope.booking.$valid){
-        $scope.submitted = true;
-      }else{
-        $("#booking-confirm-modal").modal("show");
-      }
-    };
-  });
+    $("#calendar-prev").click(function(){
+      selectedStart = false;
+      $("#calendar").fullCalendar("prev");
+    });
 
-  app.filter("santize", ["$sce", function($sce){
-    return function(htmlCode){
-      return $sce.trustAsHtml(htmlCode);
-    };
-  }]);
+    $("#calendar-next").click(function(){
+      selectedStart = false;
+      $("#calendar").fullCalendar("next");
+    });
 
-  $("#btn-contract").click(function(){
-    $("#contract-container").toggleClass("hidden");
-  });
-})(jQuery, window);
+    var today = moment();
+    var clientCurrency = "{{ preset.currency|safe }}";
+    var currency = {{ preset.configCurrency|json|safe }};
+
+    var app = angular.module("booking", []);
+
+    app.controller("bookingController", function($scope){
+      $scope.packages = {{ product.packages|json|safe }};
+      $scope.baseCurrency = "{{ product.currency|safe }}";
+      $scope.prefix = clientCurrency == 'hkd' ? '$' : '￥';
+      $scope.dateStart = today.format("YYYY-MM-DD HH:mm");
+//    $scope.dateEnd = today.format("YYYY-MM-DD HH:mm");
+      $scope.numberOfPersons = 1;
+      $scope.contact = {
+        name: "",
+        areaCode: "86",
+        mobile: "",
+        email: ""
+      };
+      $scope.currPackage = -1;
+      $scope.selectedItems = {};
+      $scope.inputValue = {};
+      $scope.submitted = false;
+      $scope.agree = false;
+
+      $scope.generateCharge = function(charge){
+        return parseInt(charge * currency[clientCurrency] / currency[$scope.baseCurrency]);
+      };
+
+      $scope.displayAmount = function(amount){
+        return $scope.prefix + (amount / 100).toFixed(2);
+      };
+
+      $scope.togglePackage = function(index){
+        $scope.currPackage == index ? $scope.currPackage = -1 : $scope.currPackage = index;
+        $scope.selectedItems = {};
+      };
+
+      $scope.checkAvailable = function(package){
+        var selectedDate = moment($scope.dateStart, "YYYY-MM-DD HH:mm");
+
+        if(package.availableMonths[selectedDate.month()] && package.availableDays[selectedDate.day()]){
+          return true;
+        }
+
+        return false;
+      };
+
+      $scope.toggleItem = function(item){
+        if($scope.selectedItems[item.name]){
+          delete $scope.selectedItems[item.name];
+        }else{
+          $scope.selectedItems[item.name] = {
+            name: item.name,
+            charge: item.charge,
+            amount: 1
+          };
+        }
+      };
+
+      $scope.inputItem = function(item){
+        var value = $scope.inputValue[item.name];
+
+        if(!value){
+          delete $scope.selectedItems[item.name];
+        }else{
+          $scope.selectedItems[item.name] = {
+            name: item.name,
+            charge: item.charge,
+            amount: value
+          };
+        }
+      };
+
+      $scope.getTotal = function(){
+        var package = $scope.packages[$scope.currPackage];
+
+        if(!package){
+          return 0;
+        }
+
+        var extraPersons = $scope.numberOfPersons - package.basePersons;
+        extraPersons = extraPersons < 0 ? 0 : extraPersons;
+
+        var itemsAmount = 0;
+
+        for(var item in $scope.selectedItems){
+          if($scope.selectedItems.hasOwnProperty(item)){
+            itemsAmount += $scope.generateCharge($scope.selectedItems[item].charge) * $scope.selectedItems[item].amount;
+          }
+        }
+
+        return $scope.generateCharge(package.baseCharge) + $scope.generateCharge(package.extraCharge) * extraPersons + itemsAmount;
+      };
+
+      $scope.getItems = function() {
+        return JSON.stringify($scope.selectedItems);
+      };
+
+      $scope.validate = function(){
+        if(!$scope.booking.$valid){
+          $scope.submitted = true;
+        }else{
+          $("#booking-confirm-modal").modal("show");
+        }
+      };
+    });
+
+    app.filter("santize", ["$sce", function($sce){
+      return function(htmlCode){
+        return $sce.trustAsHtml(htmlCode);
+      };
+    }]);
+
+    $("#btn-contract").click(function(){
+      $("#contract-container").toggleClass("hidden");
+    });
+  })(jQuery, window);
 </script>
 <script src="//cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
 <script>

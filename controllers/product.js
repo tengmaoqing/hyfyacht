@@ -29,7 +29,7 @@ exports.getProduct = function(req, res, next){
             return next(err);
           }else{
             if(boat){
-              return res.render('product', {product: product, boat: boat});
+              return res.render('product2', {product: product, boat: boat});
             }else{
               var err = new Error('Not Found');
               err.status = 404;
