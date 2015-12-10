@@ -58,7 +58,7 @@ swig.setDefaults({
   cache: false
 });
 
-wechatCore.getAppAccessToken();
+//wechatCore.getAppAccessToken();
 //cache.put('wechatAccessToken', 'raW3m2xeOxvHUdPH1NlrPWLIVZjmMSOXy9bqGSFbdOXrrzpB_52_vVux_usUcHiGGiQbeGLn9OYFm4HgutfNYkHDNCopZIfIRv3r9VJKZFYHDChAEAXTS');
 //i18n init
 i18n.configure({
