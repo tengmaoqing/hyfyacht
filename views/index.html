@@ -7,12 +7,6 @@
 <div class="index-slide">
   <div id="hyf-carousel-index" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner" role="listbox">
-      <!--<div class="item index-slide-item active" style="background-image: url(http://img.hgboating.com/base/index1.jpg)">-->
-      <!--</div>-->
-      <!--<div class="item index-slide-item" style="background-image: url(http://img.hgboating.com/base/index4.jpg)">-->
-      <!--</div>-->
-      <!--<div class="item index-slide-item" style="background-image: url(http://img.hgboating.com/base/index3.jpg)">-->
-      <!--</div>-->
       {% for slide in slides %}
       <div class="item index-slide-item {% if loop.first %}active{% endif %}" style="background-image: url({{ slide }})">
       </div>
