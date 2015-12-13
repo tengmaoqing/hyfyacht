@@ -28,7 +28,7 @@ a, a:hover, a:active {
   position: relative;
 }
 
-.absolut-right-top {
+.absolute-right-top {
   display: inline-block;
   position: absolute;
   top: 0;
@@ -80,6 +80,10 @@ a, a:hover, a:active {
 
 #product-booking .panel-title .more .glyphicon {
   vertical-align: middle;
+}
+
+#product-booking-package {
+  display: none;
 }
 
 .product-booking-container {
@@ -472,6 +476,14 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   background: #fff;
   margin: 10px 0;
   padding: 10px;
+}
+
+.package-slot {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
+  margin: 10px 0;
+  padding: 20px;
 }
 
 footer.columns {

@@ -48,6 +48,53 @@
           <div id="product-booking-date" class="product-booking-container">
             <p><strong>{{ __('product.booking.chooseTime') }}</strong></p>
             <div id="calendar"></div>
+            <div id="product-booking-package" class="product-booking-container">
+              <p><strong>{{ __('product.booking.choosePackage') }}</strong></p>
+              <div class="panel-group" id="package-accordion" role="tablist">
+                {% raw %}
+                <input id="data-selected-date" name="selectedDate" class="collapse" type="text" data-ng-model="selectedDate" data-ng-change="togglePackage(-1)">
+                <input id="data-selected-date-start" name="dateStart" class="collapse" type="text" data-ng-model="dateStart" required>
+                <input id="data-selected-date-end" name="dateEnd" class="collapse" type="text" data-ng-model="dateEnd" required>
+                <input name="currPackage" class="collapse" type="number" data-ng-model="currPackage" min="0" required>
+                <input name="packageId" class="collapse" type="text" data-ng-model="packages[currPackage]._id">
+                <input name="items" class="collapse" type="text" value="{{ getItems() }}">
+                <input name="total" class="collapse" type="text" value="{{ getTotal() }}">
+                <input id="data-calendar-events" name="events" class="collapse" type="text" data-ng-model="events">
+                <div class="panel panel-custom" data-ng-repeat="package in packages" data-ng-if="checkAvailable(package)">
+                  <div class="panel-heading" role="tab" id="package-heading-{{ $index }}">
+                    <h4 class="panel-title relative-container">
+                      <div class="btn-group btn-group-sm checkboxs" data-toggle="buttons" data-ng-click="togglePackage($index)">
+                        <label class="btn btn-default" data-ng-if="$index != currPackage">
+                          <span class="glyphicon glyphicon-unchecked"></span>
+                          <input type="checkbox" autocomplete="off">
+                        </label>
+                        <label class="btn btn-primary" data-ng-if="$index == currPackage">
+                          <span class="glyphicon glyphicon-ok"></span>
+                          <input type="checkbox" autocomplete="off">
+                        </label>
+                      </div> {{ package.name }}
+                      <a class="absolute-right-top more" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index }}" aria-expanded="true" aria-controls="package-collapse-{{ $index }}">
+                        <span class="glyphicon glyphicon-option-horizontal"></span>
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="package-collapse-{{ $index }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="package-heading-{{ $index }}">
+                    <div class="panel-body">
+                      <div class="package-summary" data-ng-bind-html="package.summary | santize"></div>
+                      <div class="package-select-time" data-ng-if="package.type.rule == 'slot'">
+                        <button type="button" class="package-slot" data-ng-repeat="slot in package.type.slots" data-ng-click="togglePackage($parent.$index);selectSlot(package.type.slots[$index].start,package.type.slots[$index].end)">
+                          {{ slot.name }} ( {{ slot.start }} - {{ slot.end }} )
+                        </button>
+                      </div>
+                      <div class="package-select-time" data-ng-if="package.type.rule == 'hour'">
+                        hour
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endraw %}
+              </div>
+            </div>
             <div class="row calendar-controller">
               <div class="col-md-4 col-sm-6 col-xs-12">
                 <span class="glyphicon glyphicon-stop calendar-event-icon"></span>
@@ -73,42 +120,7 @@
               </li>
             </ul>
           </div>
-          <div id="product-booking-package" class="product-booking-container">
-            <p><strong>{{ __('product.booking.choosePackage') }}</strong></p>
-            <div class="panel-group" id="package-accordion" role="tablist">
-              {% raw %}
-              <input id="data-selected-date-start" name="dateStart" class="collapse" type="text" data-ng-model="dateStart" data-ng-change="togglePackage(-1)" required>
-              <input id="data-selected-date-end" name="dateEnd" class="collapse" type="text" data-ng-model="dateEnd" required>
-              <input name="currPackage" class="collapse" type="number" data-ng-model="currPackage" min="0" required>
-              <input name="packageId" class="collapse" type="text" data-ng-model="packages[currPackage]._id">
-              <input name="items" class="collapse" type="text" value="{{ getItems() }}">
-              <input name="total" class="collapse" type="text" value="{{ getTotal() }}">
-              <div class="panel panel-custom" data-ng-repeat="package in packages" data-ng-if="checkAvailable(package)">
-                <div class="panel-heading" role="tab" id="package-heading-{{ $index }}">
-                  <h4 class="panel-title relative-container">
-                    <div class="btn-group btn-group-sm checkboxs" data-toggle="buttons" data-ng-click="togglePackage($index)">
-                      <label class="btn btn-default" data-ng-if="$index != currPackage">
-                        <span class="glyphicon glyphicon-unchecked"></span>
-                        <input type="checkbox" autocomplete="off">
-                      </label>
-                      <label class="btn btn-primary" data-ng-if="$index == currPackage">
-                        <span class="glyphicon glyphicon-ok"></span>
-                        <input type="checkbox" autocomplete="off">
-                      </label>
-                    </div> {{ package.name }}
-                    <a class="absolut-right-top more" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index }}" aria-expanded="true" aria-controls="package-collapse-1">
-                      <span class="glyphicon glyphicon-option-horizontal"></span>
-                    </a>
-                  </h4>
-                </div>
-                <div id="package-collapse-{{ $index }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="package-heading-1">
-                  <div class="panel-body" data-ng-bind-html="package.summary | santize">
-                  </div>
-                </div>
-              </div>
-              {% endraw %}
-            </div>
-          </div>
+
           <div id="product-booking-person" class="product-booking-container">
             <p><strong>{{ __('product.booking.numberOfPeople') }} (1 - {% raw %}{{ packages[currPackage].maxPersons }}{% endraw %})</strong></p>
             <div class="alert alert-danger" data-ng-show="booking.numberOfPersons.$dirty && booking.numberOfPersons.$invalid">
@@ -416,30 +428,43 @@
 <script src="//cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
 <script>
   (function($, window){
-    var FC = $.fullCalendar;
-    var View = FC.View;
-    var CustomView = View.extend({
-      initialize: function(){
+    var FC = $.fullCalendar; // a reference to FullCalendar's root namespace
+    var View = FC.View;      // the class that all views must inherit from
+    var CustomView;          // our subclass
 
+    CustomView = View.extend({ // make a subclass of View
+
+      initialize: function() {
+        // called once when the view is instantiated, when the user switches to the view.
+        // initialize member variables or do other setup tasks.
       },
-      render: function(){
 
+      render: function() {
+        // responsible for displaying the skeleton of the view within the already-defined
+        // this.el, a jQuery element.
       },
-      setHeight: function(height, isAuto){
 
+      setHeight: function(height, isAuto) {
+        // responsible for adjusting the pixel-height of the view. if isAuto is true, the
+        // view may be its natural height, and `height` becomes merely a suggestion.
       },
-      renderEvents: function(events){
 
+      renderEvents: function(events) {
+        // reponsible for rendering the given Event Objects
       },
-      destroyEvents: function(){
 
+      destroyEvents: function() {
+        // responsible for undoing everything in renderEvents
       },
-      renderSelection: function(range){
 
+      renderSelection: function(range) {
+        // accepts a {start,end} object made of Moments, and must render the selection
       },
-      destroySelection: function(){
 
+      destroySelection: function() {
+        // responsible for undoing everything in renderSelection
       }
+
     });
 
     FC.views.custom = CustomView;
@@ -504,11 +529,27 @@
         }
       },
       dayClick: function(date, jsEvent, view){
+        if(view.name == "agendaDay"){
+          return;
+        }
+
         if(date < moment().hour(0).minute(0).second(0)){
           return false;
         }
 
+        var endDate = moment(date);
+        endDate.add(1, "day");
+
+        var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
+          return !e.allDay && (e.start >= date && e.end <= endDate);
+        });
+
+        $("#data-selected-date").val(date.format("YYYY-MM-DD HH:mm")).change();
+
+        $("#data-calendar-events").val(JSON.stringify(clientEvents)).change();
+
         $("#calendar").fullCalendar("gotoDate", date);
+        $("#product-booking-package").show();
 //        $("#calendar").fullCalendar("changeView", "agendaDay");
         $("#calendar").fullCalendar("changeView", "custom");
       },
@@ -540,7 +581,7 @@
 
             //get events between selections
             var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
-              var eventEnd = e.end || e.start;
+              //var eventEnd = e.end || e.start;
               return !e.allDay && e.start > selectedStart && (e.start < end);
             });
 
@@ -590,6 +631,7 @@
     $("#calendar-month").click(function(){
       selectedStart = false;
       $("#calendar").fullCalendar("changeView", "month");
+      $("#product-booking-package").hide();
     });
 
     $("#calendar-today").click(function(){
@@ -626,6 +668,8 @@
         email: ""
       };
       $scope.currPackage = -1;
+      $scope.events = "[]";
+      $scope.selectedDate = "";
       $scope.selectedItems = {};
       $scope.inputValue = {};
       $scope.submitted = false;
@@ -645,7 +689,7 @@
       };
 
       $scope.checkAvailable = function(package){
-        var selectedDate = moment($scope.dateStart, "YYYY-MM-DD HH:mm");
+        var selectedDate = moment($scope.selectedDate, "YYYY-MM-DD HH:mm");
 
         if(package.availableMonths[selectedDate.month()] && package.availableDays[selectedDate.day()]){
           return true;
@@ -711,6 +755,12 @@
         }else{
           $("#booking-confirm-modal").modal("show");
         }
+      };
+
+      $scope.selectSlot = function(start, end){
+        var startDate = moment($scope.selectedDate).hour(start.split(":")[0]);
+        var endDate = moment($scope.selectedDate).hour(end.split(":")[0]);
+        setSelectedTime(startDate, endDate);
       };
     });
 

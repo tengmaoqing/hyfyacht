@@ -12,7 +12,7 @@ var PackageSchema = new Schema({
   currency: String,
   availableMonths: [],
   availableDays: [],
-  type: String,
+  type: Object,
   baseCharge: Number,
   extraCharge: Number,
   basePersons: Number,
