@@ -1,9 +1,9 @@
 /**
  * Created by qxj on 15/10/17.
  */
-var Boat = require('../models/boat');
-var Owner = require('../models/owner');
-var Product = require('../models/product');
+var Boat = require('hyfbase').Boat;
+var Owner = require('hyfbase').Owner;
+var Product = require('hyfbase').Product;
 
 exports.getBoat = function(req, res, next){
   Boat.findOne({
@@ -126,21 +126,21 @@ exports.getBoats = function(req, res, next){
     sortBy: {
       _id: 1
     }
-  },function(err, boats, pageCount, itemCount){
+  },function(err, result){
     if(err){
       err.status = 400;
       return next(err);
     }else{
-      if(boats){
+      if(result){
         var pager = {
           current: parseInt(page),
-          count: pageCount,
+          count: result.pages,
           pages: []
         };
-        for(var i = 1; i <= pageCount; i++){
+        for(var i = 1; i <= result.pages; i++){
           pager.pages.push(i);
         }
-        return res.render('boat-list', {params: params, boats: boats, pager: pager, itemCount: itemCount});
+        return res.render('boat-list', {params: params, boats: result.docs, pager: pager, itemCount: result.total});
       }
     }
   });

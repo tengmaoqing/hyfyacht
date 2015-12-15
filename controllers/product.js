@@ -1,11 +1,8 @@
 /**
  * Created by qxj on 15/10/25.
  */
-
-var Boat = require('../models/boat');
-var Owner = require('../models/owner');
-var Product = require('../models/product');
-var Package = require('../models/package');
+var Boat = require('hyfbase').Boat;
+var Product = require('hyfbase').Product;
 
 exports.getProduct = function(req, res, next){
   var boatId = req.params.boat_id;

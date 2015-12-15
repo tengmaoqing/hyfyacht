@@ -16,7 +16,7 @@ var swig = require('swig');
 var moment = require('moment');
 var CronJob = require('cron').CronJob;
 var cache = require('memory-cache');
-var Booking = require('./models/booking');
+var Booking = require('hyfbase').Booking;
 
 //wechat
 var wechatCore = require('./lib/wechat/wechat-core');

@@ -2,7 +2,7 @@
  * Created by 2nd on 15/9/24.
  */
 var crypto = require('crypto');
-var User = require('../models/user');
+var User = require('hyfbase').User;
 var config = require('../config');
 var randomString = require('random-string');
 var util = require('util');

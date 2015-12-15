@@ -1,7 +1,7 @@
 /**
  * Created by qxj on 15/11/28.
  */
-var Unavailable = require('../models/unavailable');
+var Unavailable = require('hyfbase').Unavailable;
 var moment = require('moment');
 
 exports.getUnavailableEventByBoatId = function(req, res, next){

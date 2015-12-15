@@ -1,9 +1,9 @@
 /**
  * Created by qxj on 15/11/1.
  */
-var Booking = require('../models/booking');
-var Package = require('../models/package');
-var Unavailable = require('../models/unavailable');
+var Booking = require('hyfbase').Booking;
+var Package = require('hyfbase').Package;
+var Unavailable = require('hyfbase').Unavailable;
 var config = require('../config');
 var util = require('util');
 var i18n = require('i18n');
@@ -464,20 +464,20 @@ exports.getBookingsByUserId = function(req, res, next){
     sortBy: {
       _id: -1
     }
-  }, function (err, bookings, pageCount, itemCount) {
+  }, function (err, result) {
     if(err){
       err.status = 400;
       return next(err);
     }else{
       var pager = {
         current: parseInt(page),
-        count: pageCount,
+        count: result.pages,
         pages: []
       };
-      for(var i = 1; i <= pageCount; i++){
+      for(var i = 1; i <= result.pages; i++){
         pager.pages.push(i);
       }
-      return res.render('user-booking-list', {bookings: bookings, pager: pager, itemCount: itemCount});
+      return res.render('user-booking-list', {bookings: result.docs, pager: pager, itemCount: result.total});
     }
   });
 };
@@ -501,20 +501,20 @@ exports.getBookingsByOwnerId = function(req, res, next){
     sortBy: {
       _id: -1
     }
-  }, function (err, bookings, pageCount, itemCount) {
+  }, function (err, result) {
     if(err){
       err.status = 400;
       return next(err);
     }else{
       var pager = {
         current: parseInt(page),
-        count: pageCount,
+        count: result.pages,
         pages: []
       };
-      for(var i = 1; i <= pageCount; i++){
+      for(var i = 1; i <= result.pages; i++){
         pager.pages.push(i);
       }
-      return res.render('owner-booking-list', {bookings: bookings, pager: pager, itemCount: itemCount});
+      return res.render('owner-booking-list', {bookings: result.docs, pager: pager, itemCount: result.total});
     }
   });
 };

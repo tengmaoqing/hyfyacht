@@ -1,9 +1,7 @@
 /**
  * Created by qxj on 15/11/25.
  */
-var Boat = require('../models/boat');
-var wechatCore = require('../lib/wechat/wechat-core');
-var message = require('../lib/message');
+var Boat = require('hyfbase').Boat;
 
 exports.renderIndex = function(req, res, next){
   var slides = [
@@ -26,7 +24,4 @@ exports.renderIndex = function(req, res, next){
       return res.render('index', {slides: slides, boats: boats});
     }
   });
-
-  //message.sendPaySuccessMessage('boat', '14495495571');
-
 };

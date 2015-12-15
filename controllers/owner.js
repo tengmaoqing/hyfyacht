@@ -1,9 +1,7 @@
 /**
  * Created by qxj on 15/10/21.
  */
-var Owner = require('../models/owner');
-var Boat = require('../models/boat');
-var Booking = require('../models/booking');
+var Owner = require('hyfbase').Owner;
 
 exports.getOwnerByCustomLink = function(req, res, next) {
   Owner.findOne({customLink:req.params.link}).select('nickname location description boats').populate('boats', 'id name type baseCharge currency location thumbnail').exec(function(err, owner){
