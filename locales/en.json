@@ -135,10 +135,12 @@
       "workinghours": "Working hours"
     },
     "booking": {
-      "chooseTime": "Choose Date",
+      "selectTime": "Select Time",
+      "selectDate": "Select Date",
+      "selectedPackage": "Selected Package",
       "start": "Start",
       "end": "End",
-      "choosePackage": "Choose a package",
+      "selectPackage": "Select a package",
       "numberOfPeople": "Number of people",
       "package": {
         "items": "Package items",

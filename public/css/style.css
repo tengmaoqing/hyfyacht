@@ -486,6 +486,15 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   padding: 20px;
 }
 
+.package-slot:disabled {
+  background: #f2f2f2;
+}
+
+.package-slot.selected {
+  color: #fff;
+  background: #258ec7;
+}
+
 footer.columns {
   color:#fff;
   background: #565a5c;

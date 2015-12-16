@@ -135,10 +135,12 @@
       "workinghours": "可选时段"
     },
     "booking": {
-      "chooseTime": "选择日期",
+      "selectTime": "选择时间",
+      "selectDate": "选择日期",
+      "selectedPackage": "已选套餐",
       "start": "开始时间",
       "end": "结束时间",
-      "choosePackage": "选择套餐",
+      "selectPackage": "选择套餐",
       "numberOfPeople": "人数",
       "package": {
         "items": "套餐选项",
