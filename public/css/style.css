@@ -20,6 +20,10 @@ a, a:hover, a:active {
   text-decoration: none;
 }
 
+button {
+  outline: none;
+}
+
 .page-header {
   margin: 20px 0;
 }
@@ -478,7 +482,7 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   padding: 10px;
 }
 
-.package-slot {
+.package-slot, .package-slot-time {
   border: 1px solid #ddd;
   border-radius: 4px;
   background: #fff;
@@ -486,8 +490,13 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   padding: 20px;
 }
 
+.package-slot-time {
+  padding: 10px;
+}
+
 .package-slot:disabled {
-  background: #f2f2f2;
+  background: #ccc;
+  cursor: not-allowed;
 }
 
 .package-slot.selected {
@@ -649,6 +658,10 @@ dl.dl-horizontal dt {
 
 .calendar-event-icon-unavailable {
   color: #ff5a5e;
+}
+
+.calendar-event-icon-unavailable-client {
+  color: #ccc;
 }
 
 .fc-left h2 {

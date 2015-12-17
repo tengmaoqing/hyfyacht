@@ -52,7 +52,7 @@
               <p><strong>{{ __('product.booking.selectPackage') }}</strong></p>
               <div class="panel-group" id="package-accordion" role="tablist">
                 {% raw %}
-                <input id="data-selected-date" name="selectedDate" class="collapse" type="text" data-ng-model="selectedDate" data-ng-change="togglePackage(-1)">
+                <input id="data-selected-date" name="selectedDate" class="collapse" type="text" data-ng-model="selectedDate">
                 <input id="data-selected-date-start" name="dateStart" class="collapse" type="text" data-ng-model="dateStart" required>
                 <input id="data-selected-date-end" name="dateEnd" class="collapse" type="text" data-ng-model="dateEnd" required>
                 <input name="currPackage" class="collapse" type="number" data-ng-model="currPackage" min="0" required>
@@ -63,17 +63,8 @@
                 <div class="panel panel-custom" data-ng-repeat="package in packages" data-ng-if="checkAvailable(package)">
                   <div class="panel-heading" role="tab" id="package-heading-{{ $index }}">
                     <h4 class="panel-title relative-container" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index }}" aria-expanded="true" aria-controls="package-collapse-{{ $index }}">
-                      <!--<div class="btn-group btn-group-sm checkboxs" data-toggle="buttons" disabled="disabled">-->
-                        <!--<label class="btn btn-default" data-ng-if="$index != currPackage">-->
-                          <!--<span class="glyphicon glyphicon-unchecked"></span>-->
-                          <!--&lt;!&ndash;<input type="checkbox" autocomplete="off">&ndash;&gt;-->
-                        <!--</label>-->
-                        <!--<label class="btn btn-primary" data-ng-if="$index == currPackage">-->
-                          <!--<span class="glyphicon glyphicon-ok"></span>-->
-                          <!--&lt;!&ndash;<input type="checkbox" autocomplete="off">&ndash;&gt;-->
-                        <!--</label>-->
-                      <!--</div> -->
-                      {{ package.name }}
+                      <span class="glyphicon glyphicon-ok text-primary" data-ng-if="$index == currPackage"></span>
+                      {{ package.name }}({{ displayAmount(generateCharge(package.baseCharge)) }})
                       <a class="absolute-right-top more" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index }}" aria-expanded="true" aria-controls="package-collapse-{{ $index }}">
                         <span class="glyphicon glyphicon-option-horizontal"></span>
                       </a>
@@ -82,21 +73,28 @@
                   <div id="package-collapse-{{ $index }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="package-heading-{{ $index }}">
                     <div class="panel-body">
                       <div class="package-summary" data-ng-bind-html="package.summary | santize"></div>
-                      <div class="package-select-time" data-ng-if="package.type.rule == 'slot'">
+                      <div class="package-select-time">
                         {% endraw %}
                         <hr class="hr-divider">
                         <p><strong>{{ __('product.booking.selectTime') }}</strong></p>
                         {% raw %}
-                        <div class="row">
+                        <div class="row" data-ng-if="package.type.rule == 'slot'">
                           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" data-ng-repeat="slot in package.type.slots">
-                            <button type="button" class="package-slot btn-block" data-ng-class="{'selected': ($parent.$index == currPackage && $index == currSlot)}" data-ng-click="selectSlot($parent.$index, $index)" data-ng-disabled="checkTimeAvailable(package.type.slots[$index])">
+                            <button type="button" class="package-slot btn-block" data-ng-class="{'selected': checkSlotSelected($parent.$index, $index)}" data-ng-click="toggleSlot($parent.$index, $index)" data-ng-disabled="checkTimeAvailable(package.type.slots[$index])">
                               {{ slot.name }} ( {{ slot.start }} - {{ slot.end }} )
                             </button>
                           </div>
                         </div>
-                      </div>
-                      <div class="package-select-time" data-ng-if="package.type.rule == 'hour'">
-                        hour
+                        <div data-ng-if="package.type.rule == 'minute'">
+                          <div class="row" data-ng-repeat="slot in package.type.slots">
+                            <div class="col-lg-12">{{ slot.name }}</div>
+                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6" data-ng-repeat="time in getTimes(package.type, slot)">
+                              <button type="button" class="package-slot-time btn-block">
+                                {{ time }}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -108,6 +106,8 @@
               <div class="col-md-4 col-sm-6 col-xs-12">
                 <span class="glyphicon glyphicon-stop calendar-event-icon"></span>
                 {{ __('calendar.booked') }}
+                <span class="glyphicon glyphicon-stop calendar-event-icon-unavailable-client"></span>
+                {{ __('calendar.unavailable') }}
               </div>
               <div class="col-md-8 col-sm-6 col-xs-12 text-right">
                 <button id="calendar-month" type="button" class="btn btn-default invisible">{{ __('calendar.selectdate') }}</button>
@@ -482,9 +482,17 @@
 
     FC.views.custom = CustomView;
 
-    var selectedStart = false;
+    //var selectedStart = false;
 
     function setSelectedTime(start, end){
+      if(!start && !end){
+        $("#data-selected-date-start").val("").change();
+        $("#data-selected-date-end").val("").change();
+
+        $("#selectedTime-start").html("");
+        $("#selectedTime-end").html("");
+        return;
+      }
       var tempEnd = end || moment(start);
       if(!end){
         tempEnd.hour(start.hour() + 1);
@@ -557,7 +565,7 @@
           return !e.allDay && (e.start >= date && e.end <= endDate);
         });
 
-        $("#data-selected-date").val(date.format("YYYY-MM-DD HH:mm")).change();
+        $("#data-selected-date").val(date.format("YYYY-MM-DD")).change();
 
         $("#data-calendar-events").val(JSON.stringify(clientEvents)).change();
 
@@ -575,43 +583,43 @@
         $("#calendar").fullCalendar("changeView", "agendaDay");
       },
       select: function(start, end, jsEvent, view){
-        if(view.name == "month"){
-          return;
-        }
-
-        if(start < moment()){
-          $("#hyf-modal-alert").CustomAlert("{{ __('product.booking.error.invaild_time') }}");
-          return false;
-        }
-
-        if(!selectedStart){
-          selectedStart = start;
-          setSelectedTime(selectedStart);
-        }else{
-          if(selectedStart < start){
-            var end = moment(start);
-            end.hour(end.hour() + 1);
-
-            //get events between selections
-            var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
-              //var eventEnd = e.end || e.start;
-              return !e.allDay && e.start > selectedStart && (e.start < end);
-            });
-
-            if(clientEvents && clientEvents.length > 0) {
-              selectedStart = start;
-              setSelectedTime(selectedStart);
-              return true;
-            }
-
-            $("#calendar").fullCalendar("select", selectedStart, end);
-            setSelectedTime(selectedStart, end);
-            selectedStart = false;
-          }else{
-            selectedStart = start;
-            setSelectedTime(selectedStart);
-          }
-        }
+//        if(view.name == "month"){
+//          return;
+//        }
+//
+//        if(start < moment()){
+//          $("#hyf-modal-alert").CustomAlert("{{ __('product.booking.error.invaild_time') }}");
+//          return false;
+//        }
+//
+//        if(!selectedStart){
+//          selectedStart = start;
+//          setSelectedTime(selectedStart);
+//        }else{
+//          if(selectedStart < start){
+//            var end = moment(start);
+//            end.hour(end.hour() + 1);
+//
+//            //get events between selections
+//            var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
+//              //var eventEnd = e.end || e.start;
+//              return !e.allDay && e.start > selectedStart && (e.start < end);
+//            });
+//
+//            if(clientEvents && clientEvents.length > 0) {
+//              selectedStart = start;
+//              setSelectedTime(selectedStart);
+//              return true;
+//            }
+//
+//            $("#calendar").fullCalendar("select", selectedStart, end);
+//            setSelectedTime(selectedStart, end);
+//            selectedStart = false;
+//          }else{
+//            selectedStart = start;
+//            setSelectedTime(selectedStart);
+//          }
+//        }
       },
 //    events:[
 //      {
@@ -642,23 +650,32 @@
     });
 
     $("#calendar-month").click(function(){
-      selectedStart = false;
       $("#calendar").fullCalendar("changeView", "month");
       $("#product-booking-package").hide();
     });
 
     $("#calendar-today").click(function(){
       $("#calendar").fullCalendar("today");
+      var view = $("#calendar").fullCalendar("getView");
+      if(view.name == "custom"){
+        $("#data-selected-date").val($("#calendar").fullCalendar("getDate").format("YYYY-MM-DD")).change();
+      }
     });
 
     $("#calendar-prev").click(function(){
-      selectedStart = false;
       $("#calendar").fullCalendar("prev");
+      var view = $("#calendar").fullCalendar("getView");
+      if(view.name == "custom"){
+        $("#data-selected-date").val($("#calendar").fullCalendar("getDate").format("YYYY-MM-DD")).change();
+      }
     });
 
     $("#calendar-next").click(function(){
-      selectedStart = false;
       $("#calendar").fullCalendar("next");
+      var view = $("#calendar").fullCalendar("getView");
+      if(view.name == "custom"){
+        $("#data-selected-date").val($("#calendar").fullCalendar("getDate").format("YYYY-MM-DD")).change();
+      }
     });
 
     var today = moment();
@@ -671,7 +688,7 @@
       $scope.packages = {{ product.packages|json|safe }};
       $scope.baseCurrency = "{{ product.currency|safe }}";
       $scope.prefix = clientCurrency == 'hkd' ? '$' : '￥';
-      $scope.dateStart = today.format("YYYY-MM-DD HH:mm");
+ //     $scope.dateStart = today.format("YYYY-MM-DD HH:mm");
 //    $scope.dateEnd = today.format("YYYY-MM-DD HH:mm");
       $scope.numberOfPersons = 1;
       $scope.contact = {
@@ -771,26 +788,44 @@
         }
       };
 
-//      $scope.selectPackage = function(index){
-//        $scope.currPackage = index;
-//        $scope.selectedItems = {};
-//      };
-
-      $scope.selectSlot = function(index, slotIndex){
+      $scope.toggleSlot = function(index, slotIndex){
+        if(moment($scope.dateStart).format("YYYYMMDD") == moment($scope.selectedDate).format("YYYYMMDD") && $scope.currPackage == index && $scope.currSlot == slotIndex){
+          $scope.currPackage = -1;
+          $scope.currSlot = -1;
+          setSelectedTime("", "");
+          return;
+        }
         $scope.currPackage = index;
         $scope.selectedItems = {};
         $scope.currSlot = slotIndex;
 
         var slot = $scope.packages[index].type.slots[slotIndex];
 
-        var startDate = moment($scope.selectedDate).hour(slot.start.split(":")[0]);
-        var endDate = moment($scope.selectedDate).hour(slot.end.split(":")[0]);
+        var start = slot.start.split(":");
+        var end = slot.end.split(":");
+
+        var startDate = moment($scope.selectedDate).hour(start[0]).minute(start[1]);
+        var endDate = moment($scope.selectedDate).hour(end[0]).minute(end[1]);
         setSelectedTime(startDate, endDate);
       };
 
+      $scope.checkSlotSelected = function(index, slotIndex) {
+        if(moment($scope.dateStart).format("YYYYMMDD") != moment($scope.selectedDate).format("YYYYMMDD")){
+          return false;
+        }
+        if($scope.currPackage == index && $scope.currSlot == slotIndex){
+          return true;
+        }
+
+        return false;
+      };
+
       $scope.checkTimeAvailable = function(slot){
-        var startDate = moment($scope.selectedDate).hour(slot.start.split(":")[0]);
-        var endDate = moment($scope.selectedDate).hour(slot.end.split(":")[0]);
+        var start = slot.start.split(":");
+        var end = slot.end.split(":");
+
+        var startDate = moment($scope.selectedDate).hour(start[0]).minute(start[1]);
+        var endDate = moment($scope.selectedDate).hour(end[0]).minute(end[1]);
 
         if(startDate < moment()){
           return true;
@@ -805,8 +840,37 @@
             return true;
           }
         }
-
         return false;
+      };
+
+      $scope.getTimes = function(type, slot){
+        var timeArray = [];
+        var slotDuration = type.slotDuration;
+
+        var start = slot.start.split(":");
+        var end = slot.end.split(":");
+
+        var startDate = moment().hour(start[0]).minute(start[1]).second(0);
+        var endDate = moment().hour(end[0]).minute(end[1]).second(0);
+
+        do{
+//          timeArray.push({
+//            slot: {
+//              start: startDate,
+//              end: startDate.add(slotDuration, "minute")
+//            },
+//            getSlot: function(){
+//              return this.slot.start.format("H:mm") + "-" + this.slot.end.format("H:mm");
+//            },
+//            $$hashKey:"0"
+//          });
+          timeArray.push(
+            startDate.format("H:mm") + "-" + startDate.add(slotDuration, "minute").format("H:mm")
+          );
+        }while(startDate.format("YYYY-MM-DD HH:mm:ss") != endDate.format("YYYY-MM-DD HH:mm:ss"));
+        console.log(timeArray);
+
+        return timeArray;
       };
     });
 
