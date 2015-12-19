@@ -149,6 +149,7 @@
         "quantity": "数量",
         "subtotal": "小计",
         "base": "套餐基本",
+        "extra_time": "额外时间",
         "extra": "额外人员",
         "total": "总计"
       },

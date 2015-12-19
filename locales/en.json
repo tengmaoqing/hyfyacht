@@ -149,6 +149,7 @@
         "quantity": "Quantity",
         "subtotal": "Subtotal",
         "base": "Base",
+        "extra_time": "Extra time",
         "extra": "Extra people",
         "total": "Total"
       },

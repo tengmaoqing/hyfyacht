@@ -76,7 +76,7 @@ exports.checkBooking = function(req, res, next) {
   } else {
     var bookingForm = req.session.bookingForm;
 
-    Package.findOne({_id: bookingForm.packageId, inStock: true}).populate('owner', 'nickname').populate('product', 'name workingHours').populate('boats', 'name capacity location').exec(function(err, package){
+    Package.findOne({_id: bookingForm.packageId, inStock: true}).populate('owner', 'nickname').populate('product', 'name').populate('boats', 'name location').exec(function(err, package){
       if(err){
         err.status = 400;
         return next(err);
@@ -112,24 +112,66 @@ exports.checkBooking = function(req, res, next) {
 
           //Check product
           if(package.product.id != bookingForm.productId){
+            console.log('Check product');
             return fail('product.booking.result.error.other');
           }
 
           //Check boat
           if(boatIndex < 0){
+            console.log('Check boat');
             return fail('product.booking.result.error.other');
           }
 
           var items = JSON.parse(bookingForm.items);
           var selectedItems = [];
 
-          selectedItems.push({
-            name: i18n.__('product.booking.package.base'),
-            charge: generateCharge(package.baseCharge),
-            originCharge: package.baseCharge,
-            amount: 1,
-            subtotal: generateCharge(package.baseCharge)
-          });
+          var slotCount = moment(bookingForm.dateEnd).diff(moment(bookingForm.dateStart)) / 60000;
+          var charges = package.charges;
+          for(var j = 0; j < charges.length; j++){
+            var condition = charges[j].condition;
+
+            if(slotCount >= condition.start && ((condition.end != 0 && slotCount < condition.end) || (condition.end == 0))){
+              if(charges[j].type == "slot") {
+                if (charges[j].baseCharge) {
+
+                  var extraSlot = (slotCount - package.type.baseDuration) / package.type.slotDuration;
+                  selectedItems.push({
+                    name: charges[j].name,
+                    charge: generateCharge(charges[j].baseCharge),
+                    originCharge: charges[j].baseCharge,
+                    amount: 1,
+                    subtotal: generateCharge(charges[j].baseCharge)
+                  });
+
+                  selectedItems.push({
+                    name: charges[j].extraName,
+                    charge: generateCharge(charges[j].charge),
+                    originCharge: charges[j].charge,
+                    amount: extraSlot,
+                    subtotal: generateCharge(charges[j].charge) * extraSlot
+                  });
+                } else {
+                  var baseCount = slotCount / package.type.slotDuration;
+                  selectedItems.push({
+                    name: charges[j].name,
+                    charge: generateCharge(charges[j].charge),
+                    originCharge: charges[j].charge,
+                    amount: baseCount,
+                    subtotal: generateCharge(charges[j].charge) * baseCount
+                  });
+                }
+
+              }else if(charges[j].type == "all"){
+                selectedItems.push({
+                  name: charges[j].name,
+                  charge: generateCharge(charges[j].charge),
+                  originCharge: charges[j].charge,
+                  amount: 1,
+                  subtotal: generateCharge(charges[j].charge)
+                });
+              }
+            }
+          }
 
           var extraPersons = bookingForm.numberOfPersons - package.basePersons;
 
@@ -147,7 +189,7 @@ exports.checkBooking = function(req, res, next) {
           for(var item in items){
             if(items.hasOwnProperty(item)){
               var index = package.items.map(function(i){return i.name}).indexOf(items[item].name);
-              if(index > -1){
+              if(index > -1 && items[item].amount > 0){
                 var data = package.items[index];
                 selectedItems.push({
                   name: data.name,
@@ -157,6 +199,7 @@ exports.checkBooking = function(req, res, next) {
                   subtotal: generateCharge(data.charge) * items[item].amount
                 });
               }else{
+                console.log('Check item');
                 return fail('product.booking.result.error.other');
               }
             }
@@ -170,30 +213,41 @@ exports.checkBooking = function(req, res, next) {
 
           //Check total
           if(total != bookingForm.total){
+            console.log('Check total');
             return fail('product.booking.result.error.other');
           }
 
-          //Check number of persons
-          //if(parseInt(bookingForm.numberOfPersons) > package.boats[boatIndex].capacity){
-          //  return fail('product.booking.result.error.other');
-          //}
           if(parseInt(bookingForm.numberOfPersons) > package.maxPersons){
+            console.log('Check person');
             return fail('product.booking.result.error.other');
           }
 
           var dateStart = moment(bookingForm.dateStart);
           var dateEnd = moment(bookingForm.dateEnd);
 
-          var workingHoursStart = moment(package.product.workingHours.start, 'H:mm');
-          var workingHoursEnd = moment(package.product.workingHours.end, 'H:mm');
+          var slots = package.type.slots;
+          var availableDate = false;
 
-          //Check working hours
-          if(dateStart.hours() < workingHoursStart.hours() || dateEnd.hours() > workingHoursEnd.hours()){
+          for(var i = 0; i < slots.length; i++){
+            var start = slots[i].start.split(':');
+            var end = slots[i].end.split(':');
+
+            var workingHoursStart = moment(dateStart).hour(start[0]).minute(start[1]);
+            var workingHoursEnd = moment(dateEnd).hour(end[0]).minute(end[1]);
+
+            if(dateStart >= workingHoursStart && dateEnd <= workingHoursEnd){
+              availableDate = true;
+            }
+          }
+
+          if(!availableDate){
+            console.log('Check working hours');
             return fail('product.booking.result.error.other');
           }
 
           //Check package availableDate
           if(!package.availableMonths[dateStart.month()] || !package.availableDays[dateStart.days()] || !package.availableMonths[dateEnd.month()] || !package.availableDays[dateEnd.days()]){
+            console.log('Check date');
             return fail('product.booking.result.error.other');
           }
 
@@ -255,7 +309,7 @@ exports.checkBooking = function(req, res, next) {
                         $and:[
                           {
                             dateStart: {
-                              $gt: dateStart.toDate()
+                              $gte: dateStart.toDate()
                             }
                           },
                           {
@@ -461,8 +515,8 @@ exports.getBookingsByUserId = function(req, res, next){
       path: 'productId',
       select: 'photo'
     }],
-    sortBy: {
-      _id: -1
+    sort: {
+      createDate: -1
     }
   }, function (err, result) {
     if(err){
@@ -498,7 +552,7 @@ exports.getBookingsByOwnerId = function(req, res, next){
       path: 'productId',
       select: 'photo'
     }],
-    sortBy: {
+    sort: {
       _id: -1
     }
   }, function (err, result) {

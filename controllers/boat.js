@@ -9,7 +9,13 @@ exports.getBoat = function(req, res, next){
   Boat.findOne({
     _id:req.params.id,
     display: true
-  }).populate('owner', 'nickname').populate('products', 'id name summary baseCharge currency photo').exec(function(err, boat){
+  }).populate('owner', 'nickname').populate({
+    path:'products',
+    select:'id name summary baseCharge currency photo',
+    match:{
+      display: true
+    }
+  }).exec(function(err, boat){
     if(err){
       err.status = 400;
       return next(err);
@@ -123,7 +129,7 @@ exports.getBoats = function(req, res, next){
     page: page,
     limit: 12,
     columns: '_id name type baseCharge currency location thumbnail',
-    sortBy: {
+    sort: {
       _id: 1
     }
   },function(err, result){

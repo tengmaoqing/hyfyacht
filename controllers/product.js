@@ -9,7 +9,7 @@ exports.getProduct = function(req, res, next){
 
   Product.findOne({_id:req.params.id}).populate({
     path: 'packages',
-    select: 'id name summary currency baseCharge basePersons maxPersons extraCharge items availableMonths availableDays type',
+    select: 'id name summary currency baseCharge basePersons maxPersons extraCharge items availableMonths availableDays type charges',
     match: {
       boats: boatId,
       inStock: true
@@ -26,7 +26,7 @@ exports.getProduct = function(req, res, next){
             return next(err);
           }else{
             if(boat){
-              return res.render('product2', {product: product, boat: boat});
+              return res.render('product', {product: product, boat: boat});
             }else{
               var err = new Error('Not Found');
               err.status = 404;

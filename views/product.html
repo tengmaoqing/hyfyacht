@@ -32,12 +32,6 @@
           </div>
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <p>{{ product.summary }}</p>
-            <dl class="dl-horizontal">
-              <dt><span class="glyphicon glyphicon-time"></span> {{ __('product.info.duration') }}</dt>
-              <dd>{{ __n('common.hour', 'common.hour', product.duration) }}</dd>
-              <dt><span class="glyphicon glyphicon-dashboard"></span> {{ __('product.info.workinghours') }}</dt>
-              <dd>{{ product.workingHours.start }} - {{ product.workingHours.end }}</dd>
-            </dl>
           </div>
         </div>
       </div>
@@ -46,12 +40,68 @@
           <h3>{{ __('product.section.booking') }}</h3>
           <hr class="hr-divider">
           <div id="product-booking-date" class="product-booking-container">
-            <p><strong>{{ __('product.booking.selectTime') }}</strong></p>
+            <p><strong>{{ __('product.booking.selectDate') }}</strong></p>
             <div id="calendar"></div>
+            <div id="product-booking-package" class="product-booking-container">
+              <p><strong>{{ __('product.booking.selectPackage') }}</strong></p>
+              <div class="panel-group" id="package-accordion" role="tablist">
+                {% raw %}
+                <input id="data-selected-date" name="selectedDate" class="collapse" type="text" data-ng-model="selectedDate">
+                <input id="data-selected-date-start" name="dateStart" class="collapse" type="text" data-ng-model="dateStart" required>
+                <input id="data-selected-date-end" name="dateEnd" class="collapse" type="text" data-ng-model="dateEnd" required>
+                <input name="currPackage" class="collapse" type="number" data-ng-model="currPackage" min="0" required>
+                <input name="packageId" class="collapse" type="text" data-ng-model="packages[currPackage]._id">
+                <input name="items" class="collapse" type="text" value="{{ getItems() }}">
+                <input name="total" class="collapse" type="text" value="{{ getTotal() }}">
+                <input id="data-calendar-events" name="events" class="collapse" type="text" data-ng-model="events">
+                <div class="panel panel-custom" data-ng-repeat="package in packages" data-ng-if="checkAvailable(package)">
+                  <div class="panel-heading" role="tab" id="package-heading-{{ $index }}">
+                    <h4 class="panel-title relative-container" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index }}" aria-expanded="true" aria-controls="package-collapse-{{ $index }}">
+                      <!--<span class="glyphicon glyphicon-ok text-primary" data-ng-if="$index == currPackage"></span>-->
+                      {{ package.name }}({{ displayAmount(generateCharge(package.baseCharge)) }})
+                      <a class="absolute-right-top more" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index }}" aria-expanded="true" aria-controls="package-collapse-{{ $index }}">
+                        <span class="glyphicon glyphicon-option-horizontal"></span>
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="package-collapse-{{ $index }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="package-heading-{{ $index }}">
+                    <div class="panel-body">
+                      <div class="package-summary" data-ng-bind-html="package.summary | santize"></div>
+                      <div class="package-select-time">
+                        {% endraw %}
+                        <hr class="hr-divider">
+                        <p><strong>{{ __('product.booking.selectTime') }}</strong></p>
+                        {% raw %}
+                        <div class="row" data-ng-if="package.type.rule == 'slot'">
+                          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" data-ng-repeat="slot in package.type.slots">
+                            <button type="button" class="package-slot btn-block" data-ng-class="{'selected': checkSlotSelected($parent.$index, $index)}" data-ng-click="toggleSlot($parent.$index, $index)" data-ng-disabled="checkTimeAvailable(package.type.slots[$index])">
+                              {{ slot.name }} ( {{ slot.start }} - {{ slot.end }} )
+                            </button>
+                          </div>
+                        </div>
+                        <div data-ng-if="package.type.rule == 'minute'">
+                          <div class="row" data-ng-repeat="slot in package.type.slots">
+                            <div class="col-lg-12">{{ slot.name }}</div>
+                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6" data-ng-repeat="time in getTimes(package.type, slot)">
+                              <button type="button" class="package-slot-time btn-block" data-ng-class="{'selected': checkTimeSelected(time)}" data-ng-click="toggleTime($parent.$parent.$index, $parent.$index, time)" data-ng-disabled="checkTimeAvailable(getSlotFromTime(time))">
+                                {{ time }}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endraw %}
+              </div>
+            </div>
             <div class="row calendar-controller">
               <div class="col-md-4 col-sm-6 col-xs-12">
                 <span class="glyphicon glyphicon-stop calendar-event-icon"></span>
                 {{ __('calendar.booked') }}
+                <span class="glyphicon glyphicon-stop calendar-event-icon-unavailable-client"></span>
+                {{ __('calendar.unavailable') }}
               </div>
               <div class="col-md-8 col-sm-6 col-xs-12 text-right">
                 <button id="calendar-month" type="button" class="btn btn-default invisible">{{ __('calendar.selectdate') }}</button>
@@ -64,6 +114,10 @@
             </div>
             <ul class="list-group">
               <li class="list-group-item">
+                <label>{{ __('product.booking.selectedPackage') }}</label>
+                <p>{% raw %}{{ packages[currPackage].name }}{% endraw %}</p>
+              </li>
+              <li class="list-group-item">
                 <label>{{ __('product.booking.start') }}</label>
                 <p id="selectedTime-start"></p>
               </li>
@@ -73,42 +127,7 @@
               </li>
             </ul>
           </div>
-          <div id="product-booking-package" class="product-booking-container">
-            <p><strong>{{ __('product.booking.selectPackage') }}</strong></p>
-            <div class="panel-group" id="package-accordion" role="tablist">
-              {% raw %}
-              <input id="data-selected-date-start" name="dateStart" class="collapse" type="text" data-ng-model="dateStart" data-ng-change="togglePackage(-1)" required>
-              <input id="data-selected-date-end" name="dateEnd" class="collapse" type="text" data-ng-model="dateEnd" required>
-              <input name="currPackage" class="collapse" type="number" data-ng-model="currPackage" min="0" required>
-              <input name="packageId" class="collapse" type="text" data-ng-model="packages[currPackage]._id">
-              <input name="items" class="collapse" type="text" value="{{ getItems() }}">
-              <input name="total" class="collapse" type="text" value="{{ getTotal() }}">
-              <div class="panel panel-custom" data-ng-repeat="package in packages" data-ng-if="checkAvailable(package)">
-                <div class="panel-heading" role="tab" id="package-heading-{{ $index }}">
-                  <h4 class="panel-title relative-container">
-                    <div class="btn-group btn-group-sm checkboxs" data-toggle="buttons" data-ng-click="togglePackage($index)">
-                      <label class="btn btn-default" data-ng-if="$index != currPackage">
-                        <span class="glyphicon glyphicon-unchecked"></span>
-                        <input type="checkbox" autocomplete="off">
-                      </label>
-                      <label class="btn btn-primary" data-ng-if="$index == currPackage">
-                        <span class="glyphicon glyphicon-ok"></span>
-                        <input type="checkbox" autocomplete="off">
-                      </label>
-                    </div> {{ package.name }}
-                    <a class="absolute-right-top more" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index }}" aria-expanded="true" aria-controls="package-collapse-1">
-                      <span class="glyphicon glyphicon-option-horizontal"></span>
-                    </a>
-                  </h4>
-                </div>
-                <div id="package-collapse-{{ $index }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="package-heading-1">
-                  <div class="panel-body" data-ng-bind-html="package.summary | santize">
-                  </div>
-                </div>
-              </div>
-              {% endraw %}
-            </div>
-          </div>
+
           <div id="product-booking-person" class="product-booking-container">
             <p><strong>{{ __('product.booking.numberOfPeople') }} (1 - {% raw %}{{ packages[currPackage].maxPersons }}{% endraw %})</strong></p>
             <div class="alert alert-danger" data-ng-show="booking.numberOfPersons.$dirty && booking.numberOfPersons.$invalid">
@@ -147,12 +166,33 @@
                   </div>
                   <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
                     <div class="row">
-                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{{ __('product.booking.package.base') }} {% raw %}({{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}){% endraw %}</strong></div>
-                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>1</strong></div>
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{% raw %}{{ baseChargeName }} ({{ displayAmount(generateCharge(baseCharge)) }}){% endraw %}</strong></div>
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>{% raw %}{{ slotCount }}{% endraw %}</strong></div>
                     </div>
                   </div>
                   <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
-                    <strong>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}{% endraw %}</strong>
+                    <strong>{% raw %}{{ displayAmount(generateCharge(baseCharge) * slotCount) }}{% endraw %}</strong>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item" data-ng-if="extraSlot > 0">
+                <div class="row">
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <div class="btn-group btn-group-sm" data-toggle="buttons">
+                      <label class="btn btn-default disabled">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        <input type="checkbox" autocomplete="off">
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
+                    <div class="row">
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{% raw %}{{ extraSlotChargeName }} ({{ displayAmount(generateCharge(extraSlotCharge)) }}){% endraw %}</strong></div>
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>{% raw %}{{ extraSlot }}{% endraw %}</strong></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
+                    <strong>{% raw %}{{ displayAmount(generateCharge(extraSlotCharge) * extraSlot ) }}{% endraw %}</strong>
                   </div>
                 </div>
               </li>
@@ -207,7 +247,7 @@
                       <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }})</strong></div>
                       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right">
                         <strong data-ng-if="item.type == 'single'">{{ selectedItems[item.name] ? selectedItems[item.name].amount : 0 }}</strong>
-                        <input type="number" class="form-control input-small" placeholder="0" data-ng-if="item.type == 'multi'" data-ng-model="inputValue[item.name]" data-ng-change="inputItem(item)">
+                        <input type="number" class="form-control input-small" placeholder="0" data-ng-if="item.type == 'multi'" data-ng-model="inputValue[item.name]" data-ng-change="inputItem(item)" min="0">
                       </div>
                     </div>
                   </div>
@@ -327,14 +367,14 @@
     </div>
     <div class="navbar-fixed-bottom fix-container">
       <div class="container text-center">
-          <ul id="product-nav" class="nav nav-pills">
-            <li role="presentation" class="hidden-xs"><a href="#product-base">{{ __('product.section.info') }}</a></li>
-            <li role="presentation"><a href="#product-booking">{{ __('product.section.booking') }}</a></li>
-            <li role="presentation"><a href="#product-detail">{{ __('product.section.desc') }}</a></li>
-            <li role="presentation" class="hidden-xs"><a href="#product-include">{{ __('product.section.include') }}</a></li>
-            <li role="presentation" class="hidden-xs"><a href="#product-exclude">{{ __('product.section.exclude') }}</a></li>
-            <li role="presentation"><a href="#product-notice">{{ __('product.section.notice') }}</a></li>
-          </ul>
+        <ul id="product-nav" class="nav nav-pills">
+          <li role="presentation" class="hidden-xs"><a href="#product-base">{{ __('product.section.info') }}</a></li>
+          <li role="presentation"><a href="#product-booking">{{ __('product.section.booking') }}</a></li>
+          <li role="presentation"><a href="#product-detail">{{ __('product.section.desc') }}</a></li>
+          <li role="presentation" class="hidden-xs"><a href="#product-include">{{ __('product.section.include') }}</a></li>
+          <li role="presentation" class="hidden-xs"><a href="#product-exclude">{{ __('product.section.exclude') }}</a></li>
+          <li role="presentation"><a href="#product-notice">{{ __('product.section.notice') }}</a></li>
+        </ul>
       </div>
     </div>
     <div id="booking-confirm-modal" class="modal fade">
@@ -373,7 +413,8 @@
                 <table class="table table-summary">
                   <caption>{{ __('product.booking.package.items') }}</caption>
                   <tr><th>{{ __('product.booking.package.item') }}</th><th>{{ __('product.booking.package.quantity') }}</th><th>{{ __('product.booking.package.subtotal') }}</th></tr>
-                  <tr><td>{{ __('product.booking.package.base') }} ({% raw %}{{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}{% endraw %})</td><td>1</td><td>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].baseCharge)) }}{% endraw %}</td></tr>
+                  <tr><td>{% raw %}{{ baseChargeName }} ({{ displayAmount(generateCharge(baseCharge)) }})</td><td>{{ slotCount }}</td><td>{{ displayAmount(generateCharge(baseCharge) * slotCount) }}{% endraw %}</td></tr>
+                  <tr data-ng-if="extraSlot > 0"><td>{% raw %}{{ extraSlotChargeName }} ({{ displayAmount(generateCharge(extraSlotCharge)) }})</td><td>{{ extraSlot }}</td><td>{{ displayAmount(generateCharge(extraSlotCharge) * extraSlot) }}{% endraw %}</td></tr>
                   <tr data-ng-if="packages[currPackage].extraCharge > 0 && (numberOfPersons - packages[currPackage].basePersons) > 0"><td>{{ __('product.booking.package.extra') }} ({% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge)) }}{% endraw %})</td><td>{% raw %}{{ numberOfPersons - packages[currPackage].basePersons }}{% endraw %}</td><td>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge) * (numberOfPersons - packages[currPackage].basePersons)) }}{% endraw %}</td></tr>
                   <tr data-ng-repeat="item in selectedItems"><td>{% raw %}{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }}){% endraw %}</td><td>{% raw %}{{ item.amount }}{% endraw %}</td><td>{% raw %}{{ displayAmount(generateCharge(item.charge) * item.amount) }}{% endraw %}</td></tr>
                 </table>
@@ -415,286 +456,560 @@
 <script src="//cdn.bootcss.com/fullcalendar/2.4.0/lang/{% if preset.locale == 'zh-cn' %}zh-cn{% elseif preset.locale == 'zh-hk' %}zh-tw{% elseif preset.locale == 'en' %}en-gb{% endif %}.js"></script>
 <script src="//cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
 <script>
-(function($, window){
-  var selectedStart = false;
+  (function($, window){
+    var FC = $.fullCalendar; // a reference to FullCalendar's root namespace
+    var View = FC.View;      // the class that all views must inherit from
+    var CustomView;          // our subclass
 
-  function setSelectedTime(start, end){
-    var tempEnd = end || moment(start);
-    if(!end){
-      tempEnd.hour(start.hour() + 1);
+    CustomView = View.extend({ // make a subclass of View
+
+      initialize: function() {
+        // called once when the view is instantiated, when the user switches to the view.
+        // initialize member variables or do other setup tasks.
+      },
+
+      render: function() {
+        // responsible for displaying the skeleton of the view within the already-defined
+        // this.el, a jQuery element.
+      },
+
+      setHeight: function(height, isAuto) {
+        // responsible for adjusting the pixel-height of the view. if isAuto is true, the
+        // view may be its natural height, and `height` becomes merely a suggestion.
+      },
+
+      renderEvents: function(events) {
+        // reponsible for rendering the given Event Objects
+      },
+
+      destroyEvents: function() {
+        // responsible for undoing everything in renderEvents
+      },
+
+      renderSelection: function(range) {
+        // accepts a {start,end} object made of Moments, and must render the selection
+      },
+
+      destroySelection: function() {
+        // responsible for undoing everything in renderSelection
+      }
+
+    });
+
+    FC.views.custom = CustomView;
+
+    function setSelectedTime(start, end){
+      if(!start && !end){
+        $("#data-selected-date-start").val("").change();
+        $("#data-selected-date-end").val("").change();
+
+        $("#selectedTime-start").html("");
+        $("#selectedTime-end").html("");
+        return;
+      }
+      var tempEnd = end || moment(start);
+      if(!end){
+        tempEnd.hour(start.hour() + 1);
+      }
+
+      $("#data-selected-date-start").val(start.format("YYYY-MM-DD HH:mm")).change();
+      $("#data-selected-date-end").val(tempEnd.format("YYYY-MM-DD HH:mm")).change();
+
+      $("#selectedTime-start").html(start.format("YYYY-MM-DD HH:mm"));
+      $("#selectedTime-end").html(tempEnd.format("YYYY-MM-DD HH:mm"));
     }
 
-    $("#data-selected-date-start").val(start.format("YYYY-MM-DD HH:mm")).change();
-    $("#data-selected-date-end").val(tempEnd.format("YYYY-MM-DD HH:mm")).change();
+    $("#calendar").fullCalendar({
+      contentHeight: "auto",
+      timezone: "local",
+      header: {
+        left: "title",
+        right: ""
+      },
+      eventLimit: 3,
+      eventLimitClick: function(cellInfo, jsEvent){
+        var now = moment();
+        now.date(now.date() + 1);
+        if(cellInfo.date < now.hour(0).minute(0).second(0)){
+          return false;
+        }
 
-    $("#selectedTime-start").html(start.format("YYYY-MM-DD HH:mm"));
-    $("#selectedTime-end").html(tempEnd.format("YYYY-MM-DD HH:mm"));
-  }
-
-  $("#calendar").fullCalendar({
-    contentHeight: "auto",
-    timezone: "local",
-    header: {
-      left: "title",
-      right: ""
-    },
-    eventLimit: 3,
-    eventLimitClick: function(cellInfo, jsEvent){
-      var now = moment();
-      now.date(now.date() + 1);
-      if(cellInfo.date < now.hour(0).minute(0).second(0)){
-        return false;
-      }
-
-      $("#calendar").fullCalendar("gotoDate", cellInfo.date);
-      $("#calendar").fullCalendar("changeView", "agendaDay");
-    },
+        $("#calendar").fullCalendar("gotoDate", cellInfo.date);
+        $("#calendar").fullCalendar("changeView", "agendaDay");
+      },
 //    allDayText: "{{ __('common.holiday') }}",
-    allDaySlot: false,
-    minTime: "{{ product.workingHours.start }}",
-    maxTime: "{{ product.workingHours.end }}",
-    slotDuration: "01:00:00",
-    slotLabelFormat: "HH:00",
-    selectable: true,
-    selectOverlap: function(event){
-      return event.rendering === "background";
-    },
-    unselectAuto: false,
-    viewRender: function(view, element){
-      if(view.name == "month"){
-        $("#calendar-month").addClass("invisible");
-      }else{
-        $("#calendar-month").removeClass("invisible");
-      }
+      allDaySlot: false,
+      minTime: "{{ product.workingHours.start }}",
+      maxTime: "{{ product.workingHours.end }}",
+      slotDuration: "01:00:00",
+      slotLabelFormat: "HH:00",
+      selectable: true,
+      selectOverlap: function(event){
+        return event.rendering === "background";
+      },
+      unselectAuto: false,
+      viewRender: function(view, element){
+        if(view.name == "month"){
+          $("#calendar-month").addClass("invisible");
+        }else{
+          $("#calendar-month").removeClass("invisible");
+        }
+      },
+      dayRender: function(date, cell){
+        if(date < moment()){
+          $(cell).addClass("fc-day-disable");
+        }
+      },
+      dayClick: function(date, jsEvent, view){
+        if(view.name == "custom"){
+          return;
+        }
 
-//      $(".fc-toolbar .fc-button").addClass("btn btn-default btn-lg").removeClass("fc-state-default");
-//      $(".fc-toolbar .fc-button-group").addClass("btn-group");
-    },
-    dayRender: function(date, cell){
-      if(date < moment()){
-        $(cell).addClass("fc-day-disable");
+        if(date < moment().hour(0).minute(0).second(0)){
+          return false;
+        }
+
+        var endDate = moment(date);
+        endDate.add(1, "day");
+
+        var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
+          return !e.allDay && (e.start >= date && e.end <= endDate);
+        });
+
+        $("#data-selected-date").val(date.format("YYYY-MM-DD")).change();
+
+        $("#data-calendar-events").val(JSON.stringify(clientEvents)).change();
+
+        $("#calendar").fullCalendar("gotoDate", date);
+        $("#product-booking-package").show();
+        $("#calendar").fullCalendar("changeView", "custom");
+      },
+      eventClick: function(calEvent, jsEvent, view){
+        var date = calEvent.start;
+        if(date < moment().hour(0).minute(0).second(0)){
+          return false;
+        }
+
+        var endDate = moment(date);
+        endDate.add(1, "day");
+
+        var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
+          return !e.allDay && (e.start >= date && e.end <= endDate);
+        });
+
+        $("#data-selected-date").val(date.format("YYYY-MM-DD")).change();
+
+        $("#data-calendar-events").val(JSON.stringify(clientEvents)).change();
+
+        $("#calendar").fullCalendar("gotoDate", date);
+        $("#product-booking-package").show();
+        $("#calendar").fullCalendar("changeView", "custom");
+      },
+      eventSources:[
+        {
+          url: "/booking/cal/{{ boat.id }}",
+          color: "#258ec7"
+        },
+        {
+          url: "/booking/cal/unavailable/{{ boat.id }}",
+          color: "#258ec7"
+        }
+      ],
+      eventRender: function(event, element){
+        if(event.rendering === "background"){
+          element.append(event.title);
+        }
+        $(element).find(".fc-time").text(moment(event.start).format("HH:mm") + "-" + moment(event.end).format("HH:mm"));
       }
-    },
-    dayClick: function(date, jsEvent, view){
-      if(date < moment().hour(0).minute(0).second(0)){
+    });
+
+    $("#calendar-month").click(function(){
+      $("#calendar").fullCalendar("changeView", "month");
+      $("#product-booking-package").hide();
+    });
+
+    $("#calendar-today").click(function(){
+      $("#calendar").fullCalendar("today");
+      var view = $("#calendar").fullCalendar("getView");
+      if(view.name == "custom"){
+        var date = $("#calendar").fullCalendar("getDate");
+        var endDate = moment(date);
+        endDate.add(1, "day");
+
+        var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
+          return !e.allDay && (e.start >= date && e.end <= endDate);
+        });
+
+        $("#data-selected-date").val(date.format("YYYY-MM-DD")).change();
+
+        $("#data-calendar-events").val(JSON.stringify(clientEvents)).change();
+      }
+    });
+
+    $("#calendar-prev").click(function(){
+      $("#calendar").fullCalendar("prev");
+      var view = $("#calendar").fullCalendar("getView");
+      if(view.name == "custom"){
+        var date = $("#calendar").fullCalendar("getDate");
+        var endDate = moment(date);
+        endDate.add(1, "day");
+
+        var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
+          return !e.allDay && (e.start >= date && e.end <= endDate);
+        });
+
+        $("#data-selected-date").val(date.format("YYYY-MM-DD")).change();
+
+        $("#data-calendar-events").val(JSON.stringify(clientEvents)).change();
+      }
+    });
+
+    $("#calendar-next").click(function(){
+      $("#calendar").fullCalendar("next");
+      var view = $("#calendar").fullCalendar("getView");
+      if(view.name == "custom"){
+        var date = $("#calendar").fullCalendar("getDate");
+        var endDate = moment(date);
+        endDate.add(1, "day");
+
+        var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
+          return !e.allDay && (e.start >= date && e.end <= endDate);
+        });
+
+        $("#data-selected-date").val(date.format("YYYY-MM-DD")).change();
+
+        $("#data-calendar-events").val(JSON.stringify(clientEvents)).change();
+      }
+    });
+
+    var clientCurrency = "{{ preset.currency|safe }}";
+    var currency = {{ preset.configCurrency|json|safe }};
+
+    var app = angular.module("booking", []);
+
+    app.controller("bookingController", function($scope){
+      $scope.packages = {{ product.packages|json|safe }};
+      $scope.baseCurrency = "{{ product.currency|safe }}";
+      $scope.prefix = clientCurrency == 'hkd' ? '$' : '￥';
+      $scope.numberOfPersons = 1;
+      $scope.contact = {
+        name: "",
+        areaCode: "86",
+        mobile: "",
+        email: ""
+      };
+      $scope.currPackage = -1;
+      $scope.currSlot = -1;
+      $scope.currTimes = [];
+      $scope.events = "[]";
+      $scope.selectedDate = "";
+      $scope.selectedItems = {};
+      $scope.inputValue = {};
+      $scope.submitted = false;
+      $scope.agree = false;
+      $scope.baseChargeName = "";
+      $scope.baseCharge = 0;
+      $scope.slotCount = 0;
+      $scope.extraSlotCharge = 0;
+      $scope.extraSlot = 0;
+      $scope.extraSlotChargeName = "";
+
+      $scope.generateCharge = function(charge){
+        return parseInt(charge * currency[clientCurrency] / currency[$scope.baseCurrency]);
+      };
+
+      $scope.displayAmount = function(amount){
+        return $scope.prefix + (amount / 100).toFixed(2);
+      };
+
+      $scope.togglePackage = function(index){
+        $scope.currPackage == index ? $scope.currPackage = -1 : $scope.currPackage = index;
+        $scope.selectedItems = {};
+      };
+
+      $scope.checkAvailable = function(package){
+        var selectedDate = moment($scope.selectedDate, "YYYY-MM-DD HH:mm");
+
+        if(package.availableMonths[selectedDate.month()] && package.availableDays[selectedDate.day()]){
+          return true;
+        }
+
         return false;
-      }
+      };
 
-      $("#calendar").fullCalendar("gotoDate", date);
-      $("#calendar").fullCalendar("changeView", "agendaDay");
-    },
-    eventClick: function(calEvent, jsEvent, view){
-      if(view.name == "agendaDay" || calEvent.start < moment()){
-        return;
-      }
+      $scope.toggleItem = function(item){
+        if($scope.selectedItems[item.name]){
+          delete $scope.selectedItems[item.name];
+        }else{
+          $scope.selectedItems[item.name] = {
+            name: item.name,
+            charge: item.charge,
+            amount: 1
+          };
+        }
+      };
 
-      $("#calendar").fullCalendar("gotoDate", calEvent.start);
-      $("#calendar").fullCalendar("changeView", "agendaDay");
-    },
-    select: function(start, end, jsEvent, view){
-      if(view.name == "month"){
-        return;
-      }
+      $scope.inputItem = function(item){
+        var value = $scope.inputValue[item.name];
 
-      if(start < moment()){
+        if(value <= 0){
+          delete $scope.selectedItems[item.name];
+        }else{
+          $scope.selectedItems[item.name] = {
+            name: item.name,
+            charge: item.charge,
+            amount: value
+          };
+        }
+      };
+
+      $scope.getTotal = function(){
+        var package = $scope.packages[$scope.currPackage];
+
+        if(!package){
+          return 0;
+        }
+
+        var extraPersons = $scope.numberOfPersons - package.basePersons;
+        extraPersons = extraPersons < 0 ? 0 : extraPersons;
+
+        var itemsAmount = 0;
+
+        for(var item in $scope.selectedItems){
+          if($scope.selectedItems.hasOwnProperty(item)){
+            itemsAmount += $scope.generateCharge($scope.selectedItems[item].charge) * $scope.selectedItems[item].amount;
+          }
+        }
+
+        return $scope.generateCharge($scope.baseCharge) * $scope.slotCount + $scope.generateCharge($scope.extraSlotCharge) * $scope.extraSlot + $scope.generateCharge(package.extraCharge) * extraPersons + itemsAmount;
+
+        //return $scope.generateCharge(package.baseCharge) + $scope.generateCharge(package.extraCharge) * extraPersons + itemsAmount;
+      };
+
+      $scope.getItems = function() {
+        return JSON.stringify($scope.selectedItems);
+      };
+
+      $scope.validate = function(){
+        if(!$scope.booking.$valid){
+          $scope.submitted = true;
+        }else{
+          $("#booking-confirm-modal").modal("show");
+        }
+      };
+
+      $scope.toggleSlot = function(index, slotIndex){
+        if(moment($scope.dateStart).format("YYYYMMDD") == moment($scope.selectedDate).format("YYYYMMDD") && $scope.currPackage == index && $scope.currSlot == slotIndex){
+          $scope.currPackage = -1;
+          $scope.currSlot = -1;
+          setSelectedTime("", "");
+          return;
+        }
+        $scope.currPackage = index;
+        $scope.selectedItems = {};
+        $scope.currSlot = slotIndex;
+
+        var slot = $scope.packages[index].type.slots[slotIndex];
+
+        var start = slot.start.split(":");
+        var end = slot.end.split(":");
+
+        var startDate = moment($scope.selectedDate).hour(start[0]).minute(start[1]);
+        var endDate = moment($scope.selectedDate).hour(end[0]).minute(end[1]);
+        setSelectedTime(startDate, endDate);
+
+        var slotCount = endDate.diff(startDate) / 60000;
+
+        var charges = $scope.packages[index].charges;
+        var charge = {};
+        for(var j = 0; j < charges.length; j++){
+          var condition = charges[j].condition;
+
+          if(slotCount >= condition.start && ((condition.end != 0 && slotCount < condition.end) || (condition.end == 0))){
+            if(charges[j].type == "all") {
+
+              $scope.slotCount = 1;
+              $scope.baseCharge = charges[j].charge;
+              $scope.extraSlot = 0;
+
+              $scope.baseChargeName = charges[j].name;
+            }
+          }
+        }
+      };
+
+      $scope.checkSlotSelected = function(index, slotIndex) {
+        if(moment($scope.dateStart).format("YYYYMMDD") != moment($scope.selectedDate).format("YYYYMMDD")){
+          return false;
+        }
+        if($scope.currPackage == index && $scope.currSlot == slotIndex){
+          return true;
+        }
+
+        return false;
+      };
+
+      $scope.timeNotAvailable = function(){
         $("#hyf-modal-alert").CustomAlert("{{ __('product.booking.error.invaild_time') }}");
+        $scope.currPackage = -1;
+        setSelectedTime("", "");
         return false;
-      }
+      };
 
-      if(!selectedStart){
-        selectedStart = start;
-        setSelectedTime(selectedStart);
-      }else{
-        if(selectedStart < start){
-          var end = moment(start);
-          end.hour(end.hour() + 1);
+      $scope.toggleTime = function(index, slotIndex, time){
+        var slot = $scope.getSlotFromTime(time);
 
-          //get events between selections
-          var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
-            var eventEnd = e.end || e.start;
-            return !e.allDay && e.start > selectedStart && (e.start < end);
-          });
+        var type = $scope.packages[index].type;
+        var selectedSlot = type.slots[slotIndex];
+        var slotEndDate = moment($scope.selectedDate).hour(selectedSlot.end.split(":")[0]).minute(selectedSlot.end.split(":")[1]);
 
-          if(clientEvents && clientEvents.length > 0) {
-            selectedStart = start;
-            setSelectedTime(selectedStart);
+        if(moment($scope.dateStart).format("YYYYMMDD") != moment($scope.selectedDate).format("YYYYMMDD") || $scope.currPackage != index || $scope.currSlot != slotIndex){
+          $scope.currTimes = [];
+          $scope.currPackage = index;
+          $scope.selectedItems = {};
+          $scope.currSlot = slotIndex;
+        }
+
+        var start = slot.start.split(":");
+        var end = slot.end.split(":");
+        var startDate = moment($scope.selectedDate).hour(start[0]).minute(start[1]);
+        var endDate = moment($scope.selectedDate).hour(end[0]).minute(end[1]);
+
+        if($scope.currTimes.length == 0 || startDate <= moment($scope.dateStart)){
+          endDate = moment(startDate).add(type.baseDuration, "minute");
+          if(endDate > slotEndDate){
+            return $scope.timeNotAvailable();
+          }
+        }else{
+          var lastestEndDate = moment($scope.dateStart).add(type.maxDuration, "minute");
+          if (endDate > lastestEndDate) {
+            endDate = moment(startDate).add(type.baseDuration, "minute");
+            if(endDate > slotEndDate){
+              return $scope.timeNotAvailable();
+            }
+          }else{
+            startDate = moment($scope.dateStart);
+          }
+        }
+
+        var resultSlot = {
+          start: startDate.format("H:mm"),
+          end: endDate.format("H:mm")
+        };
+
+        var times = $scope.getTimes(type, resultSlot);
+
+        for(var i = 0; i < times.length; i++){
+          if($scope.checkTimeAvailable($scope.getSlotFromTime(times[i]))){
+            return $scope.timeNotAvailable();
+          }
+        }
+
+        $scope.currTimes = times;
+
+        setSelectedTime(startDate, endDate);
+
+        var slotCount = endDate.diff(startDate) / 60000;
+
+        var charges = $scope.packages[index].charges;
+        for(var j = 0; j < charges.length; j++){
+          var condition = charges[j].condition;
+
+          if(slotCount >= condition.start && ((condition.end != 0 && slotCount < condition.end) || (condition.end == 0))){
+            if(charges[j].type == "slot") {
+              if (charges[j].baseCharge) {
+                $scope.slotCount = 1;
+                $scope.baseCharge = charges[j].baseCharge;
+
+                $scope.extraSlot = (slotCount - type.baseDuration) / type.slotDuration;
+                $scope.extraSlotCharge = charges[j].charge;
+                $scope.extraSlotChargeName = charges[j].extraName;
+              } else {
+                $scope.slotCount = slotCount / type.slotDuration;
+                $scope.baseCharge = charges[j].charge;
+                $scope.extraSlot = 0;
+              }
+
+              $scope.baseChargeName = charges[j].name;
+            }
+          }
+        }
+      };
+
+      $scope.checkTimeSelected = function(time){
+        if(moment($scope.dateStart).format("YYYYMMDD") != moment($scope.selectedDate).format("YYYYMMDD")){
+          return false;
+        }
+        var times = $scope.currTimes;
+        for(var i = 0; i < times.length; i++){
+          if(time == times[i]){
             return true;
           }
-
-          $("#calendar").fullCalendar("select", selectedStart, end);
-          setSelectedTime(selectedStart, end);
-          selectedStart = false;
-        }else{
-          selectedStart = start;
-          setSelectedTime(selectedStart);
         }
-      }
-    },
-//    events:[
-//      {
-//        title: "节日",
-//        allDay: true,
-//        start: "2015-12-01",
-//        end: "2015-12-01",
-//        rendering: "background",
-//        color: "#f00"
-//      }
-//    ],
-    eventSources:[
-      {
-        url: "/booking/cal/{{ boat.id }}",
-        color: "#258ec7"
-      },
-      {
-        url: "/booking/cal/unavailable/{{ boat.id }}",
-        color: "#258ec7"
-      }
-    ],
-    eventRender: function(event, element){
-      if(event.rendering === "background"){
-        element.append(event.title);
-      }
-      $(element).find(".fc-time").text(moment(event.start).format("HH:mm") + "-" + moment(event.end).format("HH:mm"));
-    }
-  });
 
-  $("#calendar-month").click(function(){
-    selectedStart = false;
-    $("#calendar").fullCalendar("changeView", "month");
-  });
+        return false;
+      };
 
-  $("#calendar-today").click(function(){
-    $("#calendar").fullCalendar("today");
-  });
+      $scope.checkTimeAvailable = function(slot){
+        var start = slot.start.split(":");
+        var end = slot.end.split(":");
 
-  $("#calendar-prev").click(function(){
-    selectedStart = false;
-    $("#calendar").fullCalendar("prev");
-  });
+        var startDate = moment($scope.selectedDate).hour(start[0]).minute(start[1]);
+        var endDate = moment($scope.selectedDate).hour(end[0]).minute(end[1]);
 
-  $("#calendar-next").click(function(){
-    selectedStart = false;
-    $("#calendar").fullCalendar("next");
-  });
-
-  var today = moment();
-  var clientCurrency = "{{ preset.currency|safe }}";
-  var currency = {{ preset.configCurrency|json|safe }};
-
-  var app = angular.module("booking", []);
-
-  app.controller("bookingController", function($scope){
-    $scope.packages = {{ product.packages|json|safe }};
-    $scope.baseCurrency = "{{ product.currency|safe }}";
-    $scope.prefix = clientCurrency == 'hkd' ? '$' : '￥';
-    $scope.dateStart = today.format("YYYY-MM-DD HH:mm");
-//    $scope.dateEnd = today.format("YYYY-MM-DD HH:mm");
-    $scope.numberOfPersons = 1;
-    $scope.contact = {
-      name: "",
-      areaCode: "86",
-      mobile: "",
-      email: ""
-    };
-    $scope.currPackage = -1;
-    $scope.selectedItems = {};
-    $scope.inputValue = {};
-    $scope.submitted = false;
-    $scope.agree = false;
-
-    $scope.generateCharge = function(charge){
-      return parseInt(charge * currency[clientCurrency] / currency[$scope.baseCurrency]);
-    };
-
-    $scope.displayAmount = function(amount){
-      return $scope.prefix + (amount / 100).toFixed(2);
-    };
-
-    $scope.togglePackage = function(index){
-      $scope.currPackage == index ? $scope.currPackage = -1 : $scope.currPackage = index;
-      $scope.selectedItems = {};
-    };
-
-    $scope.checkAvailable = function(package){
-      var selectedDate = moment($scope.dateStart, "YYYY-MM-DD HH:mm");
-
-      if(package.availableMonths[selectedDate.month()] && package.availableDays[selectedDate.day()]){
-        return true;
-      }
-
-      return false;
-    };
-
-    $scope.toggleItem = function(item){
-      if($scope.selectedItems[item.name]){
-        delete $scope.selectedItems[item.name];
-      }else{
-        $scope.selectedItems[item.name] = {
-          name: item.name,
-          charge: item.charge,
-          amount: 1
-        };
-      }
-    };
-
-    $scope.inputItem = function(item){
-      var value = $scope.inputValue[item.name];
-
-      if(!value){
-        delete $scope.selectedItems[item.name];
-      }else{
-        $scope.selectedItems[item.name] = {
-          name: item.name,
-          charge: item.charge,
-          amount: value
-        };
-      }
-    };
-
-    $scope.getTotal = function(){
-      var package = $scope.packages[$scope.currPackage];
-
-      if(!package){
-        return 0;
-      }
-
-      var extraPersons = $scope.numberOfPersons - package.basePersons;
-      extraPersons = extraPersons < 0 ? 0 : extraPersons;
-
-      var itemsAmount = 0;
-
-      for(var item in $scope.selectedItems){
-        if($scope.selectedItems.hasOwnProperty(item)){
-          itemsAmount += $scope.generateCharge($scope.selectedItems[item].charge) * $scope.selectedItems[item].amount;
+        if(startDate < moment()){
+          return true;
         }
-      }
 
-      return $scope.generateCharge(package.baseCharge) + $scope.generateCharge(package.extraCharge) * extraPersons + itemsAmount;
-    };
+        var events = JSON.parse($scope.events);
 
-    $scope.getItems = function() {
-      return JSON.stringify($scope.selectedItems);
-    };
+        for(var i = 0; i < events.length; i++){
+          var eventStart = moment(events[i].start);
+          var eventEnd = moment(events[i].end);
+          if((eventStart >= startDate && eventStart < endDate) || (eventStart < startDate && eventEnd > startDate) || (eventStart >= startDate && eventEnd <= endDate)){
+            return true;
+          }
+        }
+        return false;
+      };
 
-    $scope.validate = function(){
-      if(!$scope.booking.$valid){
-        $scope.submitted = true;
-      }else{
-        $("#booking-confirm-modal").modal("show");
-      }
-    };
-  });
+      $scope.getSlotFromTime = function(time){
+        return {
+          start: time.split("-")[0],
+          end: time.split("-")[1]
+        };
+      };
 
-  app.filter("santize", ["$sce", function($sce){
-    return function(htmlCode){
-      return $sce.trustAsHtml(htmlCode);
-    };
-  }]);
+      $scope.getTimes = function(type, slot){
+        var timeArray = [];
+        var slotDuration = type.slotDuration;
 
-  $("#btn-contract").click(function(){
-    $("#contract-container").toggleClass("hidden");
-  });
-})(jQuery, window);
+        var start = slot.start.split(":");
+        var end = slot.end.split(":");
+
+        var startDate = moment().hour(start[0]).minute(start[1]).second(0);
+        var endDate = moment().hour(end[0]).minute(end[1]).second(0);
+
+        do{
+          timeArray.push(
+              startDate.format("H:mm") + "-" + startDate.add(slotDuration, "minute").format("H:mm")
+          );
+        }while(startDate.format("YYYY-MM-DD HH:mm:ss") != endDate.format("YYYY-MM-DD HH:mm:ss"));
+
+        return timeArray;
+      };
+    });
+
+    app.filter("santize", ["$sce", function($sce){
+      return function(htmlCode){
+        return $sce.trustAsHtml(htmlCode);
+      };
+    }]);
+
+    $("#btn-contract").click(function(){
+      $("#contract-container").toggleClass("hidden");
+    });
+  })(jQuery, window);
 </script>
 <script src="//cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
 <script>

@@ -494,12 +494,12 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   padding: 10px;
 }
 
-.package-slot:disabled {
+.package-slot:disabled, .package-slot-time:disabled {
   background: #ccc;
   cursor: not-allowed;
 }
 
-.package-slot.selected {
+.package-slot.selected, .package-slot-time.selected {
   color: #fff;
   background: #258ec7;
 }
