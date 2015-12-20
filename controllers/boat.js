@@ -130,7 +130,7 @@ exports.getBoats = function(req, res, next){
     limit: 12,
     columns: '_id name type baseCharge currency location thumbnail',
     sort: {
-      _id: 1
+      _id: -1
     }
   },function(err, result){
     if(err){

@@ -83,7 +83,7 @@
                           <div class="row" data-ng-repeat="slot in package.type.slots">
                             <div class="col-lg-12">{{ slot.name }}</div>
                             <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6" data-ng-repeat="time in getTimes(package.type, slot)">
-                              <button type="button" class="package-slot-time btn-block" data-ng-class="{'selected': checkTimeSelected(time)}" data-ng-click="toggleTime($parent.$parent.$index, $parent.$index, time)" data-ng-disabled="checkTimeAvailable(getSlotFromTime(time))">
+                              <button type="button" class="package-slot-time btn-block" data-ng-class="{'selected': checkTimeSelected($parent.$parent.$index,time)}" data-ng-click="toggleTime($parent.$parent.$index, $parent.$index, time)" data-ng-disabled="checkTimeAvailable(getSlotFromTime(time))">
                                 {{ time }}
                               </button>
                             </div>
@@ -336,6 +336,8 @@
           </div>
         </div>
       </div>
+      <!--<div class="navbar-fixed-top fix-container">-->
+      <!--</div>-->
       <div id="product-detail" class="thumbnail">
         <div class="caption">
           <h3>{{ __('product.section.desc') }}</h3>
@@ -701,6 +703,7 @@
       $scope.currPackage = -1;
       $scope.currSlot = -1;
       $scope.currTimes = [];
+      $scope.currTimeSlot = -1;
       $scope.events = "[]";
       $scope.selectedDate = "";
       $scope.selectedItems = {};
@@ -808,6 +811,8 @@
         $scope.currPackage = index;
         $scope.selectedItems = {};
         $scope.currSlot = slotIndex;
+        $scope.currTimes = [];
+        $scope.currTimeSlot = -1;
 
         var slot = $scope.packages[index].type.slots[slotIndex];
 
@@ -863,11 +868,11 @@
         var selectedSlot = type.slots[slotIndex];
         var slotEndDate = moment($scope.selectedDate).hour(selectedSlot.end.split(":")[0]).minute(selectedSlot.end.split(":")[1]);
 
-        if(moment($scope.dateStart).format("YYYYMMDD") != moment($scope.selectedDate).format("YYYYMMDD") || $scope.currPackage != index || $scope.currSlot != slotIndex){
+        if(moment($scope.dateStart).format("YYYYMMDD") != moment($scope.selectedDate).format("YYYYMMDD") || $scope.currPackage != index || $scope.currTimeSlot != slotIndex){
           $scope.currTimes = [];
           $scope.currPackage = index;
           $scope.selectedItems = {};
-          $scope.currSlot = slotIndex;
+          $scope.currTimeSlot = slotIndex;
         }
 
         var start = slot.start.split(":");
@@ -875,13 +880,21 @@
         var startDate = moment($scope.selectedDate).hour(start[0]).minute(start[1]);
         var endDate = moment($scope.selectedDate).hour(end[0]).minute(end[1]);
 
-        if($scope.currTimes.length == 0 || startDate <= moment($scope.dateStart)){
+        if($scope.currTimes.length == 0 || startDate < moment($scope.dateStart)){
           endDate = moment(startDate).add(type.baseDuration, "minute");
           if(endDate > slotEndDate){
             return $scope.timeNotAvailable();
           }
+        }else if(startDate.format("YYYYMMDDHHmm") == moment($scope.dateStart).format("YYYYMMDDHHmm")){
+          $scope.currTimes = [];
+          $scope.currPackage = -1;
+          $scope.selectedItems = {};
+          $scope.currTimeSlot = -1;
+          setSelectedTime("", "");
+          return;
         }else{
           var lastestEndDate = moment($scope.dateStart).add(type.maxDuration, "minute");
+
           if (endDate > lastestEndDate) {
             endDate = moment(startDate).add(type.baseDuration, "minute");
             if(endDate > slotEndDate){
@@ -889,6 +902,11 @@
             }
           }else{
             startDate = moment($scope.dateStart);
+
+            var slotCount = endDate.diff(startDate) / 60000;
+            if(slotCount < type.baseDuration){
+              endDate = moment(startDate).add(type.baseDuration, "minute");
+            }
           }
         }
 
@@ -936,8 +954,8 @@
         }
       };
 
-      $scope.checkTimeSelected = function(time){
-        if(moment($scope.dateStart).format("YYYYMMDD") != moment($scope.selectedDate).format("YYYYMMDD")){
+      $scope.checkTimeSelected = function(index, time){
+        if($scope.currPackage != index || moment($scope.dateStart).format("YYYYMMDD") != moment($scope.selectedDate).format("YYYYMMDD")){
           return false;
         }
         var times = $scope.currTimes;

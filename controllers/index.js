@@ -11,7 +11,7 @@ exports.renderIndex = function(req, res, next){
     'http://img.hgboating.com/base/index-r-03.jpg'
   ];
 
-  var ids = ['565066e00b02105ea0f3b8b4', '565ac53fdee4d4c83bb11137', '565ac572dee4d4c83bb11138'];
+  var ids = ['567645d592aba05cbfe5e21f', '567645f892aba05cbfe5e220', '565066e00b02105ea0f3b8b4', '565ac53fdee4d4c83bb11137', '565ac572dee4d4c83bb11138'];
 
 
   Boat.find({

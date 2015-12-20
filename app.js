@@ -145,7 +145,7 @@ var removeSubdomain = function(req){
   if(req.subdomains && req.subdomains.length > 0){
     var arr = req.hostname.split('.');
 
-    var result = arr.slice(req.subdomains.length)
+    var result = arr.slice(req.subdomains.length);
 
     return result.join('.');
 
