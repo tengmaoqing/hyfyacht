@@ -114,7 +114,7 @@
             <ul class="list-group">
               <li class="list-group-item">
                 <label>{{ __('product.booking.selectedPackage') }}</label>
-                <p>{% raw %}{{ packages[currPackage].name }}{% endraw %}</p>
+                <p data-ng-cloak>{% raw %}{{ packages[currPackage].name }}{% endraw %}</p>
               </li>
               <li class="list-group-item">
                 <label>{{ __('product.booking.start') }}</label>
@@ -128,7 +128,7 @@
           </div>
 
           <div id="product-booking-person" class="product-booking-container">
-            <p><strong>{{ __('product.booking.numberOfPeople') }} (1 - {% raw %}{{ packages[currPackage].maxPersons }}{% endraw %})</strong></p>
+            <p data-ng-cloak><strong>{{ __('product.booking.numberOfPeople') }} (1 - {% raw %}{{ packages[currPackage].maxPersons }}{% endraw %})</strong></p>
             <div class="alert alert-danger" data-ng-show="booking.numberOfPersons.$dirty && booking.numberOfPersons.$invalid" data-ng-cloak>
               <ul class="list-layout">
                 <li data-ng-show="booking.numberOfPersons.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.required') }}</li>
@@ -352,7 +352,7 @@
           {% autoescape %}{{ product.chargeInclude }}{% endautoescape %}
         </div>
       </div>
-      <div id="product-notinclude" class="thumbnail">
+      <div id="product-exclude" class="thumbnail">
         <div class="caption">
           <h3>{{ __('product.section.exclude') }}</h3>
           <hr class="hr-divider">

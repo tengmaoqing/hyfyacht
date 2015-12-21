@@ -112,13 +112,11 @@ exports.checkBooking = function(req, res, next) {
 
           //Check product
           if(package.product.id != bookingForm.productId){
-            console.log('Check product');
             return fail('product.booking.result.error.other');
           }
 
           //Check boat
           if(boatIndex < 0){
-            console.log('Check boat');
             return fail('product.booking.result.error.other');
           }
 
@@ -199,7 +197,6 @@ exports.checkBooking = function(req, res, next) {
                   subtotal: generateCharge(data.charge) * items[item].amount
                 });
               }else{
-                console.log('Check item');
                 return fail('product.booking.result.error.other');
               }
             }
@@ -213,12 +210,10 @@ exports.checkBooking = function(req, res, next) {
 
           //Check total
           if(total != bookingForm.total){
-            console.log('Check total');
             return fail('product.booking.result.error.other');
           }
 
           if(parseInt(bookingForm.numberOfPersons) > package.maxPersons){
-            console.log('Check person');
             return fail('product.booking.result.error.other');
           }
 
@@ -241,13 +236,11 @@ exports.checkBooking = function(req, res, next) {
           }
 
           if(!availableDate){
-            console.log('Check working hours');
             return fail('product.booking.result.error.other');
           }
 
           //Check package availableDate
           if(!package.availableMonths[dateStart.month()] || !package.availableDays[dateStart.days()] || !package.availableMonths[dateEnd.month()] || !package.availableDays[dateEnd.days()]){
-            console.log('Check date');
             return fail('product.booking.result.error.other');
           }
 
