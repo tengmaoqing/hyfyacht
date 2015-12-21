@@ -588,6 +588,20 @@ dl.dl-horizontal dt {
   font-size: 14px;
 }
 
+.fix-container-top {
+  padding: 12px 0;
+  color:#000;
+  text-align: center;
+  background: #fff;
+  /*background: rgba(255, 255, 255, .9);*/
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.fix-container-top .text-danger {
+  font-weight: bold;
+}
+
 .panel-title a:hover {
   text-decoration: none;
 }
