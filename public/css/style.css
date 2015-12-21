@@ -24,6 +24,10 @@ button {
   outline: none;
 }
 
+[ng-cloak], [data-ng-cloak] {
+  display: none !important;
+}
+
 .page-header {
   margin: 20px 0;
 }

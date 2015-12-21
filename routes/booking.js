@@ -7,9 +7,9 @@ var router = express.Router();
 var booking = require('../controllers/booking');
 var unavailable = require('../controllers/unavailable');
 
-router.get('/', function(req, res, next){
-  res.render('booking-info');
-});
+//router.get('/', function(req, res, next){
+//  res.render('booking-info');
+//});
 
 router.get('/cal/:bid', booking.getBookingsForCalendarEvent);
 router.get('/cal/unavailable/:bid', unavailable.getUnavailableEventByBoatId);

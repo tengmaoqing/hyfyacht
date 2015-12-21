@@ -28,7 +28,7 @@
           <div class="col-sm-6 col-xs-8">
             <input id="input_mobile" type="number" class="form-control" name="mobile" maxlength="11" data-ng-model="mobile" required>
           </div>
-          <div class="text-danger col-sm-8 col-sm-offset-4 col-xs-12" data-ng-show="login.mobile.$dirty && login.mobile.$invalid">
+          <div class="text-danger col-sm-8 col-sm-offset-4 col-xs-12" data-ng-show="login.mobile.$dirty && login.mobile.$invalid" data-ng-cloak>
             <ul class="list-layout">
               <li data-ng-show="login.mobile.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.input_mobile') }}</li>
               <li data-ng-show="login.mobile.$error.maxlength"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.maxlength') }}</li>
@@ -41,7 +41,7 @@
           <div class="col-sm-8">
             <input type="password" class="form-control" name="password" data-ng-model="password" required>
           </div>
-          <div class="text-danger col-sm-8 col-sm-offset-4 col-xs-12" data-ng-show="login.password.$dirty && login.password.$invalid">
+          <div class="text-danger col-sm-8 col-sm-offset-4 col-xs-12" data-ng-show="login.password.$dirty && login.password.$invalid" data-ng-cloak>
             <ul class="list-layout">
               <li data-ng-show="login.password.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.input_password') }}</li>
             </ul>

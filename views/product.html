@@ -54,10 +54,9 @@
                 <input name="items" class="collapse" type="text" value="{{ getItems() }}">
                 <input name="total" class="collapse" type="text" value="{{ getTotal() }}">
                 <input id="data-calendar-events" name="events" class="collapse" type="text" data-ng-model="events">
-                <div class="panel panel-custom" data-ng-repeat="package in packages" data-ng-if="checkAvailable(package)">
+                <div class="panel panel-custom" data-ng-repeat="package in packages" data-ng-if="checkAvailable(package)" data-ng-cloak>
                   <div class="panel-heading" role="tab" id="package-heading-{{ $index }}">
                     <h4 class="panel-title relative-container" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index }}" aria-expanded="true" aria-controls="package-collapse-{{ $index }}">
-                      <!--<span class="glyphicon glyphicon-ok text-primary" data-ng-if="$index == currPackage"></span>-->
                       {{ package.name }}({{ displayAmount(generateCharge(package.baseCharge)) }})
                       <a class="absolute-right-top more" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index }}" aria-expanded="true" aria-controls="package-collapse-{{ $index }}">
                         <span class="glyphicon glyphicon-option-horizontal"></span>
@@ -130,7 +129,7 @@
 
           <div id="product-booking-person" class="product-booking-container">
             <p><strong>{{ __('product.booking.numberOfPeople') }} (1 - {% raw %}{{ packages[currPackage].maxPersons }}{% endraw %})</strong></p>
-            <div class="alert alert-danger" data-ng-show="booking.numberOfPersons.$dirty && booking.numberOfPersons.$invalid">
+            <div class="alert alert-danger" data-ng-show="booking.numberOfPersons.$dirty && booking.numberOfPersons.$invalid" data-ng-cloak>
               <ul class="list-layout">
                 <li data-ng-show="booking.numberOfPersons.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.required') }}</li>
                 <li data-ng-show="booking.numberOfPersons.$error.min || booking.numberOfPersons.$error.max"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.outOfRange') }}</li>
@@ -139,7 +138,7 @@
             </div>
             <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" min="1" max="{% raw %}{{ packages[currPackage].maxPersons }}{% endraw %}" required>
           </div>
-          <div id="product-booking-items" class="product-booking-container" data-ng-if="currPackage > -1">
+          <div id="product-booking-items" class="product-booking-container" data-ng-if="currPackage > -1" data-ng-cloak>
             <p><strong>{{ __('product.booking.package.items') }}</strong></p>
             <ul class="list-group list-table">
               <li class="list-group-item">
@@ -272,7 +271,7 @@
           <div id="product-booking-contact" class="product-booking-container">
             <p><strong>{{ __('product.booking.contact') }}</strong></p>
             <div>
-              <div class="alert alert-danger" data-ng-show="booking.contact.$dirty && booking.contact.$invalid">
+              <div class="alert alert-danger" data-ng-show="booking.contact.$dirty && booking.contact.$invalid" data-ng-cloak>
                 <ul class="list-layout">
                   <li data-ng-show="booking.contact.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.contact.required') }}</li>
                   <li data-ng-show="booking.contact.$error.maxlength"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.contact.maxlength') }}</li>
@@ -284,7 +283,7 @@
                 </span>
                 <input type="text" class="form-control" name="contact" placeholder="{{ __('product.booking.name_plh') }}" data-ng-model="contact.name" maxlength="50" required>
               </div>
-              <div class="alert alert-danger" data-ng-show="booking.mobile.$dirty && booking.mobile.$invalid">
+              <div class="alert alert-danger" data-ng-show="booking.mobile.$dirty && booking.mobile.$invalid" data-ng-cloak>
                 <ul class="list-layout">
                   <li data-ng-show="booking.mobile.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.required') }}</li>
                   <li data-ng-show="booking.mobile.$error.maxlength"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.maxlength') }}</li>
@@ -305,7 +304,7 @@
                 </div>
                 <input type="number" class="form-control" name="mobile" placeholder="{{ __('product.booking.mobile_plh') }}" data-ng-model="contact.mobile" maxlength="11" required>
               </div>
-              <div class="alert alert-danger" data-ng-show="booking.email.$dirty && booking.email.$invalid">
+              <div class="alert alert-danger" data-ng-show="booking.email.$dirty && booking.email.$invalid" data-ng-cloak>
                 <ul class="list-layout">
                   <li data-ng-show="booking.email.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.email.required') }}</li>
                   <li data-ng-show="booking.email.$error.pattern"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.email.invaild') }}</li>
@@ -320,7 +319,7 @@
             </div>
           </div>
           <div class="product-booking-container">
-            <div class="alert alert-danger" data-ng-show="booking.$invalid && submitted">
+            <div class="alert alert-danger" data-ng-show="booking.$invalid && submitted" data-ng-cloak>
               <ul class="list-layout">
                 <li data-ng-show="booking.dateEnd.$invalid"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.time') }}</li>
                 <li data-ng-show="booking.currPackage.$error.min"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.package') }}</li>
@@ -336,7 +335,7 @@
           </div>
         </div>
       </div>
-      <div id="selected-package" class="navbar-fixed-top fix-container-top" data-ng-if="currPackage >= 0">
+      <div id="selected-package" class="navbar-fixed-top fix-container-top" data-ng-if="currPackage >= 0" data-ng-cloak>
         {{ __('product.booking.selectedPackage') }}: <span class="text-primary">{% raw %}{{ packages[currPackage].name }}{% endraw %}</span> {{ __('product.booking.package.total') }}: <span class="text-danger">{% raw %}{{ displayAmount(getTotal()) }}{% endraw %}</span>
       </div>
       <div id="product-detail" class="thumbnail">
