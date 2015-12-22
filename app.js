@@ -33,6 +33,7 @@ var owner = require('./routes/owner');
 var pay = require('./routes/pay');
 var notify = require('./routes/notify');
 var sms = require('./routes/sms');
+var event = require('./routes/event');
 
 var userController = require('./controllers/user');
 
@@ -58,7 +59,7 @@ swig.setDefaults({
   cache: false
 });
 
-wechatCore.getAppAccessToken();
+//wechatCore.getAppAccessToken();
 //cache.put('wechatAccessToken', 'raW3m2xeOxvHUdPH1NlrPWLIVZjmMSOXy9bqGSFbdOXrrzpB_52_vVux_usUcHiGGiQbeGLn9OYFm4HgutfNYkHDNCopZIfIRv3r9VJKZFYHDChAEAXTS');
 //i18n init
 i18n.configure({
@@ -256,6 +257,7 @@ app.use('/owner', function(req, res, next){
 
 app.use('/boat', boat);
 app.use('/product', product);
+app.use('/event', event);
 app.use('/booking', booking);
 app.use('/user', user);
 app.use('/owner', owner);

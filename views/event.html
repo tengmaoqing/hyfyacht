@@ -1,0 +1,138 @@
+{% extends './layout.html' %}
+
+{% block content %}
+
+{% include './nav.html' %}
+
+<div class="columns-sm">
+  <div class="container">
+    <ol class="breadcrumb">
+      <li><a href="/">{{ __('nav.home') }}</a></li>
+      <li><a href="/event/list">{{ __('nav.event') }}</a></li>
+      <li class="active">{{ event.title }}</li>
+    </ol>
+    <div id="event-base" class="thumbnail">
+      <div class="boat-thumbnail" style="background-image: url({{ event.thumbnail }})"></div>
+      <div class="row caption">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <h3>{{ event.title }}</h3>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right">
+          <h3 class="text-danger">{{ preset.generateCharge(event.baseCharge, event.currency) }}</h3>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="row">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <span class="glyphicon glyphicon-map-marker"></span> {{ __(event.location.city) }}
+            </div>
+            <div class="col-md-8 col-sm-8 col-xs-12">
+              <span class="glyphicon glyphicon-user"></span> <label>{{ __('event.organiser') }}</label>: {{ event.organiser.nickname }}
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <span class="glyphicon glyphicon-asterisk"></span> <label>{{ __('product.booking.numberOfPeople') }}</label>: {% if event.maxPersons > 0 %}{{ event.maxPersons }}{% else %}{{ __('event.unlimited') }}{% endif %}
+            </div>
+            <div class="col-md-8 col-sm-8 col-xs-12">
+              <span class="glyphicon glyphicon-time"></span> {{ preset.getDateString(event.dateStart) }} - {{ preset.getDateString(event.dateEnd) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="event-attend" class="thumbnail">
+      <div class="caption">
+        <h3>{{ __('event.attend') }}</h3>
+        <hr class="hr-divider">
+        <form name="attend" method="post" action="/event/submit" novalidate>
+          <div id="product-booking-person" class="product-booking-container">
+            <p><strong>{{ __('product.booking.numberOfPeople') }}</strong></p>
+            <div class="alert alert-danger" data-ng-show="booking.numberOfPersons.$dirty && booking.numberOfPersons.$invalid" data-ng-cloak>
+              <ul class="list-layout">
+                <li data-ng-show="booking.numberOfPersons.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.required') }}</li>
+                <li data-ng-show="booking.numberOfPersons.$error.min || booking.numberOfPersons.$error.max"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.outOfRange') }}</li>
+                <li data-ng-show="booking.numberOfPersons.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.invaild') }}</li>
+              </ul>
+            </div>
+            <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" min="1" max="{% raw %}{{ packages[currPackage].maxPersons }}{% endraw %}" required>
+          </div>
+          <div id="product-booking-contact" class="product-booking-container">
+            <p><strong>{{ __('product.booking.contact') }}</strong></p>
+            <div>
+              <div class="alert alert-danger" data-ng-show="booking.contact.$dirty && booking.contact.$invalid" data-ng-cloak>
+                <ul class="list-layout">
+                  <li data-ng-show="booking.contact.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.contact.required') }}</li>
+                  <li data-ng-show="booking.contact.$error.maxlength"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.contact.maxlength') }}</li>
+                </ul>
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-user"></span>
+                </span>
+                <input type="text" class="form-control" name="contact" placeholder="{{ __('product.booking.name_plh') }}" data-ng-model="contact.name" maxlength="50" required>
+              </div>
+              <div class="alert alert-danger" data-ng-show="booking.mobile.$dirty && booking.mobile.$invalid" data-ng-cloak>
+                <ul class="list-layout">
+                  <li data-ng-show="booking.mobile.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.required') }}</li>
+                  <li data-ng-show="booking.mobile.$error.maxlength"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.maxlength') }}</li>
+                  <li data-ng-show="booking.mobile.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.invaild') }}</li>
+                </ul>
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-phone"></span>
+                </span>
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default dropdown-toggle btn-middle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">+86 <span class="caret"></span></button>
+                  <input class="dropdown-menu-selected collapse" type="text" name="area_code" data-ng-model="contact.areaCode">
+                  <ul class="dropdown-menu">
+                    <li><a href="#" data-value="86">+86</a></li>
+                    <li><a href="#" data-value="852">+852</a></li>
+                  </ul>
+                </div>
+                <input type="number" class="form-control" name="mobile" placeholder="{{ __('product.booking.mobile_plh') }}" data-ng-model="contact.mobile" maxlength="11" required>
+              </div>
+            </div>
+          </div>
+          <div class="product-booking-container">
+            <div class="row">
+              <div class="col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10 col-sm-4 col-sm-offset-8 col-xs-6 col-xs-offset-6">
+                <button type="button" class="btn btn-danger btn-block" data-ng-click="validate()">{{ __('event.attend') }}</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="event-detail" class="thumbnail">
+      <div class="caption">
+        <h3>{{ __('event.desc') }}</h3>
+        <hr class="hr-divider">
+        {% autoescape %}{{ event.description }}{% endautoescape %}
+      </div>
+    </div>
+  </div>
+  <div class="navbar-fixed-bottom fix-container">
+    <div class="container text-center">
+      <ul id="event-nav" class="nav nav-pills">
+        <li role="presentation"><a href="#event-base">{{ __('product.section.info') }}</a></li>
+        <li role="presentation"><a href="#event-attend">{{ __('event.attend') }}</a></li>
+        <li role="presentation"><a href="#event-detail">{{ __('event.desc') }}</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% include './footer.html' %}
+
+{% endblock %}
+
+{% block foot %}
+
+<script src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
+<script src="//cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
+<script>
+  (function($,w){
+    $("#event-nav").onePageNav();
+  })(jQuery, window);
+</script>
+{% endblock %}

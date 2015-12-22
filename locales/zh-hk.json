@@ -214,6 +214,12 @@
       }
     }
   },
+  "event":{
+    "attend": "參加",
+    "organiser": "發起人",
+    "desc": "活動詳情",
+    "unlimited": "不限制人數"
+  },
   "calendar":{
     "booked": "已被預定",
     "wait_to_pay": "等待付款",

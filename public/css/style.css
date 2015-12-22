@@ -281,7 +281,7 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   font-size: 16px;
 }
 
-#product-detail img {
+#product-detail img, #event-detail img {
   margin: 16px 0;
   display:block;
   max-width: 100%;
