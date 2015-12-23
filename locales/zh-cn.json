@@ -82,6 +82,8 @@
   "user": {
     "bookings": "我的预定",
     "booking_detail": "定单详情",
+    "events": "我的活动",
+    "event_detail": "活动订单详情",
     "settings": "个人设置"
   },
   "owner": {
@@ -218,7 +220,14 @@
     "attend": "参加",
     "organiser": "发起人",
     "desc": "活动详情",
-    "unlimited": "不限制人数"
+    "unlimited": "不限制人数",
+    "result": {
+      "error":{
+        "out_date": "此活动已经结束报名",
+        "full": "此活动已经满员",
+        "other": "订单信息错误"
+      }
+    }
   },
   "calendar":{
     "booked": "已被预定",

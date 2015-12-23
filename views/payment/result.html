@@ -12,12 +12,22 @@
     {% endif %}
   </div>
   {% if result == 'fail' %}
-  <div class="alert alert-warning">付款失败可能是因为网络延迟造成,请您到支付宝查看支付状态,或稍后到 <a href="/user/booking">{{ __('user.bookings') }}</a> 查看</div>
+    {% if type == 'boat' %}
+      <div class="alert alert-warning">付款失败可能是因为网络延迟造成,请您到支付宝查看支付状态,或稍后到 <a href="/user/booking">{{ __('user.bookings') }}</a> 查看</div>
+    {% endif %}
+    {% if type == 'event' %}
+      <div class="alert alert-warning">付款失败可能是因为网络延迟造成,请您到支付宝查看支付状态,或稍后到 <a href="/user/event">{{ __('user.events') }}</a> 查看</div>
+    {% endif %}
   {% endif %}
   <div>
     <h4>{{ __('product.booking.result.bookingId') }}: {{ bookingId }}</h4>
     <p>{{ __('product.booking.bookingProduct') }}: {{ product }}</p>
-    <p><a href="/user/booking"><span class="glyphicon glyphicon-list-alt"></span> {{ __('user.bookings') }}</a></p>
+    {% if type == 'boat' %}
+      <p><a href="/user/booking"><span class="glyphicon glyphicon-list-alt"></span> {{ __('user.bookings') }}</a></p>
+    {% endif %}
+    {% if type == 'event' %}
+    <p><a href="/user/event"><span class="glyphicon glyphicon-glass"></span> {{ __('user.events') }}</a></p>
+    {% endif %}
   </div>
 </div>
 {% include '../footer.html' %}

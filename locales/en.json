@@ -82,6 +82,8 @@
   "user": {
     "bookings": "My Bookings",
     "booking_detail": "Booking Detail",
+    "events": "My Events",
+    "event_detail": "Event Detail",
     "settings": "Account Settings"
   },
   "owner": {
@@ -218,7 +220,14 @@
     "attend": "Attend",
     "organiser": "Organiser",
     "desc": "Description",
-    "unlimited": "Unlimited"
+    "unlimited": "Unlimited",
+    "result": {
+      "error":{
+        "out_date": "This event is out date.",
+        "full": "This event is full.",
+        "other": "Order information incorrect."
+      }
+    }
   },
   "calendar":{
     "booked": "Had been booked",

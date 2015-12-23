@@ -508,6 +508,10 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   background: #258ec7;
 }
 
+.event-info {
+  padding: 8px 23px;
+}
+
 footer.columns {
   color:#fff;
   background: #565a5c;

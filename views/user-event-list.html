@@ -1,0 +1,73 @@
+{% import './macros/pager.html' as pagerView %}
+
+{% extends './layout.html' %}
+
+{% block content %}
+
+{% include './nav.html' %}
+
+<div class="container columns-sm">
+  <ol class="breadcrumb">
+    <li><a href="/">{{ __('nav.home') }}</a></li>
+    <li class="active">{{ __('user.events') }}</li>
+  </ol>
+  <div class="page-header">
+    <h1>{{ __('user.events') }}</h1>
+  </div>
+  <div class="booking-list">
+    {% for event in events %}
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-md-10 col-sm-10 col-xs-8">
+            <strong>{{ __('product.booking.result.bookingDate') }}: {{ preset.getDateString(event.createDate) }} {{ __('product.booking.result.bookingId') }}: {{ event.orderId }}</strong>
+          </div>
+          {% if false %}
+          <div class="col-md-2 col-sm-2 col-xs-4 text-right">
+            <a href="/user/event/detail/{{ event.orderId }}" class="btn btn-default btn-sm">{{ __('common.detail') }}</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="row">
+              <div class="col-md-4 col-sm-4 col-xs-4">
+                <div class="thumbnail">
+                  <a href="/event/{{ event.eventId.id }}">
+                    <img src="{{ event.eventId.thumbnail }}" alt="product photo">
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-8 col-sm-8 col-xs-8">
+                <p><strong>{{ event.eventName }}</strong></p>
+                <p>{{ __('product.booking.start') }}: {{ preset.getDateString(event.eventId.dateStart) }}</p>
+                <p>{{ __('product.booking.end') }}: {{ preset.getDateString(event.eventId.dateEnd) }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
+            <div class="row">
+              <div class="col-lg-4 col-md-4 col-sm-4 visible-lg visible-md visible-sm">
+                {{ event.contact.name }}
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-4 visible-lg visible-md visible-sm">
+                {{ __('product.booking.package.total') }}：{% if event.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ (event.total / 100).toFixed(2) }}
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 text-right">
+                <strong>{{ __(event.status) }}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{{ pagerView.create(pager) }}
+
+{% include './footer.html' %}
+
+{% endblock %}

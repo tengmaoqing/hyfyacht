@@ -1,8 +1,51 @@
+{% import './macros/pager.html' as pagerView %}
+
 {% extends './layout.html' %}
 
 {% block content %}
 
-{% include './nav.html' %}
+{% include './nav.html' with {view_active:'event'} %}
+
+<div class="container columns-sm">
+  <ol class="breadcrumb">
+    <li><a href="/">{{ __('nav.home') }}</a></li>
+    <li class="active">{{ __('nav.event') }}</li>
+  </ol>
+  <div class="event-list">
+    {% for event in events %}
+    <div class="thumbnail">
+      <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <a href="/event/{{ event.id }}"><img class="img-responsive" src="{{ event.thumbnail }}" alt="thumbnail"></a>
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-12 event-info">
+          <div class="row">
+            <div class="col-md-8 col-sm-8 col-xs-12"><h3>{{ event.title }}</h3></div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <h3 class="text-danger text-right hidden-xs">{{ preset.generateCharge(event.baseCharge, event.currency) }}</h3>
+              <h3 class="text-danger visible-xs">{{ preset.generateCharge(event.baseCharge, event.currency) }}</h3>
+            </div>
+          </div>
+          <div>
+            <span class="glyphicon glyphicon-map-marker"></span> {{ __(event.location.city) }}
+          </div>
+          <div>
+            <span class="glyphicon glyphicon-user"></span> <label>{{ __('event.organiser') }}</label>: {{ event.organiser.nickname }}
+          </div>
+          <div>
+            <span class="glyphicon glyphicon-asterisk"></span> <label>{{ __('product.booking.numberOfPeople') }}</label>: {% if event.maxPersons > 0 %}{{ event.maxPersons }}{% else %}{{ __('event.unlimited') }}{% endif %}
+          </div>
+          <div>
+            <span class="glyphicon glyphicon-time"></span> {{ preset.getDateString(event.dateStart) }} - {{ preset.getDateString(event.dateEnd) }}
+          </div>
+          <div class="text-right"><a class="btn btn-primary" href="/event/{{ event.id }}">{{ __('event.attend') }}</a></div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{{ pagerView.create(pager) }}
 
 {% include './footer.html' %}
 

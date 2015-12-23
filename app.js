@@ -34,6 +34,7 @@ var pay = require('./routes/pay');
 var notify = require('./routes/notify');
 var sms = require('./routes/sms');
 var event = require('./routes/event');
+var eventOrder = require('./routes/event-order');
 
 var userController = require('./controllers/user');
 
@@ -258,6 +259,7 @@ app.use('/owner', function(req, res, next){
 app.use('/boat', boat);
 app.use('/product', product);
 app.use('/event', event);
+app.use('/eventorder', eventOrder);
 app.use('/booking', booking);
 app.use('/user', user);
 app.use('/owner', owner);

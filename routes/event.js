@@ -5,8 +5,12 @@ var express = require('express');
 var router = express.Router();
 
 var event = require('../controllers/event');
+var eventOrder = require('../controllers/event-order');
 
-router.get('/:id/:title/', event.getEvent);
+router.get('/submit', eventOrder.submit);
+router.post('/submit', eventOrder.submit);
 router.get('/list', event.getEvents);
+
+router.get('/:id', event.getEvent);
 
 module.exports = router;

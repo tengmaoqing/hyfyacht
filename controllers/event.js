@@ -27,5 +27,35 @@ exports.getEvent = function(req, res, next) {
 };
 
 exports.getEvents = function(req, res, next) {
-  res.render('event-list');
+  var page = req.query.page || 1;
+
+  Event.paginate({
+    inStock: true,
+  }, {
+    page: page,
+    limit: 10,
+    columns: 'title dateStart dateEnd summary location baseCharge currency thumbnail organiser createDate',
+    populate:[{
+      path: 'organiser',
+      select: 'nickname'
+    }],
+    sort: {
+      createDate: -1
+    }
+  }, function (err, result) {
+    if(err){
+      err.status = 400;
+      return next(err);
+    }else{
+      var pager = {
+        current: parseInt(page),
+        count: result.pages,
+        pages: []
+      };
+      for(var i = 1; i <= result.pages; i++){
+        pager.pages.push(i);
+      }
+      return res.render('event-list', {events: result.docs, pager: pager, itemCount: result.total});
+    }
+  });
 };

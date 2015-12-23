@@ -82,6 +82,8 @@
   "user": {
     "bookings": "我的預定",
     "booking_detail": "定單詳情",
+    "events": "我的活動",
+    "event_detail": "活動訂單詳情",
     "settings": "帳戶設定"
   },
   "owner": {
@@ -218,7 +220,14 @@
     "attend": "參加",
     "organiser": "發起人",
     "desc": "活動詳情",
-    "unlimited": "不限制人數"
+    "unlimited": "不限制人數",
+    "result": {
+      "error":{
+        "out_date": "此活動已經停止報名",
+        "full": "此活動已經滿員",
+        "other": "訂單信息錯誤"
+      }
+    }
   },
   "calendar":{
     "booked": "已被預定",

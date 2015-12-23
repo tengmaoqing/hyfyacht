@@ -4,7 +4,7 @@
 
 {% include './nav.html' %}
 
-<div class="columns-sm">
+<div class="columns-sm" data-ng-app="event" data-ng-controller="eventController">
   <div class="container">
     <ol class="breadcrumb">
       <li><a href="/">{{ __('nav.home') }}</a></li>
@@ -17,8 +17,9 @@
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
           <h3>{{ event.title }}</h3>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right">
-          <h3 class="text-danger">{{ preset.generateCharge(event.baseCharge, event.currency) }}</h3>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <h3 class="text-danger text-right hidden-xs">{{ preset.generateCharge(event.baseCharge, event.currency) }}</h3>
+          <h3 class="text-danger visible-xs">{{ preset.generateCharge(event.baseCharge, event.currency) }}</h3>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="row">
@@ -29,7 +30,7 @@
               <span class="glyphicon glyphicon-user"></span> <label>{{ __('event.organiser') }}</label>: {{ event.organiser.nickname }}
             </div>
             <div class="col-md-4 col-sm-4 col-xs-12">
-              <span class="glyphicon glyphicon-asterisk"></span> <label>{{ __('product.booking.numberOfPeople') }}</label>: {% if event.maxPersons > 0 %}{{ event.maxPersons }}{% else %}{{ __('event.unlimited') }}{% endif %}
+              <span class="glyphicon glyphicon-asterisk"></span> <label>{{ __('product.booking.numberOfPeople') }}</label>: {% if event.maxPersons > 0 %}{% raw %}{{ currPersons }}/{% endraw %}{{ event.maxPersons }}{% else %}{{ __('event.unlimited') }}{% endif %}
             </div>
             <div class="col-md-8 col-sm-8 col-xs-12">
               <span class="glyphicon glyphicon-time"></span> {{ preset.getDateString(event.dateStart) }} - {{ preset.getDateString(event.dateEnd) }}
@@ -38,29 +39,37 @@
         </div>
       </div>
     </div>
-    <div id="event-attend" class="thumbnail">
+    <div class="alert alert-warning" data-ng-if="outDate" data-ng-cloak>
+      {{ __('event.result.error.out_date') }}
+    </div>
+    <div class="alert alert-warning" data-ng-if="!outDate && maxPersons <= 0" data-ng-cloak>
+      {{ __('event.result.error.full') }}
+    </div>
+    <div id="event-attend" class="thumbnail" data-ng-if="!outDate && maxPersons > 0" data-ng-cloak>
       <div class="caption">
         <h3>{{ __('event.attend') }}</h3>
         <hr class="hr-divider">
-        <form name="attend" method="post" action="/event/submit" novalidate>
+        <form name="event" method="post" action="/event/submit" novalidate>
+          <input type="hidden" name="_csrf" value="{{ _csrf }}">
+          <input type="hidden" name="eventId" value="{{ event.id }}">
           <div id="product-booking-person" class="product-booking-container">
-            <p><strong>{{ __('product.booking.numberOfPeople') }}</strong></p>
-            <div class="alert alert-danger" data-ng-show="booking.numberOfPersons.$dirty && booking.numberOfPersons.$invalid" data-ng-cloak>
+            <p><strong>{{ __('product.booking.numberOfPeople') }}(1-{% raw %}{{ maxPersons }}{% endraw %})</strong></p>
+            <div class="alert alert-danger" data-ng-show="event.numberOfPersons.$dirty && event.numberOfPersons.$invalid" data-ng-cloak>
               <ul class="list-layout">
-                <li data-ng-show="booking.numberOfPersons.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.required') }}</li>
-                <li data-ng-show="booking.numberOfPersons.$error.min || booking.numberOfPersons.$error.max"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.outOfRange') }}</li>
-                <li data-ng-show="booking.numberOfPersons.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.invaild') }}</li>
+                <li data-ng-show="event.numberOfPersons.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.required') }}</li>
+                <li data-ng-show="event.numberOfPersons.$error.min || event.numberOfPersons.$error.max"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.outOfRange') }}</li>
+                <li data-ng-show="event.numberOfPersons.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.invaild') }}</li>
               </ul>
             </div>
-            <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" min="1" max="{% raw %}{{ packages[currPackage].maxPersons }}{% endraw %}" required>
+            <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" min="1" max="{% raw %}{{ maxPersons }}{% endraw %}" required>
           </div>
           <div id="product-booking-contact" class="product-booking-container">
             <p><strong>{{ __('product.booking.contact') }}</strong></p>
             <div>
-              <div class="alert alert-danger" data-ng-show="booking.contact.$dirty && booking.contact.$invalid" data-ng-cloak>
+              <div class="alert alert-danger" data-ng-show="event.contact.$dirty && booking.contact.$invalid" data-ng-cloak>
                 <ul class="list-layout">
-                  <li data-ng-show="booking.contact.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.contact.required') }}</li>
-                  <li data-ng-show="booking.contact.$error.maxlength"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.contact.maxlength') }}</li>
+                  <li data-ng-show="event.contact.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.contact.required') }}</li>
+                  <li data-ng-show="event.contact.$error.maxlength"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.contact.maxlength') }}</li>
                 </ul>
               </div>
               <div class="input-group">
@@ -69,11 +78,11 @@
                 </span>
                 <input type="text" class="form-control" name="contact" placeholder="{{ __('product.booking.name_plh') }}" data-ng-model="contact.name" maxlength="50" required>
               </div>
-              <div class="alert alert-danger" data-ng-show="booking.mobile.$dirty && booking.mobile.$invalid" data-ng-cloak>
+              <div class="alert alert-danger" data-ng-show="event.mobile.$dirty && event.mobile.$invalid" data-ng-cloak>
                 <ul class="list-layout">
-                  <li data-ng-show="booking.mobile.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.required') }}</li>
-                  <li data-ng-show="booking.mobile.$error.maxlength"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.maxlength') }}</li>
-                  <li data-ng-show="booking.mobile.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.invaild') }}</li>
+                  <li data-ng-show="event.mobile.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.required') }}</li>
+                  <li data-ng-show="event.mobile.$error.maxlength"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.maxlength') }}</li>
+                  <li data-ng-show="event.mobile.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.invaild') }}</li>
                 </ul>
               </div>
               <div class="input-group">
@@ -92,10 +101,17 @@
               </div>
             </div>
           </div>
-          <div class="product-booking-container">
+          <div class="product-booking-container" data-ng-if="numberOfPersons > 0">
+            <table class="table table-summary">
+              <tr><th>{{ __('product.booking.package.item') }}</th><th>{{ __('product.booking.package.quantity') }}</th><th>{{ __('product.booking.package.subtotal') }}</th></tr>
+              <tr><td>{{ event.title }} ({{ preset.generateCharge(event.baseCharge, event.currency) }})</td>{% raw %}<td>{{ numberOfPersons }}</td><td>{{ displayAmount(generateCharge(baseCharge) * numberOfPersons) }}</td>{% endraw %}</tr>
+            </table>
+            <div class="text-right" >
+              <h4>{{ __('product.booking.package.total') }} {% raw %}{{ displayAmount(generateCharge(baseCharge) * numberOfPersons) }}{% endraw %}</h4>
+            </div>
             <div class="row">
               <div class="col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10 col-sm-4 col-sm-offset-8 col-xs-6 col-xs-offset-6">
-                <button type="button" class="btn btn-danger btn-block" data-ng-click="validate()">{{ __('event.attend') }}</button>
+                <button type="button" class="btn btn-danger btn-block" data-ng-disabled="event.$invalid" data-ng-click="submit()">{{ __('event.attend') }}</button>
               </div>
             </div>
           </div>
@@ -126,9 +142,20 @@
 {% endblock %}
 
 {% block foot %}
-
+<script>
+  window.hgdata = {
+    eventId: "{{ event.id|safe }}",
+    clientCurrency: "{{ preset.currency|safe }}",
+    currency: {{ preset.configCurrency|json|safe }},
+    baseCurrency: "{{ event.currency|safe }}",
+    baseCharge: {{ event.baseCharge|safe }},
+    maxPersons: {{ event.maxPersons|safe }},
+    attendedDate: "{{ event.attendedDate|safe }}"
+  };
+</script>
 <script src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
 <script src="//cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
+<script src="{{ preset.staticHost }}/js/view-event.js?_=20151221"></script>
 <script src="//cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
 <script>
   (function($,w){

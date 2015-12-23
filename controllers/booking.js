@@ -381,7 +381,7 @@ exports.checkBooking = function(req, res, next) {
 
                           if (savedBooing) {
                             if(req.isFromWechat){
-                              wechatCore.unifiedorder(req, savedBooing, function(result){
+                              wechatCore.unifiedorder(req, savedBooing, 'boat', function(result){
                                 parseXML2String(result, function(err, wpResult){
                                   if(!err) {
                                     wpResult = tools.ripXMLCDATA(wpResult.xml);
