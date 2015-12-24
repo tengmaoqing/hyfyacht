@@ -4,6 +4,7 @@
     <input type="hidden" name="_csrf" value="{{ _csrf }}">
     <input type="hidden" name="WIDout_trade_no" value="{{ booking.bookingId }}">
     <input type="hidden" name="WIDextra_common_param" value="boat">
+    <input type="hidden" name="WIDit_b_pay" value="29m">
     <input type="hidden" name="WIDsubject" value="{{ booking.boatName }}-{{ booking.productName }}-{{ booking.packageName }}">
     <input type="hidden" name="WIDtotal_fee" value="{{ (booking.total / 100).toFixed(2) }}">
     <input type="hidden" name="WIDbody" value="{{ booking.boatName }}-{{ booking.productName }}-{{ booking.packageName }}">
@@ -23,8 +24,9 @@
 {% if !preset.ua.mobile %}
 <form name="alipay_direct" action="/pay/alipay" method="post" target="_blank">
   <input type="hidden" name="_csrf" value="{{ _csrf }}">
-  <input type="hidden" name="WIDout_trade_no" value="{{ eventOrder.eventId }}">
+  <input type="hidden" name="WIDout_trade_no" value="{{ eventOrder.orderId }}">
   <input type="hidden" name="WIDextra_common_param" value="event">
+  <input type="hidden" name="WIDit_b_pay" value="10m">
   <input type="hidden" name="WIDsubject" value="{{ eventOrder.eventName }}">
   <input type="hidden" name="WIDtotal_fee" value="{{ (eventOrder.total / 100).toFixed(2) }}">
   <input type="hidden" name="WIDbody" value="{{ eventOrder.eventName }}">

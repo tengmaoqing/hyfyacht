@@ -21,7 +21,7 @@
       mobile: ""
     };
 
-    $scope.outDate = moment(hgdata.attendedDate) < moment();
+    $scope.outDate = moment(new Date(hgdata.attendedDate)) < moment();
 
     $http.get("/eventorder/number/" + hgdata.eventId).success(function (res) {
       $scope.currPersons = res.count;

@@ -29,10 +29,10 @@
             <div class="col-md-8 col-sm-8 col-xs-12">
               <span class="glyphicon glyphicon-user"></span> <label>{{ __('event.organiser') }}</label>: {{ event.organiser.nickname }}
             </div>
-            <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="col-md-4 col-sm-4 col-xs-12" data-ng-cloak>
               <span class="glyphicon glyphicon-asterisk"></span> <label>{{ __('product.booking.numberOfPeople') }}</label>: {% if event.maxPersons > 0 %}{% raw %}{{ currPersons }}/{% endraw %}{{ event.maxPersons }}{% else %}{{ __('event.unlimited') }}{% endif %}
             </div>
-            <div class="col-md-8 col-sm-8 col-xs-12">
+            <div class="col-md-8 col-sm-8 col-xs-12" data-ng-cloak>
               <span class="glyphicon glyphicon-time"></span> {{ preset.getDateString(event.dateStart) }} - {{ preset.getDateString(event.dateEnd) }}
             </div>
           </div>
