@@ -77,7 +77,7 @@
         return false;
       }
 
-      var endDate = moment(date);
+      var endDate = moment(date.local());
       endDate.add(1, "day");
 
       var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
@@ -98,7 +98,7 @@
         return false;
       }
 
-      var endDate = moment(date);
+      var endDate = moment(date.local());
       endDate.add(1, "day");
 
       var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
@@ -332,7 +332,7 @@
       var slotCount = endDate.diff(startDate) / 60000;
 
       var charges = $scope.packages[index].charges;
-      var charge = {};
+      //var charge = {};
       for(var j = 0; j < charges.length; j++){
         var condition = charges[j].condition;
 
