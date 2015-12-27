@@ -18,11 +18,11 @@ exports.getEvent = function(req, res, next) {
     }else {
       if(event) {
         if(req.isFromWechat){
-          res.render('event', {event: event, wechatConfig: wechatCore.getConfigForFrontPage()});
+          var url = 'http://' + req.hostname + req.originalUrl.split('#')[0];
+          res.render('event', {event: event, wechatConfig: wechatCore.getConfigForFrontPage(url)});
         }else {
           res.render('event', {event: event});
         }
-        //res.render('event', {event: event, wechatConfig: wechatCore.getConfigForFrontPage()});
       }else{
         var err = new Error('Not Found');
         err.status = 404;
