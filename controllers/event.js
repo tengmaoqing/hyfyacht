@@ -2,6 +2,7 @@
  * Created by qxj on 15/12/22.
  */
 var Event = require('hyfbase').Event;
+var wechatCore = require('../lib/wechat/wechat-core');
 
 exports.getEvent = function(req, res, next) {
   Event.findOne({
@@ -16,7 +17,11 @@ exports.getEvent = function(req, res, next) {
       return next(err);
     }else {
       if(event) {
-        res.render('event', {event: event});
+        if(req.isFromWechat){
+          res.render('event', {event: event, wechatConfig: wechatCore.getConfigForFrontPage()});
+        }else {
+          res.render('event', {event: event});
+        }
       }else{
         var err = new Error('Not Found');
         err.status = 404;

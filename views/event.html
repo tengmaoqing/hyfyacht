@@ -162,4 +162,68 @@
     $("#event-nav").onePageNav();
   })(jQuery, window);
 </script>
+{% if wechatConfig %}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+  var config = {{ wechatConfig|json|safe }};
+  var shareMessage = {
+    title: "{{ event.title }}",
+    desc: "{{ event.title }}",
+    link: "http://hgboating.com/event/{{ event.id }}",
+    imgUrl: "{{ event.thumbnail }}"
+  };
+
+  wx.config({
+    debug: false,
+    appId: config.appId,
+    timestamp: config.timeStamp,
+    nonceStr: config.nonceStr,
+    signature: config.signature,
+    jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareQZone']
+  });
+
+  wx.onMenuShareTimeline({
+    title: shareMessage.title,
+    link: shareMessage.link,
+    imgUrl: shareMessage.imgUrl,
+    success: function () {
+    },
+    cancel: function () {
+    }
+  });
+
+  wx.onMenuShareAppMessage({
+    title: shareMessage.title,
+    desc: shareMessage.desc,
+    link: shareMessage.link,
+    imgUrl: shareMessage.imgUrl,
+    success: function () {
+    },
+    cancel: function () {
+    }
+  });
+
+  wx.onMenuShareQQ({
+    title: shareMessage.title,
+    desc: shareMessage.desc,
+    link: shareMessage.link,
+    imgUrl: shareMessage.imgUrl,
+    success: function () {
+    },
+    cancel: function () {
+    }
+  });
+
+  wx.onMenuShareQZone({
+    title: shareMessage.title,
+    desc: shareMessage.desc,
+    link: shareMessage.link,
+    imgUrl: shareMessage.imgUrl,
+    success: function () {
+    },
+    cancel: function () {
+    }
+  });
+</script>
+{% endif %}
 {% endblock %}
