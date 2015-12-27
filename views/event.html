@@ -1,4 +1,5 @@
 {% extends './layout.html' %}
+{% block title %}{{ event.title }} | {% parent %}{% endblock %}
 
 {% block content %}
 
@@ -162,7 +163,7 @@
     $("#event-nav").onePageNav();
   })(jQuery, window);
 </script>
-{% if wechatConfig %}
+{% if false %}
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
   var config = {{ wechatConfig|json|safe }};
@@ -182,47 +183,50 @@
     jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareQZone']
   });
 
-  wx.onMenuShareTimeline({
-    title: shareMessage.title,
-    link: shareMessage.link,
-    imgUrl: shareMessage.imgUrl,
-    success: function () {
-    },
-    cancel: function () {
-    }
-  });
+  wx.ready(function() {
 
-  wx.onMenuShareAppMessage({
-    title: shareMessage.title,
-    desc: shareMessage.desc,
-    link: shareMessage.link,
-    imgUrl: shareMessage.imgUrl,
-    success: function () {
-    },
-    cancel: function () {
-    }
-  });
+    wx.onMenuShareTimeline({
+      title: shareMessage.title,
+      link: shareMessage.link,
+      imgUrl: shareMessage.imgUrl,
+      success: function () {
+      },
+      cancel: function () {
+      }
+    });
 
-  wx.onMenuShareQQ({
-    title: shareMessage.title,
-    desc: shareMessage.desc,
-    link: shareMessage.link,
-    imgUrl: shareMessage.imgUrl,
-    success: function () {
-    },
-    cancel: function () {
-    }
-  });
+    wx.onMenuShareAppMessage({
+      title: shareMessage.title,
+      desc: shareMessage.desc,
+      link: shareMessage.link,
+      imgUrl: shareMessage.imgUrl,
+      success: function () {
+      },
+      cancel: function () {
+      }
+    });
 
-  wx.onMenuShareQZone({
-    title: shareMessage.title,
-    desc: shareMessage.desc,
-    link: shareMessage.link,
-    imgUrl: shareMessage.imgUrl,
-    success: function () {
-    },
-    cancel: function () {
-    }
+    wx.onMenuShareQQ({
+      title: shareMessage.title,
+      desc: shareMessage.desc,
+      link: shareMessage.link,
+      imgUrl: shareMessage.imgUrl,
+      success: function () {
+      },
+      cancel: function () {
+      }
+    });
+
+    wx.onMenuShareQZone({
+      title: shareMessage.title,
+      desc: shareMessage.desc,
+      link: shareMessage.link,
+      imgUrl: shareMessage.imgUrl,
+      success: function () {
+      },
+      cancel: function () {
+      }
+    });
   });
 </script>
 {% endif %}

@@ -22,6 +22,7 @@ exports.getEvent = function(req, res, next) {
         }else {
           res.render('event', {event: event});
         }
+        //res.render('event', {event: event, wechatConfig: wechatCore.getConfigForFrontPage()});
       }else{
         var err = new Error('Not Found');
         err.status = 404;
