@@ -27,7 +27,7 @@
             </div>
           </div>
           <div>
-            <span class="glyphicon glyphicon-map-marker"></span> {{ __(event.location.city) }}
+            <span class="glyphicon glyphicon-map-marker"></span> {{ __(event.location.city) }}{% if event.location.pier %} - {{ __(event.location.pier) }}{% endif %}
           </div>
           <div>
             <span class="glyphicon glyphicon-user"></span> <label>{{ __('event.organiser') }}</label>: {{ event.organiser.nickname }}
