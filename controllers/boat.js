@@ -2,8 +2,6 @@
  * Created by qxj on 15/10/17.
  */
 var Boat = require('hyfbase').Boat;
-var Owner = require('hyfbase').Owner;
-var Product = require('hyfbase').Product;
 
 exports.getBoat = function(req, res, next){
   Boat.findOne({

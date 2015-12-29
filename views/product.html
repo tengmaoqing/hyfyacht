@@ -93,6 +93,9 @@
                   </div>
                 </div>
                 {% endraw %}
+                <div class="alert alert-warning" data-ng-if="!availablePackages" data-ng-cloak>
+                  {{ __('product.booking.no_package') }}
+                </div>
               </div>
             </div>
             <div class="row calendar-controller">
@@ -103,11 +106,11 @@
                 {{ __('calendar.unavailable') }}
               </div>
               <div class="col-md-8 col-sm-6 col-xs-12 text-right">
-                <button id="calendar-month" type="button" class="btn btn-default invisible">{{ __('calendar.selectdate') }}</button>
-                <button id="calendar-today" type="button" class="btn btn-default">{{ __('calendar.today') }}</button>
+                <button id="calendar-month" type="button" class="btn btn-default invisible" data-ng-click="clearPackages()">{{ __('calendar.selectdate') }}</button>
+                <button id="calendar-today" type="button" class="btn btn-default" data-ng-click="clearPackages()">{{ __('calendar.today') }}</button>
                 <div class="btn-group">
-                  <button id="calendar-prev" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button>
-                  <button id="calendar-next" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button>
+                  <button id="calendar-prev" type="button" class="btn btn-default" data-ng-click="clearPackages()"><span class="glyphicon glyphicon-menu-left"></span></button>
+                  <button id="calendar-next" type="button" class="btn btn-default" data-ng-click="clearPackages()"><span class="glyphicon glyphicon-menu-right"></span></button>
                 </div>
               </div>
             </div>
@@ -467,7 +470,7 @@
     timeNotAvailable: "{{ __('product.booking.error.invaild_time') }}"
   };
 </script>
-<script src="{{ preset.staticHost }}/js/view-product.js?_=201512261"></script>
+<script src="{{ preset.staticHost }}/js/view-product.js?_=2015122906"></script>
 <script src="//cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
 <script>
 (function($,w){

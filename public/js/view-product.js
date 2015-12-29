@@ -77,6 +77,8 @@
         return false;
       }
 
+      //$("#data-available-packages").val("0").change();
+
       var endDate = moment(date.local());
       endDate.add(1, "day");
 
@@ -97,6 +99,8 @@
       if(date < moment().hour(0).minute(0).second(0)){
         return false;
       }
+
+      //$("#data-available-packages").val("0").change();
 
       var endDate = moment(date.local());
       endDate.add(1, "day");
@@ -222,6 +226,7 @@
     $scope.extraSlotCharge = 0;
     $scope.extraSlot = 0;
     $scope.extraSlotChargeName = "";
+    $scope.availablePackages = false;
 
     $scope.generateCharge = function(charge){
       return parseInt(charge * currency[clientCurrency] / currency[$scope.baseCurrency]);
@@ -240,10 +245,15 @@
       var selectedDate = moment($scope.selectedDate, "YYYY-MM-DD HH:mm");
 
       if(package.availableMonths[selectedDate.month()] && package.availableDays[selectedDate.day()]){
+        $scope.availablePackages = true;
         return true;
       }
 
       return false;
+    };
+
+    $scope.clearPackages = function(){
+      $scope.availablePackages = false;
     };
 
     $scope.toggleItem = function(item){

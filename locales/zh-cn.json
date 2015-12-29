@@ -143,6 +143,7 @@
       "start": "开始时间",
       "end": "结束时间",
       "selectPackage": "选择套餐",
+      "no_package": "此日期没有可以预定的套餐，请选择其他日期",
       "numberOfPeople": "人数",
       "package": {
         "items": "套餐选项",
@@ -255,7 +256,8 @@
         "szw": "深圳湾",
         "nanao": "南澳",
         "nanaoxiexiacun": "南澳斜吓村码头",
-        "szshuangyong": "南澳月亮湾双拥码头"
+        "szshuangyong": "南澳月亮湾双拥码头",
+        "szshekoufishingport": "蛇口渔港"
       }
     },
     "boat": {
@@ -264,7 +266,8 @@
         "westyacht": "西式游艇",
         "cnyacht": "中式游艇",
         "westspeedboat": "西式快艇",
-        "cnfishingboat": "中式渔船"
+        "cnfishingboat": "中式渔船",
+        "sailingboat": "帆船"
       },
       "base": {
         "ac": "空调",

@@ -35,9 +35,11 @@
           <div>
             <span class="glyphicon glyphicon-asterisk"></span> <label>{{ __('product.booking.numberOfPeople') }}</label>: {% if event.maxPersons > 0 %}{{ event.maxPersons }}{% else %}{{ __('event.unlimited') }}{% endif %}
           </div>
+          {% if event.dateStart %}
           <div>
             <span class="glyphicon glyphicon-time"></span> {{ preset.getDateString(event.dateStart) }} - {{ preset.getDateString(event.dateEnd) }}
           </div>
+          {% endif %}
           <div class="text-right"><a class="btn btn-primary" href="/event/{{ event.id }}">{{ __('event.attend') }}</a></div>
         </div>
       </div>

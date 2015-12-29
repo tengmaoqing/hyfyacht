@@ -33,9 +33,11 @@
             <div class="col-md-4 col-sm-4 col-xs-12" data-ng-cloak>
               <span class="glyphicon glyphicon-asterisk"></span> <label>{{ __('product.booking.numberOfPeople') }}</label>: {% if event.maxPersons > 0 %}{% raw %}{{ currPersons }}/{% endraw %}{{ event.maxPersons }}{% else %}{{ __('event.unlimited') }}{% endif %}
             </div>
+            {% if event.dateStart %}
             <div class="col-md-8 col-sm-8 col-xs-12" data-ng-cloak>
               <span class="glyphicon glyphicon-time"></span> {{ preset.getDateString(event.dateStart) }} - {{ preset.getDateString(event.dateEnd) }}
             </div>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -131,7 +133,7 @@
     <div class="container text-center">
       <ul id="event-nav" class="nav nav-pills">
         <li role="presentation"><a href="#event-base">{{ __('product.section.info') }}</a></li>
-        <li role="presentation"><a href="#event-attend">{{ __('event.attend') }}</a></li>
+        <li role="presentation" data-ng-if="!outDate && maxPersons > 0" data-ng-cloak><a href="#event-attend">{{ __('event.attend') }}</a></li>
         <li role="presentation"><a href="#event-detail">{{ __('event.desc') }}</a></li>
       </ul>
     </div>

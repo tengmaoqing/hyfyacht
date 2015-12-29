@@ -143,6 +143,7 @@
       "start": "Start",
       "end": "End",
       "selectPackage": "Select a package",
+      "no_package": "No package available, Please select another date.",
       "numberOfPeople": "Number of people",
       "package": {
         "items": "Package items",
@@ -255,7 +256,8 @@
         "szw": "Shenzhen Bay",
         "nanao": "Nanao",
         "nanaoxiexiacun": "Nanao Xiexia Village Pier",
-        "szshuangyong": "Nanao Shuangyong Pier"
+        "szshuangyong": "Nanao Shuangyong Pier",
+        "szshekoufishingport": "Shekou Fishing Port"
       }
     },
     "boat": {
@@ -264,7 +266,8 @@
         "westyacht": "Western Yacht",
         "cnyacht": "Chinese Yacht",
         "westspeedboat": "Speedboat",
-        "cnfishingboat": "Chinese Fishing Boat"
+        "cnfishingboat": "Chinese Fishing Boat",
+        "sailingboat": "Sailing Boat"
       },
       "base": {
         "ac": "Air Conditioning",
