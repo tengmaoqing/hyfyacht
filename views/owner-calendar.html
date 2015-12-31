@@ -2,7 +2,7 @@
 
 {% block head %}
 
-<link rel="stylesheet" href="//cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.css">
 
 {% endblock %}
 
@@ -70,9 +70,9 @@
 
 {% block foot %}
 
-<script src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
-<script src="//cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.js"></script>
-<script src="//cdn.bootcss.com/fullcalendar/2.4.0/lang/{% if preset.locale == 'zh-cn' %}zh-cn{% elseif preset.locale == 'zh-hk' %}zh-tw{% elseif preset.locale == 'en' %}en-gb{% endif %}.js"></script>
+<script src="http://cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
+<script src="http://cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.js"></script>
+<script src="http://cdn.bootcss.com/fullcalendar/2.4.0/lang/{% if preset.locale == 'zh-cn' %}zh-cn{% elseif preset.locale == 'zh-hk' %}zh-tw{% elseif preset.locale == 'en' %}en-gb{% endif %}.js"></script>
 <script>
 (function($, window){
   var selectedStart = false;

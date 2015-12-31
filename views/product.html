@@ -2,7 +2,7 @@
 
 {% block head %}
 
-<link rel="stylesheet" href="//cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.css">
 
 {% endblock %}
 
@@ -456,10 +456,10 @@
 
 {% block foot %}
 
-<script src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
-<script src="//cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.js"></script>
-<script src="//cdn.bootcss.com/fullcalendar/2.4.0/lang/{% if preset.locale == 'zh-cn' %}zh-cn{% elseif preset.locale == 'zh-hk' %}zh-tw{% elseif preset.locale == 'en' %}en-gb{% endif %}.js"></script>
-<script src="//cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
+<script src="http://cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
+<script src="http://cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.js"></script>
+<script src="http://cdn.bootcss.com/fullcalendar/2.4.0/lang/{% if preset.locale == 'zh-cn' %}zh-cn{% elseif preset.locale == 'zh-hk' %}zh-tw{% elseif preset.locale == 'en' %}en-gb{% endif %}.js"></script>
+<script src="http://cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
 <script>
   window.hgdata = {
     boatId: "{{ boat.id|safe }}",
@@ -471,7 +471,7 @@
   };
 </script>
 <script src="{{ preset.staticHost }}/js/view-product.js?_=2015122906"></script>
-<script src="//cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
+<script src="http://cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
 <script>
 (function($,w){
   $("#product-nav").onePageNav();
