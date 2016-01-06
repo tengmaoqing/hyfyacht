@@ -64,7 +64,7 @@
                 <li data-ng-show="event.numberOfPersons.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.invaild') }}</li>
               </ul>
             </div>
-            <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" min="1" max="{% raw %}{{ maxPersons }}{% endraw %}" required>
+            <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" min="1" max="{% raw %}{{ maxPersons }}{% endraw %}" required data-ng-disabled="eventType == 'free'">
           </div>
           <div id="product-booking-contact" class="product-booking-container">
             <p><strong>{{ __('product.booking.contact') }}</strong></p>
@@ -148,6 +148,7 @@
 <script>
   window.hgdata = {
     eventId: "{{ event.id|safe }}",
+    eventType: "{{ event.type }}",
     clientCurrency: "{{ preset.currency|safe }}",
     currency: {{ preset.configCurrency|json|safe }},
     baseCurrency: "{{ event.currency|safe }}",
@@ -158,7 +159,7 @@
 </script>
 <script src="http://cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
 <script src="http://cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
-<script src="{{ preset.staticHost }}/js/view-event.js?_=20151221"></script>
+<script src="{{ preset.staticHost }}/js/view-event.js?_=20160106"></script>
 <script src="http://cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
 <script>
   (function($,w){

@@ -93,7 +93,40 @@
     </div>
   </div>
 </div>
+{% if boat.geospatial.length > 0 %}
+<div class="columns-sm">
+  <div class="container">
+    <div id="boat-geospatial" class="hyf-map-container"></div>
+  </div>
+</div>
+{% endif %}
 
 {% include './footer.html' %}
 
+{% endblock %}
+
+{% block foot %}
+{% if boat.geospatial.length > 0 %}
+<script>
+  window.hgdata = {
+    geospatial: {{ boat.geospatial|json|safe }}
+  };
+
+  function loadBaiduMap() {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "http://api.map.baidu.com/api?v=2.0&ak=XpLGCrdpWiH4k02rOXlWQBro&callback=initBaiduMap";
+    document.body.appendChild(script);
+  }
+
+  function initBaiduMap() {
+    var map = new BMap.Map("boat-geospatial");
+    var point = new BMap.Point(hgdata.geospatial[0], hgdata.geospatial[1]);
+    map.centerAndZoom(point, 25);
+    map.enableScrollWheelZoom();
+  }
+
+  loadBaiduMap();
+</script>
+{% endif %}
 {% endblock %}

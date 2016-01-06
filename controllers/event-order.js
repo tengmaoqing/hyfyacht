@@ -1,6 +1,7 @@
 /**
  * Created by qxj on 15/12/22.
  */
+var mongoose = require('mongoose');
 var Event = require('hyfbase').Event;
 var EventOrder = require('hyfbase').EventOrder;
 var config = require('../config');
@@ -8,16 +9,35 @@ var wechatCore = require('../lib/wechat/wechat-core');
 var parseXML2String = require('xml2js').parseString;
 var tools = require('../lib/tools');
 var moment = require('moment');
+var util = require('util');
 
 exports.getEventOrderNumberByEventId = function(req, res, next){
   var eventId = req.params.eventId;
 
-  EventOrder.count({
-    eventId: eventId,
-    status: 'db.booking.pay_success'
-  }, function(err, count){
+  EventOrder.aggregate([
+    {
+      $match:{
+        eventId: mongoose.Types.ObjectId(eventId),
+        status: 'db.booking.pay_success'
+      }
+    },
+    {
+      $group:{
+        _id: '$eventId',
+        count: {
+          $sum: '$numberOfPersons'
+        }
+      }
+    }
+  ], function (err, result) {
     if(!err){
-      return res.json({count:count});
+      if(result.length > 0) {
+        return res.json({code: 1, count: result[0].count});
+      }else {
+        return res.json({code: 1, count: 0});
+      }
+    }else{
+      return res.json({code:0});
     }
   });
 };
@@ -29,10 +49,10 @@ exports.submit = function(req, res, next) {
         notEmpty: true,
         errorMessage: 'Invalid Event'
       },
-      'numberOfPersons': {
-        notEmpty: true,
-        errorMessage: 'Invalid Number Of Persons'
-      },
+      //'numberOfPersons': {
+      //  notEmpty: true,
+      //  errorMessage: 'Invalid Number Of Persons'
+      //},
       'contact': {
         notEmpty: true,
         errorMessage: 'Invalid Contact'
@@ -71,93 +91,243 @@ exports.submit = function(req, res, next) {
         return next(err);
       }else {
         if(event){
-          var generateCharge = function(charge){
-            return parseInt(charge * config.currency[req.session.currency] / config.currency[event.currency]);
-          };
-
-          var total = generateCharge(event.baseCharge) * eventForm.numberOfPersons;
-
-          var fail = function(error){
-
-            var eventInfo = new EventOrder({
-              eventName: event.title
-            });
-
-            req.session.eventForm = null;
-            return res.render('event-result', {error: error, eventOrder: eventInfo});
-          };
-
-          var now = moment();
-
-          if(moment(event.attendedDate) < now){
-            fail('event.result.error.out_date');
-          }
-
-          EventOrder.count({
+          EventOrder.find({
             eventId: eventForm.eventId,
-            status: 'db.booking.pay_success'
-          }, function(err, count){
-            if(!err && count < event.maxPersons){
-              var eventOrder = new EventOrder({
-                userId: req.session.user._id,
-                eventId: event.id,
-                eventName: event.title,
-                baseCharge: event.baseCharge,
-                numberOfPersons: eventForm.numberOfPersons,
-                total: total,
-                currency: config.currency,
-                settlementCurrency: req.session.currency,
-                baseCurrency: event.currency,
-                contact: {
-                  name: eventForm.contact,
-                  mobile: eventForm.area_code + eventForm.mobile
-                },
-                status: 'db.booking.wait_to_pay',
-                statusLogs: [
-                  {
-                    status: 'db.booking.wait_to_pay',
-                    description: 'create',
-                    updateDate: new Date()
-                  }
-                ]
+            userId: req.session.user._id
+          }).exec(function(err, orders){
+            var fail = function(error){
+
+              var eventInfo = new EventOrder({
+                eventName: event.title
               });
 
-              eventOrder.save(function (err, savedOrder) {
-                if (err) {
-                  err.status = 400;
-                  return next(err);
-                } else {
-                  req.session.eventForm = null;
+              req.session.eventForm = null;
+              return res.render('event-result', {error: error, eventOrder: eventInfo});
+            };
 
-                  if (savedOrder) {
-                    if(req.isFromWechat){
-                      wechatCore.unifiedorder(req, savedOrder, 'event', function(result){
-                        parseXML2String(result, function(err, wpResult){
-                          if(!err) {
-                            wpResult = tools.ripXMLCDATA(wpResult.xml);
-                            if(wechatCore.verifySign(wpResult)){
-                              if(wpResult.return_code == 'SUCCESS' && wpResult.result_code == 'SUCCESS'){
-                                var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
+            if(event.type == 'free' && orders.length > 0){
+              fail('event.result.error.multiorder');
+            }else{
+              var generateCharge = function(charge){
+                return parseInt(charge * config.currency[req.session.currency] / config.currency[event.currency]);
+              };
 
-                                return res.render('event-result', {eventOrder: savedOrder, wpParams: wpParams});
-                              }
-                            }
-                            return res.render('event-result', {eventOrder: savedOrder});
-                          }
-                        });
-                      });
-                    }else {
-                      return res.render('event-result', {eventOrder: savedOrder});
+              if(event.type == 'free'){
+                eventForm.numberOfPersons = 1;
+              }
+
+              var total = generateCharge(event.baseCharge) * eventForm.numberOfPersons;
+
+              var now = moment();
+
+              if(moment(event.attendedDate) < now){
+                fail('event.result.error.out_date');
+              }
+
+              EventOrder.aggregate([
+                {
+                  $match:{
+                    eventId: mongoose.Types.ObjectId(eventForm.eventId),
+                    status: 'db.booking.pay_success'
+                  }
+                },
+                {
+                  $group:{
+                    _id: '$eventId',
+                    count: {
+                      $sum: '$numberOfPersons'
                     }
-                  } else {
-                    return res.render('event-result', {error: 'event.result.error.other'});
                   }
                 }
+              ], function (err, result) {
+                if(!err && (result.length == 0 || (result.length > 0 && (result[0].count + parseInt(eventForm.numberOfPersons)) <= event.maxPersons))){
+                  var eventOrder = new EventOrder({
+                    userId: req.session.user._id,
+                    eventId: event.id,
+                    eventName: event.title,
+                    baseCharge: event.baseCharge,
+                    numberOfPersons: eventForm.numberOfPersons,
+                    total: total,
+                    currency: config.currency,
+                    settlementCurrency: req.session.currency,
+                    baseCurrency: event.currency,
+                    contact: {
+                      name: eventForm.contact,
+                      mobile: eventForm.area_code + eventForm.mobile
+                    },
+                    status: 'db.booking.wait_to_pay',
+                    statusLogs: [
+                      {
+                        status: 'db.booking.wait_to_pay',
+                        description: 'create',
+                        updateDate: new Date()
+                      }
+                    ]
+                  });
+
+                  if(event.type == 'free'){
+                    eventOrder.status = 'db.booking.pay_success';
+                    eventOrder.statusLogs.push({
+                      status: 'db.booking.pay_success',
+                      description: 'free event',
+                      updateDate: new Date()
+                    });
+                  }
+
+                  eventOrder.save(function (err, savedOrder) {
+                    if (err) {
+                      err.status = 400;
+                      return next(err);
+                    } else {
+                      req.session.eventForm = null;
+
+                      if (savedOrder) {
+                        if(event.type != 'free') {
+                          if (req.isFromWechat) {
+                            wechatCore.unifiedorder(req, savedOrder, 'event', function (result) {
+                              parseXML2String(result, function (err, wpResult) {
+                                if (!err) {
+                                  wpResult = tools.ripXMLCDATA(wpResult.xml);
+                                  if (wechatCore.verifySign(wpResult)) {
+                                    if (wpResult.return_code == 'SUCCESS' && wpResult.result_code == 'SUCCESS') {
+                                      var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
+
+                                      return res.render('event-result', {eventOrder: savedOrder, wpParams: wpParams});
+                                    }
+                                  }
+                                  return res.render('event-result', {eventOrder: savedOrder});
+                                }
+                              });
+                            });
+                          } else {
+                            return res.render('event-result', {eventOrder: savedOrder});
+                          }
+                        }else{
+                          return res.redirect('/user/event');
+                        }
+                      } else {
+                        return res.render('event-result', {error: 'event.result.error.other'});
+                      }
+                    }
+                  });
+                }else{
+                  fail('event.result.error.full');
+                }
               });
-            }else{
-              fail('event.result.error.full');
             }
           });
+          //var generateCharge = function(charge){
+          //  return parseInt(charge * config.currency[req.session.currency] / config.currency[event.currency]);
+          //};
+          //
+          //var total = generateCharge(event.baseCharge) * eventForm.numberOfPersons;
+          //
+          //var fail = function(error){
+          //
+          //  var eventInfo = new EventOrder({
+          //    eventName: event.title
+          //  });
+          //
+          //  req.session.eventForm = null;
+          //  return res.render('event-result', {error: error, eventOrder: eventInfo});
+          //};
+          //
+          //var now = moment();
+          //
+          //if(moment(event.attendedDate) < now){
+          //  fail('event.result.error.out_date');
+          //}
+          //
+          //EventOrder.aggregate([
+          //  {
+          //    $match:{
+          //      eventId: mongoose.Types.ObjectId(eventForm.eventId),
+          //      status: 'db.booking.pay_success'
+          //    }
+          //  },
+          //  {
+          //    $group:{
+          //      _id: '$eventId',
+          //      count: {
+          //        $sum: '$numberOfPersons'
+          //      }
+          //    }
+          //  }
+          //], function (err, result) {
+          //  if(!err && (result.length == 0 || (result.length > 0 && (result[0].count + parseInt(eventForm.numberOfPersons)) <= event.maxPersons))){
+          //    var eventOrder = new EventOrder({
+          //      userId: req.session.user._id,
+          //      eventId: event.id,
+          //      eventName: event.title,
+          //      baseCharge: event.baseCharge,
+          //      numberOfPersons: eventForm.numberOfPersons,
+          //      total: total,
+          //      currency: config.currency,
+          //      settlementCurrency: req.session.currency,
+          //      baseCurrency: event.currency,
+          //      contact: {
+          //        name: eventForm.contact,
+          //        mobile: eventForm.area_code + eventForm.mobile
+          //      },
+          //      status: 'db.booking.wait_to_pay',
+          //      statusLogs: [
+          //        {
+          //          status: 'db.booking.wait_to_pay',
+          //          description: 'create',
+          //          updateDate: new Date()
+          //        }
+          //      ]
+          //    });
+          //
+          //    if(event.type == 'free'){
+          //      eventOrder.status = 'db.booking.pay_success';
+          //      eventOrder.statusLogs.push({
+          //        status: 'db.booking.pay_success',
+          //        description: 'free event',
+          //        updateDate: new Date()
+          //      });
+          //    }
+          //
+          //    eventOrder.save(function (err, savedOrder) {
+          //      if (err) {
+          //        err.status = 400;
+          //        return next(err);
+          //      } else {
+          //        req.session.eventForm = null;
+          //
+          //        if (savedOrder) {
+          //          if(event.type != 'free') {
+          //            if (req.isFromWechat) {
+          //              wechatCore.unifiedorder(req, savedOrder, 'event', function (result) {
+          //                parseXML2String(result, function (err, wpResult) {
+          //                  if (!err) {
+          //                    wpResult = tools.ripXMLCDATA(wpResult.xml);
+          //                    if (wechatCore.verifySign(wpResult)) {
+          //                      if (wpResult.return_code == 'SUCCESS' && wpResult.result_code == 'SUCCESS') {
+          //                        var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
+          //
+          //                        return res.render('event-result', {eventOrder: savedOrder, wpParams: wpParams});
+          //                      }
+          //                    }
+          //                    return res.render('event-result', {eventOrder: savedOrder});
+          //                  }
+          //                });
+          //              });
+          //            } else {
+          //              return res.render('event-result', {eventOrder: savedOrder});
+          //            }
+          //          }else{
+          //            return res.redirect('/user/event');
+          //          }
+          //        } else {
+          //          return res.render('event-result', {error: 'event.result.error.other'});
+          //        }
+          //      }
+          //    });
+          //  }else{
+          //    fail('event.result.error.full');
+          //  }
+          //});
 
         }else{
           var err = new Error('Not Found');

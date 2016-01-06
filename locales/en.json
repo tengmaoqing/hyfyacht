@@ -226,7 +226,8 @@
       "error":{
         "out_date": "This event is out date.",
         "full": "This event is full.",
-        "other": "Order information incorrect."
+        "other": "Order information incorrect.",
+        "multiorder": "You had attended this event."
       }
     }
   },

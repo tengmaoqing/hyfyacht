@@ -1,5 +1,5 @@
-body, h1, h2, h3, h4, h5, h6 {
-  font-family: "Heiti SC", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+body, h1, h2, h3, h4, h5, h6, p {
+  font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 dd {
@@ -316,6 +316,12 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   position: relative;
 }
 
+.hyf-map-container {
+  padding-bottom: 30%;
+  position: relative;
+  border-radius: 6px;
+}
+
 .index-slide-item, .boat-thumbnail {
   background-position: center center;
   background-size: cover;
@@ -412,6 +418,10 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
 
   .index-slogan h1 {
     font-size: 24px;
+  }
+
+  .hyf-map-container {
+    padding-bottom: 60%;
   }
 }
 

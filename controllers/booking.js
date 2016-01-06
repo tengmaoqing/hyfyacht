@@ -444,7 +444,7 @@ exports.getBookingByBookingId = function(req, res, next){
         return next(err);
       } else {
         if(req.isFromWechat && booking.status == 'db.booking.wait_to_pay'){
-          wechatCore.unifiedorder(req, booking, function(result){
+          wechatCore.unifiedorder(req, booking, 'boat', function(result){
             parseXML2String(result, function(err, wpResult){
               if(!err) {
                 wpResult = tools.ripXMLCDATA(wpResult.xml);

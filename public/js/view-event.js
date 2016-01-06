@@ -20,6 +20,7 @@
       areaCode: "86",
       mobile: ""
     };
+    $scope.eventType = hgdata.eventType;
 
     $scope.outDate = moment(new Date(hgdata.attendedDate)) < moment();
 

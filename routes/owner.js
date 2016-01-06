@@ -4,13 +4,12 @@
 var express = require('express');
 var router = express.Router();
 
-var owner = require('../controllers/owner');
 var boat = require('../controllers/boat');
 var booking = require('../controllers/booking');
 var unavailable = require('../controllers/unavailable');
+var wechatCore = require('../lib/wechat/wechat-core');
 
 router.get('/', boat.getBoatsByOwnerId);
-
 
 router.get('/booking', booking.getBookingsByOwnerId);
 
@@ -21,6 +20,15 @@ router.get('/booking/cal/unavailable/:bid', unavailable.getUnavailableEventByBoa
 
 router.get('/unavailable/remove/:uid', unavailable.removeUnavailable);
 router.post('/unavailable/set', unavailable.setUnavailable);
+
+//router.get('/qrcode', function(req, res, next){
+//  if(req.isFromWechat){
+//    var url = 'http://' + req.hostname + req.originalUrl.split('#')[0];
+//    res.render('owner-scan-qrcode', {wechatConfig: wechatCore.getConfigForFrontPage(url)});
+//  }else {
+//    res.render('owner-scan-qrcode');
+//  }
+//});
 
 router.get('/:index', boat.getBoatsByOwnerId);
 
