@@ -14,7 +14,7 @@
     $scope.prefix = clientCurrency == 'hkd' ? '$' : '￥';
     $scope.numberOfPersons = 1;
     $scope.currPersons = 0;
-    $scope.maxPersons = 0;
+    $scope.maxPersons = 1;
     $scope.contact = {
       name: "",
       areaCode: "86",

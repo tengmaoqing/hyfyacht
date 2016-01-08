@@ -120,7 +120,8 @@
       "entertainments": "Entertainments",
       "extras": "Extras",
       "products": "Products",
-      "learn": "Learn more"
+      "learn": "Learn more",
+      "anchorage": "Anchorage"
     }
   },
   "product": {
@@ -220,6 +221,7 @@
   "event":{
     "attend": "Attend",
     "organiser": "Organiser",
+    "geospatial": "Location",
     "desc": "Description",
     "unlimited": "Unlimited",
     "result": {

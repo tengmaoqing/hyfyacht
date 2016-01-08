@@ -83,9 +83,9 @@ exports.checkBooking = function(req, res, next) {
       }else{
         if(package){
           if(req.session.owner._id == package.owner.id){
-            var err = new Error('Forbidden');
-            err.status = 403;
-            return next(err);
+            var httpErr = new Error('Forbidden');
+            httpErr.status = 403;
+            return next(httpErr);
           }
 
           var generateCharge = function(charge){
@@ -437,33 +437,33 @@ exports.getBookingByBookingId = function(req, res, next){
     if (err) {
       err.status = 400;
       return next(err);
-    } else {
-      if (!booking){
-        var err = new Error('Not Found');
-        err.status = 404;
-        return next(err);
-      } else {
-        if(req.isFromWechat && booking.status == 'db.booking.wait_to_pay'){
-          wechatCore.unifiedorder(req, booking, 'boat', function(result){
-            parseXML2String(result, function(err, wpResult){
-              if(!err) {
-                wpResult = tools.ripXMLCDATA(wpResult.xml);
-                if(wechatCore.verifySign(wpResult)){
-                  if(wpResult.return_code == 'SUCCESS' && wpResult.result_code == 'SUCCESS'){
-                    var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
-
-                    return res.render('user-booking-detail', {booking: booking, wpParams: wpParams});
-                  }
-                }
-                return res.render('user-booking-detail', {booking: booking});
-              }
-            });
-          });
-        }else {
-          return res.render('user-booking-detail', {booking: booking});
-        }
-      }
     }
+
+    if (!booking){
+      var httpErr = new Error('Not Found');
+      httpErr.status = 404;
+      return next(httpErr);
+    }
+
+    if(req.isFromWechat && booking.status == 'db.booking.wait_to_pay'){
+      wechatCore.unifiedorder(req, booking, 'boat', function(result){
+        parseXML2String(result, function(xmlErr, wpResult){
+          if(!xmlErr) {
+            wpResult = tools.ripXMLCDATA(wpResult.xml);
+            if(wechatCore.verifySign(wpResult)){
+              if(wpResult.return_code == 'SUCCESS' && wpResult.result_code == 'SUCCESS'){
+                var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
+
+                return res.render('user-booking-detail', {booking: booking, wpParams: wpParams});
+              }
+            }
+            //return res.render('user-booking-detail', {booking: booking});
+          }
+        });
+      });
+    }
+
+    return res.render('user-booking-detail', {booking: booking});
   });
 };
 
@@ -483,15 +483,15 @@ exports.getBookingByBookingIdForOwner = function(req, res, next){
     if (err) {
       err.status = 400;
       return next(err);
-    } else {
-      if (!booking){
-        var err = new Error('Not Found');
-        err.status = 404;
-        return next(err);
-      } else {
-        return res.render('owner-booking-detail', {booking: booking});
-      }
     }
+
+    if (!booking){
+      var httpErr = new Error('Not Found');
+      httpErr.status = 404;
+      return next(httpErr);
+    }
+
+    return res.render('owner-booking-detail', {booking: booking});
   });
 };
 
@@ -515,17 +515,19 @@ exports.getBookingsByUserId = function(req, res, next){
     if(err){
       err.status = 400;
       return next(err);
-    }else{
-      var pager = {
-        current: parseInt(page),
-        count: result.pages,
-        pages: []
-      };
-      for(var i = 1; i <= result.pages; i++){
-        pager.pages.push(i);
-      }
-      return res.render('user-booking-list', {bookings: result.docs, pager: pager, itemCount: result.total});
     }
+
+    var pager = {
+      current: parseInt(page),
+      count: result.pages,
+      pages: []
+    };
+
+    for(var i = 1; i <= result.pages; i++){
+      pager.pages.push(i);
+    }
+
+    return res.render('user-booking-list', {bookings: result.docs, pager: pager, itemCount: result.total});
   });
 };
 
@@ -552,23 +554,26 @@ exports.getBookingsByOwnerId = function(req, res, next){
     if(err){
       err.status = 400;
       return next(err);
-    }else{
-      var pager = {
-        current: parseInt(page),
-        count: result.pages,
-        pages: []
-      };
-      for(var i = 1; i <= result.pages; i++){
-        pager.pages.push(i);
-      }
-      return res.render('owner-booking-list', {bookings: result.docs, pager: pager, itemCount: result.total});
     }
+
+    var pager = {
+      current: parseInt(page),
+      count: result.pages,
+      pages: []
+    };
+
+    for(var i = 1; i <= result.pages; i++){
+      pager.pages.push(i);
+    }
+
+    return res.render('owner-booking-list', {bookings: result.docs, pager: pager, itemCount: result.total});
   });
 };
 
 exports.getBookingsForCalendarEvent = function(req, res, next){
   var start = new Date(req.query.start);
   var end = new Date(req.query.end);
+
   Booking.find({
     boatId: req.params.bid,
     dateStart: {
@@ -580,24 +585,26 @@ exports.getBookingsForCalendarEvent = function(req, res, next){
     if(err){
       err.status = 400;
       return res.json(err);
-    }else{
-      if(!bookings){
-        var err = new Error('Not Found');
-        err.status = 404;
-        return res.json(err);
-      }else{
-        var events = [];
-        for(var i = 0; i < bookings.length; i++){
-          events.push({
-            title: " ",
-            start: moment(bookings[i].dateStart).format('YYYY-MM-DDTHH:mm'),
-            end: moment(bookings[i].dateEnd).format('YYYY-MM-DDTHH:mm'),
-            allDay: false
-          });
-        }
-        return res.json(events);
-      }
     }
+
+    if(!bookings){
+      var err = new Error('Not Found');
+      err.status = 404;
+      return res.json(err);
+    }
+
+    var events = [];
+
+    for(var i = 0; i < bookings.length; i++){
+      events.push({
+        title: " ",
+        start: moment(bookings[i].dateStart).format('YYYY-MM-DDTHH:mm'),
+        end: moment(bookings[i].dateEnd).format('YYYY-MM-DDTHH:mm'),
+        allDay: false
+      });
+    }
+
+    return res.json(events);
   });
 };
 
@@ -623,24 +630,26 @@ exports.getBookingsForOwnerCalendarEvent = function(req, res, next){
     if(err){
       err.status = 400;
       return res.json(err);
-    }else{
-      if(!bookings){
-        var err = new Error('Not Found');
-        err.status = 404;
-        return res.json(err);
-      }else{
-        var events = [];
-        for(var i = 0; i < bookings.length; i++){
-          events.push({
-            title: " ",
-            start: moment(bookings[i].dateStart).format('YYYY-MM-DDTHH:mm'),
-            end: moment(bookings[i].dateEnd).format('YYYY-MM-DDTHH:mm'),
-            allDay: false,
-            bookingId: bookings[i].bookingId
-          });
-        }
-        return res.json(events);
-      }
     }
+
+    if(!bookings){
+      var httpErr = new Error('Not Found');
+      httpErr.status = 404;
+      return res.json(httpErr);
+    }
+
+    var events = [];
+
+    for(var i = 0; i < bookings.length; i++){
+      events.push({
+        title: " ",
+        start: moment(bookings[i].dateStart).format('YYYY-MM-DDTHH:mm'),
+        end: moment(bookings[i].dateEnd).format('YYYY-MM-DDTHH:mm'),
+        allDay: false,
+        bookingId: bookings[i].bookingId
+      });
+    }
+
+    return res.json(events);
   });
 };

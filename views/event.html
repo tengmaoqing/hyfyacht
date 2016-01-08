@@ -121,6 +121,15 @@
         </form>
       </div>
     </div>
+    {% if event.geospatial.length > 0 %}
+    <div id="event-geospatial" class="thumbnail">
+      <div class="caption">
+        <h3>{{ __('event.geospatial') }}</h3>
+        <hr class="hr-divider">
+        <div id="event-geospatial-map" class="hyf-map-container"></div>
+      </div>
+    </div>
+    {% endif %}
     <div id="event-detail" class="thumbnail">
       <div class="caption">
         <h3>{{ __('event.desc') }}</h3>
@@ -154,12 +163,35 @@
     baseCurrency: "{{ event.currency|safe }}",
     baseCharge: {{ event.baseCharge|safe }},
     maxPersons: {{ event.maxPersons|safe }},
-    attendedDate: "{{ event.attendedDate|safe }}"
+    attendedDate: "{{ event.attendedDate|safe }}",
+    geospatial: {{ event.geospatial|json|safe }}
   };
 </script>
+{% if event.geospatial.length > 0 %}
+<script>
+
+  function loadBaiduMap() {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "http://api.map.baidu.com/api?v=2.0&ak=XpLGCrdpWiH4k02rOXlWQBro&callback=initBaiduMap";
+    document.body.appendChild(script);
+  }
+
+  function initBaiduMap() {
+    var map = new BMap.Map("event-geospatial-map");
+    var point = new BMap.Point(hgdata.geospatial[0], hgdata.geospatial[1]);
+    map.centerAndZoom(point, 11);
+    map.enableScrollWheelZoom();
+    var marker = new BMap.Marker(point);
+    map.addOverlay(marker);
+  }
+
+  loadBaiduMap();
+</script>
+{% endif %}
 <script src="http://cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
 <script src="http://cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
-<script src="{{ preset.staticHost }}/js/view-event.js?_=20160106"></script>
+<script src="{{ preset.staticHost }}/js/view-event.js?_=20160107"></script>
 <script src="http://cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
 <script>
   (function($,w){

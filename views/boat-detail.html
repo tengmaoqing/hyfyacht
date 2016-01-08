@@ -96,6 +96,7 @@
 {% if boat.geospatial.length > 0 %}
 <div class="columns-sm">
   <div class="container">
+    <h3>{{ __('boat.detail.anchorage') }}</h3>
     <div id="boat-geospatial" class="hyf-map-container"></div>
   </div>
 </div>
@@ -122,8 +123,10 @@
   function initBaiduMap() {
     var map = new BMap.Map("boat-geospatial");
     var point = new BMap.Point(hgdata.geospatial[0], hgdata.geospatial[1]);
-    map.centerAndZoom(point, 25);
+    map.centerAndZoom(point, 11);
     map.enableScrollWheelZoom();
+    var marker = new BMap.Marker(point);
+    map.addOverlay(marker);
   }
 
   loadBaiduMap();

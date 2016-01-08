@@ -120,7 +120,8 @@
       "entertainments": "娱乐活动",
       "extras": "其他",
       "products": "可预定产品",
-      "learn": "了解详情"
+      "learn": "了解详情",
+      "anchorage": "停泊位置"
     }
   },
   "product": {
@@ -220,6 +221,7 @@
   "event":{
     "attend": "参加",
     "organiser": "发起人",
+    "geospatial": "活动地点",
     "desc": "活动详情",
     "unlimited": "不限制人数",
     "result": {
