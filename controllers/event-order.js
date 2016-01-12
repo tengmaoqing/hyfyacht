@@ -184,7 +184,7 @@ exports.submit = function(req, res, next) {
                       if (savedOrder) {
                         if(event.type != 'free') {
                           if (req.isFromWechat) {
-                            wechatCore.unifiedorder(req, savedOrder, 'event', function (result) {
+                            wechatCore.unifiedorder(req.headers['x-real-ip'], req.session.wechat, savedOrder, 'event', function (result) {
                               parseXML2String(result, function (err, wpResult) {
                                 if (!err) {
                                   wpResult = tools.ripXMLCDATA(wpResult.xml);
@@ -216,118 +216,6 @@ exports.submit = function(req, res, next) {
               });
             }
           });
-          //var generateCharge = function(charge){
-          //  return parseInt(charge * config.currency[req.session.currency] / config.currency[event.currency]);
-          //};
-          //
-          //var total = generateCharge(event.baseCharge) * eventForm.numberOfPersons;
-          //
-          //var fail = function(error){
-          //
-          //  var eventInfo = new EventOrder({
-          //    eventName: event.title
-          //  });
-          //
-          //  req.session.eventForm = null;
-          //  return res.render('event-result', {error: error, eventOrder: eventInfo});
-          //};
-          //
-          //var now = moment();
-          //
-          //if(moment(event.attendedDate) < now){
-          //  fail('event.result.error.out_date');
-          //}
-          //
-          //EventOrder.aggregate([
-          //  {
-          //    $match:{
-          //      eventId: mongoose.Types.ObjectId(eventForm.eventId),
-          //      status: 'db.booking.pay_success'
-          //    }
-          //  },
-          //  {
-          //    $group:{
-          //      _id: '$eventId',
-          //      count: {
-          //        $sum: '$numberOfPersons'
-          //      }
-          //    }
-          //  }
-          //], function (err, result) {
-          //  if(!err && (result.length == 0 || (result.length > 0 && (result[0].count + parseInt(eventForm.numberOfPersons)) <= event.maxPersons))){
-          //    var eventOrder = new EventOrder({
-          //      userId: req.session.user._id,
-          //      eventId: event.id,
-          //      eventName: event.title,
-          //      baseCharge: event.baseCharge,
-          //      numberOfPersons: eventForm.numberOfPersons,
-          //      total: total,
-          //      currency: config.currency,
-          //      settlementCurrency: req.session.currency,
-          //      baseCurrency: event.currency,
-          //      contact: {
-          //        name: eventForm.contact,
-          //        mobile: eventForm.area_code + eventForm.mobile
-          //      },
-          //      status: 'db.booking.wait_to_pay',
-          //      statusLogs: [
-          //        {
-          //          status: 'db.booking.wait_to_pay',
-          //          description: 'create',
-          //          updateDate: new Date()
-          //        }
-          //      ]
-          //    });
-          //
-          //    if(event.type == 'free'){
-          //      eventOrder.status = 'db.booking.pay_success';
-          //      eventOrder.statusLogs.push({
-          //        status: 'db.booking.pay_success',
-          //        description: 'free event',
-          //        updateDate: new Date()
-          //      });
-          //    }
-          //
-          //    eventOrder.save(function (err, savedOrder) {
-          //      if (err) {
-          //        err.status = 400;
-          //        return next(err);
-          //      } else {
-          //        req.session.eventForm = null;
-          //
-          //        if (savedOrder) {
-          //          if(event.type != 'free') {
-          //            if (req.isFromWechat) {
-          //              wechatCore.unifiedorder(req, savedOrder, 'event', function (result) {
-          //                parseXML2String(result, function (err, wpResult) {
-          //                  if (!err) {
-          //                    wpResult = tools.ripXMLCDATA(wpResult.xml);
-          //                    if (wechatCore.verifySign(wpResult)) {
-          //                      if (wpResult.return_code == 'SUCCESS' && wpResult.result_code == 'SUCCESS') {
-          //                        var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
-          //
-          //                        return res.render('event-result', {eventOrder: savedOrder, wpParams: wpParams});
-          //                      }
-          //                    }
-          //                    return res.render('event-result', {eventOrder: savedOrder});
-          //                  }
-          //                });
-          //              });
-          //            } else {
-          //              return res.render('event-result', {eventOrder: savedOrder});
-          //            }
-          //          }else{
-          //            return res.redirect('/user/event');
-          //          }
-          //        } else {
-          //          return res.render('event-result', {error: 'event.result.error.other'});
-          //        }
-          //      }
-          //    });
-          //  }else{
-          //    fail('event.result.error.full');
-          //  }
-          //});
 
         }else{
           var err = new Error('Not Found');
