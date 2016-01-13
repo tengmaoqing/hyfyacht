@@ -82,21 +82,26 @@ exports.checkBooking = function(req, res, next){
   var dateEnd = moment(bookingForm.dateEnd);
 
   co(function *(){
-    var selectedPackage = yield Package.findByIdForCheckBooking(bookingForm.packageId).exec();
+    try {
+      var selectedPackage = yield Package.findByIdForCheckBooking(bookingForm.packageId).exec();
 
-    var bookingCount = yield Booking.countBookingByDateRange({
-      boatId: bookingForm.boatId,
-      status: {$ne: 'db.booking.cancel'}
-    }, dateStart.toDate(), dateEnd.toDate());
+      var bookingCount = yield Booking.countBookingByDateRange({
+        boatId: bookingForm.boatId,
+        status: {$ne: 'db.booking.cancel'}
+      }, dateStart.toDate(), dateEnd.toDate());
 
-    var unavailableCount = yield Unavailable.countUnavailableByDateRange({
-      boatId: bookingForm.boatId
-    }, dateStart.toDate(), dateEnd.toDate());
+      var unavailableCount = yield Unavailable.countUnavailableByDateRange({
+        boatId: bookingForm.boatId
+      }, dateStart.toDate(), dateEnd.toDate());
+    } catch (err){
+      err.status = 500;
+      throw err;
+    }
 
     if(!selectedPackage){
-      var err = new Error('Invalid Package');
+      var err =  new Error('Invalid Package');
       err.status = 400;
-      return next(err);
+      throw err;
     }
 
     var generateCharge = function(charge){
@@ -131,7 +136,7 @@ exports.checkBooking = function(req, res, next){
     if(req.session.owner._id === selectedPackage.owner.id){
       var err2 = new Error('Can not book boats of yours');
       err2.status = 403;
-      return next(err2);
+      throw err2;
     }
 
     //Check product
@@ -299,7 +304,12 @@ exports.checkBooking = function(req, res, next){
       ]
     });
 
-    var savedBooing = yield booking.save();
+    try {
+      var savedBooing = yield booking.save();
+    } catch (err){
+      err.status = 500;
+      throw err;
+    }
 
     req.session.bookingForm = null;
 
@@ -311,32 +321,36 @@ exports.checkBooking = function(req, res, next){
       return res.render('booking-result', {booking: savedBooing});
     }
 
-    wechatCore.unifiedorder(req.headers['x-real-ip'], req.session.wechat, savedBooing, 'boat', function(result){
-      if(!result){
-        return res.render('booking-result', {booking: savedBooing});
+    try {
+      var unifiedorderResult = yield new Promise(function (resolve, reject) {
+        wechatCore.unifiedorder(req.headers['x-real-ip'], req.session.wechat, savedBooing, 'boat', function (result) {
+          if (result) {
+            resolve(result);
+          } else {
+            reject(result);
+          }
+        });
+      });
+    }catch(err) {
+      err.status = 500;
+      throw err;
+    }
+
+    parseXML2String(unifiedorderResult, function(err, wpResult){
+      if(!err) {
+        wpResult = tools.ripXMLCDATA(wpResult.xml);
+        if(wechatCore.verifySign(wpResult) && wpResult.return_code === 'SUCCESS' && wpResult.result_code === 'SUCCESS'){
+          var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
+
+          return res.render('booking-result', {booking: savedBooing, wpParams: wpParams});
+        }
       }
 
-      parseXML2String(result, function(err, wpResult){
-        if(!err) {
-          wpResult = tools.ripXMLCDATA(wpResult.xml);
-          if(wechatCore.verifySign(wpResult)){
-            if(wpResult.return_code == 'SUCCESS' && wpResult.result_code == 'SUCCESS'){
-              var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
-
-              return res.render('booking-result', {booking: savedBooing, wpParams: wpParams});
-            }
-          }
-        }
-
-        return res.render('booking-result', {booking: savedBooing});
-      });
+      return res.render('booking-result', {booking: savedBooing});
     });
-  }).catch(onerror);
-
-  function onerror(err) {
-    err.status = 400;
+  }).catch(function(err){
     return next(err);
-  }
+  });
 };
 
 exports.getBookingByBookingId = function(req, res, next){
