@@ -331,7 +331,7 @@ exports.checkBooking = function(req, res, next){
           }
         });
       });
-    }catch(err) {
+    } catch(err) {
       err.status = 500;
       throw err;
     }
@@ -377,7 +377,7 @@ exports.getBookingByBookingId = function(req, res, next){
       return next(httpErr);
     }
 
-    if(req.isFromWechat && booking.status == 'db.booking.wait_to_pay'){
+    if(req.isFromWechat && booking.status === 'db.booking.wait_to_pay'){
       wechatCore.unifiedorder(req.headers['x-real-ip'], req.session.wechat, booking, 'boat', function(result){
         if(!result){
           return res.render('user-booking-detail', {booking: booking});
@@ -386,12 +386,10 @@ exports.getBookingByBookingId = function(req, res, next){
         parseXML2String(result, function(xmlErr, wpResult){
           if(!xmlErr) {
             wpResult = tools.ripXMLCDATA(wpResult.xml);
-            if(wechatCore.verifySign(wpResult)){
-              if(wpResult.return_code == 'SUCCESS' && wpResult.result_code == 'SUCCESS'){
-                var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
+            if(wechatCore.verifySign(wpResult) && wpResult.return_code === 'SUCCESS' && wpResult.result_code === 'SUCCESS'){
+              var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
 
-                return res.render('user-booking-detail', {booking: booking, wpParams: wpParams});
-              }
+              return res.render('user-booking-detail', {booking: booking, wpParams: wpParams});
             }
           }
           return res.render('user-booking-detail', {booking: booking});

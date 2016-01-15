@@ -18,26 +18,28 @@ exports.getUnavailableEventByBoatId = function(req, res, next){
     if(err){
       err.status = 400;
       return res.json(err);
-    }else{
-      if(!unavailables){
-        var err = new Error('Not Found');
-        err.status = 404;
-        return res.json(err);
-      }else{
-        var events = [];
-        for(var i = 0; i < unavailables.length; i++){
-          events.push({
-            title: " ",
-            start: moment(unavailables[i].dateStart).format('YYYY-MM-DDTHH:mm'),
-            end: moment(unavailables[i].dateEnd).format('YYYY-MM-DDTHH:mm'),
-            ownerDisabled: true,
-            uid: unavailables[i].id,
-            allDay: false
-          });
-        }
-        return res.json(events);
-      }
     }
+
+    if(!unavailables){
+      var httpErr = new Error('Not Found');
+      httpErr.status = 404;
+      return res.json(httpErr);
+    }
+
+    var events = [];
+
+    for(var i = 0; i < unavailables.length; i++){
+      events.push({
+        title: " ",
+        start: moment(unavailables[i].dateStart).format('YYYY-MM-DDTHH:mm'),
+        end: moment(unavailables[i].dateEnd).format('YYYY-MM-DDTHH:mm'),
+        ownerDisabled: true,
+        uid: unavailables[i].id,
+        allDay: false
+      });
+    }
+
+    return res.json(events);
   });
 };
 
@@ -74,27 +76,27 @@ exports.setUnavailable = function(req, res, next){
     if(err){
       err.status = 400;
       return res.json(err);
-    }else{
-      return res.json({result:true});
     }
+
+    return res.json({result:true});
   });
 };
 
 exports.removeUnavailable = function(req, res, next){
   var uid = req.params.uid;
 
-  if(uid){
-    Unavailable.remove({
-      _id: uid
-    }, function(err){
-      if(err){
-        err.status = 400;
-        return res.json(err);
-      }else{
-        return res.json({result:true});
-      }
-    });
-  }else{
+  if(!uid){
     return res.json({result:false});
   }
+
+  Unavailable.remove({
+    _id: uid
+  }, function(err){
+    if(err){
+      err.status = 400;
+      return res.json(err);
+    }
+
+    return res.json({result:true});
+  });
 };

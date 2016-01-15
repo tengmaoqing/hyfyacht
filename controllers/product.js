@@ -3,42 +3,36 @@
  */
 var Boat = require('hyfbase').Boat;
 var Product = require('hyfbase').Product;
+var co = require('co');
 
 exports.getProduct = function(req, res, next){
-  var boatId = req.params.boat_id;
+  var boatId = req.params.boatId;
 
-  Product.findOne({_id:req.params.id}).populate({
-    path: 'packages',
-    select: 'id name summary currency baseCharge basePersons maxPersons extraCharge items availableMonths availableDays type charges',
-    match: {
-      boats: boatId,
-      inStock: true
+  co(function *(){
+    try {
+      var product = yield Product.findOne({_id: req.params.id}).populate({
+        path: 'packages',
+        select: 'id name summary currency baseCharge basePersons maxPersons extraCharge items availableMonths availableDays type charges',
+        match: {
+          boats: boatId,
+          inStock: true
+        }
+      }).exec();
+
+      var boat = yield Boat.findOne({_id: boatId}).select('id name owner capacity location').populate('owner', 'id nickname').exec();
+    }catch (err){
+      err.status = 500;
+      throw err;
     }
-  }).exec(function(err, product){
-    if(err){
-      err.status = 400;
-      return next(err);
-    }else{
-      if(product){
-        Boat.findOne({_id:boatId}).select('id name owner capacity location').populate('owner', 'id nickname').exec(function(err, boat){
-          if(err){
-            err.status = 400;
-            return next(err);
-          }else{
-            if(boat){
-              return res.render('product', {product: product, boat: boat});
-            }else{
-              var err = new Error('Not Found');
-              err.status = 404;
-              return next(err);
-            }
-          }
-        });
-      }else{
-        var err = new Error('Not Found');
-        err.status = 404;
-        return next(err);
-      }
+
+    if(!product || !boat){
+      var err = new Error('Not Found');
+      err.status = 404;
+      throw err;
     }
+
+    return res.render('product', {product: product, boat: boat});
+  }).catch(function(err){
+    return next(err);
   });
 };

@@ -15,20 +15,20 @@ exports.getEvent = function(req, res, next) {
     if(err){
       err.status = 400;
       return next(err);
-    }else {
-      if(event) {
-        if(req.isFromWechat){
-          var url = 'http://' + req.hostname + req.originalUrl.split('#')[0];
-          res.render('event', {event: event, wechatConfig: wechatCore.getConfigForFrontPage(url)});
-        }else {
-          res.render('event', {event: event});
-        }
-      }else{
-        var err = new Error('Not Found');
-        err.status = 404;
-        return next(err);
-      }
     }
+
+    if(!event){
+      var httpErr = new Error('Not Found');
+      httpErr.status = 404;
+      return next(err);
+    }
+
+    if(!req.isFromWechat){
+      return res.render('event', {event: event});
+    }
+
+    var url = 'http://' + req.hostname + req.originalUrl.split('#')[0];
+    return res.render('event', {event: event, wechatConfig: wechatCore.getConfigForFrontPage(url)});
   });
 };
 
@@ -36,7 +36,7 @@ exports.getEvents = function(req, res, next) {
   var page = req.query.page || 1;
 
   Event.paginate({
-    inStock: true,
+    inStock: true
   }, {
     page: page,
     limit: 10,
@@ -52,16 +52,18 @@ exports.getEvents = function(req, res, next) {
     if(err){
       err.status = 400;
       return next(err);
-    }else{
-      var pager = {
-        current: parseInt(page),
-        count: result.pages,
-        pages: []
-      };
-      for(var i = 1; i <= result.pages; i++){
-        pager.pages.push(i);
-      }
-      return res.render('event-list', {events: result.docs, pager: pager, itemCount: result.total});
     }
+
+    var pager = {
+      current: parseInt(page),
+      count: result.pages,
+      pages: []
+    };
+
+    for(var i = 1; i <= result.pages; i++){
+      pager.pages.push(i);
+    }
+
+    return res.render('event-list', {events: result.docs, pager: pager, itemCount: result.total});
   });
 };

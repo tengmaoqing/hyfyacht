@@ -20,8 +20,8 @@ exports.renderIndex = function(req, res, next){
     if(err){
       err.status = 400;
       return res.render('index', {slides: slides});
-    }else{
-      return res.render('index', {slides: slides, boats: boats});
     }
+
+    return res.render('index', {slides: slides, boats: boats});
   });
 };
