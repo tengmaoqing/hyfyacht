@@ -20,11 +20,12 @@ function setSessionAndCookie(req, res, user){
     req.session.wechat = user.wechatOpenId;
   }
 
-  if(user.role && user.role == 'owner'){
+  req.session.owner = false;
+
+  if(user.role && user.role === 'owner'){
     req.session.owner = user.relatedOwner;
-  }else{
-    req.session.owner = false;
   }
+
   res.cookie('client_username', user.nickname, config.cookieOption);
   res.cookie('client_attributes', user.id, config.cookieOption);
   res.cookie('client_uid', randomString({length: 6}), config.cookieOption);
@@ -102,13 +103,13 @@ exports.signup = function(req, res, next){
       role: 'client'
     });
 
-    newUser.save(function (err) {
+    newUser.save(function (err, savedUser) {
       if (err) {
         err.status = 400;
         return next(err);
       }
 
-      setSessionAndCookie(req, res, newUser);
+      setSessionAndCookie(req, res, savedUser);
 
       if(from){
         return res.redirect(encodeURI(from));
