@@ -8,7 +8,7 @@ var config = require('../config');
 var util = require('util');
 var i18n = require('i18n');
 var moment = require('moment');
-var wechatCore = require('../lib/wechat/wechat-core');
+var wechatCore = require('wechat-core');
 var parseXML2String = require('xml2js').parseString;
 var tools = require('../lib/tools');
 var co = require('co');
@@ -321,10 +321,19 @@ exports.checkBooking = function(req, res, next){
       return res.render('booking-result', {booking: savedBooing});
     }
 
+    var payParams = {
+      body: savedBooing.boatName + '-' + savedBooing.productName + '-' + savedBooing.packageName,
+      attach: 'boat',
+      out_trade_no: savedBooing.bookingId,
+      total_fee: savedBooing.total,
+      spbill_create_ip: req.headers['x-real-ip'],
+      openid: req.session.wechat
+    };
+
     try {
       var unifiedorderResult = yield new Promise(function (resolve, reject) {
-        wechatCore.unifiedorder(req.headers['x-real-ip'], req.session.wechat, savedBooing, 'boat', function (result) {
-          if (result) {
+        wechatCore.unifiedorder(payParams, function (err, response, result) {
+          if(!err && response.statusCode === 200){
             resolve(result);
           } else {
             reject(result);
@@ -378,8 +387,17 @@ exports.getBookingByBookingId = function(req, res, next){
     }
 
     if(req.isFromWechat && booking.status === 'db.booking.wait_to_pay'){
-      wechatCore.unifiedorder(req.headers['x-real-ip'], req.session.wechat, booking, 'boat', function(result){
-        if(!result){
+      var payParams = {
+        body: booking.boatName + '-' + booking.productName + '-' + booking.packageName,
+        attach: 'boat',
+        out_trade_no: booking.bookingId,
+        total_fee: booking.total,
+        spbill_create_ip: req.headers['x-real-ip'],
+        openid: req.session.wechat
+      };
+
+      wechatCore.unifiedorder(payParams, function(err, response, result){
+        if(err || response.statusCode !== 200){
           return res.render('user-booking-detail', {booking: booking});
         }
 

@@ -7,7 +7,9 @@ var config = require('../config');
 var randomString = require('random-string');
 var util = require('util');
 var moment = require('moment');
-var wechatCore = require('../lib/wechat/wechat-core');
+var wechatCore = require('wechat-core');
+var co = require('co');
+var URI = require('urijs');
 
 function hashPassword(password){
   return crypto.createHash('sha256').update(password).digest('base64').toString();
@@ -135,48 +137,99 @@ exports.login = function(req, res, next){
     return res.render('login', {from: from});
   }
 
-  if(req.query.state == '2' && req.query.code){
+  if(req.query.state === '2' && req.query.code){
     var code = req.query.code;
 
-    wechatCore.getAccessToken(code, function(data){
-      if(!data){
-        res.render('login', { from: from});
-      }
+    co(function *(){
 
-      wechatCore.checkAccessTokenAndRefresh(data, function(wechat){
-        req.session.wechat = wechat.openid;
-        req.session.wechatCreateTime = new Date();
-        wechatCore.getUserInfo(wechat.access_token, wechat.openid, function(wechat_user){
-          wechat_user = JSON.parse(wechat_user);
-
-          var user = new User({
-            nickname: wechat_user.nickname,
-            wechatOpenId: wechat.openid,
-            role: 'client'
-          });
-
-          user.save(function (err) {
-            if (err) {
-              err.status = 400;
-              return next(err);
+      try {
+        var data = yield new Promise(function (resolve, reject) {
+          wechatCore.getUserAccessToken(code, function (err, response, result) {
+            if (!result || err) {
+              reject();
+            } else {
+              resolve(result);
             }
+          })
+        });
 
-            setSessionAndCookie(req, res, user);
+        data = JSON.parse(data);
 
-            var from = req.query.from;
-
-            if(from) {
-              return res.redirect(encodeURI(from));
+        var checkResult = yield new Promise(function (resolve, reject) {
+          wechatCore.checkUserAccessToken(data.access_token, data.openid, function (err, response, result) {
+            if (err || !result) {
+              reject();
+            } else {
+              resolve(result);
             }
-
-            return res.redirect('/');
           });
         });
+
+        checkResult = JSON.parse(checkResult);
+
+        if (checkResult.errcode !== 0) {
+          var refreshResult = yield new Promise(function (resolve, reject) {
+            wechatCore.refreshAccessToken(data.access_token, function (err, response, result) {
+              if (err || !result) {
+                reject();
+              } else {
+                resolve(result);
+              }
+            })
+          });
+
+          refreshResult = JSON.parse(refreshResult);
+
+          data.access_token = refreshResult.access_token;
+        }
+
+        var userinfo = yield new Promise(function (resolve, reject) {
+          wechatCore.getUserInfo(data.access_token, data.openid, function (err, response, result) {
+            if (err || !result) {
+              reject();
+            } else {
+              resolve(result);
+            }
+          })
+        });
+      }catch (e){
+        throw e;
+      }
+
+      userinfo = JSON.parse(userinfo);
+
+      var user = new User({
+        nickname: userinfo.nickname,
+        wechatOpenId: userinfo.openid,
+        role: 'client'
       });
+
+      user.save(function (err) {
+        if (err) {
+          err.status = 400;
+          return next(err);
+        }
+
+        setSessionAndCookie(req, res, user);
+
+        var from = req.query.from;
+
+        if(from) {
+          return res.redirect(encodeURI(from));
+        }
+
+        return res.redirect('/');
+      });
+    }).catch(function(err){
+      console.log(err.message);
+      return res.render('login', {from: from});
     });
   }else{
     var origin_url = encodeURI('http://' + req.hostname + req.originalUrl);
-    return res.redirect(wechatCore.getUrlForCodeScopeUserInfo(origin_url));
+    origin_url = URI(origin_url).query('');
+    from = URI(from).removeQuery('code').removeQuery('state');
+    origin_url.addQuery('from', from.toString());
+    return res.redirect(wechatCore.getUrlForCodeScopeUserInfo(origin_url.toString(), '2'));
   }
 };
 
@@ -250,9 +303,9 @@ exports.autoLogin = function(req, res, next){
     });
   }else{
     if(req.isFromWechat && !req.session.wechat){
-      if(req.query.state == '1' && req.query.code){
-        wechatCore.getAccessToken(req.query.code, function(data){
-          if(!data) {
+      if(req.query.state === '1' && req.query.code){
+        wechatCore.getUserAccessToken(req.query.code, function(err, response, data){
+          if(!data || err) {
             return next();
           }
 
@@ -263,7 +316,6 @@ exports.autoLogin = function(req, res, next){
           }
 
           req.session.wechat = wechat.openid;
-          req.session.wechatCreateTime = new Date();
 
           User.findOne({
             wechatOpenId: wechat.openid
@@ -276,7 +328,7 @@ exports.autoLogin = function(req, res, next){
         });
       }else{
         var origin_url = encodeURI('http://' + req.hostname + req.originalUrl);
-        return res.redirect(wechatCore.getUrlForCodeScopeBase(origin_url));
+        return res.redirect(wechatCore.getUrlForCodeScopeBase(origin_url, '1'));
       }
     }else{
       return next();

@@ -2,7 +2,7 @@
  * Created by qxj on 15/12/22.
  */
 var Event = require('hyfbase').Event;
-var wechatCore = require('../lib/wechat/wechat-core');
+var wechatCore = require('wechat-core');
 
 exports.getEvent = function(req, res, next) {
   Event.findOne({

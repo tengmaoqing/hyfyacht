@@ -19,7 +19,7 @@ var cache = require('memory-cache');
 var Booking = require('hyfbase').Booking;
 
 //wechat
-var wechatCore = require('./lib/wechat/wechat-core');
+var wechatCore = require('wechat-core');
 //config
 var config = require('./config');
 
@@ -60,8 +60,10 @@ swig.setDefaults({
   cache: false
 });
 
+wechatCore.configure(config.wechatConfig);
 //wechatCore.getAppAccessToken();
 //cache.put('wechatAccessToken', 'raW3m2xeOxvHUdPH1NlrPWLIVZjmMSOXy9bqGSFbdOXrrzpB_52_vVux_usUcHiGGiQbeGLn9OYFm4HgutfNYkHDNCopZIfIRv3r9VJKZFYHDChAEAXTS');
+
 //i18n init
 i18n.configure({
   locales: ['en', 'zh-cn', 'zh-hk'],

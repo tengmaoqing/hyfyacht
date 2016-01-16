@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var Event = require('hyfbase').Event;
 var EventOrder = require('hyfbase').EventOrder;
 var config = require('../config');
-var wechatCore = require('../lib/wechat/wechat-core');
+var wechatCore = require('wechat-core');
 var parseXML2String = require('xml2js').parseString;
 var tools = require('../lib/tools');
 var moment = require('moment');
@@ -204,10 +204,19 @@ exports.submit = function(req, res, next) {
       return res.render('event-result', {eventOrder: savedOrder});
     }
 
+    var payParams = {
+      body: savedOrder.eventName,
+      attach: 'event',
+      out_trade_no: savedOrder.orderId,
+      total_fee: savedOrder.total,
+      spbill_create_ip: req.headers['x-real-ip'],
+      openid: req.session.wechat
+    };
+
     try {
       var unifiedorderResult = yield new Promise(function (resolve, reject) {
-        wechatCore.unifiedorder(req.headers['x-real-ip'], req.session.wechat, savedOrder, 'event', function (result) {
-          if (result) {
+        wechatCore.unifiedorder(payParams, function (err, response, result) {
+          if (!err && response.statusCode === 200) {
             resolve(result);
           } else {
             reject(result);

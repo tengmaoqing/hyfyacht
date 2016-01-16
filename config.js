@@ -19,7 +19,15 @@ var config = {
     cny: 10000,
     hkd: 11765
   },
-  dbPath: "mongodb://localhost/hyfyacht"
+  dbPath: "mongodb://localhost/hyfyacht",
+  wechatConfig: {
+    appid: "wx273c41008f499625",
+    secret: "d4624c36b6795d1d99dcf0547af5443d",
+    key: "y7G30CLhMfkEIHv4aPyVjsaKNw3kwnD7",
+    mch_id: "1275569101",
+    device_info: "WEB",
+    notify_url: "http://test.hgboating.com/notify/wechat/notify"
+  }
 };
 
 module.exports = config;
