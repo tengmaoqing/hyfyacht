@@ -243,6 +243,10 @@
     "try_later": "設置失敗,請稍候重試",
     "invaild": "此時間不可選"
   },
+  "sms": {
+    "signup": "感謝你註冊HGBOATING, 以下是你的SMS 驗證碼:",
+    "reset_password": "你正在重置HGBOATING的密碼, 以下是你的SMS 驗證碼:"
+  },
   "db": {
     "booking": {
       "wait_to_pay": "等待付款",

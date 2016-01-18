@@ -277,7 +277,7 @@ exports.loginSubmit = function(req, res, next){
 
     setSessionAndCookie(req, res, user);
 
-    if(!from) {
+    if(from) {
       return res.redirect(encodeURI(from));
     }
 

@@ -25,7 +25,7 @@
     "confirmPassword": "Confirm Password",
     "smscode": "SMS Code",
     "getsmscode": "Get SMS Code",
-    "smscodesend": "Had send",
+    "smscodesend": "Sent",
     "readandagree": "I have read and agree",
     "termsandprivacy": "Service terms & Privacy policy",
     "email": "E-mail",
@@ -242,6 +242,10 @@
     "select_date": "Please select the date",
     "try_later": "Fail to set, Please try this later",
     "invaild": "Can not select this time"
+  },
+  "sms": {
+    "signup": "Thank you for signing up, this is your SMS Code:",
+    "reset_password": "You are resetting your password at HGBOATING, this is your SMS Code:"
   },
   "db": {
     "booking": {

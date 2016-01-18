@@ -6,7 +6,6 @@ var Package = require('hyfbase').Package;
 var Unavailable = require('hyfbase').Unavailable;
 var config = require('../config');
 var util = require('util');
-var i18n = require('i18n');
 var moment = require('moment');
 var wechatCore = require('wechat-core');
 var parseXML2String = require('xml2js').parseString;
@@ -204,7 +203,7 @@ exports.checkBooking = function(req, res, next){
 
     if(extraPersons > 0 && selectedPackage.extraCharge > 0){
       selectedItems.push({
-        name: i18n.__('product.booking.package.extra'),
+        name: res.__('product.booking.package.extra'),
         charge: generateCharge(selectedPackage.extraCharge),
         originCharge: selectedPackage.extraCharge,
         amount: extraPersons,

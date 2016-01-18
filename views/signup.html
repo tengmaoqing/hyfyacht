@@ -121,7 +121,7 @@
         return;
       }
 
-      var url = "/sms/getcode?mobile=" + area_code + mobile;
+      var url = "/sms/getcode?type=signup&mobile=" + area_code + mobile;
 
       $.getJSON(url, function (result) {
         $("#btn-getsmscode").prop("disabled", true);
