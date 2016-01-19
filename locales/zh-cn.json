@@ -245,7 +245,11 @@
   },
   "sms": {
     "signup": "感谢您注册海龟租船, 以下是您的验证码:",
-    "reset_password": "您正在重置海龟租船的密码, 以下是您的验证码:"
+    "reset_password": "您正在重置海龟租船的密码, 以下是您的验证码:",
+    "pay_success_sms": "您的定单:%s 支付成功, 登录海龟租船查看详情",
+    "pay_success_wechat": "您的定单支付成功, 定单详情:",
+    "pay_success_sms_owner": "客户: %s 预定了您的产品: %s 登录海龟租船查看详情",
+    "pay_success_wechat_owner": "客户: %s 预定了您的产品: %s 详情:"
   },
   "db": {
     "booking": {

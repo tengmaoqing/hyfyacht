@@ -7,7 +7,7 @@ var router = express.Router();
 var boat = require('../controllers/boat');
 var booking = require('../controllers/booking');
 var unavailable = require('../controllers/unavailable');
-var wechatCore = require('../lib/wechat/wechat-core');
+var wechatCore = require('wechat-core');
 
 router.get('/', boat.getBoatsByOwnerId);
 

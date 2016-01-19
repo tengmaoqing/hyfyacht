@@ -245,7 +245,11 @@
   },
   "sms": {
     "signup": "感謝你註冊HGBOATING, 以下是你的SMS 驗證碼:",
-    "reset_password": "你正在重置HGBOATING的密碼, 以下是你的SMS 驗證碼:"
+    "reset_password": "你正在重置HGBOATING的密碼, 以下是你的SMS 驗證碼:",
+    "pay_success_sms": "你的定單:%s 付款成功, 登入 HGBOATING 查看詳情",
+    "pay_success_wechat": "你的定單付款成功, 詳情:",
+    "pay_success_sms_owner": "客戶: %s 預定了你的產品: %s 登入 HGBOATING 查看詳情",
+    "pay_success_wechat_owner": "客戶: %s 預定了你的產品: %s 詳情:"
   },
   "db": {
     "booking": {

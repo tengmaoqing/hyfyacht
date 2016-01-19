@@ -4,7 +4,7 @@
 var express = require('express');
 var router = express.Router();
 
-var alipay = require('../lib/alipay/alipay');
+var alipay = require('../controllers/alipay');
 
 router.post('/alipay', alipay.submitDirectPayByUser);
 

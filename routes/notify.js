@@ -4,7 +4,7 @@
 var express = require('express');
 var router = express.Router();
 
-var alipay = require('../lib/alipay/alipay');
+var alipay = require('../controllers/alipay');
 var wechat = require('../controllers/wechat-pay');
 
 router.post('/alipay/notify', alipay.notify);

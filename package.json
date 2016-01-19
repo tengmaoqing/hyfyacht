@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "alipay-core": "git+https://ECA2q0YPvHWgngN2xR6HIkvLHD8dL1v5:x-oauth-basic@bitbucket.org/kiwibros/alipay-core.git",
     "body-parser": "~1.13.2",
     "co": "^4.6.0",
     "connect-mongo": "^0.8.2",

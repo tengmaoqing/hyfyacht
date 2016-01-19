@@ -245,7 +245,11 @@
   },
   "sms": {
     "signup": "Thank you for signing up, this is your SMS Code:",
-    "reset_password": "You are resetting your password at HGBOATING, this is your SMS Code:"
+    "reset_password": "You are resetting your password at HGBOATING, this is your SMS Code:",
+    "pay_success_sms": "Your payment for booking: %s is completed. Log in HGBOATING to learn more.",
+    "pay_success_wechat": "Your payment is completed. Detail:",
+    "pay_success_sms_owner": "Client %s has booked your product: %s . Log in HGBOATING to learn more.",
+    "pay_success_wechat_owner": "Client %s has booked your product: %s . Detail:"
   },
   "db": {
     "booking": {

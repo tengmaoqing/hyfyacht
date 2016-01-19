@@ -7,8 +7,8 @@ var xml2js = require('xml2js');
 var xmlBuilder = new xml2js.Builder({
   rootName: 'xml'
 });
-var tools = require('./lib/tools');
-var message = require('./lib/message');
+var tools = require('../lib/tools');
+var message = require('../lib/message');
 var Payment = require('hyfbase').Payment;
 var Booking = require('hyfbase').Booking;
 var EventOrder = require('hyfbase').EventOrder;
@@ -123,7 +123,7 @@ exports.notify = function(req, res, next){
         throw new Error('Save Order Fail');
       }
 
-      message.sendPaySuccessMessage(product, bookingId);
+      message.sendPaySuccessMessage(res, product, bookingId);
 
       return res.send(resultSUCCESS);
     } catch (err){

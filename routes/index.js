@@ -6,31 +6,31 @@ var index = require('../controllers/index');
 router.get('/', index.renderIndex);
 
 router.get('/about.html', function(req, res, next){
-  res.render('static', {page: 'about'});
+  return res.render('static', {page: 'about'});
 });
 
 router.get('/contact.html', function(req, res, next){
-  res.render('static', {page: 'contact'});
+  return res.render('static', {page: 'contact'});
 });
 
 router.get('/terms.html', function(req, res, next){
-  res.render('static', {page: 'terms'});
+  return res.render('static', {page: 'terms'});
 });
 
 router.get('/privacy.html', function(req, res, next){
-  res.render('static', {page: 'privacy'});
+  return res.render('static', {page: 'privacy'});
 });
 
 router.get('/disclaimer.html', function(req, res, next){
-  res.render('static', {page: 'disclaimer'});
+  return res.render('static', {page: 'disclaimer'});
 });
 
 router.get('/copyright.html', function(req, res, next){
-  res.render('static', {page: 'copyright'});
+  return res.render('static', {page: 'copyright'});
 });
 
 router.get('/signup', function(req, res, next){
-  res.render('signup');
+  return res.render('signup');
 });
 
 router.get('/logout', function(req, res, next){
@@ -38,7 +38,7 @@ router.get('/logout', function(req, res, next){
   res.clearCookie('client_username');
   res.clearCookie('client_attributes');
   req.session.destroy();
-  res.redirect('/');
+  return res.redirect('/');
 });
 
 var user = require('../controllers/user');

@@ -20,6 +20,10 @@ var Booking = require('hyfbase').Booking;
 
 //wechat
 var wechatCore = require('wechat-core');
+
+//alipay
+var alipayCore = require('alipay-core');
+
 //config
 var config = require('./config');
 
@@ -59,6 +63,8 @@ app.set('view cache', false);
 swig.setDefaults({
   cache: false
 });
+
+alipayCore.configure(config.alipayConfig);
 
 wechatCore.configure(config.wechatConfig);
 //wechatCore.getAppAccessToken();
@@ -218,7 +224,7 @@ app.use(function(req, res, next){
   next();
 });
 
-//set default var before view engine render views
+//set default var
 app.use(function(req, res, next){
   res.locals.preset = preset;
 
@@ -251,7 +257,7 @@ app.use('/owner', function(req, res, next){
     }else{
       var err = new Error('Not Found');
       err.status = 404;
-      next(err);
+      return next(err);
     }
   } else {
     next();
