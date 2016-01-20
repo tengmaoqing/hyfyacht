@@ -29,6 +29,7 @@ var config = require('./config');
 
 //routes
 var index = require('./routes/index');
+var api = require('./routes/api');
 var boat = require('./routes/boat');
 var product = require('./routes/product');
 var booking = require('./routes/booking');
@@ -232,6 +233,7 @@ app.use(function(req, res, next){
 });
 
 app.use('/notify', notify);
+app.use('/api', api);
 
 app.use(csurf());
 
