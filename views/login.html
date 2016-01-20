@@ -56,7 +56,7 @@
       <div class="row">
         <hr class="hr-divider">
         <div class="col-sm-6 col-xs-6 text-left">
-          <a href="/">{{ __('common.forgotpass') }}</a>
+          <a href="/resetpass{% if from %}?from={{ from }}{% endif %}">{{ __('common.forgotpass') }}</a>
         </div>
         <div class="col-sm-6 col-xs-6 text-right">
           <a href="/signup{% if from %}?from={{ from }}{% endif %}">{{ __('common.signup') }}</a>

@@ -29,6 +29,10 @@ router.get('/copyright.html', function(req, res, next){
   return res.render('static', {page: 'copyright'});
 });
 
+router.get('/resetpass', function(req, res, next){
+  return res.render('reset-password');
+});
+
 router.get('/signup', function(req, res, next){
   return res.render('signup');
 });
@@ -46,6 +50,7 @@ var user = require('../controllers/user');
 router.get('/login', user.login);
 router.post('/signup', user.signup);
 router.post('/login', user.loginSubmit);
+router.post('/resetpass', user.resetPassword);
 
 var owner = require('../controllers/owner');
 

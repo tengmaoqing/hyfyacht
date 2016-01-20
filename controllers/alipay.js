@@ -51,7 +51,7 @@ exports.notify = function(req, res, next){
 
     try {
       var verifyResult = yield new Promise(function (resolve, reject) {
-        alipayCore.verifyNotify(data, function (err, response, result) {
+        alipayCore.verifyNotify(data.notify_id, function (err, response, result) {
           if (err) {
             reject();
           }

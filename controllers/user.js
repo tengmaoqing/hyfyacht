@@ -102,7 +102,8 @@ exports.signup = function(req, res, next){
       mobile: mobile,
       nickname: req.body.mobile,
       hashedPassword: hashPassword(req.body.password),
-      role: 'client'
+      role: 'client',
+      locale: req.getLocale()
     });
 
     newUser.save(function (err, savedUser) {
@@ -201,7 +202,8 @@ exports.login = function(req, res, next){
       var user = new User({
         nickname: userinfo.nickname,
         wechatOpenId: userinfo.openid,
-        role: 'client'
+        role: 'client',
+        locale: req.getLocale()
       });
 
       user.save(function (err) {
@@ -334,4 +336,8 @@ exports.autoLogin = function(req, res, next){
       return next();
     }
   }
+};
+
+exports.resetPassword = function(req, res, next){
+
 };

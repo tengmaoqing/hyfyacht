@@ -26,7 +26,7 @@ var config = {
     key: "y7G30CLhMfkEIHv4aPyVjsaKNw3kwnD7",
     mch_id: "1275569101",
     device_info: "WEB",
-    notify_url: "http://test.hgboating.com/notify/wechat/notify"
+    notify_url: "http://hgboating.com/notify/wechat/notify"
   },
   alipayConfig: {
     partner: "2088021832429490",
