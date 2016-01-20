@@ -571,7 +571,7 @@ exports.getBookingsForOwnerCalendarEvent = function(req, res, next){
 
     for(var i = 0; i < bookings.length; i++){
       events.push({
-        title: " ",
+        title: ' ',
         start: moment(bookings[i].dateStart).format('YYYY-MM-DDTHH:mm'),
         end: moment(bookings[i].dateEnd).format('YYYY-MM-DDTHH:mm'),
         allDay: false,

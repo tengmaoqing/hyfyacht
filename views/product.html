@@ -463,6 +463,7 @@
 <script>
   window.hgdata = {
     boatId: "{{ boat.id|safe }}",
+    region: {{ boat.region|safe }},
     clientCurrency: "{{ preset.currency|safe }}",
     currency: {{ preset.configCurrency|json|safe }},
     packages: {{ product.packages|json|safe }},
@@ -470,7 +471,7 @@
     timeNotAvailable: "{{ __('product.booking.error.invaild_time') }}"
   };
 </script>
-<script src="{{ preset.staticHost }}/js/view-product.js?_=2015122906"></script>
+<script src="{{ preset.staticHost }}/js/view-product.js?_=20160120"></script>
 <script src="http://cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
 <script>
 (function($,w){

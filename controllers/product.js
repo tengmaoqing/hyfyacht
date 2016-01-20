@@ -19,7 +19,7 @@ exports.getProduct = function(req, res, next){
         }
       }).exec();
 
-      var boat = yield Boat.findOne({_id: boatId}).select('id name owner capacity location').populate('owner', 'id nickname').exec();
+      var boat = yield Boat.findOne({_id: boatId}).select('id name owner capacity location region').populate('owner', 'id nickname').exec();
     }catch (err){
       err.status = 500;
       throw err;

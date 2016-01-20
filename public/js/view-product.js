@@ -4,6 +4,11 @@
   var View = FC.View;
   var CustomView;
 
+  var holidayUrl = "/api/getHoliday?country=" + hgdata.region.country;
+  if(hgdata.region.region){
+    holidayUrl += "&region=" + hgdata.region.region;
+  }
+
   CustomView = View.extend({
   });
 
@@ -125,6 +130,10 @@
       {
         url: "/booking/cal/unavailable/" + hgdata.boatId,
         color: "#258ec7"
+      },
+      {
+        url: holidayUrl,
+        color: "#ff0000"
       }
     ],
     eventRender: function(event, element){
