@@ -339,5 +339,85 @@ exports.autoLogin = function(req, res, next){
 };
 
 exports.resetPassword = function(req, res, next){
+  var from = req.query.from || false;
 
+  req.checkBody({
+    'area_code': {
+      notEmpty: true,
+      errorMessage: 'Invalid Area Code'
+    },
+    'mobile': {
+      notEmpty: true,
+      errorMessage: 'Invalid Mobile Number'
+    },
+    'password': {
+      notEmpty: true,
+      isLength: {
+        options: [6, 30]
+      },
+      errorMessage: 'Invalid Password'
+    },
+    'code': {
+      notEmpty: true,
+      errorMessage: 'Invalid SMS Code'
+    }
+  });
+
+  var errors = req.validationErrors();
+  if (errors) {
+    var err = new Error('There have been validation errors: ' + util.inspect(errors));
+    err.status = 400;
+    return next(err);
+  }
+
+  var mobile = req.body.area_code + req.body.mobile;
+
+  var now = moment();
+
+  if(req.session.smsLast){
+    var last = moment(req.session.smsLast);
+
+    last.add(20, 'm');
+    if(last < now){
+      return res.render('signup', { error: 'error.signup.sms_expired' });
+    }
+  }
+
+  if(!req.session.smsCode || !req.session.smsMobile || req.session.smsCode != req.body.code || req.session.smsMobile != mobile){
+    return res.render('signup', { error: 'error.signup.sms' });
+  }
+
+  req.session.smsLast = null;
+  req.session.smsCode = null;
+  req.session.smsMobile = null;
+
+  User.findOne({
+    mobile: mobile
+  }, function(err, user){
+    if(err){
+      err.status = 400;
+      return next(err);
+    }
+
+    if(!user){
+      return res.render('reset-password', { error: 'error.reset_password.noUser' });
+    }
+
+    user.hashedPassword = hashPassword(req.body.password);
+
+    user.save(function (err, savedUser) {
+      if (err) {
+        err.status = 400;
+        return next(err);
+      }
+
+      setSessionAndCookie(req, res, savedUser);
+
+      if(from){
+        return res.redirect(encodeURI(from));
+      }
+
+      return res.redirect('/');
+    });
+  });
 };

@@ -18,6 +18,7 @@
     "login": "登入",
     "logout": "登出",
     "signup": "註冊",
+    "reset_password": "重置密碼",
     "forgotpass": "忘記密碼",
     "mobile": "手提電話",
     "username": "用戶名",
@@ -71,6 +72,9 @@
       "confirm_password": "兩次密碼輸入必須相同。",
       "input_code": "請輸入SMS 驗證碼。",
       "code_len": "SMS 驗證碼為 4 位。"
+    },
+    "reset_password": {
+      "noUser": "該手提電話還沒有註冊。"
     }
   },
   "nav": {

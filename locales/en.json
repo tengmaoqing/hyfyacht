@@ -18,6 +18,7 @@
     "login": "Log In",
     "logout": "Log Out",
     "signup": "Sign Up",
+    "reset_password": "Reset Password",
     "forgotpass": "Forgot password",
     "mobile": "Mobile",
     "username": "Username",
@@ -71,6 +72,9 @@
       "confirm_password": "Passwords should be same.",
       "input_code": "Please input SMS Code.",
       "code_len": "SMS Code require length 4."
+    },
+    "reset_password": {
+      "noUser": "This mobile no. has not been registered."
     }
   },
   "nav": {

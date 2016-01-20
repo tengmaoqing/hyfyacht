@@ -18,6 +18,7 @@
     "login": "登录",
     "logout": "注销",
     "signup": "注册",
+    "reset_password": "重置密码",
     "forgotpass": "忘记密码",
     "mobile": "手机号码",
     "username": "用户名",
@@ -71,6 +72,9 @@
       "confirm_password": "两次密码输入必须相同。",
       "input_code": "请输入验证码。",
       "code_len": "验证码为 4 位。"
+    },
+    "reset_password": {
+      "noUser": "该手机号还没有注册。"
     }
   },
   "nav": {
