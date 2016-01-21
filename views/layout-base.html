@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="description" content="海龟租船，整合全球休闲船舶资源，让客户可在平台直接对接优质船舶，方便快捷完成租赁过程，本平台价格为船东直接报价，不存在中介环节，让客户以最低的价格，最高的性价比来开启您的出海休闲生活。">
+  <meta name="keywords" content="海龟租船,hgboating,租船,游艇,海钓,钓鱼,海龟">
+  <meta name="author" content="深圳市海云帆游艇发展有限公司">
+  <title>{% block title %}{{ __('site.title') }}{% endblock %}</title>
+  <link href="{{ preset.staticHost }}/css/base.css" rel="stylesheet">
+  <!--[if lt IE 9]>
+  <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <nav class="hyf-navbar">
+    <div class="hyf-container">
+      <div class="hyf-navbar-brand"><a href="/"><img src="{{ preset.imgHost }}/logo-white{% if preset.locale == 'en' || preset.locale =='zh-hk' %}-en{% endif %}.png" alt="logo" height="30"></a></div>
+      <ul class="hyf-navbar-nav hyf-navbar-right">
+        <li>{{ __('nav.home') }}</li>
+        <li>{{ __('nav.boat') }}</li>
+        <li>{{ __('nav.event') }}</li>
+        <li><img class="hyf-img-circle hyf-img-thumbnail" src="{{ preset.imgHost }}/captain.jpg" height="26"> 海龟船长</li>
+      </ul>
+    </div>
+  </nav>
+  <section class="hyf-banner">
+    <div class="hyf-overlay"></div>
+    <div class="hyf-banner-slogan">
+      <div class="hyf-banner-slogan-table">
+        <div class="hyf-banner-slogan-content">
+          <h1>{{ __('site.slogan') }}</h1>
+          <h2>在海龟租船开启您的出海休闲新方式</h2>
+          <div class="hyf-banner-controller"><button type="button" class="btn-outline">了解更多</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
