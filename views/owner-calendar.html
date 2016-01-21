@@ -102,6 +102,13 @@
     $("#selectedTime-end").html("");
   }
 
+  var region = {{ boats[index].region|json|safe }};
+
+  var holidayUrl = "/api/getHoliday?country=" + region.country;
+  if(region.region){
+    holidayUrl += "&region=" + region.region;
+  }
+
   var sources = [
     {
       url: "/owner/booking/cal/{{ boats[index].id }}?type=success",
@@ -114,6 +121,10 @@
     {
       url: "/owner/booking/cal/unavailable/{{ boats[index].id }}",
       color: "#ff5a5e"
+    },
+    {
+      url: holidayUrl,
+      color: "#ff0000"
     }
   ];
 
@@ -127,7 +138,8 @@
     },
     eventLimit: 3,
     eventLimitClick: "agendaDay",
-    allDayText: "节日",
+//    allDayText: "节日",
+    allDaySlot: false,
     minTime: "06:00:00",
     maxTime: "24:00:00",
     slotDuration: "01:00:00",
