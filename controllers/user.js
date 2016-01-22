@@ -379,12 +379,12 @@ exports.resetPassword = function(req, res, next){
 
     last.add(20, 'm');
     if(last < now){
-      return res.render('signup', { error: 'error.signup.sms_expired' });
+      return res.render('reset-password', { error: 'error.signup.sms_expired' });
     }
   }
 
   if(!req.session.smsCode || !req.session.smsMobile || req.session.smsCode != req.body.code || req.session.smsMobile != mobile){
-    return res.render('signup', { error: 'error.signup.sms' });
+    return res.render('reset-password', { error: 'error.signup.sms' });
   }
 
   req.session.smsLast = null;
@@ -419,5 +419,68 @@ exports.resetPassword = function(req, res, next){
 
       return res.redirect('/');
     });
+  });
+};
+
+exports.getUserInformation = function(req, res, next){
+  var user = req.session.user;
+
+  User.findOne({
+    _id: user._id
+  }, function(err, user){
+    if(err){
+      err.status = 400;
+      return next(err);
+    }
+
+    if(user){
+      return res.json(user);
+    }
+
+    var httpErr = new Error('Not Found');
+    httpErr.status = 404;
+    return next(httpErr);
+
+  });
+};
+
+exports.updataUserInformation = function(req, res, next){
+  var user = req.body;
+
+  if(user.newPwd1){
+    if(user.newPwd1.length<6 || user.newPwd1.length>30){
+      var err = new Error();
+      err.status = 400;
+      return next(err);
+    }
+  }
+
+  User.findOne({
+    _id: user._id
+  }, function(err, doc){
+    if(err){
+      err.status = 400;
+      return next(err);
+    }
+
+    doc.nickname = user.nickname;
+    doc.email = user.email;
+    doc.locale = user.locale.value;
+    doc.currency = user.currency ? user.currency.value : '';
+    doc.location.city = user.location.city ? user.location.city.value : '';
+    user.newPwd1 && (doc.hashedPassword = hashPassword(user.newPwd1));
+    
+    doc.save(function(err, savedUser){
+      if(err){
+        err.status = 400;
+        return next(err);
+      }
+
+      if(user.newPwd1){
+        return res.redirect('/');
+      }
+      
+      return res.json(savedUser);
+    })
   });
 };

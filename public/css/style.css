@@ -719,3 +719,69 @@ td.fc-bgevent {
 #cnzz_stat_icon_1256860309 {
   display: none;
 }
+
+.userSetting{
+  position: relative;
+  padding: 20px;
+}
+
+
+
+.userSetting img{
+  width: 100%;
+  max-width: 200px;
+  max-height: 100%;
+}
+
+.userSetting .infoDiv{
+  margin-bottom: 20px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 2px #000;
+  border-radius: 6px;
+}
+
+.userSetting .infoDiv:nth-child(odd){
+  background: #dfdfdf;
+}
+
+.userSetting .infoDiv:nth-child(even){
+  background: #e9e9e9;
+}
+
+.userSetting input{
+  border:none;
+  border-radius: 6px;
+  outline:none;
+  width: 99%;
+  padding-bottom: 4px;
+  background: transparent;
+  transition: background 1s ease-in-out; 
+}
+
+#div_input{
+  border-radius: 6px;
+  outline:none;
+  transition: background 1s ease-in-out; 
+}
+
+.userSetting .editInput{
+  background: #8BC3E1;
+}
+
+.user_information{
+  border-left: 2px #999 solid;
+}
+
+p.pwd_unPass{
+  color:red;
+}
+
+.btn_Span span.glyphicon:hover{
+  color:blue;
+}
+
+.userSetting select{
+  font-size: 12px;
+  height: 30px;
+}

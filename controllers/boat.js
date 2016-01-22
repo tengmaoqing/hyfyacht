@@ -161,6 +161,10 @@ exports.getBoatsByOwnerId = function(req, res, next) {
       err.status = 400;
       return next(err);
     }
+
+    if(boats.length == 0){
+      return console.log(boats);
+    }
     return res.render('owner-calendar', {boats: boats, index: index});
   });
 };
