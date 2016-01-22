@@ -154,7 +154,7 @@ exports.getBoatsByOwnerId = function(req, res, next) {
 
   Boat.find({
     owner: id
-  }).select('id name').sort({
+  }).select('id name region').sort({
     _id: 1
   }).exec(function(err, boats) {
     if (err) {

@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="col-md-4 col-sm-6 col-xs-12">
-        <span class="glyphicon glyphicon-user"></span> {{ boat.owner.nickname }}
+        <span class="glyphicon glyphicon-user"></span> <a href="/{{ boat.owner.id }}/{{ boat.owner.nickname }}">{{ boat.owner.nickname }}</a>
       </div>
       <div class="col-md-4 col-sm-12 col-xs-12">
         <a href="#products" class="btn btn-danger">{{ __('boat.detail.instant_book') }}({{ __('boat.detail.from %s', preset.generateCharge(boat.baseCharge, boat.currency)) }})</a>
