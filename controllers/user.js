@@ -446,6 +446,7 @@ exports.getUserInformation = function(req, res, next){
 
 exports.updataUserInformation = function(req, res, next){
   var user = req.body;
+  var flag = false;
 
   if(user.newPwd1){
     if(user.newPwd1.length<6 || user.newPwd1.length>30){
@@ -455,6 +456,31 @@ exports.updataUserInformation = function(req, res, next){
     }
   }
 
+  if(user.newMobile){
+    var newMobile = user.area_code + user.newMobile;
+    var now = moment();
+
+    if(req.session.smsLast){
+      var last = moment(req.session.smsLast);
+
+      last.add(20, 'm');
+      if(last < now){
+        return res.json({ error: 'error.signup.sms_expired' });
+      }
+    }
+
+    if(!req.session.smsCode || !req.session.smsMobile || req.session.smsCode != user.code || req.session.smsMobile != newMobile){
+      return res.json({ error: 'error.signup.sms' });
+    }
+
+    req.session.smsLast = null;
+    req.session.smsCode = null;
+    req.session.smsMobile = null;
+
+    flag = true;
+  }
+  
+
   User.findOne({
     _id: user._id
   }, function(err, doc){
@@ -463,12 +489,20 @@ exports.updataUserInformation = function(req, res, next){
       return next(err);
     }
 
+    if( user.newPwd1 && doc.hashedPassword && doc.hashedPassword != hashPassword(user.oldPwd) ){
+      return res.json({ error: 'error.user_setting.notmatch' });
+    }
+
     doc.nickname = user.nickname;
     doc.email = user.email;
-    doc.locale = user.locale.value;
+    doc.locale = user.locale ? user.locale.value : '';
     doc.currency = user.currency ? user.currency.value : '';
-    doc.location.city = user.location.city ? user.location.city.value : '';
+    doc.location = user.location ? {
+      country : user.location.country ? user.location.country.value : '',
+      city : user.location.city ? user.location.city.value : ''
+    } : {};
     user.newPwd1 && (doc.hashedPassword = hashPassword(user.newPwd1));
+    flag && (doc.mobile = newMobile);
     
     doc.save(function(err, savedUser){
       if(err){
@@ -481,6 +515,6 @@ exports.updataUserInformation = function(req, res, next){
       }
       
       return res.json(savedUser);
-    })
+    });
   });
 };

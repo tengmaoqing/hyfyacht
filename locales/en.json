@@ -30,6 +30,7 @@
     "boats": "Boats",
     "locale": "Locale",
     "invaild_email": "Invaild Email",
+    "bind_mobile": "Bind Mobile No.",
     "createDate": "CreateDate",
     "forgotpass": "Forgot password",
     "mobile": "Mobile",
@@ -88,6 +89,9 @@
     },
     "reset_password": {
       "noUser": "This mobile no. has not been registered."
+    },
+    "user_setting": {
+      "notmatch" : "Invalid password."
     }
   },
   "nav": {
@@ -263,6 +267,7 @@
   "sms": {
     "signup": "Thank you for signing up, this is your SMS Code:",
     "reset_password": "You are resetting your password at HGBOATING, this is your SMS Code:",
+    "bind":"You are binding your mobile No. at HGBOATING, this is your SMS Code:",
     "pay_success_sms": "Your payment for booking: %s is completed. Log in HGBOATING to learn more.",
     "pay_success_wechat": "Your payment is completed. Detail:",
     "pay_success_sms_owner": "Client %s has booked your product: %s . Log in HGBOATING to learn more.",

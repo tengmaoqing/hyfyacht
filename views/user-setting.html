@@ -15,11 +15,11 @@
 			    <button class="btn" confirm ng-show="isEdit"><span class="glyphicon glyphicon-ok"></span></button>
 			    <button class="btn" ng-model="nouse" edit="updata" ng-show="isEdit" title="{{ __('common.new_password') }}"><span class="glyphicon glyphicon-plus"></span></button>
 			  </div>
-				<div class="col-lg-4">
+				<div class="col-lg-3">
 					<img src="/img/captain.jpg" ng-model="user.avatar">
 				</div>
 				<input type="hidden" name="_csrf" id="csrf" value="{{ _csrf }}">
-				<div class="col-lg-8 user_information">
+				<div class="col-lg-9 user_information">
 					<div class="input-group col-lg-10 infoDiv">
 						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.mobile') }}</label>
 						<div class="col-sm-8 text-left">
@@ -70,6 +70,13 @@
 						</div>
 					</div>
 					<div class="input-group col-lg-10 infoDiv" ng-show="isEdit && updataPass">
+						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.password') }}</label>
+						<div class="col-sm-8 text-left">
+							<input type="password" ng-model="oldPwd" ng-class='{ "editInput":isEdit}' require>
+							<p class="pwd_unPass" ng-show="!isResPass && !oldPwd"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.user_setting.notmatch') }}</p>
+						</div>
+					</div>
+					<div class="input-group col-lg-10 infoDiv" ng-show="isEdit && updataPass">
 						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.new_password') }}</label>
 						<div class="col-sm-8 text-left">
 							<input type="password" ng-model="newPwd1" ng-minlength="6" ng-maxlength="30" ng-class='{ "editInput":isEdit}' require>
@@ -82,6 +89,33 @@
 							<input type="password" ng-model="newPwd2" ng-class='{"editInput":isEdit}'>
 							<p class="pwd_unPass" ng-show="newPwd2 != newPwd1 && !isPass2"><span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('error.signup.confirm_password') }}</p>
 						</div>
+					</div>
+					<div class="input-group col-lg-10 infoDiv" ng-show="isEdit && !hasMobile">
+						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.bind_mobile')}}</label>
+						<div class="col-sm-8 text-left bind_user_mobile">
+							<div class="col-sm-3 col-xs-4">
+		            <div class="btn-group">
+		              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">+86 <span class="caret"></span></button>
+		              <input id="input_area_code" type="hidden" class="dropdown-menu-selected" name="area_code" value="86">
+		              <ul class="dropdown-menu">
+		                <li><a href="#" data-value="86">+86</a></li>
+		                <li><a href="#" data-value="852">+852</a></li>
+		              </ul>
+		            </div>
+		          </div>
+							<div class="col-sm-9 col-xs-8">
+		            <input type="number" id="input_mobile" ng-model="mobile" maxlength="11" class="form-control" ng-class='{"editInput":isEdit}'>
+		          </div>
+						</div>
+					</div>
+					<div class="input-group col-lg-10 infoDiv" ng-show="isEdit && !hasMobile">
+						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.smscode') }}</label>
+	          <div class="col-sm-3 col-xs-4">
+	            <input type="number" class="form-control" ng-class='{"editInput":isEdit}' ng-model="code" pattern=".{4,4}">
+	          </div>
+	          <div class="col-sm-5 col-xs-8 bind_user_mobile">
+	            <button id="btn-getsmscode" type="button" class="btn btn-primary btn-block">{{ __('common.getsmscode') }}</button>
+	          </div>
 					</div>
 				</div>
 			</form>
@@ -98,6 +132,42 @@
 <script	src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
 <script>
   (function ($, angular) {
+  	var second = 60;
+
+    function countDown() {
+      if (second > 0) {
+        $("#btn-getsmscode").text("{{ __('common.smscodesend') }}(" + second + ")");
+        second--;
+        setTimeout(function () {
+          countDown();
+        }, 1000);
+      } else {
+        $("#btn-getsmscode").text("{{ __('common.getsmscode') }}").prop("disabled", false);
+      }
+    }
+
+    $("#btn-getsmscode").click(function () {
+      var area_code = $("#input_area_code").val();
+      var mobile = $("#input_mobile").val();
+
+      if (!area_code || !mobile) {
+        $("#hyf-modal-alert").CustomAlert("{{ __('error.signup.input_mobile') }}");
+        return;
+      }
+
+      var url = "/sms/getcode?type=signup&mobile=" + area_code + mobile;
+
+      $("#btn-getsmscode").prop("disabled", true);
+
+      second = 60;
+
+      countDown();
+
+      $.getJSON(url, function (result) {
+      	console.log(result);
+      });
+    });
+
   	$(".infoDiv input").prop("readOnly",true);
 
   	var app = angular.module("userSetting", []);
@@ -106,9 +176,11 @@
   		$scope.isEdit = false;
   		$scope.userTemp = {};
   		$scope.isPass1 = true;
+  		$scope.isResPass = true;
   		$scope.isPass2 = true;
   		$scope.updataPass =false;
   		$scope.isPassEmail = true;
+  		$scope.hasMobile = true;
 
   		$http.get("/user/setting/getUserInformation").success(function(user){
   			$scope.user = user;
@@ -168,7 +240,8 @@
 
   					if(attr.edit == "updata"){
   						if(!scope.user.mobile){
-  							alert("请先绑定手机号");
+  							scope.hasMobile = false;
+  							scope.$apply();
   						 	return 
   						}
   						scope.updataPass = true;
@@ -180,7 +253,7 @@
   					scope.isEdit = true;
 
   					scope.setOptionValue(scope.currencys, "currency", scope.user.currency);
-  					scope.setOptionValue(scope.citys, "city", scope.user.location.city);
+  					scope.user.location && scope.setOptionValue(scope.citys, "city", scope.user.location.city);
   					scope.setOptionValue(scope.locales, "locale", scope.user.locale);
 
   					scope.$apply();
@@ -202,6 +275,9 @@
   					scope.isEdit = false;
   					scope.updataPass = false;
   					scope.newPwd1 = scope.newPwd2 = "";
+  					scope.hasMobile = true;
+  					scope.mobile = "";
+  					scope.code = "";
   					scope.$apply();
 
   					$(".infoDiv input").prop("readOnly", true);
@@ -226,13 +302,10 @@
   					}
 
   					scope.user.newPwd1 = scope.newPwd1;
-  					scope.inpass = false;
-  					scope.isEdit = false;
-  					scope.updataPass = false;
-  					scope.newPwd1 = scope.newPwd2 = "";
-  					scope.$apply();
-
-  					
+  					scope.user.oldPwd = scope.oldPwd;
+  					scope.user.newMobile = scope.mobile;
+  					scope.user.code = scope.code;
+  					scope.user.area_code = $("#input_area_code").val();
 
   					$http.post("/user/setting/updataUserInformation", scope.user, {
   						headers: {
@@ -242,10 +315,22 @@
   						if(typeof user == "string"){
   							return location.href = "/logout";
   						}
+
+  						if( user.error){
+  							scope.isResPass = false;
+  							scope.oldPwd = "";
+  							$("#hyf-modal-alert").CustomAlert("{{ __('"+user.error+"') }}");
+  							return
+  						}
+
+  						scope.isEdit = false;
+	  					scope.updataPass = false;
+	  					scope.newPwd1 = scope.newPwd2 = "";
+	  					scope.hasMobile = true;
   						scope.user = user;
+  						$(".infoDiv input").prop("readOnly", true);
   					});
 
-  					$(".infoDiv input").prop("readOnly", true);
   				});
   			}
   		}

@@ -41,6 +41,10 @@ exports.sendSMSCode = function(req, res, next){
     message = res.__('sms.signup') + message;
   }
 
+  if(type === 'bind'){
+    message = res.__('sms.bind') + message;
+  }
+
   if(type === 'reset'){
     message = res.__('sms.reset_password') + message;
   }

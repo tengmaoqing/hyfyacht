@@ -30,6 +30,7 @@
     "boats": "船隻",
     "locale": "語言",
     "invaild_email": "不合法的郵箱",
+    "bind_mobile": "綁定手機",
     "createDate": "註冊時間",
     "forgotpass": "忘記密碼",
     "mobile": "手提電話",
@@ -88,6 +89,9 @@
     },
     "reset_password": {
       "noUser": "該手提電話還沒有註冊。"
+    },
+    "user_setting": {
+      "notmatch" : "密碼不正確。"
     }
   },
   "nav": {
@@ -263,6 +267,7 @@
   "sms": {
     "signup": "感謝你註冊HGBOATING, 以下是你的SMS 驗證碼:",
     "reset_password": "你正在重置HGBOATING的密碼, 以下是你的SMS 驗證碼:",
+    "bind":"HGBOATING. 您正在綁定手機號碼，以下是您的SMS 驗證碼:",
     "pay_success_sms": "你的定單:%s 付款成功, 登入 HGBOATING 查看詳情",
     "pay_success_wechat": "你的定單付款成功, 詳情:",
     "pay_success_sms_owner": "客戶: %s 預定了你的產品: %s 登入 HGBOATING 查看詳情",

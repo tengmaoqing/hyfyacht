@@ -150,8 +150,42 @@ app.use(function(req, res, next){
 });
 
 //auto login
-app.use(userController.autoLogin);
+// app.use(userController.autoLogin);
+var User = require('hyfbase').User;
+var randomString = require('random-string');
 
+function setSessionAndCookie(req, res, user){
+  req.session.user = user;
+
+  if(user.wechatOpenId){
+    req.session.wechat = user.wechatOpenId;
+  }
+
+  req.session.owner = false;
+
+  if(user.role && user.role === 'owner'){
+    req.session.owner = user.relatedOwner;
+  }
+
+  res.cookie('client_username', user.nickname, config.cookieOption);
+  res.cookie('client_attributes', user.id, config.cookieOption);
+  res.cookie('client_uid', randomString({length: 6}), config.cookieOption);
+}
+
+app.use(function(req, res, next){
+  var user = 'oo123';
+  User.findOne({
+    wechatOpenId: user
+  }).select('nickname role relatedOwner wechatOpenId').populate('relatedOwner', 'id').exec(function(err, user){
+    if (!err && user) {
+      setSessionAndCookie(req, res, user);
+    }
+
+    return next();
+  });
+});
+
+/**********i***************/
 var removeSubdomain = function(req){
   if(req.subdomains && req.subdomains.length > 0){
     var arr = req.hostname.split('.');

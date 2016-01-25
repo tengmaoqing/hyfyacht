@@ -30,6 +30,7 @@
     "boats": "船只",
     "locale": "语言",
     "invaild_email": "不合法的邮箱",
+    "bind_mobile": "绑定手机",
     "createDate": "注册时间",
     "forgotpass": "忘记密码",
     "mobile": "手机号码",
@@ -88,6 +89,9 @@
     },
     "reset_password": {
       "noUser": "该手机号还没有注册。"
+    },
+    "user_setting": {
+      "notmatch" : "密码不正确。"
     }
   },
   "nav": {
@@ -262,6 +266,7 @@
   },
   "sms": {
     "signup": "感谢您注册海龟租船, 以下是您的验证码:",
+    "bind":"海龟租船。您正在绑定手机号码, 以下是您的验证码:",
     "reset_password": "您正在重置海龟租船的密码, 以下是您的验证码:",
     "pay_success_sms": "您的定单:%s 支付成功, 登录海龟租船查看详情",
     "pay_success_wechat": "您的定单支付成功, 定单详情:",

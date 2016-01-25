@@ -123,7 +123,7 @@
 <script src="http://cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
 <script	src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
 <script>
-	$(".infoDiv input").prop("readOnly", true);
+	angular.element(".infoDiv input").prop("readOnly", true);
 	var app = angular.module("ownerSetting", []);
 
 	app.controller("ownerSettingCtrl", function($scope, $http, common122){
@@ -135,7 +135,7 @@
   	}
 
 		$http.get("/owner/setting/getOwnerInformation").success(function(owner){
-  		$("#div_input").text(owner.description);
+  		angular.element("#div_input").text(owner.description);
   		$scope.owner = owner;
   	});
 
@@ -176,8 +176,8 @@
 
   				scope.$apply();
 
-					$("#div_input").prop("contenteditable","plaintext-only");
-  				$(".infoDiv input").removeProp("readOnly");
+					angular.element("#div_input").prop("contenteditable","plaintext-only");
+  				angular.element(".infoDiv input").removeProp("readOnly");
 				});
 			}
 		}
@@ -194,8 +194,8 @@
   				scope.isEdit = false;
   				scope.$apply();
 
-  				$("#div_input").prop("contenteditable",false);
-  				$(".infoDiv input").prop("readOnly", true);
+  				angular.element("#div_input").prop("contenteditable",false);
+  				angular.element(".infoDiv input").prop("readOnly", true);
   			});
   		}
   	}
@@ -209,19 +209,19 @@
 
   				scope.isEdit = false;
   				scope.$apply();
-  				scope.owner.description = $("#div_input").text();
+  				scope.owner.description = angular.element("#div_input").text();
 
   				$http.post("/owner/setting/updateOwnerInformation", scope.owner, {
   					headers: {
-					    'X-XSRF-TOKEN': $("#csrf").val()
+					    'X-XSRF-TOKEN': angular.element("#csrf").val()
 					 	}
   				}).success(function(owner){
   					scope.owner = owner;
-  					$("#div_input").text(scope.owner.description);
+  					angular.element("#div_input").text(scope.owner.description);
   				});
 
-  				$("#div_input").prop("contenteditable", false);
-  				$(".infoDiv input").prop("readOnly", true);
+  				angular.element("#div_input").prop("contenteditable", false);
+  				angular.element(".infoDiv input").prop("readOnly", true);
   			});
   		}
   	}

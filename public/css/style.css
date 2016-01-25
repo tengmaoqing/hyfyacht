@@ -735,7 +735,6 @@ td.fc-bgevent {
 
 .userSetting .infoDiv{
   margin-bottom: 20px;
-  overflow: hidden;
   position: relative;
   box-shadow: 0 0 2px #000;
   border-radius: 6px;
@@ -785,3 +784,12 @@ p.pwd_unPass{
   font-size: 12px;
   height: 30px;
 }
+
+.bind_user_mobile{
+  padding: 0;
+}
+
+.bind_user_mobile input:nth-child(1){
+  margin-left: 10px;
+}
+
