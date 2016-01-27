@@ -8,6 +8,7 @@
   <meta name="keywords" content="海龟租船,hgboating,租船,游艇,海钓,钓鱼,海龟">
   <meta name="author" content="深圳市海云帆游艇发展有限公司">
   <title>{% block title %}{{ __('site.title') }}{% endblock %}</title>
+  <link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="{{ preset.staticHost }}/css/base.css" rel="stylesheet">
   <!--[if lt IE 9]>
   <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -15,29 +16,269 @@
   <![endif]-->
 </head>
 <body>
+  <div class="hyf-navbar-overlay hyf-overlay-strong hide">
+    <button class="btn-hide-navbar"><i class="fa fa-close fa-3x"></i></button>
+  </div>
   <nav class="hyf-navbar">
-    <div class="hyf-container">
+    <div class="hyf-field-container">
       <div class="hyf-navbar-brand"><a href="/"><img src="{{ preset.imgHost }}/logo-white{% if preset.locale == 'en' || preset.locale =='zh-hk' %}-en{% endif %}.png" alt="logo" height="30"></a></div>
-      <ul class="hyf-navbar-nav hyf-navbar-right">
-        <li>{{ __('nav.home') }}</li>
-        <li>{{ __('nav.boat') }}</li>
-        <li>{{ __('nav.event') }}</li>
-        <li><img class="hyf-img-circle hyf-img-thumbnail" src="{{ preset.imgHost }}/captain.jpg" height="26"> 海龟船长</li>
-      </ul>
+      <div class="hyf-navbar-right">
+        <button class="hyf-navbar-toggle" type="button"><i class="fa fa-bars fa-2x"></i></button>
+        <ul class="hyf-navbar-nav hide">
+          <li><a href="/boat">{{ __('nav.home') }}</a></li>
+          <li><a href="/boat">{{ __('nav.boat') }}</a></li>
+          <li><a href="/event/list">{{ __('nav.event') }}</a></li>
+          {% if preset.username %}
+          {% if preset.owner %}
+          <li><a href="/owner">{{ __('nav.boatowner') }}</a></li>
+          {% endif %}
+          <li><img class="hyf-user-avatar hyf-img-circle hyf-img-thumbnail" src="{{ preset.imgHost }}/captain.jpg" height="26">{{ preset.username }}
+            <ul class="list-layout">
+              <li><a href="/user/booking">{{ __('user.bookings') }}</a></li>
+              <li><a href="/user/event">{{ __('user.events') }}</a></li>
+              <li><a href="/user/setting">{{ __('user.settings') }}</a></li>
+              <li><a href="/logout">{{ __('common.logout') }}</a></li>
+            </ul>
+          </li>
+          {% else %}
+          <li><a href="/login?from={{ preset.originalUrl }}">{{ __('common.login') }}</a></li>
+          <li><a href="/signup">{{ __('common.signup') }}</a></li>
+          {% endif %}
+        </ul>
+      </div>
     </div>
   </nav>
-  <section class="hyf-banner">
-    <div class="hyf-overlay"></div>
+  <section class="hyf-banner bg-responsive hide">
+    <div class="hyf-overlay-strong"></div>
     <div class="hyf-banner-slogan">
       <div class="hyf-banner-slogan-table">
         <div class="hyf-banner-slogan-content">
-          <h1>{{ __('site.slogan') }}</h1>
-          <h2>在海龟租船开启您的出海休闲新方式</h2>
-          <div class="hyf-banner-controller"><button type="button" class="btn-outline">了解更多</button></div>
+          <h1 class="hyf-banner-show-element">{{ __('site.slogan') }}</h1>
+          <h2 class="hyf-banner-show-element">在海龟租船开启您的出海休闲新方式</h2>
+          <div class="hyf-banner-controller">
+            <a id="btn-learn-more" href="javascript:void(0)">了解更多<br><i class="fa fa-angle-down fa-4x"></i></a>
+          </div>
         </div>
       </div>
     </div>
   </section>
+  <section class="hyf-row">
+    <a href="/event/list">
+      <div class="hyf-grid hyf-grid-event">
+        <img class="img-responsive" src="{{ preset.imgHost }}/event2.jpg" alt="event">
+        <div class="hyf-overlay-light"></div>
+        <h1 class="hyf-grid-title hyf-grid-left hyf-grid-top">发现活动</h1>
+      </div>
+    </a>
+    <a href="/boat">
+      <div class="hyf-grid hyf-grid-boat">
+        <img class="img-responsive" src="{{ preset.imgHost }}/boat2.jpg" alt="finding boat">
+        <div class="hyf-overlay-light"></div>
+        <h1 class="hyf-grid-title hyf-grid-right hyf-grid-top">我要租船</h1>
+      </div>
+    </a>
+    <div class="hyf-grid hyf-gird-dive">
+      <img class="img-responsive" src="{{ preset.imgHost }}/dive.jpg" alt="dive">
+      <div class="hyf-overlay-light"></div>
+      <div class="hyf-banner-slogan">
+        <div class="hyf-banner-slogan-table">
+          <div class="hyf-banner-slogan-content">
+            <div class="hyf-ocean-function">潜水</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hyf-grid hyf-gird-fishing">
+      <img class="img-responsive" src="{{ preset.imgHost }}/fishing.jpg" alt="fishing">
+      <div class="hyf-overlay-strong"></div>
+      <div class="hyf-banner-slogan">
+        <div class="hyf-banner-slogan-table">
+          <div class="hyf-banner-slogan-content">
+            <div class="hyf-ocean-function">海钓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hyf-grid hyf-gird-surf">
+      <img class="img-responsive" src="{{ preset.imgHost }}/surf.jpg" alt="surf">
+      <div class="hyf-overlay"></div>
+      <div class="hyf-banner-slogan">
+        <div class="hyf-banner-slogan-table">
+          <div class="hyf-banner-slogan-content">
+            <div class="hyf-ocean-function">冲浪</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hyf-grid hyf-gird-cruise">
+      <img class="img-responsive" src="{{ preset.imgHost }}/cruise.jpg" alt="cruise">
+      <div class="hyf-overlay-light"></div>
+      <div class="hyf-banner-slogan">
+        <div class="hyf-banner-slogan-table">
+          <div class="hyf-banner-slogan-content">
+            <div class="hyf-ocean-function">游船河</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hyf-grid hyf-grid-share">
+      <img class="img-responsive" src="{{ preset.imgHost }}/share3.jpg" alt="custom share">
+      <div class="hyf-overlay-strong"></div>
+      <h2 class="hyf-grid-content hyf-grid-top hyf-grid-left">游记</h2>
+      <div class="hyf-banner-slogan">
+        <div class="hyf-banner-slogan-table">
+          <div class="hyf-banner-slogan-content">
+            <ul class="hyf-share-container list-layout">
+              <li class="text-left"><i class="fa fa-quote-left"></i></li>
+              <li>西贡游船河,海上8小时游艇趴,体验不一样的香港</li>
+              <li class="text-right"><i class="fa fa-quote-right"></i></li>
+              <li class="text-right"><small>海龟船长 2015.8.2</small></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hyf-grid hyf-gird-news">
+      <img class="img-responsive" src="{{ preset.imgHost }}/news2.jpg" alt="news">
+      <div class="hyf-overlay"></div>
+      <h2 class="hyf-grid-content hyf-grid-top hyf-grid-left">新闻</h2>
+      <div class="hyf-grid-content hyf-grid-bottom hyf-grid-left">
+        <h2 class="hyf-gird-news-title">海龟租船祝大家猴年快乐,如意吉祥</h2>
+        <h3 class="hyf-gird-news-date">2016.2.7</h3>
+      </div>
+    </div>
+  </section>
+  <section class="hyf-info">
+    <hr class="hyf-show-sm hyf-hr-sm">
+    <div class="hyf-info-cell hyf-hidden-sm">
+      <h3>网站导航</h3>
+      <ul class="list-layout">
+        <li><a href="/">{{ __('nav.home') }}</a></li>
+        <li><a href="/boat">{{ __('nav.boat') }}</a></li>
+        <li><a href="/event/list">{{ __('nav.event') }}</a></li>
+        <li><a href="/event/list">{{ __('nav.boatowner') }}</a></li>
+      </ul>
+    </div>
+    <div class="hyf-info-cell">
+      <h3>{{ __('site.info.company') }}</h3>
+      <ul class="list-layout">
+        <li class="hyf-link-button-sm"><a href="/about.html">{{ __('site.info.about') }}<i class="hyf-show-sm hyf-link-button-icon fa fa-angle-right fa-2x"></i></a></li>
+        <li class="hyf-link-button-sm"><a href="/contact.html">{{ __('site.info.contact') }}<i class="hyf-show-sm hyf-link-button-icon fa fa-angle-right fa-2x"></i></a></li>
+        <li class="hyf-link-button-sm"><a href="/terms.html">{{ __('site.info.terms') }}<i class="hyf-show-sm hyf-link-button-icon fa fa-angle-right fa-2x"></i></a></li>
+        <li class="hyf-link-button-sm"><a href="/privacy.html">{{ __('site.info.privacy') }}<i class="hyf-show-sm hyf-link-button-icon fa fa-angle-right fa-2x"></i></a></li>
+        <li class="hyf-link-button-sm"><a href="/disclaimer.html">{{ __('site.info.disclaimer') }}<i class="hyf-show-sm hyf-link-button-icon fa fa-angle-right fa-2x"></i></a></li>
+        <li class="hyf-link-button-sm"><a href="/copyright.html">{{ __('site.info.copyright') }}<i class="hyf-show-sm hyf-link-button-icon fa fa-angle-right fa-2x"></i></a></li>
+      </ul>
+    </div>
+    <div class="hyf-info-cell">
+      <h3>语言</h3>
+      <div class="hyf-dropdown-sm">
+        <div class="hyf-dropdown-toggle">中文 (简体)<i class="hyf-dropdown-icon fa fa-chevron-circle-down"></i></div>
+        <ul class="list-layout hyf-dropdown-menu">
+          <li><a href="/">English</a></li>
+          <li class="active"><span>中文 (简体)</span></li>
+          <li><a href="/">中文 (繁體)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="hyf-info-cell">
+      <h3>币种</h3>
+      <div class="hyf-dropdown-sm">
+        <div class="hyf-dropdown-toggle"><i class="fa fa-cny"></i> CNY (人民币)<i class="hyf-dropdown-icon fa fa-chevron-circle-down"></i></div>
+        <ul class="list-layout hyf-dropdown-menu">
+          <li class="active"><span><i class="fa fa-cny"></i> CNY (人民币)</span></li>
+          <li><a href="/"><i class="fa fa-usd"></i> HKD (港币)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="hyf-info-cell hyf-hidden-sm">
+      <h3>微信公众号</h3>
+      <ul class="list-layout">
+        <li><img class="hover-zoom-qrcode" src="{{ preset.imgHost }}/qrcode_wechat.png" width="70" alt="qrcode"></li>
+      </ul>
+    </div>
+    <div class="hyf-info-cell">
+      <h3>社交网站</h3>
+      <ul class="list-layout">
+        <li><a href="/" class="btn-sns"><i class="fa fa-weibo fa-2x"></i></a><a href="/"><i class="fa fa-facebook-square fa-2x"></i></a></li>
+      </ul>
+    </div>
+    <div class="hyf-info-cell">
+      <h3>{{ __('site.hotline') }}</h3>
+      <ul class="list-layout">
+        <li><i class="fa fa-phone fa-fw"></i> 400 008 3731</li>
+        <li><i class="fa fa-wechat fa-fw"></i> 158 2045 0807</li>
+      </ul>
+    </div>
+  </section>
+  <footer class="hyf-footer">
+    <div class="hyf-field-container">
+      <div class="footer-brand"><img src="{{ preset.imgHost }}/logo-white{% if preset.locale == 'en' || preset.locale =='zh-hk' %}-en{% endif %}.png" alt="logo" height="30"></div>
+      <p>&copy; {{ __('site.copyright') }} <a href="http://www.miitbeian.gov.cn">粤ICP备15044583号-1</a></p>
+    </div>
+  </footer>
+  <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://cdn.bootcss.com/jquery-easing/1.3/jquery.easing.min.js"></script>
+  <script src="http://cdn.bootcss.com/Tocca.js/0.1.21/Tocca.min.js"></script>
+  <script>
+    (function ($, window){
+      setTimeout(function(){
+        $('.hyf-banner').removeClass('hide');
+      }, 0);
 
+      $("#btn-learn-more").click(function(){
+        $("html, body").stop().animate({scrollTop: $(window).height() + "px"}, 800, "easeInOutCirc");
+      });
+
+      var navOpen = false;
+
+      $(".hyf-navbar-toggle").click(function(){
+        navOpen = !navOpen;
+        if(navOpen){
+          $("html, body").css("overflow", "hidden");
+        }else{
+          $("html, body").removeAttr("style");
+        }
+        $(".hyf-navbar-overlay").toggleClass("hide");
+        $(".hyf-navbar-nav").toggleClass("hide");
+      });
+
+      $(".btn-hide-navbar").click(function(){
+        navOpen = false;
+        $("html, body").removeAttr("style");
+        $(".hyf-navbar-overlay").addClass("hide");
+        $(".hyf-navbar-nav").addClass("hide");
+      });
+
+      $.fn.hyfdropdown = function(){
+        return this.each(function(){
+          var self = $(this);
+          self.find(".hyf-dropdown-toggle").click(function(){
+            self.toggleClass("open");
+          });
+        });
+      };
+
+      var bodyClickHandler = function(e){
+        var target = e.target || e.touches[0].target;
+
+        var dropdown = $(target).parent();
+
+        $(".hyf-dropdown-sm").each(function(){
+          if(dropdown.is(this)){
+            return;
+          }
+
+          $(this).removeClass("open");
+        });
+      };
+
+      $("body").on("click", bodyClickHandler);
+      $("body").on("tap", bodyClickHandler);
+
+      $(".hyf-dropdown-sm").hyfdropdown();
+
+    })(jQuery, window);
+  </script>
 </body>
 </html>
