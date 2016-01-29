@@ -7,8 +7,15 @@
 
 {% include './nav.html' with {view_active:'boat'} %}
 
-<div class="container">
-  {% if false %}
+<div class="container columns-sm">
+  <ol class="breadcrumb">
+    <li><a href="/">{{ __('nav.home') }}</a></li>
+    <li class="active">{{ __('nav.boat') }}</li>
+  </ol>
+  <div class="page-header">
+    <h3>筛选</h3>
+  </div>
+
   <div class="row search-field">
     <div class="col-md-2">
       <label>{{ __('common.location') }}</label>
@@ -21,6 +28,7 @@
       </div>
     </div>
   </div>
+  {% if false %}
   <div class="row search-field">
     <div class="col-md-2">
       <label>{{ __('common.price_range') }}</label>
@@ -102,6 +110,7 @@
     </div>
   </div>
   {% endif %}
+  <hr class="hr-divider">
 </div>
 <div class="columns columns-gray">
   <div class="container">
