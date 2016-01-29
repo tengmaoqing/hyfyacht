@@ -208,6 +208,19 @@
 
   var app = angular.module("booking", []);
 
+  app.controller("moreProductCtrl", function($scope, $http){
+    $http.get("/product/moreProducts?boatId="+hgdata.boatId+"&productId="+hgdata.productId).success(function(moreBoat){
+      $scope.moreBoat = moreBoat;
+    });
+
+    $scope.getCurrency = function(currency){
+      if(currency == "cny"){
+        return "￥"
+      }
+      return "$"
+    }
+  });
+
   app.controller("bookingController", function($scope){
     $scope.packages = hgdata.packages;
     $scope.baseCurrency = hgdata.baseCurrency;

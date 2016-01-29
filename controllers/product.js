@@ -57,7 +57,6 @@ exports.getMoreProducts = function(req, res, next){
       err.status = 400;
       return next(err); 
     }
-
     if(!boat){
       var httpErr = new Error('Not Found');
       httpErr.status = 404;

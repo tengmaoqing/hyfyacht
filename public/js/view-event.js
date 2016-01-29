@@ -41,4 +41,19 @@
       document.forms[0].submit();
     };
   });
+
+  app.controller("moreEvents", function($scope, $http){
+
+    $http.get("/event/moreEvents?eventId="+hgdata.eventId+"&dateStart="+hgdata.dateStart).success(function(res){
+      $scope.events = res.events;
+    });
+
+    $scope.getCurrency = function(currency){
+      if(currency == "cny"){
+        return "￥"
+      }
+      return "$"
+    }
+  });
+
 })(window);
