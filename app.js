@@ -205,7 +205,8 @@ app.use(function(req, res, next){
     currency: currency,
     configCurrency: config.currency,
     generateCharge: function(charge, baseCurrency){
-      return prefix + (charge * config.currency[currency] / config.currency[baseCurrency] / 100).toFixed(2);
+      var amount = parseInt(charge * config.currency[currency] / config.currency[baseCurrency]);
+      return prefix + (amount / 100).toFixed(2);
     }
   });
 

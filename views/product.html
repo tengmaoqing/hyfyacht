@@ -9,7 +9,7 @@
 {% block content %}
 
 {% include './nav.html' %}
-<div data-ng-app="product">
+<div data-ng-app="product" data-ng-controller="productController">
   <div class="columns-sm" data-ng-controller="bookingController">
     <form name="booking" method="post" action="/booking/submit" novalidate>
       <input type="hidden" name="_csrf" value="{{ _csrf }}">
@@ -462,8 +462,7 @@
                   <h4 data-ng-bind="product.name"></h4>
                   <p data-ng-bind=" product.summary "></p>
                   <div class="row">
-                    <h3 class="col-xs-6 text-danger" data-ng-bind="((product.baseCharge)/100).toFixed(2)|currency:getCurrency(product.currency)">
-                    </h3>
+                    <h3 class="col-xs-6 text-danger">{{ displayAmount(generateCharge(product.baseCharge)) }}</h3>
                     <p class="col-xs-6 text-right boat-product-learn">
                     {% endraw %}
                     {{ __('boat.detail.learn') }}
@@ -522,8 +521,4 @@
   });
 })(jQuery, window);
 </script>
-<<<<<<< HEAD
-=======
-
->>>>>>> f933c9d498ad74e81d1ebd467916904e1c78049e
 {% endblock %}

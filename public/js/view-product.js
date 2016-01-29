@@ -208,10 +208,22 @@
 
   var app = angular.module("product", []);
 
-  app.controller("bookingController", function($scope){
-    $scope.packages = hgdata.packages;
+  app.controller("productController", function($scope){
     $scope.baseCurrency = hgdata.baseCurrency;
     $scope.prefix = clientCurrency == 'hkd' ? '$' : '￥';
+
+    $scope.generateCharge = function(charge){
+      return parseInt(charge * currency[clientCurrency] / currency[$scope.baseCurrency]);
+    };
+
+    $scope.displayAmount = function(amount){
+      return $scope.prefix + (amount / 100).toFixed(2);
+    };
+  });
+
+  app.controller("bookingController", function($scope){
+    $scope.packages = hgdata.packages;
+
     $scope.numberOfPersons = 1;
     $scope.contact = {
       name: "",
@@ -237,13 +249,8 @@
     $scope.extraSlotChargeName = "";
     $scope.availablePackages = false;
 
-    $scope.generateCharge = function(charge){
-      return parseInt(charge * currency[clientCurrency] / currency[$scope.baseCurrency]);
-    };
-
-    $scope.displayAmount = function(amount){
-      return $scope.prefix + (amount / 100).toFixed(2);
-    };
+    $scope.generateCharge = $scope.$parent.generateCharge;
+    $scope.displayAmount = $scope.$parent.displayAmount;
 
     $scope.togglePackage = function(index){
       $scope.currPackage == index ? $scope.currPackage = -1 : $scope.currPackage = index;
@@ -310,8 +317,6 @@
       }
 
       return $scope.generateCharge($scope.baseCharge) * $scope.slotCount + $scope.generateCharge($scope.extraSlotCharge) * $scope.extraSlot + $scope.generateCharge(package.extraCharge) * extraPersons + itemsAmount;
-
-      //return $scope.generateCharge(package.baseCharge) + $scope.generateCharge(package.extraCharge) * extraPersons + itemsAmount;
     };
 
     $scope.getItems = function() {
@@ -559,11 +564,14 @@
       $scope.boat = boat;
     });
 
-    $scope.getCurrency = function(currency){
-      if(currency == "cny"){
-        return "￥"
-      }
-      return "$"
-    }
+    $scope.generateCharge = $scope.$parent.generateCharge;
+    $scope.displayAmount = $scope.$parent.displayAmount;
+
+    //$scope.getCurrency = function(currency){
+    //  if(currency == "cny"){
+    //    return "￥"
+    //  }
+    //  return "$"
+    //}
   });
 })(jQuery, window);
