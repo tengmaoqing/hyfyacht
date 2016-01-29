@@ -1,0 +1,87 @@
+{% import './macros/pager.html' as pagerView %}
+
+{% extends './layout.html' %}
+
+{% block content %}
+
+{% include './nav-owner.html' with {view_active:'boat'} %}
+
+<div class="container">
+  <div class="page-header">
+    <h1>{{ __('owner.nav.boat') }}</h1>
+  </div>
+  <div class="booking-list">
+  	{% for boat in boats %}
+  	<div class="panel panel-info">
+  		<div class="panel-heading">
+        <div class="row">
+        	<div class="col-md-10 col-sm-10 col-xs-8">
+        		<strong>{{ __('boat.detail.serialNumber') }}: {{ boat.serialNumber }}</strong>
+        	</div>
+        	<div class="col-md-2 col-sm-2 col-xs-4 text-right">
+            <a href="/boat/{{ boat._id.valueOf() }}/{{ boat.name }}" class="btn btn-default btn-sm">{{ __('boat.detail.learn') }}</a>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+      	<div class="row">
+      		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+      			<div class="row">
+      				<div class="col-md-4 col-sm-4 col-xs-4">
+      					<div class="thumbnail">
+      						<a href="">
+                    <img src="{{ boat.thumbnail }}" alt="boat photo">
+                  </a>
+      					</div>
+      				</div>
+      				<div class="col-md-8 col-sm-8 col-xs-8">
+      					<p><strong>{{boat.name}}-{{ __(boat.type) }}</strong></p>
+      					<p>{{ __('boat.detail.length') }}: {{boat.length}}</p>
+      					<p>{{ __('common.capacity') }}：{{boat.capacity}}</p>
+      				</div>
+      			</div>
+      		</div>
+      		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<div class="row">
+							<div class="col-lg-5 col-md-5 col-sm-5 visible-lg visible-md visible-sm">
+								{% if boat.baseFacilities.length != 0 %}
+                <p>
+                	{{ __('boat.detail.facilities') }}：
+                	{% for item in boat.baseFacilities %}
+						        {{ __(item) }}
+						      {% endfor %}
+                </p>
+                {% endif %}
+                {% if boat.entertainments.length != 0 %}
+                <p>
+                	{{ __('boat.detail.entertainments') }}：
+                	{% for item in boat.entertainments %}
+						        {{ __(item) }}
+						      {% endfor %}
+                </p>
+                {% endif %}
+                {% if boat.extras.length != 0 %}
+                <p>
+                	{{ __('boat.detail.extras') }}：
+                	{% for item in boat.extras %}
+						        {{ __(item) }}
+						      {% endfor %}
+                </p>
+                {% endif %}
+              </div>
+              <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 text-right">
+                {{ __('boat.detail.price') }}：{{ __('boat.detail.from %s', preset.generateCharge(boat.baseCharge, boat.currency)) }}
+              </div>
+						</div>
+      		</div>
+      	</div>
+      </div>
+  	</div>
+  	{% endfor %}
+  </div>
+   {{ pagerView.create(pager) }}
+</div>
+
+{% include './footer.html' %}
+
+{% endblock %}
