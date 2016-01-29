@@ -2,7 +2,7 @@
 <section class="hyf-info">
   <hr class="hyf-show-sm hyf-hr-sm">
   <div class="hyf-info-cell hyf-hidden-sm">
-    <h3>网站导航</h3>
+    <h3>{{ __('site.site') }}</h3>
     <ul class="list-layout">
       <li><a href="/">{{ __('nav.home') }}</a></li>
       <li><a href="/boat">{{ __('nav.boat') }}</a></li>
@@ -22,7 +22,7 @@
     </ul>
   </div>
   <div class="hyf-info-cell">
-    <h3>语言</h3>
+    <h3>{{ __('common.language') }}</h3>
     <div class="hyf-dropdown-sm">
       <div class="hyf-dropdown-toggle">
         {% if preset.locale == 'en' %}English
@@ -39,7 +39,7 @@
     </div>
   </div>
   <div class="hyf-info-cell">
-    <h3>币种</h3>
+    <h3>{{ __('common.currency') }}</h3>
     <div class="hyf-dropdown-sm">
       <div class="hyf-dropdown-toggle">
         {% if preset.currency == 'hkd' %}＄ HKD (港币)
@@ -54,13 +54,13 @@
     </div>
   </div>
   <div class="hyf-info-cell hyf-hidden-sm">
-    <h3>微信公众号</h3>
+    <h3>{{ __('common.wechat_mp') }}</h3>
     <ul class="list-layout">
       <li><img class="hover-zoom-qrcode" src="{{ preset.imgHost }}/qrcode_wechat.png" width="70" alt="qrcode"></li>
     </ul>
   </div>
   <div class="hyf-info-cell">
-    <h3>社交网站</h3>
+    <h3>{{ __('common.sns') }}</h3>
     <ul class="list-layout">
       <li><a href="/" class="btn-sns"><i class="fa fa-weibo fa-2x"></i></a><a href="/"><i class="fa fa-facebook-square fa-2x"></i></a></li>
     </ul>

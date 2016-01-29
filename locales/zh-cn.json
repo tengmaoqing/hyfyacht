@@ -11,6 +11,7 @@
       "disclaimer": "免责声明",
       "copyright": "知识产权声明"
      },
+    "site": "网站导航",
     "hotline": "服务热线",
     "copyright": "深圳市海云帆游艇发展有限公司"
   },
@@ -18,6 +19,10 @@
     "login": "登录",
     "logout": "注销",
     "signup": "注册",
+    "language": "语言",
+    "sns": "社交网站",
+    "wechat_mp": "微信公众号",
+    "learn": "了解更多",
     "information":"个人信息",
     "reset_password": "重置密码",
     "nickname": "昵称",
@@ -71,7 +76,8 @@
     "owner": "船东",
     "back_to_top": "返回顶部",
     "detail": "详情",
-    "holiday": "节日"
+    "holiday": "节日",
+    "filter": "筛选"
   },
   "error": {
     "login": {

@@ -11,6 +11,7 @@
     "disclaimer": "免責聲明",
     "copyright": "知識產權聲明"
   },
+  "site": "網站導航",
   "hotline": "服務熱線",
   "copyright": "深圳市海雲帆遊艇發展有限公司"
   },
@@ -18,6 +19,10 @@
     "login": "登入",
     "logout": "登出",
     "signup": "註冊",
+    "language": "語言",
+    "sns": "社交網絡",
+    "wechat_mp": "微信公眾號",
+    "learn": "了解更多",
     "information":"個人信息",
     "reset_password": "重置密碼",
     "nickname": "昵稱",
@@ -71,7 +76,8 @@
     "owner": "船東",
     "back_to_top": "返回最頂",
     "detail": "詳情",
-    "holiday": "假期"
+    "holiday": "假期",
+    "filter": "篩選"
   },
   "error": {
     "login": {
@@ -130,6 +136,7 @@
   },
   "boat": {
     "list": {
+      "find_boats": "Find Boats",
       "find %d boat": {
         "one": "為您找到 %d 艘船：",
         "other": "為您找到 %d 艘船："

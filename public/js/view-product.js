@@ -206,7 +206,7 @@
   var clientCurrency = hgdata.clientCurrency;
   var currency = hgdata.currency;
 
-  var app = angular.module("booking", []);
+  var app = angular.module("product", []);
 
   app.controller("bookingController", function($scope){
     $scope.packages = hgdata.packages;
@@ -551,5 +551,19 @@
 
   $("#btn-contract").click(function(){
     $("#contract-container").toggleClass("hidden");
+  });
+
+  app.controller("moreController", function($scope, $http){
+
+    $http.get("/product/moreProducts?boatId=" + hgdata.boatId + "&productId=" + hgdata.productId).success(function(boat){
+      $scope.boat = boat;
+    });
+
+    $scope.getCurrency = function(currency){
+      if(currency == "cny"){
+        return "￥"
+      }
+      return "$"
+    }
   });
 })(jQuery, window);

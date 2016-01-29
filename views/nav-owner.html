@@ -1,29 +1,25 @@
 {% import './macros/menu.html' as menu %}
+{% import './macros/menu.html' as menu %}
 
-<nav class="navbar navbar-custom">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#hyf-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/"><img src="{{ preset.imgHost }}/logo-light-blue{% if preset.locale == 'en' || preset.locale =='zh-hk' %}-en{% endif %}.png" alt="logo" height="30"></a>
-    </div>
-    <div class="collapse navbar-collapse" id="hyf-navbar-collapse-1">
-      <ul class="nav navbar-nav">
+<div class="hyf-navbar-overlay hyf-overlay-strong hyf-hide">
+  <button class="btn-hide-navbar"><i class="fa fa-close fa-3x"></i></button>
+</div>
+<nav class="hyf-navbar{% if !index %} hyf-navbar-page{% endif %}{% if absolute %} hyf-navbar-absolute{% endif %}">
+  <div class="hyf-field-container">
+    <div class="hyf-navbar-brand"><a href="/"><img src="{{ preset.imgHost }}/logo-white{% if preset.locale == 'en' || preset.locale =='zh-hk' %}-en{% endif %}.png" alt="logo" height="30"></a></div>
+    <div class="hyf-navbar-right">
+      <button class="hyf-navbar-toggle" type="button"><i class="fa fa-bars fa-2x"></i></button>
+      <ul class="hyf-navbar-nav hyf-hide">
         {{ menu.item(__('owner.nav.home'), '/owner', view_active == 'home') }}
         {{ menu.item(__('owner.nav.booking'), '/owner/booking', view_active == 'booking') }}
         {{ menu.item(__('owner.nav.ownerInformation'), '/owner/setting', view_active == 'setting') }}
         {{ menu.item(__('owner.nav.ownerBoats'), '/owner/boat', view_active == 'boat') }}
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> {{ preset.username }}</a>
-          <ul class="dropdown-menu disabled">
-            <!-- <li role="separator" class="divider"></li> -->
-            <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> {{ __('common.logout') }} </a></li>
+        <li><img class="hyf-user-avatar hyf-img-circle hyf-img-thumbnail" src="{{ preset.imgHost }}/captain.jpg" height="26">{{ preset.username }}
+          <ul class="list-layout">
+            <li><a href="/user/booking">{{ __('user.bookings') }}</a></li>
+            <li><a href="/user/event">{{ __('user.events') }}</a></li>
+            <li><a href="/user/setting">{{ __('user.settings') }}</a></li>
+            <li><a href="/logout">{{ __('common.logout') }}</a></li>
           </ul>
         </li>
       </ul>

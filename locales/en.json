@@ -1,6 +1,6 @@
 {
   "site": {
-    "title": "HG Boating",
+    "title": "HGBOATING",
     "slogan": "KEEP CALM & LOVE BOATING",
     "info": {
       "company": "Company",
@@ -11,13 +11,18 @@
       "disclaimer": "Disclaimer",
       "copyright": "Copyright"
     },
+    "site": "Site",
     "hotline": "Hotline",
-    "copyright": "HG Boating"
+    "copyright": "HGBOATING"
   },
   "common": {
     "login": "Log In",
     "logout": "Log Out",
     "signup": "Sign Up",
+    "language": "Language",
+    "sns": "SNS",
+    "wechat_mp": "Wechat",
+    "learn": "Learn more",
     "information":"User Information",
     "reset_password": "Reset Password",
     "nickname": "Nickname",
@@ -71,7 +76,8 @@
     "owner": "Owner",
     "back_to_top": "Back to top",
     "detail": "Detail",
-    "holiday": "Holiday"
+    "holiday": "Holiday",
+    "filter": "Filter"
   },
   "error": {
     "login": {

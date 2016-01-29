@@ -498,6 +498,9 @@ html, body {
 
 .hyf-navbar-nav > li > ul > li > a {
   color: #fff;
+  padding: 0 20px;
+  word-break: keep-all;
+  white-space: nowrap;
 }
 
 @media (min-width: 768px) {
@@ -517,16 +520,17 @@ html, body {
     color: #282828;
   }
 
+  .hyf-navbar-nav > li > ul {
+    margin-right: -20px;
+  }
+
   .hyf-navbar-page .hyf-navbar-nav > li > ul {
     background-color: #15a4e7;
-    text-align: center;
+    text-align: right;
   }
 
   .hyf-navbar-nav > li {
     display: inline-block;
-  }
-
-  .hyf-navbar-nav > li {
     margin-left: 40px;
     font-size: 14px;
     line-height: 30px;
