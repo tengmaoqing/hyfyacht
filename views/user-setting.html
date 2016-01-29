@@ -3,125 +3,115 @@
 {% block content %}
 
 {% include './nav.html' %}
-<div class="columns columns-gray">
-<div class="container" ng-app="userSetting" ng-controller="userSettingCtrl">
-	<div class="row userSetting">
-		<div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
-			<form name="userSetting">
-				<div class="page-header text-left btn_Span">
-			    <h1>{{ __('common.information') }}</h1>
-			    <button class="btn" ng-model="user" edit ng-show="!isEdit"><span class="glyphicon glyphicon-pencil"></span></button>
-			    <button class="btn" ng-model="user" cancel ng-show="isEdit"><span class="glyphicon glyphicon-remove"></span></button>
-			    <button class="btn" confirm ng-show="isEdit"><span class="glyphicon glyphicon-ok"></span></button>
-			    <button class="btn" ng-model="nouse" edit="updata" ng-show="isEdit" title="{{ __('common.new_password') }}"><span class="glyphicon glyphicon-plus"></span></button>
-			  </div>
-				<div class="col-lg-3">
+
+<div class="container columns-sm">
+	<div class="page-header">
+    <h1>{{ __('common.information') }}</h1>
+  </div>
+	<div class="userSetting" ng-app="userSetting" ng-controller="userSettingCtrl">
+		<div class="row">
+			<div class="col-lg-3">
 					<img src="/img/captain.jpg" ng-model="user.avatar">
-				</div>
+			</div>
+			<div class="col-lg-4 col-lg-offset-5 text-right">
+				<button class="btn btn-info" ng-model="user" edit ng-show="!isEdit">
+					<span class="glyphicon glyphicon-pencil"></span>{{ __('common.edit') }}
+				</button>
+			</div>		
+		</div>
+		<div class="row">
 				<input type="hidden" name="_csrf" id="csrf" value="{{ _csrf }}">
-				<div class="col-lg-9 user_information">
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.mobile') }}</label>
-						<div class="col-sm-8 text-left">
-							<p ng-bind="user.mobile"></p>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.nickname') }}</label>
-						<div class="col-sm-8 text-left">
-							<input type="text" ng-model="user.nickname" ng-class={"editInput":isEdit}>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.email') }}</label>
-						<div class="col-sm-8 text-left">
-							<input type="email" ng-model="user.email" ng-class={"editInput":isEdit}>
-							<p class="pwd_unPass" ng-show="userSetting.$error.email"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('common.invaild_email') }}</p>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.currency') }}</label>
-						<div class="col-sm-8 text-left">
-							<p ng-bind="getOptionsValue(user.currency, 'currency')" ng-show="!isEdit"></p>
+				<div class="col-lg-9">
+					<dl class="dl-horizontal">
+						<dt>{{ __('common.mobile') }}</dt>
+						<dd>
+								<span ng-bind="user.mobile"></span>
+						</dd>
+						<dt>{{ __('common.nickname') }}</dt>
+						<dd>
+							<input type="text" ng-model="user.nickname" ng-class="{'editInput':isEdit, 'form-control':isEdit}">
+						</dd>
+						<dt>{{ __('common.email') }}</dt>
+						<dd>
+							<input type="email" ng-model="user.email" ng-class="{'editInput':isEdit, 'form-control':isEdit}">
+						</dd>
+						<dt>{{ __('common.currency') }}</dt>
+						<dd>
+							<span ng-bind="getOptionsValue(user.currency, 'currency')" ng-show="!isEdit"></span>
 							<select ng-model="user.currency" ng-options="opt.currency for opt in currencys" ng-show="isEdit" class="form-control">
 							</select>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.city') }}</label>
-						<div class="col-sm-8 text-left">
-							<p ng-bind="getOptionsValue(user.location.city, 'city')" ng-show="!isEdit"></p>
+						</dd>
+						<dt>{{ __('common.city') }}</dt>
+						<dd>
+							<span ng-bind="getOptionsValue(user.location.city, 'city')" ng-show="!isEdit"></span>
 							<select ng-model="user.location.city" ng-options="opt.city for opt in citys" ng-show="isEdit" class="form-control">
 							</select>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.locale') }}</label>
-						<div class="col-sm-8 text-left">
-							<p ng-bind="getOptionsValue(user.locale, 'locale')" ng-show="!isEdit"></p>
+						</dd>
+						<dt>{{ __('common.locale') }}</dt>
+						<dd>
+							<span ng-bind="getOptionsValue(user.locale, 'locale')" ng-show="!isEdit"></span>
 							<select ng-model="user.locale" ng-options="opt.locale for opt in locales" ng-show="isEdit" class="form-control">
 							</select>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.createDate') }}</label>
-						<div class="col-sm-8 text-left">
+						</dd>
+						<dt>{{ __('common.createDate') }}:</dt>
+						<dd>
 							<p ng-bind="switchDate(user.createDate,'lll')"></p>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv" ng-show="isEdit && updataPass">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.password') }}</label>
-						<div class="col-sm-8 text-left">
-							<input type="password" ng-model="oldPwd" ng-class='{ "editInput":isEdit}' require>
+						</dd>
+						<dt ng-show="isEdit && updataPass">{{ __('common.password') }}</dt>
+						<dd ng-show="isEdit && updataPass">
+							<input type="password" ng-model="oldPwd" ng-class="{'editInput':isEdit, 'form-control':isEdit}" require>
 							<p class="pwd_unPass" ng-show="!isResPass && !oldPwd"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.user_setting.notmatch') }}</p>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv" ng-show="isEdit && updataPass">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.new_password') }}</label>
-						<div class="col-sm-8 text-left">
-							<input type="password" ng-model="newPwd1" ng-minlength="6" ng-maxlength="30" ng-class='{ "editInput":isEdit}' require>
+						</dd>
+						<dt ng-show="isEdit && updataPass">{{ __('common.new_password') }}</dt>
+						<dd ng-show="isEdit && updataPass">
+							<input type="password" ng-model="newPwd1" ng-minlength="6" ng-maxlength="30" ng-class="{'editInput':isEdit, 'form-control':isEdit}" require>
 							<p class="pwd_unPass" ng-show="!isPass1 && !newPwd1"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.password_len') }}</p>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv" ng-show="isEdit && updataPass">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.confirmPassword') }}</label>
-						<div class="col-sm-8 text-left">
-							<input type="password" ng-model="newPwd2" ng-class='{"editInput":isEdit}'>
+						</dd>
+						<dt ng-show="isEdit && updataPass">{{ __('common.confirmPassword') }}</dt>
+						<dd ng-show="isEdit && updataPass">
+							<input type="password" ng-model="newPwd2" ng-class="{'editInput':isEdit, 'form-control':isEdit}">
 							<p class="pwd_unPass" ng-show="newPwd2 != newPwd1 && !isPass2"><span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('error.signup.confirm_password') }}</p>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv" ng-show="isEdit && !hasMobile">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.bind_mobile')}}</label>
-						<div class="col-sm-8 text-left bind_user_mobile">
+						</dd>
+						<dt ng-show="isEdit && !hasMobile">{{ __('common.bind_mobile')}}</dt>
+						<dd ng-show="isEdit && !hasMobile">
 							<div class="col-sm-3 col-xs-4">
-		            <div class="btn-group">
-		              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">+86 <span class="caret"></span></button>
-		              <input id="input_area_code" type="hidden" class="dropdown-menu-selected" name="area_code" value="86">
-		              <ul class="dropdown-menu">
-		                <li><a href="#" data-value="86">+86</a></li>
-		                <li><a href="#" data-value="852">+852</a></li>
-		              </ul>
-		            </div>
-		          </div>
+			          <div class="btn-group">
+			            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">+86 <span class="caret"></span></button>
+			            <input id="input_area_code" type="hidden" class="dropdown-menu-selected" name="area_code" value="86">
+			            <ul class="dropdown-menu">
+			              <li><a href="#" data-value="86">+86</a></li>
+			              <li><a href="#" data-value="852">+852</a></li>
+			            </ul>
+			          </div>
+			        </div>
 							<div class="col-sm-9 col-xs-8">
-		            <input type="number" id="input_mobile" ng-model="mobile" maxlength="11" class="form-control" ng-class='{"editInput":isEdit}'>
+			          <input type="number" id="input_mobile" ng-model="mobile" maxlength="11" class="form-control" ng-class="{'editInput':isEdit, 'form-control':isEdit}">
+			        </div>
+						</dd>
+						<dt ng-show="isEdit && !hasMobile">{{ __('common.smscode') }}</dt>
+						<dd ng-show="isEdit && !hasMobile">
+							<div class="col-sm-3 col-xs-4">
+		            <input type="number" class="form-control" ng-class="{'editInput':isEdit, 'form-control':isEdit}" ng-model="code" pattern=".{4,4}">
 		          </div>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv" ng-show="isEdit && !hasMobile">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.smscode') }}</label>
-	          <div class="col-sm-3 col-xs-4">
-	            <input type="number" class="form-control" ng-class='{"editInput":isEdit}' ng-model="code" pattern=".{4,4}">
-	          </div>
-	          <div class="col-sm-5 col-xs-8 bind_user_mobile">
-	            <button id="btn-getsmscode" type="button" class="btn btn-primary btn-block">{{ __('common.getsmscode') }}</button>
-	          </div>
+		          <div class="col-sm-9 col-xs-8">
+		            <button id="btn-getsmscode" type="button" class="btn btn-primary btn-block">{{ __('common.getsmscode') }}</button>
+		          </div>
+						</dd>
+					</dl>
+					<div class="col-lg-12 text-right">
+						<button class="btn btn-primary" ng-model="user" cancel ng-show="isEdit">
+							<span class="glyphicon glyphicon-remove"></span>{{ __('common.cancel') }}
+						</button>
+						<button class="btn btn-danger" confirm ng-show="isEdit">
+							<span class="glyphicon glyphicon-ok"></span>{{ __('common.submit') }}
+						</button>
+						<button class="btn btn-danger" ng-model="nouse" edit="updata" ng-show="isEdit">
+							<span class="glyphicon glyphicon-plus"></span>{{ __('common.new_password') }}
+						</button>
 					</div>
 				</div>
-			</form>
 		</div>
 	</div>
-</div>
 </div>
 
 {% include './footer.html' %}
@@ -168,7 +158,7 @@
       });
     });
 
-  	$(".infoDiv input").prop("readOnly",true);
+  	$("input").prop("readOnly",true);
 
   	var app = angular.module("userSetting", []);
 
@@ -258,7 +248,7 @@
 
   					scope.$apply();
 
-  					$(".infoDiv input").removeProp("readOnly");
+  					$("input").removeProp("readOnly");
   				});
   			}
   		}
@@ -280,7 +270,7 @@
   					scope.code = "";
   					scope.$apply();
 
-  					$(".infoDiv input").prop("readOnly", true);
+  					$("input").prop("readOnly", true);
   				});
   			}
   		}
@@ -328,7 +318,7 @@
 	  					scope.newPwd1 = scope.newPwd2 = "";
 	  					scope.hasMobile = true;
   						scope.user = user;
-  						$(".infoDiv input").prop("readOnly", true);
+  						$("input").prop("readOnly", true);
   					});
 
   				});

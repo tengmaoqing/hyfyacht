@@ -449,6 +449,31 @@
     </div>
   </form>
 </div>
+<div class="container">
+  <h3>相关产品</h3>
+  <div class="row" ng-app="moreProduct" ng-controller="moreProductCtrl">
+    <div class="boat-product col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-repeat="product in boat.products">
+          {% raw %}
+        <div class="thumbnail">
+          <a ng-href="/product/{{ product._id }}/{{ product.name }}/{{ boat._id }}/{{ boat.name }}">
+            <div class="boat-thumbnail" ng-style="{'background-image': 'url({{ product.photo }})'}"></div>
+            <div class="caption text-muted">
+              <h4 ng-bind="product.name"></h4>
+              <p ng-bind=" product.summary "></p>
+              <div class="row">
+                <h3 class="col-xs-6 text-danger" ng-bind="((product.baseCharge)/100).toFixed(2)|currency:getCurrency(product.currency)">
+                </h3>
+                <p class="col-xs-6 text-right boat-product-learn">
+                {% endraw %}
+                {{ __('boat.detail.learn') }} 
+                <span class="glyphicon glyphicon-menu-right"></span></p>
+              </div>
+            </div>
+          </a>
+        </div>
+    </div>
+  </div> 
+</div>
 
 {% include './footer.html' %}
 
@@ -493,5 +518,21 @@
     }
   });
 })(jQuery, window);
+</script>
+<script>
+  var app = angular.module("moreProduct", []);
+  app.controller("moreProductCtrl", function($scope, $http){
+
+    $http.get("/product/moreProducts?boatId={{ boat._id.valueOf() }}&productId={{ product._id.valueOf() }}").success(function(boat){
+      $scope.boat = boat;
+    });
+
+    $scope.getCurrency = function(currency){
+      if(currency == "cny"){
+        return "￥"
+      }
+      return "$"
+    }
+  });
 </script>
 {% endblock %}

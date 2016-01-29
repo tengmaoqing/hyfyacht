@@ -2,116 +2,103 @@
 
 {% block content %}
 
-{% include './nav-owner.html' with {view_active:'home'} %}
+{% include './nav-owner.html' with {view_active:'setting'} %}
 
-<div class="columns columns-gray">
-<div class="container" ng-app="ownerSetting" ng-controller="ownerSettingCtrl">
-	<div class="row userSetting">
-		<div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
-			<form name="ownerSetting">
-				<div class="page-header text-left btn_Span">
-			    <h1>{{ __('common.ownerInformation') }}</h1>
-			    <button class="btn" ng-model="owner" edit ng-show="!isEdit"><span class="glyphicon glyphicon-pencil"></span></button>
-			    <button class="btn" ng-model="owner" cancel ng-show="isEdit"><span class="glyphicon glyphicon-remove"></span></button>
-			    <button class="btn" confirm ng-show="isEdit"><span class="glyphicon glyphicon-ok"></span></button>
-			  </div>
-				<!-- <div class="col-lg-4">
-					<img src="/img/captain.jpg" ng-model="owner.avatar">
-				</div> -->
-				<input type="hidden" name="_csrf" id="csrf" value="{{ _csrf }}">
-				<div class="col-lg-10 user_information">
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.mobile') }}</label>
-						<div class="col-sm-8 text-left">
-							<input type="text" ng-model="owner.mobile" ng-class={"editInput":isEdit}>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('product.booking.name')}}</label>
-						<div class="col-sm-8 text-left">
-							<div class="col-sm-5">
-								<input type="text" ng-model="owner.name.first" ng-class={"editInput":isEdit} >
+<div class="container columns-sm">
+	<div class="page-header">
+	  <h1>{{ __('owner.nav.ownerInformation') }}</h1>
+	</div>
+	<div class="userSetting" ng-app="ownerSetting" ng-controller="ownerSettingCtrl">
+		<div class="row">
+			<div class="col-lg-4 col-lg-offset-8 text-right">
+				<button class="btn btn-info" ng-model="owner" edit ng-show="!isEdit">
+				  <span class="glyphicon glyphicon-pencil"></span>{{ __('common.edit') }}
+				</button>
+			</div>
+		</div>
+		<div class="row">
+			<input type="hidden" name="_csrf" id="csrf" value="{{ _csrf }}">
+				<div class="col-lg-9">
+					<dl class="dl-horizontal">
+						<dt>{{ __('common.mobile') }}</dt>
+						<dd>
+								<input type="text" ng-model="owner.mobile" ng-class="{'editInput':isEdit, 'form-control':isEdit}">
+						</dd>
+						<dt>{{ __('product.booking.name')}}</dt>
+						<dd>
+							<div class="col-lg-2 noPadding">
+								<input type="text" ng-model="owner.name.first" ng-class="{'editInput':isEdit, 'form-control':isEdit}" >
 							</div>
-							<div class="col-sm-7">
-								<input type="text" ng-model="owner.name.last" ng-class={"editInput":isEdit} >
+							<div class="col-lg-10 noPadding">
+								<input type="text" ng-model="owner.name.last" ng-class="{'editInput':isEdit, 'form-control':isEdit}" >
 							</div>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.nickname') }}</label>
-						<div class="col-sm-8 text-left">
-							<input type="text" ng-model="owner.nickname" ng-class={"editInput":isEdit}>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.email') }}</label>
-						<div class="col-sm-8 text-left">
-							<input type="email" ng-model="owner.email" ng-class={"editInput":isEdit}>
-							<p class="pwd_unPass" ng-show="ownerSetting.$error.email"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('common.invaild_email') }}</p>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.customLink') }}</label>
-						<div class="col-sm-8 text-left">
-							<p ng-bind="owner.customLink"></p>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.currency') }}</label>
-						<div class="col-sm-8 text-left">
-							<p ng-bind="getOptionsValue(owner.currency, 'currency')" ng-show="!isEdit"></p>
+						</dd>
+						<dt>{{ __('common.nickname') }}</dt>
+						<dd>
+							<input type="text" ng-model="owner.nickname" ng-class="{'editInput':isEdit, 'form-control':isEdit}">
+						</dd>
+						<dt>{{ __('common.email') }}</dt>
+						<dd>
+							<input type="email" ng-model="owner.email" ng-class="{'editInput':isEdit, 'form-control':isEdit}">
+						</dd>
+						<dt>{{ __('common.customLink') }}</dt>
+						<dd>
+							<div ng-if="!owner.customLink">
+								<input type="text" id="customLink" ng-class="{'editInput':isEdit, 'form-control':isEdit}">
+							</div>
+							<div ng-if="owner.customLink">
+								<span ng-bind="owner.customLink"></span>								
+							</div>
+						</dd>
+						<dt>{{ __('common.currency') }}</dt>
+						<dd>
+							<span ng-bind="getOptionsValue(owner.currency, 'currency')" ng-show="!isEdit"></span>
 							<select ng-model="owner.currency" ng-options="opt.currency for opt in currencys" ng-show="isEdit" class="form-control">
 							</select>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.country') }}</label>
-						<div class="col-sm-8 text-left">
-							<p ng-bind="getOptionsValue(owner.location.country, 'country')" ng-show="!isEdit"></p>
+						</dd>
+						<dt>{{ __('common.country') }}</dt>
+						<dd>
+							<span ng-bind="getOptionsValue(owner.location.country, 'country')" ng-show="!isEdit"></span>
 							<select ng-model="owner.location.country" ng-options="opt.country for opt in countrys" ng-show="isEdit" class="form-control">
 							</select>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.city') }}</label>
-						<div class="col-sm-8 text-left">
-							<p ng-bind="getOptionsValue(owner.location.city, 'city')" ng-show="!isEdit"></p>
+						</dd>
+						<dt>{{ __('common.city') }}</dt>
+						<dd>
+							<span ng-bind="getOptionsValue(owner.location.city, 'city')" ng-show="!isEdit"></span>
 							<select ng-model="owner.location.city" ng-options="opt.city for opt in citys" ng-show="isEdit" class="form-control">
 							</select>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.locale') }}</label>
-						<div class="col-sm-8 text-left">
-							<p ng-bind="getOptionsValue(owner.locale, 'locale')" ng-show="!isEdit"></p>
+						</dd>
+						<dt>{{ __('common.locale') }}</dt>
+						<dd>
+							<span ng-bind="getOptionsValue(owner.locale, 'locale')" ng-show="!isEdit"></span>
 							<select ng-model="owner.locale" ng-options="opt.locale for opt in locales" ng-show="isEdit" class="form-control">
 							</select>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.createDate') }}</label>
-						<div class="col-sm-8 text-left">
-							<p ng-bind="switchDate(owner.createDate,'lll')"></p>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.boats') }}</label>
-						<div class="col-sm-8 text-left">
+						</dd>
+						<dt>{{ __('common.boats') }}</dt>
+						<dd>
 							<span ng-bind="owner.boats.length"></span>
-						</div>
-					</div>
-					<div class="input-group col-lg-10 infoDiv">
-						<label class="col-sm-4 col-xs-12 control-label">{{ __('common.description')}}</label>
-						<div class="col-sm-8 text-left">
-							<div contenteditable="false" ng-class={"editInput":isEdit} id="div_input">
+						</dd>
+						<dt>{{ __('common.createDate') }}</dt>
+						<dd>
+							<span ng-bind="switchDate(owner.createDate,'lll')"></span>
+						</dd>
+						<dt>{{ __('common.description') }}</dt>
+						<dd>
+							<div contenteditable="false" ng-bind="owner.description" ng-class="{'editInput':isEdit, 'form-control':isEdit}" id="div_input">
 							</div>
-						</div>
+						</dd>
+					</dl>
+					<div class="col-lg-4 col-lg-offset-8 text-right">
+						<button class="btn btn-primary" ng-model="owner" cancel ng-show="isEdit">
+					    <span class="glyphicon glyphicon-remove"></span>{{ __('common.cancel') }}
+					  </button>
+					  <button class="btn btn-danger" confirm ng-show="isEdit">
+					    <span class="glyphicon glyphicon-ok"></span>{{ __('common.submit') }}
+					  </button>
 					</div>
 				</div>
-			</form>
 		</div>
 	</div>
-</div>
 </div>
 
 
@@ -123,15 +110,16 @@
 <script src="http://cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
 <script	src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
 <script>
-	angular.element(".infoDiv input").prop("readOnly", true);
+	angular.element("input").prop("readOnly", true);
 	var app = angular.module("ownerSetting", []);
 
 	app.controller("ownerSettingCtrl", function($scope, $http, common122){
 
-		$scope.isEdit = false;
+	$scope.isEdit = false;
   	$scope.userTemp = {};
+  	$scope.tempdes = "";
   	$scope.owner = {
-  		description : "12344"
+  		description : ""
   	}
 
 		$http.get("/owner/setting/getOwnerInformation").success(function(owner){
@@ -173,11 +161,11 @@
   				scope.setOptionValue(scope.citys, "city", scope.owner.location.city);
   				scope.setOptionValue(scope.locales, "locale", scope.owner.locale);
   				scope.setOptionValue(scope.countrys, "country", scope.owner.location.country);
-
   				scope.$apply();
 
+  				scope.tempdes = angular.element("#div_input").text();
 					angular.element("#div_input").prop("contenteditable","plaintext-only");
-  				angular.element(".infoDiv input").removeProp("readOnly");
+  				angular.element("input").removeProp("readOnly");
 				});
 			}
 		}
@@ -194,8 +182,10 @@
   				scope.isEdit = false;
   				scope.$apply();
 
+  				angular.element("#div_input").text(scope.tempdes);
+  				scope.tempdes = "";
   				angular.element("#div_input").prop("contenteditable",false);
-  				angular.element(".infoDiv input").prop("readOnly", true);
+  				angular.element("input").prop("readOnly", true);
   			});
   		}
   	}
@@ -210,7 +200,8 @@
   				scope.isEdit = false;
   				scope.$apply();
   				scope.owner.description = angular.element("#div_input").text();
-
+  				
+  				scope.owner.customLink = angular.element("#customLink").val();
   				$http.post("/owner/setting/updateOwnerInformation", scope.owner, {
   					headers: {
 					    'X-XSRF-TOKEN': angular.element("#csrf").val()
@@ -221,7 +212,7 @@
   				});
 
   				angular.element("#div_input").prop("contenteditable", false);
-  				angular.element(".infoDiv input").prop("readOnly", true);
+  				angular.element("input").prop("readOnly", true);
   			});
   		}
   	}

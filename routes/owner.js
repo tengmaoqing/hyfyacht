@@ -30,6 +30,9 @@ router.post('/unavailable/set', unavailable.setUnavailable);
 //    res.render('owner-scan-qrcode');
 //  }
 //});
+
+router.get('/boat', owner.getBoats);
+
 router.get('/setting', function(req, res, next){
   res.render('owner-setting');
 });

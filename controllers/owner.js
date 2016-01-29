@@ -2,6 +2,7 @@
  * Created by qxj on 15/10/21.
  */
 var Owner = require('hyfbase').Owner;
+var Boat = require('hyfbase').Boat;
 
 exports.getOwnerByCustomLink = function(req, res, next) {
   Owner.getOwnerAndBoats({
@@ -73,12 +74,12 @@ exports.updateOwnerInformation = function(req, res, next){
       err.status = 400;
       return next(err);
     }
-    console.log(doc)
 
     doc.name = owner.name;
     doc.mobile = owner.mobile;
     doc.email = owner.email;
     doc.nickname = owner.nickname;
+    doc.customLink = owner.customLink;
     doc.currency = owner.currency ? owner.currency.value : '';
     doc.location = owner.location ? {
       country : owner.location.country ? owner.location.country.value : '',
@@ -97,3 +98,37 @@ exports.updateOwnerInformation = function(req, res, next){
     });
   });
 };
+
+
+exports.getBoats = function(req, res, next){
+  var ownerId = req.session.user.relatedOwner;
+  var page = req.query.page || 1;
+
+  Boat.paginate({
+    owner: ownerId,
+    display: true
+  },{
+    page: page,
+    limit: 10,
+    columns: '_id serialNumber name length capacity type baseCharge currency thumbnail createDate',
+    sort: {
+      createDate: -1
+    }
+  }, function(err, result){
+    if(err){
+      err.status = 400;
+      return next(err);
+    }
+
+    var pager = {
+      current: parseInt(page),
+      count: result.pages,
+      pages: []
+    };
+    for (var i = 1; i <= result.pages; i++) {
+      pager.pages.push(i);
+    }
+
+    return res.render('owner-boat', {boats: result.docs, pager: pager, itemCount: result.total})
+  });
+}

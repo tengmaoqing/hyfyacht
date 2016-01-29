@@ -5,12 +5,54 @@
 {% block content %}
 
 {% include './nav.html' with {view_active:'event'} %}
-
-<div class="container columns-sm">
-  <ol class="breadcrumb">
-    <li><a href="/">{{ __('nav.home') }}</a></li>
-    <li class="active">{{ __('nav.event') }}</li>
-  </ol>
+<div class="container">
+  <div class="search-head">
+    <form role="form" action="/event/list" method="GET">
+      <div class="form-group clearfix">
+        <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label noPadding">{{ __('event.type') }}</label>
+        <div class="noPadding btn-group">
+          <button type="submit" class="btn btn-default noPadding {% if query.type == '' %}btn-primary{% endif %}">
+            <label class="radio-inline radio_button">
+              <input type="radio" name="type" value="" {% if query.type == '' %}checked{% endif %}> {{ __('event.all') }}
+            </label>
+          </button>
+          <button type="submit" class="btn btn-default noPadding {% if query.type == 'once' %}btn-primary{% endif %}">
+            <label class="radio-inline radio_button">
+              <input type="radio" name="type" value="once" {% if query.type == 'once' %}checked{% endif %}> {{ __('event.once') }}
+            </label>
+          </button>
+          <button type="submit" class="btn btn-default noPadding {% if query.type == 'long' %}btn-primary{% endif %}">
+            <label class="radio-inline radio_button">
+              <input type="radio" name="type" value="long" {% if query.type == 'long' %}checked{% endif %}> {{ __('event.long') }}
+            </label>
+          </button>
+          <button type="submit" class="btn btn-default noPadding {% if query.type == 'free' %}btn-primary{% endif %}">
+            <label class="radio-inline radio_button">
+              <input type="radio" name="type" value="free" {% if query.type == 'free' %}checked{% endif %}> {{ __('event.free') }}
+            </label>
+          </button>
+        </div>
+      </div>
+      <div class="form-group clearfix">
+        <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label noPadding">{{ __('event.status') }}</label>
+        <div class="noPadding btn-group">
+          <button type="submit" class="btn btn-default noPadding {% if query.attendedDate == '' %}btn-primary{% endif %}">
+            <label class="radio-inline radio_button">
+              <input type="radio" name="attendedDate" value="" {% if query.attendedDate == '' %}checked{% endif %}> {{ __('event.all') }}
+            </label>
+          </button>
+          <button type="submit" class="btn btn-default noPadding {% if query.attendedDate == 'true' %}btn-primary{% endif %}">
+            <label class="radio-inline radio_button">
+              <input type="radio" name="attendedDate" value="true" {% if query.attendedDate == 'true' %}checked{% endif %}> {{ __('event.ongoing_item') }}
+            </label>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="columns columns-gray">
+<div class="container">
   <div class="event-list">
     {% for event in events %}
     <div class="thumbnail">
@@ -40,7 +82,10 @@
             <span class="glyphicon glyphicon-time"></span> {{ preset.getDateString(event.dateStart) }} - {{ preset.getDateString(event.dateEnd) }}
           </div>
           {% endif %}
-          <div class="text-right"><a class="btn btn-primary" href="/event/{{ event.id }}">{{ __('event.attend') }}</a></div>
+          <div>
+            <span class="glyphicon glyphicon-eye-open"></span> <label>{{ __('event.status') }}:</label>{% if event.attendedDate > dateNow %}{{ __('event.ongoing_item') }}{% else %}{{ __('event.over') }}{% endif %}
+          </div>
+          <div class="text-right"><a class="btn btn-primary" href="/event/{{ event.id }}">{{ __('boat.detail.learn') }}</a></div>
         </div>
       </div>
     </div>
@@ -48,6 +93,8 @@
   </div>
 </div>
 {{ pagerView.create(pager) }}
+</div>
+
 
 {% include './footer.html' %}
 

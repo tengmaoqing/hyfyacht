@@ -4,6 +4,8 @@
 var Boat = require('hyfbase').Boat;
 var Product = require('hyfbase').Product;
 var co = require('co');
+var mongoose = require('mongoose'),
+  Schema = mongoose.Schema;
 
 exports.getProduct = function(req, res, next){
   var boatId = req.params.boatId;
@@ -36,3 +38,32 @@ exports.getProduct = function(req, res, next){
     return next(err);
   });
 };
+
+
+exports.getMoreProducts = function(req, res, next){
+
+  Boat.findOne({
+    _id: req.query.boatId,
+    display:true
+  }).populate({
+    path: 'products',
+    select: 'id name summary baseCharge currency photo',
+    match: {
+      display: true,
+      _id : {$ne:req.query.productId}
+    }
+  }).exec(function(err, boat) {
+    if(err){
+      err.status = 400;
+      return next(err); 
+    }
+
+    if(!boat){
+      var httpErr = new Error('Not Found');
+      httpErr.status = 404;
+      return next(httpErr);
+    }
+
+    return res.json(boat);
+  });
+}

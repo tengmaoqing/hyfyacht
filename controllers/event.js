@@ -35,12 +35,35 @@ exports.getEvent = function(req, res, next) {
 exports.getEvents = function(req, res, next) {
   var page = req.query.page || 1;
 
-  Event.paginate({
-    inStock: true
-  }, {
+  var query = req.query;
+  var obj = {};
+  
+  if (query.type && !query.attendedDate) {
+    obj = {
+      type : query.type,
+      inStock: true
+    }
+  } else if(!query.type && query.attendedDate) {
+    obj = {
+      attendedDate : {$gt : new Date()},
+      inStock: true
+    }
+  }else if(query.type && query.attendedDate) {
+    obj = {
+      type : query.type,
+      attendedDate : {$gt : new Date()},
+      inStock: true
+    }
+  }else{
+    obj = {
+      inStock: true
+    }
+  }
+
+  Event.paginate(obj, {
     page: page,
     limit: 10,
-    columns: 'title dateStart dateEnd summary location baseCharge currency thumbnail organiser createDate',
+    columns: 'title dateStart dateEnd summary location baseCharge currency thumbnail organiser createDate attendedDate',
     populate:[{
       path: 'organiser',
       select: 'nickname'
@@ -64,6 +87,6 @@ exports.getEvents = function(req, res, next) {
       pager.pages.push(i);
     }
 
-    return res.render('event-list', {events: result.docs, pager: pager, itemCount: result.total});
+    return res.render('event-list', {events: result.docs, pager: pager, itemCount: result.total, dateNow: new Date(), query: query});
   });
 };

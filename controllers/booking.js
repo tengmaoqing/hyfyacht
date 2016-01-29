@@ -11,6 +11,7 @@ var wechatCore = require('wechat-core');
 var parseXML2String = require('xml2js').parseString;
 var tools = require('../lib/tools');
 var co = require('co');
+var Boat = require('hyfbase').Boat;
 
 exports.checkBooking = function(req, res, next){
   if (!req.session.bookingForm) {
@@ -473,13 +474,25 @@ exports.getBookingsByUserId = function(req, res, next){
 
 exports.getBookingsByOwnerId = function(req, res, next){
   var id = req.session.owner._id;
-
   var page = req.query.page || 1;
 
-  Booking.getBookingsAndPaginate({
+  var query = req.query;
+  var obj = {
     ownerId: id,
     status: 'db.booking.pay_success'
-  }, page, 10, function (err, result) {
+  };
+
+  query.selectBoat && (obj.boatId = query.selectBoat);
+  if( query.selectDate ){
+    var date = new Date(query.selectDate);
+    var days = date.getDate();
+    obj.dateEnd = {
+      $gt: date.setDate(days-1),
+      $lt: date.setDate(days+1)
+    }
+  }
+
+  Booking.getBookingsAndPaginate(obj, page, 10, function (err, result) {
     if(err){
       err.status = 400;
       return next(err);
@@ -495,7 +508,19 @@ exports.getBookingsByOwnerId = function(req, res, next){
       pager.pages.push(i);
     }
 
-    return res.render('owner-booking-list', {bookings: result.docs, pager: pager, itemCount: result.total});
+    Boat.find({
+      owner: id
+    }).select('id name region').sort({
+      _id:1
+    }).exec(function(err, doc){
+      if(err){
+        err.status = 400;
+        return next(err);
+      }
+      
+      return res.render('owner-booking-list', {bookings: result.docs, pager: pager, itemCount: result.total, boats: doc, query:query});
+    });
+   
   });
 };
 

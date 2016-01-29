@@ -8,4 +8,6 @@ var product = require('../controllers/product');
 
 router.get('/:id/:name/:boatId/:boatName', product.getProduct);
 
+router.get('/moreProducts', product.getMoreProducts);
+
 module.exports = router;

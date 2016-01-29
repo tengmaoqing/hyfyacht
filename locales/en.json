@@ -19,7 +19,6 @@
     "logout": "Log Out",
     "signup": "Sign Up",
     "information":"User Information",
-    "ownerInformation": "Owner Information",
     "reset_password": "Reset Password",
     "nickname": "Nickname",
     "currency": "Currency",
@@ -45,6 +44,7 @@
     "termsandprivacy": "Service terms & Privacy policy",
     "email": "E-mail",
     "close": "Close",
+    "edit": "Edit",
     "submit": "Submit",
     "cancel": "Cancel",
     "pay": "Pay",
@@ -63,6 +63,7 @@
     "extra": "Extra",
     "capacity": "Capacity",
     "packages": "Packages",
+    "select":"Select",
     "hour": {
       "one": "%d hour",
       "other": "%d hours"
@@ -112,7 +113,9 @@
       "home": "Home",
       "calendar": "Calendar",
       "booking": "Bookings",
-      "boat": "Boats"
+      "boat": "Boats",
+      "ownerBoats": "My Boats",
+      "ownerInformation": "Owner Information"
     }
   },
   "index": {
@@ -142,7 +145,10 @@
       "extras": "Extras",
       "products": "Products",
       "learn": "Learn more",
-      "anchorage": "Anchorage"
+      "anchorage": "Anchorage",
+      "length": "Length",
+      "serialNumber": "Serial Number",
+      "price": "Price"
     }
   },
   "product": {
@@ -167,6 +173,8 @@
       "selectPackage": "Select a package",
       "no_package": "No package available, Please select another date.",
       "numberOfPeople": "Number of people",
+      "findByBoat": "Find By Boat",
+      "findByDate": "Find By Date",
       "package": {
         "items": "Package items",
         "check": "Check",
@@ -240,6 +248,14 @@
     }
   },
   "event":{
+    "type": "Type",
+    "all" : "All",
+    "once": "Once",
+    "long": "Long-term",
+    "free": "Free",
+    "status": "Status",
+    "ongoing_item" : "Ongoing Item",
+    "over": "Over",
     "attend": "Attend",
     "organiser": "Organiser",
     "geospatial": "Location",

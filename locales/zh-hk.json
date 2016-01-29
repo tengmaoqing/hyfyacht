@@ -19,7 +19,6 @@
     "logout": "登出",
     "signup": "註冊",
     "information":"個人信息",
-    "ownerInformation": "船東信息",
     "reset_password": "重置密碼",
     "nickname": "昵稱",
     "currency": "幣種",
@@ -45,6 +44,7 @@
     "termsandprivacy": "服務條款與隱私政策",
     "email": "E-mail",
     "close": "關閉",
+    "edit": "編輯",
     "submit": "提交",
     "cancel": "取消",
     "pay": "付款",
@@ -63,6 +63,7 @@
     "extra": "其他",
     "capacity": "載客人數",
     "packages": "套餐",
+    "select":"篩選",
     "hour": {
       "one": "%d 小時",
       "other": "%d 小時"
@@ -112,7 +113,9 @@
       "home": "首頁",
       "calendar": "船期",
       "booking": "定單管理",
-      "boat": "船隻管理"
+      "boat": "船隻管理",
+      "ownerInformation": "船東信息",
+      "ownerBoats": "我的船隻"
     }
   },
   "index": {
@@ -142,7 +145,10 @@
       "extras": "其他",
       "products": "可預訂的產品",
       "learn": "了解詳情",
-      "anchorage": "停泊位置"
+      "anchorage": "停泊位置",
+      "length": "船身長度",
+      "serialNumber": "序列號",
+      "price": "最低價格"
     }
   },
   "product": {
@@ -167,6 +173,8 @@
       "selectPackage": "選擇套餐",
       "no_package": "此日期沒有可以預定的套餐，請選擇其他日期",
       "numberOfPeople": "人數",
+      "findByBoat": "按船查看",
+      "findByDate": "特定日期",
       "package": {
         "items": "套餐選項",
         "check": "選擇",
@@ -240,6 +248,14 @@
     }
   },
   "event":{
+    "type": "類型",
+    "all" : "全部",
+    "once": "一次",
+    "long": "長期",
+    "free": "免費",
+    "status": "活動狀態",
+    "ongoing_item" : "正在進行",
+    "over": "已經結束",
     "attend": "參加",
     "organiser": "發起人",
     "geospatial": "活動地點",
