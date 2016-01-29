@@ -1,0 +1,124 @@
+{% extends './layout.html' %}
+
+{% block content %}
+
+{% include './nav.html' with {index: true} %}
+  <section class="hyf-banner bg-responsive hyf-hide">
+    <div class="hyf-overlay-strong"></div>
+    <div class="hyf-banner-slogan">
+      <div class="hyf-banner-slogan-table">
+        <div class="hyf-banner-slogan-content">
+          <h1 class="hyf-banner-show-element">{{ __('site.slogan') }}</h1>
+          <h2 class="hyf-banner-show-element">在海龟租船开启您的出海休闲新方式</h2>
+          <div class="hyf-banner-controller">
+            <a id="btn-learn-more" href="javascript:void(0)">了解更多<br><i class="fa fa-angle-down fa-4x"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="hyf-row">
+    <a href="/event/list">
+      <div class="hyf-grid hyf-grid-event">
+        <img class="img-responsive" src="{{ preset.imgHost }}/event2.jpg" alt="event">
+        <div class="hyf-overlay-light"></div>
+        <h1 class="hyf-grid-title hyf-grid-left hyf-grid-top">发现活动</h1>
+      </div>
+    </a>
+    <a href="/boat">
+      <div class="hyf-grid hyf-grid-boat">
+        <img class="img-responsive" src="{{ preset.imgHost }}/boat2.jpg" alt="finding boat">
+        <div class="hyf-overlay-light"></div>
+        <h1 class="hyf-grid-title hyf-grid-right hyf-grid-top">我要租船</h1>
+      </div>
+    </a>
+    <div class="hyf-grid hyf-gird-dive">
+      <img class="img-responsive" src="{{ preset.imgHost }}/dive.jpg" alt="dive">
+      <div class="hyf-overlay-light"></div>
+      <div class="hyf-banner-slogan">
+        <div class="hyf-banner-slogan-table">
+          <div class="hyf-banner-slogan-content">
+            <div class="hyf-ocean-function">潜水</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hyf-grid hyf-gird-fishing">
+      <img class="img-responsive" src="{{ preset.imgHost }}/fishing.jpg" alt="fishing">
+      <div class="hyf-overlay-strong"></div>
+      <div class="hyf-banner-slogan">
+        <div class="hyf-banner-slogan-table">
+          <div class="hyf-banner-slogan-content">
+            <div class="hyf-ocean-function">海钓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hyf-grid hyf-gird-surf">
+      <img class="img-responsive" src="{{ preset.imgHost }}/surf.jpg" alt="surf">
+      <div class="hyf-overlay"></div>
+      <div class="hyf-banner-slogan">
+        <div class="hyf-banner-slogan-table">
+          <div class="hyf-banner-slogan-content">
+            <div class="hyf-ocean-function">冲浪</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hyf-grid hyf-gird-cruise">
+      <img class="img-responsive" src="{{ preset.imgHost }}/cruise.jpg" alt="cruise">
+      <div class="hyf-overlay-light"></div>
+      <div class="hyf-banner-slogan">
+        <div class="hyf-banner-slogan-table">
+          <div class="hyf-banner-slogan-content">
+            <div class="hyf-ocean-function">游船河</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hyf-grid hyf-grid-share">
+      <img class="img-responsive" src="{{ preset.imgHost }}/share3.jpg" alt="custom share">
+      <div class="hyf-overlay-strong"></div>
+      <h2 class="hyf-grid-content hyf-grid-top hyf-grid-left">游记</h2>
+      <div class="hyf-banner-slogan">
+        <div class="hyf-banner-slogan-table">
+          <div class="hyf-banner-slogan-content">
+            <ul class="hyf-share-container list-layout">
+              <li class="text-left"><i class="fa fa-quote-left"></i></li>
+              <li>西贡游船河,海上8小时游艇趴,体验不一样的香港</li>
+              <li class="text-right"><i class="fa fa-quote-right"></i></li>
+              <li class="text-right"><small>海龟船长 2015.8.2</small></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hyf-grid hyf-gird-news">
+      <img class="img-responsive" src="{{ preset.imgHost }}/news2.jpg" alt="news">
+      <div class="hyf-overlay"></div>
+      <h2 class="hyf-grid-content hyf-grid-top hyf-grid-left">新闻</h2>
+      <div class="hyf-grid-content hyf-grid-bottom hyf-grid-left">
+        <h2 class="hyf-gird-news-title">海龟租船祝大家猴年快乐,如意吉祥</h2>
+        <h3 class="hyf-gird-news-date">2016.2.7</h3>
+      </div>
+    </div>
+  </section>
+
+{% include './footer.html' %}
+
+{% endblock %}
+
+{% block foot %}
+<script src="http://cdn.bootcss.com/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script>
+  (function ($, window){
+    setTimeout(function(){
+      $('.hyf-banner').removeClass('hyf-hide');
+    }, 0);
+
+    $("#btn-learn-more").click(function(){
+      $("html, body").stop().animate({scrollTop: $(window).height() + "px"}, 800, "easeInOutCirc");
+    });
+  })(jQuery, window);
+</script>
+{% endblock %}

@@ -67,10 +67,11 @@
       {% endfor %}
     </div>
     {% endif %}
-  </div>
-</div>
-<div class="columns-sm columns-gray">
-  <div class="container">
+  <!--</div>-->
+  <hr class="hr-divider">
+  <!--</div>-->
+<!--<div class="columns-sm columns-gray">-->
+  <!--<div class="container">-->
     <h3 id="products">{{ __('boat.detail.products') }}</h3>
     <div class="row">
       {% for product in boat.products %}
@@ -94,7 +95,7 @@
   </div>
 </div>
 {% if boat.geospatial.length > 0 %}
-<div class="columns-sm">
+<div class="columns-sm columns-gray">
   <div class="container">
     <h3>{{ __('boat.detail.anchorage') }}</h3>
     <div id="boat-geospatial" class="hyf-map-container"></div>
