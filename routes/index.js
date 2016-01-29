@@ -6,7 +6,7 @@ var index = require('../controllers/index');
 //router.get('/', index.renderIndex);
 
 router.get('/', function(req, res, next){
-  return res.render('layout-base');
+  return res.render('index-new');
 });
 
 router.get('/about.html', function(req, res, next){

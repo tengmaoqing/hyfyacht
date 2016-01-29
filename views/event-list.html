@@ -5,13 +5,14 @@
 {% block content %}
 
 {% include './nav.html' with {view_active:'event'} %}
-
-<div class="container columns-sm">
+<div class="columns-sm container">
   <ol class="breadcrumb">
     <li><a href="/">{{ __('nav.home') }}</a></li>
     <li class="active">{{ __('nav.event') }}</li>
   </ol>
-  <div class="event-list">
+</div>
+<div class="columns columns-gray">
+  <div class="event-list container">
     {% for event in events %}
     <div class="thumbnail">
       <div class="row">
@@ -46,8 +47,8 @@
     </div>
     {% endfor %}
   </div>
+  {{ pagerView.create(pager) }}
 </div>
-{{ pagerView.create(pager) }}
 
 {% include './footer.html' %}
 

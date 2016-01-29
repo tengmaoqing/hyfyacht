@@ -1,62 +1,81 @@
 {% import './macros/menu.html' as menu %}
-
-<footer class="columns">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-10 col-md-offset-1">
-        <div class="row">
-          <div class="col-md-4 col-sm-4 col-xs-12">
-            <section>
-              <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {% if preset.locale == 'en' %}English
-                  {% elseif preset.locale == 'zh-hk' %}中文(繁體)
-                  {% else %}中文(简体)
-                  {% endif %} <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu disabled">
-                  {{ menu.localeItem('English', preset.getUrlWithQuery('lang','en'), preset.locale == 'en') }}
-                  {{ menu.localeItem('中文(简体)', preset.getUrlWithQuery('lang','zh-cn'), preset.locale == 'zh-cn') }}
-                  {{ menu.localeItem('中文(繁體)', preset.getUrlWithQuery('lang','zh-hk'), preset.locale == 'zh-hk') }}
-                </ul>
-              </div>
-            </section>
-            {% if false %}
-            <section>
-              <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {% if preset.currency == 'hkd' %}＄ HKD
-                  {% else %}￥ CNY
-                  {% endif %}<span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu disabled">
-                  {{ menu.localeItem('￥ CNY', preset.getUrlWithQuery('curr','cny'), preset.currency == 'cny') }}
-                  {{ menu.localeItem('＄ HKD', preset.getUrlWithQuery('curr','hkd'), preset.currency == 'hkd') }}
-                </ul>
-              </div>
-            </section>
-            {% endif %}
-            <section>
-              <p>{{ __('site.hotline') }}：400-008-3731</p>
-            </section>
-          </div>
-          <div class="col-md-4 col-sm-4 col-xs-12">
-            <h3>{{ __('site.info.company') }}</h3>
-            <ul class="list-layout">
-              <li><a href="/about.html">{{ __('site.info.about') }}</a></li>
-              <li><a href="/contact.html">{{ __('site.info.contact') }}</a></li>
-              <li><a href="/terms.html">{{ __('site.info.terms') }}</a></li>
-              <li><a href="/privacy.html">{{ __('site.info.privacy') }}</a></li>
-              <li><a href="/disclaimer.html">{{ __('site.info.disclaimer') }}</a></li>
-              <li><a href="/copyright.html">{{ __('site.info.copyright') }}</a></li>
-            </ul>
-          </div>
-        </div>
-      </div >
+<section class="hyf-info">
+  <hr class="hyf-show-sm hyf-hr-sm">
+  <div class="hyf-info-cell hyf-hidden-sm">
+    <h3>网站导航</h3>
+    <ul class="list-layout">
+      <li><a href="/">{{ __('nav.home') }}</a></li>
+      <li><a href="/boat">{{ __('nav.boat') }}</a></li>
+      <li><a href="/event/list">{{ __('nav.event') }}</a></li>
+      <li><a href="/owner">{{ __('nav.boatowner') }}</a></li>
+    </ul>
+  </div>
+  <div class="hyf-info-cell">
+    <h3>{{ __('site.info.company') }}</h3>
+    <ul class="list-layout">
+      <li class="hyf-link-button-sm"><a href="/about.html">{{ __('site.info.about') }}<i class="hyf-show-sm hyf-link-button-icon fa fa-angle-right fa-2x"></i></a></li>
+      <li class="hyf-link-button-sm"><a href="/contact.html">{{ __('site.info.contact') }}<i class="hyf-show-sm hyf-link-button-icon fa fa-angle-right fa-2x"></i></a></li>
+      <li class="hyf-link-button-sm"><a href="/terms.html">{{ __('site.info.terms') }}<i class="hyf-show-sm hyf-link-button-icon fa fa-angle-right fa-2x"></i></a></li>
+      <li class="hyf-link-button-sm"><a href="/privacy.html">{{ __('site.info.privacy') }}<i class="hyf-show-sm hyf-link-button-icon fa fa-angle-right fa-2x"></i></a></li>
+      <li class="hyf-link-button-sm"><a href="/disclaimer.html">{{ __('site.info.disclaimer') }}<i class="hyf-show-sm hyf-link-button-icon fa fa-angle-right fa-2x"></i></a></li>
+      <li class="hyf-link-button-sm"><a href="/copyright.html">{{ __('site.info.copyright') }}<i class="hyf-show-sm hyf-link-button-icon fa fa-angle-right fa-2x"></i></a></li>
+    </ul>
+  </div>
+  <div class="hyf-info-cell">
+    <h3>语言</h3>
+    <div class="hyf-dropdown-sm">
+      <div class="hyf-dropdown-toggle">
+        {% if preset.locale == 'en' %}English
+        {% elseif preset.locale == 'zh-hk' %}中文(繁體)
+        {% else %}中文(简体)
+        {% endif %}
+        <i class="hyf-dropdown-icon fa fa-chevron-circle-down"></i>
+      </div>
+      <ul class="list-layout hyf-dropdown-menu">
+        {{ menu.localeItem('English', preset.getUrlWithQuery('lang','en'), preset.locale == 'en') }}
+        {{ menu.localeItem('中文(简体)', preset.getUrlWithQuery('lang','zh-cn'), preset.locale == 'zh-cn') }}
+        {{ menu.localeItem('中文(繁體)', preset.getUrlWithQuery('lang','zh-hk'), preset.locale == 'zh-hk') }}
+      </ul>
     </div>
-    <hr class="hr-divider hidden-xs">
-    <div class="text-center">
-      <p class="text-muted">&copy; {{ __('site.copyright') }} <br><a href="http://www.miitbeian.gov.cn">粤ICP备15044583号-1</a></p>
+  </div>
+  <div class="hyf-info-cell">
+    <h3>币种</h3>
+    <div class="hyf-dropdown-sm">
+      <div class="hyf-dropdown-toggle">
+        {% if preset.currency == 'hkd' %}＄ HKD (港币)
+        {% else %}￥ CNY (人民币)
+        {% endif %}
+        <i class="hyf-dropdown-icon fa fa-chevron-circle-down"></i>
+      </div>
+      <ul class="list-layout hyf-dropdown-menu">
+        {{ menu.localeItem('￥ CNY (人民币)', preset.getUrlWithQuery('curr','cny'), preset.currency == 'cny') }}
+        {{ menu.localeItem('＄ HKD (港币)', preset.getUrlWithQuery('curr','hkd'), preset.currency == 'hkd') }}
+      </ul>
     </div>
+  </div>
+  <div class="hyf-info-cell hyf-hidden-sm">
+    <h3>微信公众号</h3>
+    <ul class="list-layout">
+      <li><img class="hover-zoom-qrcode" src="{{ preset.imgHost }}/qrcode_wechat.png" width="70" alt="qrcode"></li>
+    </ul>
+  </div>
+  <div class="hyf-info-cell">
+    <h3>社交网站</h3>
+    <ul class="list-layout">
+      <li><a href="/" class="btn-sns"><i class="fa fa-weibo fa-2x"></i></a><a href="/"><i class="fa fa-facebook-square fa-2x"></i></a></li>
+    </ul>
+  </div>
+  <div class="hyf-info-cell">
+    <h3>{{ __('site.hotline') }}</h3>
+    <ul class="list-layout">
+      <li><i class="fa fa-phone fa-fw"></i> 400 008 3731</li>
+      <li><i class="fa fa-wechat fa-fw"></i> 158 2045 0807</li>
+    </ul>
+  </div>
+</section>
+<footer class="hyf-footer">
+  <div class="hyf-field-container">
+    <div class="footer-brand"><img src="{{ preset.imgHost }}/logo-white{% if preset.locale == 'en' || preset.locale =='zh-hk' %}-en{% endif %}.png" alt="logo" height="30"></div>
+    <p>&copy; {{ __('site.copyright') }} <a href="http://www.miitbeian.gov.cn">粤ICP备15044583号-1</a></p>
   </div>
 </footer>

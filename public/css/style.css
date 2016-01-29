@@ -1,5 +1,5 @@
 body, h1, h2, h3, h4, h5, h6, p {
-  font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Microsoft YaHei", "Roboto Light", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 dd {
@@ -168,6 +168,7 @@ button {
 .navbar-custom {
   background: #fff;
   background: rgba(255, 255, 255, .8);
+  background-color: rgba(21, 164, 231, .9);
   border: none;
   border-bottom: 1px solid #eee;
   border-radius: 0;
@@ -182,17 +183,20 @@ button {
 }
 
 .navbar-custom .navbar-nav > li > a, .navbar-custom .dropdown-menu>li>a {
-  color: #258ec7;
+  /*color: #258ec7;*/
+  color: #fff;
 }
 .navbar-custom .navbar-nav > li > a:hover,
 .navbar-custom .navbar-nav > li > a:focus {
-  color: #333;
+  /*color: #333;*/
   background-color: transparent;
+  color: #282828;
 }
 .navbar-custom .navbar-nav > .active > a,
 .navbar-custom .navbar-nav > .active > a:hover,
 .navbar-custom .navbar-nav > .active > a:focus {
-  color: #07345b;
+  /*color: #07345b;*/
+  color: #282828;
 }
 .navbar-custom .navbar-nav > .disabled > a,
 .navbar-custom .navbar-nav > .disabled > a:hover,
@@ -520,25 +524,6 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
 
 .event-info {
   padding: 8px 23px;
-}
-
-footer.columns {
-  color:#fff;
-  background: #565a5c;
-  padding-bottom: 60px;
-}
-
-footer.columns section {
-  margin-bottom: 10px;
-}
-
-footer.columns h3 {
-  font-size:16px;
-  margin-top: 0;
-}
-
-footer.columns p.text-muted, footer.columns p.text-muted a {
-  color:#ccc;
 }
 
 .width80 {
