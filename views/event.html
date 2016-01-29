@@ -147,6 +147,30 @@
       </ul>
     </div>
   </div>
+  <div class="container">
+    <h3>相关活动</h3>
+    <div class="row" data-ng-controller="moreEvents">
+      <div class="boat-product col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-repeat="event in events">
+          <div class="thumbnail">
+            {% raw %}
+            <a data-ng-href="/event/{{ event._id }}">
+              <div class="boat-thumbnail" data-ng-style="{'background-image': 'url({{ event.thumbnail }})'}"></div>
+              
+              <div class="caption text-muted">
+                <h4 data-ng-bind="event.title"></h4>
+                <div class="row">
+                  <h3 class="col-xs-6 text-danger" data-ng-bind="((event.baseCharge)/100).toFixed(2)|currency:getCurrency(event.currency)"></h3>
+                  <p class="col-xs-6 text-right boat-product-learn">
+                  {% endraw %}
+                  {{ __('boat.detail.learn') }} 
+                  <span class="glyphicon glyphicon-menu-right"></span></p>
+                </div>
+              </div>
+            </a>
+          </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% include './footer.html' %}
@@ -164,7 +188,8 @@
     baseCharge: {{ event.baseCharge|safe }},
     maxPersons: {{ event.maxPersons|safe }},
     attendedDate: "{{ event.attendedDate|safe }}",
-    geospatial: {{ event.geospatial|json|safe }}
+    geospatial: {{ event.geospatial|json|safe }},
+    dateStart: {{ event.dateStart.valueOf() }}
   };
 </script>
 {% if event.geospatial.length > 0 %}
@@ -265,4 +290,5 @@
   });
 </script>
 {% endif %}
+
 {% endblock %}

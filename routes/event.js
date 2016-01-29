@@ -11,6 +11,7 @@ router.get('/submit', eventOrder.submit);
 router.post('/submit', eventOrder.submit);
 router.get('/list', event.getEvents);
 
+router.get('/moreEvents', event.getMoreEvents);
 router.get('/:id', event.getEvent);
 
 module.exports = router;

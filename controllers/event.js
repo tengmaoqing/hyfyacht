@@ -32,6 +32,34 @@ exports.getEvent = function(req, res, next) {
   });
 };
 
+exports.getMoreEvents = function(req, res, next){
+
+  var date = new Date(parseInt(req.query.dateStart));
+  var days = date.getDate();
+  Event.paginate({
+    _id : {$ne: req.query.eventId},
+    dateStart : {
+      $gt: date.setDate(days-3),
+      $lt: date.setDate(days+3)
+    }
+  },{
+    page: 1,
+    limit: 2,
+    sort: {
+      createDate: -1
+    }
+  }, function(err, result) {
+    if(err){
+      console.log(err);
+      err.status = 400;
+      return next(err);
+    }
+
+    return res.json({events: result.docs});
+
+  });
+};
+
 exports.getEvents = function(req, res, next) {
   var page = req.query.page || 1;
 
