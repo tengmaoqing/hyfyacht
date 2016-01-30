@@ -7,19 +7,6 @@
   var currency = hgdata.currency;
 
   var app = angular.module("event", []);
-
-  app.controller("productController", function($scope){
-    $scope.baseCurrency = hgdata.baseCurrency;
-    $scope.prefix = clientCurrency == 'hkd' ? '$' : '￥';
-
-    $scope.generateCharge = function(charge){
-      return parseInt(charge * currency[clientCurrency] / currency[$scope.baseCurrency]);
-    };
-
-    $scope.displayAmount = function(amount){
-      return $scope.prefix + (amount / 100).toFixed(2);
-    };
-  });
   
   app.controller("eventController", function($scope, $http){
     $scope.baseCharge = hgdata.baseCharge;

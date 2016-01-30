@@ -573,6 +573,12 @@ footer ul.list-layout li a:hover {
   height: 0;
 }
 
+.hr-divider-bottom {
+  border-top: 1px solid #eee;
+  height: 0;
+  margin: 0;
+}
+
 dl.dl-horizontal dt {
   text-align: left;
 }

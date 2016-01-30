@@ -6,7 +6,11 @@
 
 {% include './nav-owner.html' with {view_active:'boat'} %}
 
-<div class="container">
+<div class="columns-sm container">
+	<ol class="breadcrumb">
+		<li><a href="/owner">{{ __('nav.boatowner') }}</a></li>
+		<li class="active">{{ __('owner.nav.boat') }}</li>
+	</ol>
   <div class="page-header">
     <h1>{{ __('owner.nav.boat') }}</h1>
   </div>

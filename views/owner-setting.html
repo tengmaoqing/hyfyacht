@@ -5,6 +5,10 @@
 {% include './nav-owner.html' with {view_active:'setting'} %}
 
 <div class="container columns-sm">
+	<ol class="breadcrumb">
+		<li><a href="/owner">{{ __('nav.boatowner') }}</a></li>
+		<li class="active">{{ __('owner.nav.ownerInformation') }}</li>
+	</ol>
 	<div class="page-header">
 	  <h1>{{ __('owner.nav.ownerInformation') }}</h1>
 	</div>
