@@ -68,6 +68,8 @@
     "extra": "Extra",
     "capacity": "Capacity",
     "packages": "Packages",
+    "relativeProduct" : "Relative Products",
+    "relativeEvent" : "Relative Events",
     "select":"Select",
     "hour": {
       "one": "%d hour",
