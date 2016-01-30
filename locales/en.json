@@ -124,6 +124,18 @@
       "boat": "Boats",
       "ownerBoats": "My Boats",
       "ownerInformation": "Owner Information"
+    },
+    "list" : {
+      "find %d booking":{
+        "one":"There is %d booking for you:",
+        "other":"There are %d booking for you:"
+      }
+    },
+    "boat" : {
+      "find %d boats":{
+        "one":"You have %d boat in here:",
+        "other":"You have %d boats in here:"
+      }
     }
   },
   "index": {
@@ -275,6 +287,12 @@
         "full": "This event is full.",
         "other": "Order information incorrect.",
         "multiorder": "You had attended this event."
+      }
+    },
+    "list": {
+      "find %d events":{
+        "one" : "Find %d event for you:",
+        "other" : "Find %d events for you:"
       }
     }
   },

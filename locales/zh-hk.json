@@ -124,6 +124,18 @@
       "boat": "船隻管理",
       "ownerInformation": "船東信息",
       "ownerBoats": "我的船隻"
+    },
+    "list" : {
+      "find %d booking":{
+        "one":"您有 %d 個訂單:",
+        "other":"您有 %d 個訂單:"
+      }
+    },
+    "boat" : {
+      "find %d boats":{
+        "one":"您有 %d 艘船:",
+        "other":"您有 %d 艘船:"
+      }
     }
   },
   "index": {
@@ -276,6 +288,12 @@
         "full": "此活動已經滿員",
         "other": "訂單信息錯誤",
         "multiorder": "您已經參加了本活動"
+      }
+    },
+    "list": {
+      "find %d events":{
+        "one" : "为您找到 %d 個活動:",
+        "other" : "为您找到 %d 個活動:"
       }
     }
   },
