@@ -742,12 +742,3 @@ p.pwd_unPass{
   padding: 0;
 }
 
-.radio_button input{
-  visibility: hidden;
-  top:-99999px;
-  z-index: -1;
-}
-
-.radio_button{
-  padding: 0 1.03rem;
-}

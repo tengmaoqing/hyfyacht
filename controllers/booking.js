@@ -482,7 +482,8 @@ exports.getBookingsByOwnerId = function(req, res, next){
     status: 'db.booking.pay_success'
   };
 
-  query.selectBoat && (obj.boatId = query.selectBoat);
+  (query.selectBoat && query.selectBoat != 'all') && (obj.boatId = query.selectBoat);
+
   if( query.selectDate ){
     var date = new Date(query.selectDate);
     var days = date.getDate();
@@ -516,6 +517,13 @@ exports.getBookingsByOwnerId = function(req, res, next){
       if(err){
         err.status = 400;
         return next(err);
+      }
+
+      for( var i in doc){
+        if (doc[i]._id == query.selectBoat){
+          query.boatName = doc[i].name;
+          break;
+        }
       }
       
       return res.render('owner-booking-list', {bookings: result.docs, pager: pager, itemCount: result.total, boats: doc, query:query});
