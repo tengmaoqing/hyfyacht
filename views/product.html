@@ -449,28 +449,27 @@
       </div>
     </form>
   </div>
-  <div class="columns-sm columns-gray">
-    <div class="container">
-      <h3>{{ __('common.relativeProduct') }}</h3>
-      <div class="row" data-ng-controller="moreController">
-        <div class="boat-product col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-repeat="product in boat.products">
-              {% raw %}
-            <div class="thumbnail">
-              <a data-ng-href="/product/{{ product._id }}/{{ product.name }}/{{ boat._id }}/{{ boat.name }}">
-                <div class="boat-thumbnail" data-ng-style="{'background-image': 'url({{ product.photo }})'}"></div>
-                <div class="caption text-muted">
-                  <h4 data-ng-bind="product.name"></h4>
-                  <p data-ng-bind=" product.summary "></p>
-                  <div class="row">
-                    <h3 class="col-xs-6 text-danger">{{ displayAmount(generateCharge(product.baseCharge)) }}</h3>
-                    <p class="col-xs-6 text-right boat-product-learn">
-                    {% endraw %}
-                    {{ __('boat.detail.learn') }}
-                    <span class="glyphicon glyphicon-menu-right"></span></p>
-                  </div>
-                </div>
-              </a>
+  <div class="container">
+    <h3>{{ __('common.relativeProduct') }}</h3>
+    <hr class="hr-divider">
+    <div class="row" data-ng-controller="moreController">
+      <div class="boat-product col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-repeat="product in boat.products">
+        {% raw %}
+        <div class="thumbnail">
+          <a data-ng-href="/product/{{ product._id }}/{{ product.name }}/{{ boat._id }}/{{ boat.name }}">
+            <div class="boat-thumbnail" data-ng-style="{'background-image': 'url({{ product.photo }})'}"></div>
+            <div class="caption text-muted">
+              <h4 data-ng-bind="product.name"></h4>
+              <p data-ng-bind=" product.summary "></p>
+              <div class="row">
+                <h3 class="col-xs-6 text-danger">{{ displayAmount(generateCharge(product.baseCharge)) }}</h3>
+                <p class="col-xs-6 text-right boat-product-learn">
+                  {% endraw %}
+                  {{ __('boat.detail.learn') }}
+                  <span class="glyphicon glyphicon-menu-right"></span></p>
+              </div>
             </div>
+          </a>
         </div>
       </div>
     </div>

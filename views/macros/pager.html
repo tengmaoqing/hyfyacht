@@ -1,7 +1,7 @@
 {% macro create(pager) %}
 
 {% if pager.count != 1 %}
-<nav class="container">
+<nav>
   <ul class="pagination">
     {% if pager.current == '1' %}
     <li class="disabled" >
