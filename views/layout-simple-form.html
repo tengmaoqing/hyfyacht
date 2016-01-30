@@ -1,0 +1,14 @@
+{% extends './layout.html' %}
+
+{% block content %}
+<div class="hyf-navbar">
+  <div class="hyf-field-container absolute">
+    <div class="hyf-navbar-brand"><a href="/"><img src="{{ preset.imgHost }}/logo-white{% if preset.locale == 'en' || preset.locale =='zh-hk' %}-en{% endif %}.png" alt="logo" height="30"></a></div>
+  </div>
+</div>
+<section class="hyf-banner bg-responsive hyf-simple-form">
+  <div class="hyf-overlay-extra-strong"></div>
+  {% block form %}
+  {% endblock %}
+</section>
+{% endblock %}

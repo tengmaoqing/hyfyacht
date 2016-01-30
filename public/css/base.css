@@ -1,65 +1,3 @@
-body, h1, h2, h3, h4, h5, h6, p {
-  font-family: "Microsoft YaHei", "Roboto Light", Roboto, "Helvetica Neue", "Droid Sans", Helvetica, Arial, sans-serif;
-  font-weight: normal;
-  /*color: #282828;*/
-}
-
-dd {
-  margin: 10px 0;
-}
-
-* {
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-}
-
-button, a {
-  -webkit-appearance: none;
-  outline:none;
-}
-
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-a, a:hover, a:active {
-  text-decoration: none;
-  /*color: #282828;*/
-}
-
-button {
-  outline: none;
-  font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  /*font-weight: lighter;*/
-  cursor: pointer;
-  background: transparent;
-  border: none;
-}
-
-html, body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  position: relative;
-}
-
-.text-left {
-  text-align: left; !important;
-}
-
-.text-center {
-  text-align: center; !important;
-}
-
-.text-right {
-  text-align: right; !important;
-}
-
-.text-indent {
-  text-indent: 1em; !important;
-}
-
 .img-responsive {
   max-width: 100%;
   height: auto;
@@ -94,7 +32,7 @@ html, body {
 .hyf-banner {
   position: relative;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   background-image: url("/img/banner01.jpg");
 }
 
@@ -111,11 +49,6 @@ html, body {
   font-weight: 200;
 }
 
-/*.hyf-grid h1, .hyf-grid h2, .hyf-grid h3, .hyf-grid h4, .hyf-grid h5, .hyf-grid h6, .hyf-grid p {*/
-  /*padding: 0;*/
-  /*margin: 0;*/
-/*}*/
-
 .hyf-grid {
   overflow: hidden;
   display: block;
@@ -128,18 +61,6 @@ html, body {
   color: #fff;
   position: absolute;
 }
-
-/*.hyf-grid-event .hyf-overlay-light, .hyf-grid-boat .hyf-overlay-light {*/
-  /*background-color: rgba(255, 255, 255, .2);*/
-/*}*/
-
-/*.hyf-grid-event h1.hyf-grid-title, .hyf-grid-boat h1.hyf-grid-title{*/
-  /*color: #000;*/
-/*}*/
-
-/*.hyf-gird-dive .hyf-overlay-light, .hyf-gird-surf .hyf-overlay {*/
-  /*background-color: rgba(21, 164, 231, .8);*/
-/*}*/
 
 @media (min-width: 769px) {
   .hyf-grid-event, .hyf-grid-boat {
@@ -326,6 +247,15 @@ html, body {
   }
 }
 
+.hyf-overlay-extra-strong {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, .6);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .hyf-overlay-strong {
   width: 100%;
   height: 100%;
@@ -376,7 +306,31 @@ html, body {
   color: #fff;
 }
 
-.hyf-banner-slogan-content h1{
+.hyf-simple-form {
+  overflow: hidden;
+}
+
+.hyf-simple-form, .hyf-simple-form a {
+  color: #fff;
+}
+
+.hyf-simple-form .alert a {
+  color: #15a4e7;
+}
+
+.hyf-simple-form > .container {
+  padding: 60px 0;
+}
+
+.hyf-simple-form > .container .row {
+  /*margin: 0;*/
+}
+
+.hyf-simple-form label {
+  font-weight: normal;
+}
+
+.hyf-banner-slogan-content h1, .hyf-simple-form h1{
   font-size: 60px;
   margin: 0;
   letter-spacing: 0.2em;
@@ -395,8 +349,12 @@ html, body {
   bottom: 0;
 }
 
+.hyf-banner .control-label {
+  color: #fff;
+}
+
 @media (max-width: 768px) {
-  .hyf-banner-slogan-content h1{
+  .hyf-banner-slogan-content h1, .hyf-simple-form h1{
     font-size: 48px;
     letter-spacing: 0.2em;
   }
@@ -410,7 +368,7 @@ html, body {
 }
 
 @media (max-width: 640px) {
-  .hyf-banner-slogan-content h1{
+  .hyf-banner-slogan-content h1, .hyf-simple-form h1{
     font-size: 36px;
     letter-spacing: 0.2em;
   }
@@ -424,7 +382,7 @@ html, body {
 }
 
 @media (max-width: 360px) {
-  .hyf-banner-slogan-content h1{
+  .hyf-banner-slogan-content h1, .hyf-simple-form h1{
     font-size: 30px;
     letter-spacing: 0.1em;
   }
@@ -462,6 +420,7 @@ html, body {
 .hyf-navbar-brand {
   height: 30px;
   padding: 10px 0;
+  display: inline-block;
 }
 
 .hyf-navbar-right {
@@ -474,10 +433,6 @@ html, body {
   margin: 0;
   padding: 10px 0;
   float: right;
-}
-
-.hyf-navbar-brand {
-  display: inline-block;
 }
 
 .hyf-navbar-nav > li > a {
@@ -639,14 +594,6 @@ html, body {
     padding: 12px 0;
     line-height: 1;
   }
-
-  /*.columns .cell {*/
-    /*padding: 0;*/
-  /*}*/
-
-  /*.thumbnail {*/
-    /*border: 0;*/
-  /*}*/
 }
 
 @media (max-height: 666px) and (orientation: portrait), (max-width: 767px) and (orientation: landscape) {
@@ -687,7 +634,7 @@ html, body {
   color: #979797;
   padding: 20px 30px;
   font-size: 0;
-  background-color: #fdfdfd;
+  background-color: #f9f9f9;
 }
 
 .hyf-info-cell {

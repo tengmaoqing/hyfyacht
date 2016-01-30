@@ -1,5 +1,4 @@
 {% macro createForm(booking) %}
-  {% if !preset.ua.mobile %}
   <form name="alipay_direct" action="/pay/alipay" method="post" target="_blank">
     <input type="hidden" name="_csrf" value="{{ _csrf }}">
     <input type="hidden" name="WIDout_trade_no" value="{{ booking.bookingId }}">
@@ -10,18 +9,14 @@
     <input type="hidden" name="WIDbody" value="{{ booking.boatName }}-{{ booking.productName }}-{{ booking.packageName }}">
     <input type="hidden" name="WIDshow_url" value="http://hgboating.com/product/{{ booking.productId.valueOf() }}/{{ booking.productName }}/{{ booking.boatId.valueOf() }}/{{ booking.boatName }}">
   </form>
-  {% endif %}
   <form id="payment-selection">
-    {% if !preset.ua.mobile %}
     <label class="btn btn-default">
       <input name="payway" type="radio" value="alipay_direct" autocomplete="off"> {{ __('common.alipay') }}
     </label>
-    {% endif %}
   </form>
 {% endmacro %}
 
 {% macro createEventForm(eventOrder) %}
-{% if !preset.ua.mobile %}
 <form name="alipay_direct" action="/pay/alipay" method="post" target="_blank">
   <input type="hidden" name="_csrf" value="{{ _csrf }}">
   <input type="hidden" name="WIDout_trade_no" value="{{ eventOrder.orderId }}">
@@ -32,12 +27,9 @@
   <input type="hidden" name="WIDbody" value="{{ eventOrder.eventName }}">
   <input type="hidden" name="WIDshow_url" value="http://hgboating.com/event/{{ eventOrder.eventId.valueOf() }}">
 </form>
-{% endif %}
 <form id="payment-selection">
-  {% if !preset.ua.mobile %}
   <label class="btn btn-default">
     <input name="payway" type="radio" value="alipay_direct" autocomplete="off"> {{ __('common.alipay') }}
   </label>
-  {% endif %}
 </form>
 {% endmacro %}
