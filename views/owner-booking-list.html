@@ -22,14 +22,16 @@
     <div class="col-md-2">
       <label>{{ __('product.booking.findByBoat') }}</label>
     </div>
-    <div class="btn-group col-lg-4">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ query.boatName || __('event.all') }} <span class="caret"></span></button>
+    <div class="col-lg-4">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ query.boatName || __('event.all') }} <span class="caret"></span></button>
         <ul class="dropdown-menu disabled">
           <li><a href="/owner/booking?selectBoat=all&selectDate={{ query.selectDate }}" data-value="{{ __('event.all') }}">{{ __('event.all') }}</a></li>
           {% for boat in boats %}
           <li><a href="/owner/booking?selectBoat={{ boat._id.valueOf() }}&selectDate={{ query.selectDate }}" data-value="{{boat.name}}">{{boat.name}}</a></li>
           {% endfor %}
         </ul>
+      </div>
     </div>
   </div>
   {% endif %}
@@ -123,7 +125,11 @@
       allowInputToggle: true,
       showTodayButton: true,
       showClear: true,
-      locale: locale || "en"
+      locale: locale || "en",
+      widgetPositioning: {
+        horizontal: 'auto',
+        vertical: 'bottom'
+      }
     }).on("dp.hide", function(){
       window.location.href = "/owner/booking?selectBoat={{ query.selectBoat }}&selectDate="+$("#timepick").val();
     });
