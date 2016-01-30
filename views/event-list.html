@@ -13,68 +13,28 @@
   <div class="page-header">
     <h3>{{ __('common.filter') }}</h3>
   </div>
-  <form role="form" action="/event/list" method="GET">
-    <div class="row search-field">
-      <div class="col-md-2">
-        <label>{{ __('event.type') }}</label>
-      </div>
-      <div class="col-md-6">
-        <div class="btn-group btn-group-justified">
-          <div class="btn-group">
-            <button type="submit" class="btn btn-default {% if query.type == '' %}btn-primary{% endif %}">
-              <label class="radio-inline radio_button">
-                <input type="radio" name="type" value="" {% if query.type == '' %}checked{% endif %}> {{ __('event.all') }}
-              </label>
-            </button>
-          </div>
-          <div class="btn-group">
-            <button type="submit" class="btn btn-default {% if query.type == 'once' %}btn-primary{% endif %}">
-              <label class="radio-inline radio_button">
-                <input type="radio" name="type" value="once" {% if query.type == 'once' %}checked{% endif %}> {{ __('event.once') }}
-              </label>
-            </button>
-          </div>
-          <div class="btn-group">
-            <button type="submit" class="btn btn-default {% if query.type == 'long' %}btn-primary{% endif %}">
-              <label class="radio-inline radio_button">
-                <input type="radio" name="type" value="long" {% if query.type == 'long' %}checked{% endif %}> {{ __('event.long') }}
-              </label>
-            </button>
-          </div>
-          <div class="btn-group">
-            <button type="submit" class="btn btn-default {% if query.type == 'free' %}btn-primary{% endif %}">
-              <label class="radio-inline radio_button">
-                <input type="radio" name="type" value="free" {% if query.type == 'free' %}checked{% endif %}> {{ __('event.free') }}
-              </label>
-            </button>
-          </div>
-        </div>
+  <div class="row search-field">
+    <div class="col-md-2">
+      <label>{{ __('event.type') }}</label>
+    </div>
+    <div class="col-md-3">
+      <div class="btn-group btn-group-justified">
+        <a href="/event/list?attendedDate={{ query.attendedDate }}" class="btn {% if query.type == '' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.all') }}</a>
+        <a href="/event/list?type=free&attendedDate={{ query.attendedDate }}" class="btn {% if query.type == 'free' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.free') }}</a>
       </div>
     </div>
-    <div class="row search-field">
-      <div class="col-md-2">
-        <label>{{ __('event.status') }}</label>
-      </div>
-      <div class="col-md-3">
-        <div class="btn-group btn-group-justified">
-          <div class="btn-group">
-            <button type="submit" class="btn btn-default {% if query.attendedDate == '' %}btn-primary{% endif %}">
-              <label class="radio-inline radio_button">
-                <input type="radio" name="attendedDate" value="" {% if query.attendedDate == '' %}checked{% endif %}> {{ __('event.all') }}
-              </label>
-            </button>
-          </div>
-          <div class="btn-group">
-            <button type="submit" class="btn btn-default {% if query.attendedDate == 'true' %}btn-primary{% endif %}">
-              <label class="radio-inline radio_button">
-                <input type="radio" name="attendedDate" value="true" {% if query.attendedDate == 'true' %}checked{% endif %}> {{ __('event.ongoing_item') }}
-              </label>
-            </button>
-          </div>
-        </div>
+  </div>
+  <div class="row search-field">
+    <div class="col-md-2">
+      <label>{{ __('event.status') }}</label>
+    </div>
+    <div class="col-md-3">
+      <div class="btn-group btn-group-justified">
+        <a href="/event/list?type={{ query.type }}" class="btn {% if query.attendedDate == '' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.all') }}</a>
+        <a href="/event/list?type={{ query.type }}&attendedDate=true" class="btn {% if query.attendedDate == 'true' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.ongoing_item') }}</a>
       </div>
     </div>
-  </form>
+  </div>
   <hr class="hr-divider">
 </div>
 <div class="columns columns-gray">
