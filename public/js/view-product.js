@@ -567,11 +567,5 @@
     $scope.generateCharge = $scope.$parent.generateCharge;
     $scope.displayAmount = $scope.$parent.displayAmount;
 
-    //$scope.getCurrency = function(currency){
-    //  if(currency == "cny"){
-    //    return "￥"
-    //  }
-    //  return "$"
-    //}
   });
 })(jQuery, window);
