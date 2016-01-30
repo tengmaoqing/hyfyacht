@@ -17,10 +17,10 @@
     <div class="col-md-2">
       <label>{{ __('event.type') }}</label>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
       <div class="btn-group btn-group-justified">
-        <a href="/event/list?attendedDate={{ query.attendedDate }}" class="btn {% if query.type == '' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.all') }}</a>
-        <a href="/event/list?type=free&attendedDate={{ query.attendedDate }}" class="btn {% if query.type == 'free' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.free') }}</a>
+        <a href="/event/list?type=all&status={{ query.status }}" class="btn {% if query.type == 'all' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.all') }}</a>
+        <a href="/event/list?type=free&status={{ query.status }}" class="btn {% if query.type == 'free' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.free') }}</a>
       </div>
     </div>
   </div>
@@ -28,10 +28,10 @@
     <div class="col-md-2">
       <label>{{ __('event.status') }}</label>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
       <div class="btn-group btn-group-justified">
-        <a href="/event/list?type={{ query.type }}" class="btn {% if query.attendedDate == '' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.all') }}</a>
-        <a href="/event/list?type={{ query.type }}&attendedDate=true" class="btn {% if query.attendedDate == 'true' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.ongoing_item') }}</a>
+        <a href="/event/list?type={{ query.type }}&status=all" class="btn {% if query.status == 'all' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.all') }}</a>
+        <a href="/event/list?type={{ query.type }}&status=ongoing" class="btn {% if query.status == 'ongoing' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.ongoing_item') }}</a>
       </div>
     </div>
   </div>

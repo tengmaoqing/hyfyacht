@@ -64,29 +64,12 @@ exports.getEvents = function(req, res, next) {
   var page = req.query.page || 1;
 
   var query = req.query;
-  var obj = {};
-  
-  if (query.type && !query.attendedDate) {
-    obj = {
-      type : query.type,
-      inStock: true
-    }
-  } else if(!query.type && query.attendedDate) {
-    obj = {
-      attendedDate : {$gt : new Date()},
-      inStock: true
-    }
-  }else if(query.type && query.attendedDate) {
-    obj = {
-      type : query.type,
-      attendedDate : {$gt : new Date()},
-      inStock: true
-    }
-  }else{
-    obj = {
-      inStock: true
-    }
-  }
+  var obj = {
+    inStock: true
+  };
+
+  (query.type && query.type != 'all') && (obj.type = query.type);
+  (query.status && query.status != 'all') && (obj.attendedDate = { $gt : new Date() });
 
   Event.paginate(obj, {
     page: page,

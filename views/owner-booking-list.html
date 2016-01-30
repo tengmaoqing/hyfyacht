@@ -9,40 +9,40 @@
 {% block content %}
 
 {% include './nav-owner.html' with {view_active:'booking'} %}
-<div class="container">
-  <div class="search-head">
-    <form role="form" action="/owner/booking" method="GET" id="searchForm">
-      {% if boats.length > 1 %}
-      <div class="form-group select_booking clearfix">
-        <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label noPadding">{{ __('product.booking.findByBoat') }}</label>
-        <div class="noPadding btn-group">
-              <button type="submit" class="btn btn-default noPadding {% if query.selectBoat == '' %}btn-primary{% endif %}">
-                <label class="radio-inline radio_button">
-                  <input type="radio" name="selectBoat" value="" {% if query.selectBoat == '' %}checked{% endif %} >{{ __('event.all') }}
-                </label>
-              </button>
-              {% for boat in boats %}
-              <button type="submit" class="btn btn-default noPadding {% if query.selectBoat == boat._id.valueOf() %}btn-primary{% endif %}">
-                <label class="radio-inline radio_button">
-                <input type="radio" name="selectBoat" value="{{ boat._id.valueOf() }}" {% if query.selectBoat == boat._id.valueOf() %}checked{% endif %} > {{boat.name}}
-              </label></button>
-              {% endfor %}  
-        </div> 
-      </div>
-      {% endif %}
-      <div class="form-group clearfix">
-        <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label noPadding">{{ __('product.booking.findByDate') }}</label>
-        <div class="form-group col-lg-4 noPadding">
-          <div class="input-group date" id="datetimepicker">
-              <input class="form-control" type="text" id="timepick" name="selectDate" {% if query.selectDate %} value="{{ query.selectDate }}" {% endif %}>
-              <span class="input-group-addon">
-                <span class="glyphicon glyphicon-calendar"></span>
-              </span>
-          </div>
-        </div>
-      </div>
-    </form>
+<div class="columns-sm container">
+  <div class="page-header">
+    <h3>{{ __('common.filter') }}</h3>
   </div>
+  {% if boats.length > 1 %}
+  <div class="row search-field">
+    <div class="col-md-2">
+      <label>{{ __('product.booking.findByBoat') }}</label>
+    </div>
+    <div class="btn-group col-lg-4">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ query.boatName || __('event.all') }} <span class="caret"></span></button>
+        <ul class="dropdown-menu disabled">
+          <li><a href="/owner/booking?selectBoat=all&selectDate={{ query.selectDate }}" data-value="{{ __('event.all') }}">{{ __('event.all') }}</a></li>
+          {% for boat in boats %}
+          <li><a href="/owner/booking?selectBoat={{ boat._id.valueOf() }}&selectDate={{ query.selectDate }}" data-value="{{boat.name}}">{{boat.name}}</a></li>
+          {% endfor %}
+        </ul>
+    </div>
+  </div>
+  {% endif %}
+  <div class="row search-field">
+    <div class="col-md-2">
+      <label>{{ __('product.booking.findByDate') }}</label>
+    </div>
+    <div class="col-md-4">
+      <div class="input-group date" id="datetimepicker">
+        <input class="form-control" type="text" id="timepick" {% if query.selectDate %} value="{{ query.selectDate }}" {% endif %}>
+        <span class="input-group-addon">
+          <span class="glyphicon glyphicon-calendar"></span>
+        </span>
+      </div>
+    </div>  
+  </div>
+  <hr class="hr-divider">
 </div>
 <div class="columns columns-gray">
   <div class="container">
@@ -124,7 +124,7 @@
       showClear: true,
       locale: locale || "en"
     }).on("dp.hide", function(){
-      $("#searchForm").submit();
+      window.location.href = "/owner/booking?selectBoat={{ query.selectBoat }}&selectDate="+$("#timepick").val();
     });
   });
 
