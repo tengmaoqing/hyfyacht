@@ -10,8 +10,12 @@
 
 {% include './nav-owner.html' with {view_active:'booking'} %}
 <div class="columns-sm container">
+  <ol class="breadcrumb">
+    <li><a href="/owner">{{ __('nav.boatowner') }}</a></li>
+    <li class="active">{{ __('owner.nav.booking') }}</li>
+  </ol>
   <div class="page-header">
-    <h3>{{ __('common.filter') }}</h3>
+    <h1>{{ __('owner.nav.booking') }}</h1>
   </div>
   {% if boats.length > 1 %}
   <div class="row search-field">
@@ -43,10 +47,7 @@
     </div>  
   </div>
   <hr class="hr-divider">
-</div>
-<div class="columns columns-gray">
-  <div class="container">
-    <div class="booking-list">
+  <div class="booking-list">
     {% for booking in bookings %}
     <div class="panel panel-info">
       <div class="panel-heading">
@@ -94,7 +95,6 @@
       </div>
     </div>
     {% endfor %}
-    </div>
   </div>
   {{ pagerView.create(pager) }}
 </div>
