@@ -370,18 +370,6 @@
           </div>
         </div>
       </div>
-      <div class="navbar-fixed-bottom fix-container">
-        <div class="container text-center">
-          <ul id="product-nav" class="nav nav-pills">
-            <li role="presentation" class="hidden-xs"><a href="#product-base">{{ __('product.section.info') }}</a></li>
-            <li role="presentation"><a href="#product-booking">{{ __('product.section.booking') }}</a></li>
-            <li role="presentation"><a href="#product-detail">{{ __('product.section.desc') }}</a></li>
-            <li role="presentation" class="hidden-xs"><a href="#product-include">{{ __('product.section.include') }}</a></li>
-            <li role="presentation" class="hidden-xs"><a href="#product-exclude">{{ __('product.section.exclude') }}</a></li>
-            <li role="presentation"><a href="#product-notice">{{ __('product.section.notice') }}</a></li>
-          </ul>
-        </div>
-      </div>
       <div id="booking-confirm-modal" class="modal fade">
         <div class="modal-table">
           <div class="modal-table-cell">
@@ -474,6 +462,18 @@
       </div>
     </div>
   </div>
+  <div class="navbar-fixed-bottom fix-container">
+    <div class="container text-center">
+      <ul id="product-nav" class="nav nav-pills">
+        <li role="presentation" class="hidden-xs"><a href="#product-base">{{ __('product.section.info') }}</a></li>
+        <li role="presentation"><a href="#product-booking">{{ __('product.section.booking') }}</a></li>
+        <li role="presentation"><a href="#product-detail">{{ __('product.section.desc') }}</a></li>
+        <li role="presentation" class="hidden-xs"><a href="#product-include">{{ __('product.section.include') }}</a></li>
+        <li role="presentation" class="hidden-xs"><a href="#product-exclude">{{ __('product.section.exclude') }}</a></li>
+        <li role="presentation"><a href="#product-notice">{{ __('product.section.notice') }}</a></li>
+      </ul>
+    </div>
+  </div>
 </div>
 {% include './footer.html' %}
 
@@ -499,6 +499,7 @@
 </script>
 <script src="{{ preset.staticHost }}/js/view-product.js?_=20160120"></script>
 <script src="http://cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
+<script src="{{ preset.staticHost }}/js/lib.js"></script>
 <script>
 (function($,w){
   $("#product-nav").onePageNav();
@@ -516,6 +517,12 @@
         $("#selected-package").show();
         show = true;
       }
+    }
+
+    if($(".hyf-info").hadScrollToEl()){
+      $(".navbar-fixed-bottom").css("position", "relative");
+    }else{
+      $(".navbar-fixed-bottom").css("position", "fixed");
     }
   });
 })(jQuery, window);
