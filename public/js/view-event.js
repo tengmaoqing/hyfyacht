@@ -27,13 +27,6 @@
     $http.get("/eventorder/number/" + hgdata.eventId).success(function (res) {
       $scope.currPersons = res.count;
       $scope.maxPersons = hgdata.maxPersons - res.count;
-
-      //$(".dropdown-menu").dropdown();
-      //
-      //$(".dropdown-menu > li > a").click(function(e){
-      //  $(this).parent().parent().parent().find(".dropdown-toggle").html($(this).html() + ' <span class="caret"></span>');
-      //  $(this).parent().parent().parent().find(".dropdown-menu-selected").val($(this).attr("data-value")).trigger("input");
-      //});
     });
 
     $scope.generateCharge = function(charge){
