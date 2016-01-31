@@ -34,11 +34,13 @@ router.get('/copyright.html', function(req, res, next){
 });
 
 router.get('/resetpass', function(req, res, next){
-  return res.render('reset-password');
+  var from = req.query.from || false;
+  return res.render('reset-password', {from: from});
 });
 
 router.get('/signup', function(req, res, next){
-  return res.render('signup');
+  var from = req.query.from || false;
+  return res.render('signup', {from: from});
 });
 
 router.get('/logout', function(req, res, next){

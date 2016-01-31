@@ -46,6 +46,7 @@
     <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/Tocca.js/0.1.21/Tocca.min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="{{ preset.staticHost }}/js/lib.js"></script>
     <script>
       (function ($, window){
         $.fn.CustomAlert = function(msg){
@@ -57,12 +58,7 @@
           $(this).modal();
         };
 
-        $(".dropdown-menu").dropdown();
-
-        $(".dropdown-menu li a").click(function(){
-          $(this).parent().parent().parent().find(".dropdown-toggle").html($(this).html() + ' <span class="caret"></span>');
-          $(this).parent().parent().parent().find(".dropdown-menu-selected").val($(this).attr("data-value")).trigger("input");
-        });
+        $(".dropdown-menu").BootstrapDropDown();
 
         var navOpen = false;
 

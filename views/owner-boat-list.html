@@ -25,28 +25,27 @@
     </div>
   </div>
 </div>
-<div class="jumbotron columns">
-  <div class="container">
-    <h4>{{ __('boat.list.boatsofowner') }}</h4>
-    <div class="row">
-      {% for boat in owner.boats %}
-      <div class="col-md-4 col-sm-6 cell">
-        <div class="thumbnail">
-          <a href="/boat/{{ boat._id.valueOf() }}/{{ boat.name }}">
-            <div class="boat-thumbnail" style="background-image: url({{ boat.thumbnail }})">
-              <div class="boat-basecharge">
-                <h4>{{ boat.name }}</h4>
-                <h4 class="text-danger">{{ __('boat.detail.from %s', preset.generateCharge(boat.baseCharge, boat.currency)) }}</h4>
-              </div>
+<div class="columns-sm container">
+  <h3>{{ __('boat.list.boatsofowner') }}</h3>
+  <hr class="hr-divider">
+  <div class="row">
+    {% for boat in owner.boats %}
+    <div class="col-md-4 col-sm-6 cell">
+      <div class="thumbnail">
+        <a href="/boat/{{ boat._id.valueOf() }}/{{ boat.name }}">
+          <div class="boat-thumbnail" style="background-image: url({{ boat.thumbnail }})">
+            <div class="boat-basecharge">
+              <h4>{{ boat.name }}</h4>
+              <h4 class="text-danger">{{ __('boat.detail.from %s', preset.generateCharge(boat.baseCharge, boat.currency)) }}</h4>
             </div>
-            <div class="caption text-muted">
-              <span>{{ __(boat.location.city) }} - {{ __(boat.type) }}</span>
-            </div>
-          </a>
-        </div>
+          </div>
+          <div class="caption text-muted">
+            <span>{{ __(boat.location.city) }} - {{ __(boat.type) }}</span>
+          </div>
+        </a>
       </div>
-      {% endfor %}
     </div>
+    {% endfor %}
   </div>
 </div>
 
