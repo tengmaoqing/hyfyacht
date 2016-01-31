@@ -14,4 +14,14 @@
 
     return !(viewport.bottom < bounds.top);
   };
+
+  $.fn.BootstrapDropDown = function() {
+    return this.each(function(){
+      var self = $(this);
+      $(this).dropdown().find("li > a").click(function(){
+        self.parent().find(".dropdown-toggle").html($(this).html() + ' <span class="caret"></span>');
+        self.parent().find(".dropdown-menu-selected").val($(this).attr("data-value")).trigger("input");
+      });
+    });
+  }
 })(jQuery, window);
