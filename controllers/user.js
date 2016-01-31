@@ -488,12 +488,14 @@ exports.updataUserInformation = function(req, res, next){
       err.status = 400;
       return next(err);
     }
-
-    if( user.newPwd1 && doc.hashedPassword && doc.hashedPassword != hashPassword(user.oldPwd) ){
-      return res.json({ error: 'error.user_setting.notmatch' });
+    
+    if( doc.hashedPassword ){
+      if( !user.oldPwd || doc.hashedPassword != hashPassword(user.oldPwd) ){
+        return res.json({ error: 'error.user_setting.notmatch' });
+      }
     }
 
-    if(!user.newPwd1){
+    if(!user.newPwd1 && !user.newMobile){
       doc.nickname = user.nickname;
       doc.email = user.email;
       doc.locale = user.locale;
@@ -502,9 +504,9 @@ exports.updataUserInformation = function(req, res, next){
         country : user.location.country,
         city : user.location.city
       } : {};
-    } else {
+    } 
+    if( user.newPwd1 ) {
       doc.hashedPassword = hashPassword(user.newPwd1);
-
     }
 
     flag && (doc.mobile = newMobile);

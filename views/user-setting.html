@@ -14,69 +14,77 @@
   </div>
   <ul class="nav nav-pills">
     <li role="presentation" ng-class="{'active':!updataPass}" ng-click="toggle(false)"><a href="">{{ __('common.information') }}</a></li>
-    <li role="presentation" ng-class="{'active':updataPass}" ng-model="user" cancel ng-click="toggle(true)"><a href="">{{ __('common.new_password') }}</a></li>
+    <li role="presentation" ng-class="{'active':updataPass}" ng-model="user" cancel ng-click="toggle(true)" data-ng-cloak>
+    <a href="" data-ng-if="user.mobile" data-ng-cloak>{{ __('common.new_password') }}</a>
+    <a href="" data-ng-if="!user.mobile" data-ng-cloak>{{ __('common.bind_mobile') }}</a>
+    </li>
   </ul>
   <hr class="hr-divider">
 	<div class="userSetting">
 		<div class="row">
-			<div class="col-lg-3">
-					<img src="/img/captain.jpg" ng-model="user.avatar">
+			<div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
+					<img src="/img/captain.jpg" class="img-circle img-thumbnail img-responsive" data-ng-show="!user.avatar">
+					<img ng-src="{% raw %}{{ user.avatar }}{% endraw %}" class="img-circle img-thumbnail img-responsive" data-ng-show="user.avatar" data-ng-cloak>
 			</div>		
 		</div>
 		<div class="row">
 				<input type="hidden" name="_csrf" id="csrf" value="{{ _csrf }}">
-				<div class="col-lg-9">
-					<dl class="dl-horizontal" id="userSetting_dl" ng-show="!updataPass">
+				<div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
+					<form name="userInfo" novalidate>
+					<dl class="dl-horizontal" id="userSetting_dl" data-ng-show="!updataPass">
 						<dt>{{ __('common.mobile') }}</dt>
 						<dd>
-								<span ng-bind="user.mobile"></span>
+								<span data-ng-bind="user.mobile"></span>
 						</dd>
 						<dt>{{ __('common.nickname') }}</dt>
-						<dd>
-							<input type="text" ng-model="user.nickname" ng-class="{'editInput':isEdit, 'form-control':isEdit}">
+						<dd data-ng-cloak>
+							<input type="text" data-ng-model="user.nickname" name="nickname" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" required placeholder="{{ __('common.nickname') }}">
+							<div class="text-danger" data-ng-cloak data-ng-show="userInfo.nickname.$invalid">
+								<span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('error.user_setting.required_nickname') }}
+							</div>
 						</dd>
 						<dt>{{ __('common.email') }}</dt>
-						<dd>
-							<input type="email" ng-model="user.email" ng-class="{'editInput':isEdit, 'form-control':isEdit}">
+						<dd data-ng-cloak>
+							<input type="email" data-ng-model="user.email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}">
 						</dd>
 						<dt>{{ __('common.currency') }}</dt>
 						<dd>
-							<span ng-bind="getOptionsValue(user.currency, 'currency')" ng-show="!isEdit"></span>
-							<div class="col-sm-2 col-xs-4" ng-show="isEdit" data-ng-cloak>
+							<span data-ng-bind="getOptionsValue(user.currency, 'currency')" data-ng-show="!isEdit"></span>
+							<div class="col-sm-2 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
 		            <div class="btn-group">
-		              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{user.currency}} {% endraw %} <span class="caret"></span></button>
-		              <input ng-model="user.currency"  type="text" class="dropdown-menu-selected collapse">
+		              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{ getOptionsValue(user.currency, 'currency') }} {% endraw %} <span class="caret"></span></button>
+		              <input data-ng-model="user.currency"  type="text" class="dropdown-menu-selected collapse">
 		              <ul class="dropdown-menu">
-		                <li><a href="#" data-value="hkd">港元</a></li>
-		                <li><a href="#" data-value="cny">人民币</a></li>
+		                <li><a href="#" data-value="hkd">$ HKD(港元)</a></li>
+		                <li><a href="#" data-value="cny">￥ CNY(人民币)</a></li>
 		              </ul>
 		            </div>
 		          </div>
 						</dd>
 						<dt>{{ __('common.city') }}</dt>
 						<dd>
-							<span ng-bind="getOptionsValue(user.location.city, 'city')" ng-show="!isEdit"></span>
-							<div class="col-sm-2 col-xs-4" ng-show="isEdit" data-ng-cloak>
+							<span data-ng-bind="getOptionsValue(user.location.city, 'city')" data-ng-show="!isEdit"></span>
+							<div class="col-sm-2 col-xs-4 noPadding" ng-show="isEdit" data-ng-cloak>
 		            <div class="btn-group">
-		              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{user.location.city}} {% endraw %}<span class="caret"></span></button>
-		              <input ng-model="user.location.city"  type="text" class="dropdown-menu-selected collapse">
+		              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{ getOptionsValue(user.location.city, 'city') }} {% endraw %}<span class="caret"></span></button>
+		              <input data-ng-model="user.location.city"  type="text" class="dropdown-menu-selected collapse">
 		              <ul class="dropdown-menu">
-		                <li><a href="#" data-value="db.location.city.hk">香港</a></li>
-		                <li><a href="#" data-value="db.location.city.sz">深圳</a></li>
+		                <li><a href="#" data-value="db.location.city.hk">{{ __('db.location.city.hk') }}</a></li>
+		                <li><a href="#" data-value="db.location.city.sz">{{ __('db.location.city.sz') }}</a></li>
 		              </ul>
 		            </div>
 		          </div>
 						</dd>
 						<dt>{{ __('common.locale') }}</dt>
 						<dd>
-							<span ng-bind="getOptionsValue(user.locale, 'locale')" ng-show="!isEdit"></span>
-							<div class="col-sm-2 col-xs-4" ng-show="isEdit" data-ng-cloak>
+							<span data-ng-bind="getOptionsValue(user.locale, 'locale')" data-ng-show="!isEdit"></span>
+							<div class="col-sm-2 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
 		            <div class="btn-group">
-		              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {% raw %} {{user.locale}} {% endraw %} <span class="caret"></span></button>
-		              <input ng-model="user.locale"  type="text" class="dropdown-menu-selected collapse">
+		              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {% raw %} {{ getOptionsValue(user.locale, 'locale') }} {% endraw %} <span class="caret"></span></button>
+		              <input data-ng-model="user.locale"  type="text" class="dropdown-menu-selected collapse">
 		              <ul class="dropdown-menu">
-		                <li><a href="#" data-value="zh-cn">简体中文</a></li>
-		                <li><a href="#" data-value="zh-hk">繁体中文</a></li>
+		                <li><a href="#" data-value="zh-cn">中文(简体)</a></li>
+		                <li><a href="#" data-value="zh-hk">中文(繁体)</a></li>
 		                <li><a href="#" data-value="en">English</a></li>
 		              </ul>
 		            </div>
@@ -87,71 +95,72 @@
 							<p ng-bind="switchDate(user.createDate,'lll')"></p>
 						</dd>
 					</dl>
-					<div class="col-lg-4 text-right" ng-show="!isEdit && !updataPass">
-						<button class="btn btn-info" ng-model="user" edit>
-							<span class="glyphicon glyphicon-pencil"></span>{{ __('common.edit') }}
+					<div class="text-center" data-ng-show="!isEdit && !updataPass">
+						<button class="btn btn-info" data-ng-model="user" edit>
+							<span class="glyphicon glyphicon-pencil"></span> {{ __('common.edit') }}
 						</button>
 					</div>
-					<div ng-show="isEdit && !updataPass" data-ng-cloak>
-						<button class="btn btn-primary" ng-model="user" cancel >
-							<span class="glyphicon glyphicon-remove"></span>{{ __('common.cancel') }}
+					<div class="text-center" data-ng-show="isEdit && !updataPass" data-ng-cloak>
+						<button class="btn btn-primary" data-ng-model="user" cancel >
+							<span class="glyphicon glyphicon-remove"></span> {{ __('common.cancel') }}
 						</button>
-						<button class="btn btn-danger" confirm>
-							<span class="glyphicon glyphicon-ok"></span>{{ __('common.submit') }}
+						<button class="btn btn-danger" confirm data-ng-disabled="userInfo.$invalid">
+							<span class="glyphicon glyphicon-ok"></span> {{ __('common.submit') }}
 						</button>
 					</div>
-						
-
-
-
-
-
-
-					<dl class="dl-horizontal" ng-show="updataPass" data-ng-cloak>
-						<dt>{{ __('common.password') }}</dt>
-						<dd>
-							<input type="password" ng-model="oldPwd" ng-class="{'editInput':updataPass, 'form-control':updataPass}" require>
-							<p class="pwd_unPass" ng-show="!isResPass && !oldPwd"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.user_setting.notmatch') }}</p>
+					</form>
+				
+					<dl class="dl-horizontal" data-ng-show="updataPass" data-ng-cloak>
+						<dt data-ng-show = "hasMobile">{{ __('common.password') }}</dt>
+						<dd data-ng-show = "hasMobile">
+							<input type="password" data-ng-model="oldPwd" class="form-control" placeholder="{{ __('common.password') }}">
+							<div class="text-danger" data-ng-cloak data-ng-show=" !isResPass && !oldPwd">
+								<span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.user_setting.notmatch') }}
+							</div>
 						</dd>
-						<dt>{{ __('common.new_password') }}</dt>
-						<dd>
-							<input type="password" ng-model="newPwd1" ng-minlength="6" ng-maxlength="30" ng-class="{'editInput':updataPass, 'form-control':updataPass}" require>
-							<p class="pwd_unPass" ng-show="!isPass1 && !newPwd1"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.password_len') }}</p>
+						<dt data-ng-show = "hasMobile">{{ __('common.new_password') }}</dt>
+						<dd data-ng-show = "hasMobile">
+							<input type="password" data-ng-model="newPwd1" data-ng-minlength="6" data-ng-maxlength="30" class="form-control" placeholder="{{ __('common.new_password') }}">
+							<div class="text-danger" data-ng-show="!isPass1 && !newPwd1" data-ng-cloak>
+								<span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.password_len') }}
+							</div>
 						</dd>
-						<dt>{{ __('common.confirmPassword') }}</dt>
-						<dd>
-							<input type="password" ng-model="newPwd2" ng-class="{'editInput':updataPass, 'form-control':updataPass}">
-							<p class="pwd_unPass" ng-show="newPwd2 != newPwd1 && !isPass2"><span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('error.signup.confirm_password') }}</p>
+						<dt data-ng-show = "hasMobile">{{ __('common.confirmPassword') }}</dt>
+						<dd data-ng-show = "hasMobile">
+							<input type="password" data-ng-model="newPwd2" class="form-control" placeholder="{{ __('common.confirmPassword') }}">
+							<div class="text-danger" data-ng-show="newPwd2 != newPwd1 && !isPass2" data-ng-cloak>
+								<span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('error.signup.confirm_password') }}
+							</div>
 						</dd>
-						<dt ng-show="updataPass && !hasMobile">{{ __('common.bind_mobile')}}</dt>
-						<dd ng-show="updataPass && !hasMobile">
-							<div class="col-sm-3 col-xs-4">
-					          <div class="btn-group">
-					            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">+86 <span class="caret"></span></button>
-					            <input id="input_area_code" type="hidden" class="dropdown-menu-selected" name="area_code" value="86">
-					            <ul class="dropdown-menu">
-					              <li><a href="#" data-value="86">+86</a></li>
-					              <li><a href="#" data-value="852">+852</a></li>
-					            </ul>
-					          </div>
-					        </div>
-							<div class="col-sm-9 col-xs-8">
-					          <input type="number" id="input_mobile" ng-model="mobile" maxlength="11" class="form-control" ng-class="{'editInput':updataPass, 'form-control':updataPass}">
-					        </div>
+						<dt data-ng-show = "!hasMobile">{{ __('common.bind_mobile')}}</dt>
+						<dd data-ng-show = "!hasMobile">
+							<div class="col-sm-4 col-xs-4">
+					      <div class="btn-group">
+					        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">+86 <span class="caret"></span></button>
+					        <input id="input_area_code" type="hidden" class="dropdown-menu-selected" value="86">
+					        <ul class="dropdown-menu">
+					          <li><a href="#" data-value="86">+86</a></li>
+					          <li><a href="#" data-value="852">+852</a></li>
+					        </ul>
+					      </div>
+					    </div>
+							<div class="col-sm-8 col-xs-8">
+					      <input type="number" id="input_mobile" data-ng-model="mobile" maxlength="11" class="form-control">
+					    </div>
 						</dd>
-						<dt ng-show="updataPass && !hasMobile" >{{ __('common.smscode') }}</dt>
-						<dd ng-show="updataPass && !hasMobile" >
-							<div class="col-sm-3 col-xs-4">
-				            	<input type="number" class="form-control" ng-class="{'editInput':updataPass, 'form-control':updataPass}" ng-model="code" pattern=".{4,4}">
-				          	</div>
-					        <div class="col-sm-9 col-xs-8">
-					        	<button id="btn-getsmscode" type="button" class="btn btn-primary btn-block">{{ __('common.getsmscode') }}</button>
-					        </div>
+						<dt data-ng-show = "!hasMobile" >{{ __('common.smscode') }}</dt>
+						<dd data-ng-show = "!hasMobile" >
+							<div class="col-sm-4 col-xs-4">
+				        <input type="number" class="form-control" data-ng-model="code" pattern=".{4,4}">
+				      </div>
+					    <div class="col-sm-8 col-xs-8">
+					     	<button id="btn-getsmscode" type="button" class="btn btn-primary btn-block">{{ __('common.getsmscode') }}</button>
+					    </div>
 						</dd>
 					</dl>
-					<div class="col-lg-8 text-right" ng-show="updataPass" data-ng-cloak>
+					<div class="col-lg-12 text-center" data-ng-show="updataPass" data-ng-cloak>
 						<button class="btn btn-danger" confirm>
-							<span class="glyphicon glyphicon-plus"></span>{{ __('common.new_password') }}
+							<span class="glyphicon glyphicon-ok"></span>{{ __('common.submit') }}
 						</button>
 					</div>
 				</div>
@@ -222,19 +231,19 @@
   		});
 
   		$scope.locales = [
-				{locale:"简体中文", value:"zh-cn"},
-				{locale:"繁体中文", value:"zh-hk"},
+				{locale:"中文(简体)", value:"zh-cn"},
+				{locale:"中文(繁体)", value:"zh-hk"},
 				{locale:"English", value:"en"}
 			];
 
 			$scope.citys = [
-				{city: "深圳", value:"db.location.city.sz"},
-				{city: "香港", value:"db.location.city.hk"}
+				{city: "{{ __('db.location.city.sz') }}", value:"db.location.city.sz"},
+				{city: "{{ __('db.location.city.hk') }}", value:"db.location.city.hk"}
 			];
 
 			$scope.currencys = [
-				{currency:"港元", value:"hkd"},
-				{currency:"人民币", value:"cny"}
+				{currency:"$HKD(港币)", value:"hkd"},
+				{currency:"￥CNY(人民币)", value:"cny"}
 			];
 
 			$scope.toggle = function(bool){
@@ -261,18 +270,6 @@
 				}
 			};
 
-			// $scope.setOptionValue = function(arr, proname, val){
-		 //    for(var i in arr){
-		 //      if(arr[i].value == val){
-		 //        if(proname == "city" || proname == "pier"){
-		 //          $scope.user.location[proname] = arr[i];
-		 //        }else{
-		 //          $scope.user[proname] = arr[i];
-		 //        }
-		 //      }
-		 //    }
-		 //  }
-
   	});
 
   	app.directive("edit", function(){
@@ -282,23 +279,8 @@
   			link : function(scope, element, attr, ngModel){
   				element.bind("click", function(e){
 
-  					// if(attr.edit == "updata"){
-  					// 	if(!scope.user.mobile){
-  					// 		scope.hasMobile = false;
-  					// 		scope.$apply();
-  					// 	 	return 
-  					// 	}
-  					// 	scope.updataPass = true;
-  					// 	scope.$apply();
-  					// 	return
-  					// }
-
   					angular.copy(ngModel.$modelValue, scope.userTemp);
   					scope.isEdit = true;
-
-  					// scope.setOptionValue(scope.currencys, "currency", scope.user.currency);
-  					// scope.user.location && scope.setOptionValue(scope.citys, "city", scope.user.location.city);
-  					// scope.setOptionValue(scope.locales, "locale", scope.user.locale);
 
   					scope.$apply();
 
@@ -314,16 +296,13 @@
   			require : "ngModel",
   			link: function(scope, element, attr, ngModel){
   				element.bind("click", function(e){
-  					angular.copy(scope.userTemp, ngModel.$modelValue);
-  					scope.isEdit = false;
-  					// scope.updataPass = false;
-  					// scope.newPwd1 = scope.newPwd2 = "";
-  					// scope.hasMobile = true;
-  					// scope.mobile = "";
-  					// scope.code = "";
-  					scope.$apply();
+  					if(scope.isEdit == true){
+  						angular.copy(scope.userTemp, ngModel.$modelValue);
+	  					scope.isEdit = false;
+	  					scope.$apply();
+  						$("#userSetting_dl input").prop("readOnly", true);
+  					}
 
-  					$("#userSetting_dl input").prop("readOnly", true);
   				});
   			}
   		}
@@ -336,15 +315,18 @@
   				element.bind("click", function(e){
 
   					if(scope.updataPass){
-  						if(scope.newPwd1 !== scope.newPwd2 || !scope.newPwd1 || !scope.newPwd2){
-	  						!scope.newPwd1 && (scope.isPass1 = false);
-	  						scope.newPwd1 !== scope.newPwd2 && (scope.isPass2 = false);
-	  						scope.$apply();
-								return 
-	  					}
+  						if(scope.hasMobile){
+  							if(scope.newPwd1 !== scope.newPwd2 || !scope.newPwd1 || !scope.newPwd2){
+		  						!scope.newPwd1 && (scope.isPass1 = false);
+		  						scope.newPwd1 !== scope.newPwd2 && (scope.isPass2 = false);
+		  						console.log(scope.isPass1, scope.isPass2, scope.newPwd1, scope.newPwd2);
+		  						scope.$apply();
+									return 
+		  					}
+  						}
 
 	  					scope.user.newPwd1 = scope.newPwd1;
-	  					scope.user.oldPwd = scope.oldPwd;
+	  					scope.oldPwd && (scope.user.oldPwd = scope.oldPwd);
 	  					scope.user.newMobile = scope.mobile;
 	  					scope.user.code = scope.code;
 	  					scope.user.area_code = $("#input_area_code").val();

@@ -80,12 +80,12 @@ exports.updateOwnerInformation = function(req, res, next){
     doc.email = owner.email;
     doc.nickname = owner.nickname;
     doc.customLink = owner.customLink;
-    doc.currency = owner.currency ? owner.currency.value : '';
+    doc.currency = owner.currency ;
     doc.location = owner.location ? {
-      country : owner.location.country ? owner.location.country.value : '',
-      city : owner.location.city ? owner.location.city.value : ''
+      country : owner.location.country ,
+      city : owner.location.city 
     } : {};
-    doc.locale = owner.locale ? owner.locale.value : '';
+    doc.locale = owner.locale ;
     doc.description = owner.description;
 
     doc.save(function(err, newOwner){
