@@ -1,7 +1,6 @@
 {
   "site": {
     "title": "海龟租船",
-    "slogan": "蓝天白云 以海为家",
     "info": {
       "company": "公司信息",
       "about": "关于我们",
@@ -79,7 +78,8 @@
     "back_to_top": "返回顶部",
     "detail": "详情",
     "holiday": "节日",
-    "filter": "筛选"
+    "filter": "筛选",
+    "coming_soon": "敬请期待"
   },
   "error": {
     "login": {
@@ -147,8 +147,16 @@
     },
     "column": {
       "hot": "热门",
-      "entertainments": "出海玩什么"
-    }
+      "entertainments": "出海玩什么",
+      "diving": "潜水",
+      "fishing": "海钓",
+      "surfing": "冲浪",
+      "cruise": "游船河",
+      "share": "游记",
+      "news": "新闻"
+    },
+    "slogan": "蓝天白云 以海为家",
+    "sub_slogan": "在海龟租船开启您的出海休闲新方式"
   },
   "boat": {
     "list": {

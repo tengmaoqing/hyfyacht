@@ -1,7 +1,6 @@
 {
   "site": {
   "title": "HGBOATING",
-  "slogan": "藍天白雲 以海為家",
   "info": {
     "company": "公司信息",
     "about": "關於我們",
@@ -79,7 +78,8 @@
     "back_to_top": "返回最頂",
     "detail": "詳情",
     "holiday": "假期",
-    "filter": "篩選"
+    "filter": "篩選",
+    "coming_soon": "敬請期待"
   },
   "error": {
     "login": {
@@ -147,8 +147,16 @@
     },
     "column": {
       "hot": "熱門",
-      "entertainments": "出海玩D乜"
-    }
+      "entertainments": "出海玩D乜",
+      "diving": "潛水",
+      "fishing": "海釣",
+      "surfing": "衝浪",
+      "cruise": "游船河",
+      "share": "遊記",
+      "news": "新聞"
+    },
+    "slogan": "藍天白雲 以海為家",
+    "sub_slogan": "想游船河? 來 HGBOATING"
   },
   "boat": {
     "list": {

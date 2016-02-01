@@ -1,7 +1,6 @@
 {
   "site": {
     "title": "HGBOATING",
-    "slogan": "KEEP CALM & LOVE BOATING",
     "info": {
       "company": "Company",
       "about": "About",
@@ -77,7 +76,8 @@
     "back_to_top": "Back to top",
     "detail": "Detail",
     "holiday": "Holiday",
-    "filter": "Filter"
+    "filter": "Filter",
+    "coming_soon": "Coming Soon"
   },
   "error": {
     "login": {
@@ -145,8 +145,16 @@
     },
     "column": {
       "hot": "Hot",
-      "entertainments": "Entertainments"
-    }
+      "entertainments": "Entertainments",
+      "diving": "Diving",
+      "fishing": "Fishing",
+      "surfing": "Surfing",
+      "cruise": "Cruise",
+      "share": "Share",
+      "news": "News"
+    },
+    "slogan": "LOVE BOATING",
+    "sub_slogan": "Rent unique boats to having fun"
   },
   "boat": {
     "list": {
