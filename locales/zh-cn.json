@@ -243,7 +243,8 @@
           "time": "请选择出游时间。",
           "numberOfPeople": "请输入人数。",
           "package": "请选择套餐。",
-          "contact": "联系人信息错误。"
+          "contact": "联系人信息错误。",
+          "items": "套餐选项错误。"
         }
       },
       "result": {

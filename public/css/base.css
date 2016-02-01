@@ -700,6 +700,7 @@
   line-height: 30px;
   border-radius: 4px;
   cursor: pointer;
+  background-color: #fff;
 }
 
 .hyf-dropdown-toggle .hyf-dropdown-icon {

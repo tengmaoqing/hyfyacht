@@ -1,14 +1,13 @@
 {% extends './layout.html' %}
 
 {% block head %}
-
 <link rel="stylesheet" href="http://cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.css">
-
 {% endblock %}
 
 {% block content %}
 
 {% include './nav.html' %}
+
 <div data-ng-app="product" data-ng-controller="productController">
   <div class="columns-sm" data-ng-controller="bookingController">
     <form name="booking" method="post" action="/booking/submit" novalidate>
@@ -143,17 +142,22 @@
             </div>
             <div id="product-booking-items" class="product-booking-container" data-ng-if="currPackage > -1" data-ng-cloak>
               <p><strong>{{ __('product.booking.package.items') }}</strong></p>
+              <div class="alert alert-danger" data-ng-show="invalidItems.length > 0" data-ng-cloak>
+                <ul class="list-layout">
+                  <li><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.items') }}</li>
+                </ul>
+              </div>
               <ul class="list-group list-table">
                 <li class="list-group-item">
                   <div class="row">
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><strong>{{ __('product.booking.package.check') }}</strong></div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
                       <div class="row">
                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{{ __('product.booking.package.item') }}</strong></div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right"><strong>{{ __('product.booking.package.quantity') }}</strong></div>
                       </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right"><strong>{{ __('product.booking.package.subtotal') }}</strong></div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right"><strong>{{ __('product.booking.package.subtotal') }}</strong></div>
                   </div>
                 </li>
                 <li class="list-group-item">
@@ -166,13 +170,13 @@
                         </label>
                       </div>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
                       <div class="row">
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{% raw %}{{ baseChargeName }} ({{ displayAmount(generateCharge(baseCharge)) }}){% endraw %}</strong></div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>{% raw %}{{ slotCount }}{% endraw %}</strong></div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{% raw %}{{ baseChargeName }} ({{ displayAmount(generateCharge(baseCharge)) }}){% endraw %}</strong></div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right"><strong>{% raw %}{{ slotCount }}{% endraw %}</strong></div>
                       </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
                       <strong>{% raw %}{{ displayAmount(generateCharge(baseCharge) * slotCount) }}{% endraw %}</strong>
                     </div>
                   </div>
@@ -187,13 +191,13 @@
                         </label>
                       </div>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
                       <div class="row">
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{% raw %}{{ extraSlotChargeName }} ({{ displayAmount(generateCharge(extraSlotCharge)) }}){% endraw %}</strong></div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>{% raw %}{{ extraSlot }}{% endraw %}</strong></div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{% raw %}{{ extraSlotChargeName }} ({{ displayAmount(generateCharge(extraSlotCharge)) }}){% endraw %}</strong></div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right"><strong>{% raw %}{{ extraSlot }}{% endraw %}</strong></div>
                       </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
                       <strong>{% raw %}{{ displayAmount(generateCharge(extraSlotCharge) * extraSlot ) }}{% endraw %}</strong>
                     </div>
                   </div>
@@ -208,13 +212,13 @@
                         </label>
                       </div>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
                       <div class="row">
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{{ __('product.booking.package.extra') }} ({% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge)) }}{% endraw %})</strong></div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right"><strong>{% raw %}{{ numberOfPersons - packages[currPackage].basePersons }}{% endraw %}</strong></div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{{ __('product.booking.package.extra') }} ({% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge)) }}{% endraw %})</strong></div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right"><strong>{% raw %}{{ numberOfPersons - packages[currPackage].basePersons }}{% endraw %}</strong></div>
                       </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
                       <strong>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge) * (numberOfPersons - packages[currPackage].basePersons)) }}{% endraw %}</strong>
                     </div>
                   </div>
@@ -244,16 +248,16 @@
                         </label>
                       </div>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-5">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
                       <div class="row">
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6"><strong>{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }})</strong></div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 text-right">
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }}){{ item.max ? ' (max: ' + item.max + ')' : '' }} </strong></div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right">
                           <strong data-ng-if="item.type == 'single'">{{ selectedItems[item.name] ? selectedItems[item.name].amount : 0 }}</strong>
-                          <input type="number" class="form-control input-small" placeholder="0" data-ng-if="item.type == 'multi'" data-ng-model="inputValue[item.name]" data-ng-change="inputItem(item)" min="0">
+                          <input type="number" class="form-control input-small text-right" placeholder="0" data-ng-if="item.type == 'multi'" data-ng-model="inputValue[item.name]" data-ng-change="inputItem(item)" min="0" max="{{ item.max }}">
                         </div>
                       </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
                       <strong>{{ selectedItems[item.name] ? displayAmount(generateCharge(selectedItems[item.name].charge) * selectedItems[item.name].amount) : displayAmount(0) }}</strong>
                     </div>
                   </div>
@@ -261,10 +265,10 @@
                 {% endraw %}
                 <li class="list-group-item">
                   <div class="row">
-                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-7 text-right">
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-8 text-right">
                       <h4>{{ __('product.booking.package.total') }}</h4>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-5 text-right">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
                       <h4>{% raw %}{{ displayAmount(getTotal()) }}{% endraw %}</h4>
                     </div>
                   </div>
@@ -317,7 +321,7 @@
                   <span class="input-group-addon">
                     <span class="glyphicon glyphicon-envelope"></span>
                   </span>
-                  <input type="email" class="form-control" name="email" placeholder="{{ __('product.booking.email_plh') }}" data-ng-model="contact.email" data-maxlength="100" data-ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" required>
+                  <input type="email" class="form-control" name="email" placeholder="{{ __('product.booking.email_plh') }}" data-ng-model="contact.email" data-maxlength="100" data-ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-z]{2,4})$/" required>
                 </div>
               </div>
             </div>
@@ -327,6 +331,7 @@
                   <li data-ng-show="booking.dateEnd.$invalid"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.time') }}</li>
                   <li data-ng-show="booking.currPackage.$error.min"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.package') }}</li>
                   <li data-ng-show="booking.numberOfPersons.$invalid"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.numberOfPeople') }}</li>
+                  <li data-ng-show="invalidItems.length > 0"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.items') }}</li>
                   <li data-ng-show="booking.contact.$invalid || booking.mobile.$invalid || booking.email.$invalid"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.contact') }}</li>
                 </ul>
               </div>
@@ -437,27 +442,29 @@
       </div>
     </form>
   </div>
-  <div class="container">
-    <h3>{{ __('common.relativeProduct') }}</h3>
-    <hr class="hr-divider">
-    <div class="row" data-ng-controller="moreController">
-      <div class="boat-product col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-repeat="product in boat.products">
-        {% raw %}
-        <div class="thumbnail">
-          <a data-ng-href="/product/{{ product._id }}/{{ product.name }}/{{ boat._id }}/{{ boat.name }}">
-            <div class="boat-thumbnail" data-ng-style="{'background-image': 'url({{ product.photo }})'}"></div>
-            <div class="caption text-muted">
-              <h4 data-ng-bind="product.name"></h4>
-              <p data-ng-bind=" product.summary "></p>
-              <div class="row">
-                <h3 class="col-xs-6 text-danger">{{ displayAmount(generateCharge(product.baseCharge)) }}</h3>
-                <p class="col-xs-6 text-right boat-product-learn">
-                  {% endraw %}
-                  {{ __('boat.detail.learn') }}
-                  <span class="glyphicon glyphicon-menu-right"></span></p>
+  <div class="container" data-ng-controller="moreController">
+    <div data-ng-if="boat.products.length > 0" data-ng-cloak>
+      <h3>{{ __('common.relativeProduct') }}</h3>
+      <hr class="hr-divider">
+      <div class="row">
+        <div class="boat-product col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-repeat="product in boat.products">
+          {% raw %}
+          <div class="thumbnail">
+            <a data-ng-href="/product/{{ product._id }}/{{ product.name }}/{{ boat._id }}/{{ boat.name }}">
+              <div class="boat-thumbnail" data-ng-style="{'background-image': 'url({{ product.photo }})'}"></div>
+              <div class="caption text-muted">
+                <h4 data-ng-bind="product.name"></h4>
+                <p data-ng-bind=" product.summary "></p>
+                <div class="row">
+                  <h3 class="col-xs-6 text-danger">{{ displayAmount(generateCharge(product.baseCharge)) }}</h3>
+                  <p class="col-xs-6 text-right boat-product-learn">
+                    {% endraw %}
+                    {{ __('boat.detail.learn') }}
+                    <span class="glyphicon glyphicon-menu-right"></span></p>
+                </div>
               </div>
-            </div>
-          </a>
+            </a>
+          </div>
         </div>
       </div>
     </div>

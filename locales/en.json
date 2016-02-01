@@ -243,7 +243,8 @@
           "time": "Please choose time.",
           "numberOfPeople": "Please input number of people.",
           "package": "Please choose a package.",
-          "contact": "Invaild contact."
+          "contact": "Invaild contact.",
+          "items": "Invaild Package items."
         }
       },
       "result": {

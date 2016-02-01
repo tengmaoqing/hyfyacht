@@ -1,6 +1,6 @@
 {
   "site": {
-  "title": "HG Boating",
+  "title": "HGBOATING",
   "slogan": "藍天白雲 以海為家",
   "info": {
     "company": "公司信息",
@@ -244,7 +244,8 @@
           "time": "請選擇出遊時間。",
           "numberOfPeople": "請輸入人數。",
           "package": "請選擇一個套餐。",
-          "contact": "聯繫人信息錯誤。"
+          "contact": "聯繫人信息錯誤。",
+          "items": "套餐選項錯誤。"
         }
       },
       "result": {

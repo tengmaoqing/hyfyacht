@@ -248,6 +248,7 @@
     $scope.extraSlot = 0;
     $scope.extraSlotChargeName = "";
     $scope.availablePackages = false;
+    $scope.invalidItems = [];
 
     $scope.generateCharge = $scope.$parent.generateCharge;
     $scope.displayAmount = $scope.$parent.displayAmount;
@@ -286,6 +287,15 @@
 
     $scope.inputItem = function(item){
       var value = $scope.inputValue[item.name];
+
+      if(item.max){
+        if(item.max < value || value === undefined){
+          $scope.invalidItems.push(item.name);
+        }else {
+          var index = $scope.invalidItems.indexOf(item.name);
+          $scope.invalidItems.splice(index, 1);
+        }
+      }
 
       if(value <= 0){
         delete $scope.selectedItems[item.name];

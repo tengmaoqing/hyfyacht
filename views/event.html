@@ -136,25 +136,29 @@
         {% autoescape %}{{ event.description }}{% endautoescape %}
       </div>
     </div>
-    <h3>{{ __('common.relativeEvent') }}</h3>
-    <hr class="hr-divider">
-    <div class="row" data-ng-controller="moreEvents">
-      <div class="boat-product col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-repeat="event in events">
-        <div class="thumbnail">
-          {% raw %}
-          <a data-ng-href="/event/{{ event._id }}">
-            <div class="boat-thumbnail" data-ng-style="{'background-image': 'url({{ event.thumbnail }})'}"></div>
-            <div class="caption text-muted">
-              <h4 data-ng-bind="event.title"></h4>
-              <div class="row">
-                <h3 class="col-xs-6 text-danger">{{ displayAmount(generateCharge(event.baseCharge)) }}</h3>
-                <p class="col-xs-6 text-right boat-product-learn">
-                  {% endraw %}
-                  {{ __('boat.detail.learn') }}
-                  <span class="glyphicon glyphicon-menu-right"></span></p>
-              </div>
+    <div data-ng-controller="moreEvents">
+      <div data-ng-if="events.length > 0" data-ng-cloak>
+        <h3>{{ __('common.relativeEvent') }}</h3>
+        <hr class="hr-divider">
+        <div class="row">
+          <div class="boat-product col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-repeat="event in events">
+            <div class="thumbnail">
+              {% raw %}
+              <a data-ng-href="/event/{{ event._id }}">
+                <div class="boat-thumbnail" data-ng-style="{'background-image': 'url({{ event.thumbnail }})'}"></div>
+                <div class="caption text-muted">
+                  <h4 data-ng-bind="event.title"></h4>
+                  <div class="row">
+                    <h3 class="col-xs-6 text-danger">{{ displayAmount(generateCharge(event.baseCharge)) }}</h3>
+                    <p class="col-xs-6 text-right boat-product-learn">
+                      {% endraw %}
+                      {{ __('boat.detail.learn') }}
+                      <span class="glyphicon glyphicon-menu-right"></span></p>
+                  </div>
+                </div>
+              </a>
             </div>
-          </a>
+          </div>
         </div>
       </div>
     </div>
