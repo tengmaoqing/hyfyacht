@@ -34,6 +34,7 @@
     "boats": "Boats",
     "locale": "Locale",
     "invaild_email": "Invaild Email",
+    "noSetting": "Please Setting",
     "bind_mobile": "Bind Mobile No.",
     "createDate": "CreateDate",
     "forgotpass": "Forgot password",
@@ -68,8 +69,6 @@
     "extra": "Extra",
     "capacity": "Capacity",
     "packages": "Packages",
-    "relativeProduct" : "Relative Products",
-    "relativeEvent" : "Relative Events",
     "select":"Select",
     "hour": {
       "one": "%d hour",
@@ -108,7 +107,7 @@
   "nav": {
     "home": "Home",
     "boat": "Find Boats",
-    "event": "Event",
+    "event": "Events",
     "boatowner": "Boat Owner"
   },
   "user": {
@@ -181,7 +180,8 @@
       "desc": "Description",
       "include": "Charge Include",
       "exclude": "Charge Exclude",
-      "notice": "Notice"
+      "notice": "Notice",
+      "more": "More"
     },
     "info": {
       "duration": "Duration",
@@ -207,6 +207,7 @@
         "base": "Base",
         "extra_time": "Extra time",
         "extra": "Extra people",
+        "max": "Max",
         "total": "Total"
       },
       "contact": "Contact",
@@ -286,6 +287,7 @@
     "organiser": "Organiser",
     "geospatial": "Location",
     "desc": "Description",
+    "more": "More",
     "unlimited": "Unlimited",
     "result": {
       "error":{

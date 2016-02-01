@@ -744,6 +744,14 @@ td.fc-bgevent {
   border:none;
 }
 
+.userSetting .thumbnail {
+  padding: 0 15px 15px;
+}
+
+.userSetting dd {
+  min-height: 34px;
+}
+
 #div_input{
   border-radius: 6px;
   outline:none;
@@ -754,3 +762,6 @@ td.fc-bgevent {
   padding: 0;
 }
 
+.info_noSetting{
+  color:#999;
+}

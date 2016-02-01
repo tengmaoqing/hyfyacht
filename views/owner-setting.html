@@ -12,149 +12,171 @@
 	<div class="page-header">
 	  <h1>{{ __('owner.nav.ownerInformation') }}</h1>
 	</div>
-	<div class="userSetting" ng-app="ownerSetting" ng-controller="ownerSettingCtrl">
-		<div class="row">
+	<div class="userSetting row" ng-app="ownerSetting" ng-controller="ownerSettingCtrl">
+		<div class="thumbnail col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
+			<div class="columns-sm text-center">
+        <img src="{{ preset.imgHost }}/captain.jpg" class="img-circle img-thumbnail" data-ng-show="!owner.logo">
+        <img ng-src="{% raw %}{{ owner.logo }}{% endraw %}" class="img-circle img-thumbnail" data-ng-show="owner.logo" data-ng-cloak>
+      </div>
 			<input type="hidden" name="_csrf" id="csrf" value="{{ _csrf }}">
-				<div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
-				<form name="ownerInfo" novalidate>
-					<dl class="dl-horizontal">
-						<dt>{{ __('common.mobile') }}</dt>
-						<dd>
-							<span data-ng-bind="owner.mobile" data-ng-show="!isEdit"></span>
-							<div class="col-sm-4 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
-					      <div class="btn-group">
-					        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{ area_code }} {% endraw %}<span class="caret"></span></button>
-					        <input id="input_area_code" type="hidden" class="dropdown-menu-selected" value="86">
-					        <ul class="dropdown-menu">
-					          <li><a href="#" data-value="86">+86</a></li>
-					          <li><a href="#" data-value="852">+852</a></li>
-					        </ul>
-					      </div>
-					    </div>
-							<div class="col-sm-8 col-xs-8 noPadding" data-ng-show="isEdit" data-ng-cloak>
-					      <input type="text" data-ng-model="mobile" name="mobile" maxlength="11" class="form-control" placeholder="{{ __('common.mobile') }}" required>
-					      <div class="text-danger" data-ng-show="ownerInfo.mobile.$invalid" data-ng-cloak>
-					      	<span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('error.signup.input_mobile')}}
-					      </div>
-					    </div>
-						</dd>
-						<dt>{{ __('product.booking.name')}}</dt>
-						<dd data-ng-cloak>
-							<div class="col-lg-4 noPadding">
-								<input type="text" data-ng-model="owner.name.first" name="firstName" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" placeholder="{{__('product.booking.first_name')}}" required>
+			<div>
+			<form name="ownerInfo" novalidate>
+				<dl class="dl-horizontal">
+					<dt>{{ __('common.mobile') }}</dt>
+					<dd>
+						<span data-ng-bind="owner.mobile" data-ng-show="!isEdit && owner.mobile"></span>
+						<span data-ng-if="!isEdit && !owner.mobile" data-ng-cloak class="info_noSetting">{{ __('common.noSetting') }}</span>
+						<div class="col-sm-4 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
+				      <div class="btn-group">
+				        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{ area_code }} {% endraw %}<span class="caret"></span></button>
+				        <input id="input_area_code" type="hidden" class="dropdown-menu-selected" value="86">
+				        <ul class="dropdown-menu">
+				          <li><a href="#" data-value="86">+86</a></li>
+				          <li><a href="#" data-value="852">+852</a></li>
+				        </ul>
+				      </div>
+				    </div>
+						<div class="col-sm-8 col-xs-8 noPadding" data-ng-show="isEdit" data-ng-cloak>
+				      <input type="text" data-ng-model="mobile" name="mobile" maxlength="11" class="form-control" placeholder="{{ __('common.mobile') }}" required>
+				      <div class="text-danger" data-ng-show="ownerInfo.mobile.$invalid" data-ng-cloak>
+				      	<span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('error.signup.input_mobile')}}
+				      </div>
+				    </div>
+					</dd>
+					<dt>{{ __('product.booking.name')}}</dt>
+					<dd>
+						<div class="col-lg-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
+							<input type="text" data-ng-model="owner.name.first" name="firstName" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" placeholder="{{__('product.booking.first_name')}}" required>
+						</div>
+						<div class="col-lg-8 noPadding" data-ng-show="isEdit" data-ng-cloak>
+							<input type="text" data-ng-model="owner.name.last" name="lastName" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" placeholder="{{__('product.booking.last_name') }}" required>
+							<div class="text-danger" data-ng-show="ownerInfo.firstName.$invalid || ownerInfo.lastName.$invalid" data-ng-cloak>
+								<span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('error.user_setting.required_name')}}
 							</div>
-							<div class="col-lg-8 noPadding">
-								<input type="text" data-ng-model="owner.name.last" name="lastName" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" placeholder="{{__('product.booking.last_name') }}" required>
-								<div class="text-danger" data-ng-show="ownerInfo.firstName.$invalid || ownerInfo.lastName.$invalid" data-ng-cloak>
-									<span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('error.user_setting.required_name')}}
-								</div>
-							</div>
-						</dd>
-						<dt>{{ __('common.nickname') }}</dt>
-						<dd data-ng-cloak>
-							<input type="text" data-ng-model="owner.nickname" name="nickname" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" placeholder="{{ __('common.nickname') }}" required>
-							<div class="text-danger" data-ng-show="ownerInfo.nickname.$invalid" data-ng-cloak>
-								<span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('error.user_setting.required_nickname')}}
-							</div>
-						</dd>
-						<dt>{{ __('common.email') }}</dt>
-						<dd data-ng-cloak>
-							<input type="email" data-ng-model="owner.email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}">
-						</dd>
-						<dt>{{ __('common.customLink') }}</dt>
-						<dd data-ng-cloak>
-							<div data-ng-show="!owner.customLink">
-								<input type="text" id="customLink" ng-class="{'editInput':!isEdit, 'form-control':isEdit}">
-							</div>
-							<div data-ng-show="owner.customLink">
-								<span data-ng-bind="owner.customLink"></span>
-							</div>
-						</dd>
-						<dt>{{ __('common.currency') }}</dt>
-						<dd>
-							<span data-ng-bind="getOptionsValue(owner.currency, 'currency')" data-ng-show="!isEdit"></span>
-							<div class="col-sm-2 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
-		            <div class="btn-group">
-		              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{ getOptionsValue(owner.currency, 'currency') }} {% endraw %} <span class="caret"></span></button>
-		              <input data-ng-model="owner.currency"  type="text" class="dropdown-menu-selected collapse">
-		              <ul class="dropdown-menu">
-		                <li><a href="#" data-value="hkd">￥ HKD(港元)</a></li>
-		                <li><a href="#" data-value="cny">$ CNY(人民币)</a></li>
-		              </ul>
-		            </div>
-		          </div>
-						</dd>
-						<dt>{{ __('common.country') }}</dt>
-						<dd>
-							<span data-ng-bind="getOptionsValue(owner.location.country, 'country')" data-ng-show="!isEdit"></span>
-							<div class="col-sm-2 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
-		            <div class="btn-group">
-		              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{ getOptionsValue(owner.location.country, 'country') }} {% endraw %} <span class="caret"></span></button>
-		              <input data-ng-model="owner.location.country"  type="text" class="dropdown-menu-selected collapse">
-		              <ul class="dropdown-menu">
-		                <li><a href="#" data-value="db.location.country.cn">{{ __('db.location.country.cn') }}</a></li>
-		              </ul>
-		            </div>
-		          </div>
-						</dd>
-						<dt>{{ __('common.city') }}</dt>
-						<dd>
-							<span data-ng-bind="getOptionsValue(owner.location.city, 'city')" data-ng-show="!isEdit"></span>
-							<div class="col-sm-2 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
-		            <div class="btn-group">
-		              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{ getOptionsValue(owner.location.city, 'city') }} {% endraw %}<span class="caret"></span></button>
-		              <input data-ng-model="owner.location.city"  type="text" class="dropdown-menu-selected collapse">
-		              <ul class="dropdown-menu">
-		                <li><a href="#" data-value="db.location.city.hk">{{ __('db.location.city.hk') }}</a></li>
-		                <li><a href="#" data-value="db.location.city.sz">{{ __('db.location.city.sz') }}</a></li>
-		              </ul>
-		            </div>
-		          </div>
-						</dd>
-						<dt>{{ __('common.locale') }}</dt>
-						<dd>
-							<span data-ng-bind="getOptionsValue(owner.locale, 'locale')" data-ng-show="!isEdit"></span>
-							<div class="col-sm-2 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
-		            <div class="btn-group">
-		              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {% raw %} {{ getOptionsValue(owner.locale, 'locale') }} {% endraw %} <span class="caret"></span></button>
-		              <input data-ng-model="owner.locale"  type="text" class="dropdown-menu-selected collapse">
-		              <ul class="dropdown-menu">
-		                <li><a href="#" data-value="zh-cn">中文(简体)</a></li>
-		                <li><a href="#" data-value="zh-hk">中文(繁體)</a></li>
-		                <li><a href="#" data-value="en">English</a></li>
-		              </ul>
-		            </div>
-		          </div>
-						</dd>
-						<dt>{{ __('common.boats') }}</dt>
-						<dd>
-							<span data-ng-bind="owner.boats.length"></span>
-						</dd>
-						<dt>{{ __('common.createDate') }}</dt>
-						<dd>
-							<span data-ng-bind="switchDate(owner.createDate,'lll')"></span>
-						</dd>
-						<dt>{{ __('common.description') }}</dt>
-						<dd>
-							<div contenteditable="false" data-ng-bind="owner.description" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" id="div_input">
-							</div>
-						</dd>
-					</dl>
-					<div class="text-center" data-ng-show="!isEdit">
-						<button class="btn btn-primary" data-ng-model="owner" edit>
-							 <span class="glyphicon glyphicon-pencil"></span> {{ __('common.edit') }}
-						</button>
-					</div>
-					<div class="text-center" data-ng-show="isEdit" data-ng-cloak>
-						<button class="btn btn-primary" data-ng-model="owner" cancel >
+						</div>
+						<div data-ng-show="!isEdit && (owner.name.first || owner.name.last)">
+							<span data-ng-bind="owner.name.first"></span>
+							<span data-ng-bind="owner.name.last"></span>
+						</div>
+						<span data-ng-if="!isEdit && !owner.name.first && !owner.name.last" data-ng-cloak class="info_noSetting">{{ __('common.noSetting') }}</span>
+					</dd>
+					<dt>{{ __('common.nickname') }}</dt>
+					<dd>
+						<input type="text" data-ng-model="owner.nickname" name="nickname" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" placeholder="{{ __('common.nickname') }}" required data-ng-show="isEdit || owner.nickname" data-ng-cloak>
+						<span data-ng-if="!isEdit && !owner.nickname" data-ng-cloak class="info_noSetting">{{ __('common.noSetting') }}</span>
+						<div class="text-danger" data-ng-show="ownerInfo.nickname.$invalid && isEdit" data-ng-cloak>
+							<span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('error.user_setting.required_nickname')}}
+						</div>
+					</dd>
+					<dt>{{ __('common.email') }}</dt>
+					<dd>
+						<input type="email" data-ng-model="owner.email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" data-ng-show="isEdit || owner.email" data-ng-cloak>
+						<span data-ng-if="!isEdit && !owner.email" data-ng-cloak class="info_noSetting">{{ __('common.noSetting') }}</span>
+					</dd>
+					<dt>{{ __('common.customLink') }}</dt>
+					<dd data-ng-cloak>
+						<div data-ng-show="!owner.customLink">
+							<input type="text" id="customLink" ng-class="{'editInput':!isEdit, 'form-control':isEdit}" data-ng-show="isEdit">
+							<span data-ng-if="!isEdit" data-ng-cloak class="info_noSetting">{{ __('common.noSetting') }}</span>
+						</div>
+						<div data-ng-show="owner.customLink">
+							<span data-ng-bind="owner.customLink"></span>
+						</div>
+					</dd>
+					<dt>{{ __('common.currency') }}</dt>
+					<dd>
+						<span data-ng-bind="getOptionsValue(owner.currency, 'currency')" data-ng-show="!isEdit && owner.currency"></span>
+						<span data-ng-if="!isEdit && !owner.currency"  data-ng-cloak class="info_noSetting">{{ __('common.noSetting') }}</span>
+						<div class="col-sm-2 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
+	            <div class="btn-group">
+	              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{ getOptionsValue(owner.currency, 'currency') }} {% endraw %} <span class="caret"></span></button>
+	              <input data-ng-model="owner.currency"  type="text" class="dropdown-menu-selected collapse">
+	              <ul class="dropdown-menu">
+	                <li><a href="#" data-value="hkd">＄ HKD (港币)</a></li>
+	                <li><a href="#" data-value="cny">￥ CNY (人民币)</a></li>
+	              </ul>
+	            </div>
+	          </div>
+					</dd>
+					<dt>{{ __('common.country') }}</dt>
+					<dd>
+						<span data-ng-bind="getOptionsValue(owner.location.country, 'country')" data-ng-show="!isEdit && owner.location.country"></span>
+						<span data-ng-if="!isEdit && !owner.location.country" data-ng-cloak class="info_noSetting">{{ __('common.noSetting') }}</span>
+						<div class="col-sm-2 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
+	            <div class="btn-group">
+	              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{ getOptionsValue(owner.location.country, 'country') }} {% endraw %} <span class="caret"></span></button>
+	              <input data-ng-model="owner.location.country"  type="text" class="dropdown-menu-selected collapse">
+	              <ul class="dropdown-menu">
+	                <li><a href="#" data-value="db.location.country.cn">{{ __('db.location.country.cn') }}</a></li>
+	              </ul>
+	            </div>
+	          </div>
+					</dd>
+					<dt>{{ __('common.city') }}</dt>
+					<dd>
+						<span data-ng-bind="getOptionsValue(owner.location.city, 'city')" data-ng-show="!isEdit && owner.location.city"></span>
+						<span data-ng-if="!isEdit && !owner.location.city" data-ng-cloak class="info_noSetting">{{ __('common.noSetting') }}</span>
+						<div class="col-sm-2 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
+	            <div class="btn-group">
+	              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{ getOptionsValue(owner.location.city, 'city') }} {% endraw %}<span class="caret"></span></button>
+	              <input data-ng-model="owner.location.city"  type="text" class="dropdown-menu-selected collapse">
+	              <ul class="dropdown-menu">
+	                <li><a href="#" data-value="db.location.city.hk">{{ __('db.location.city.hk') }}</a></li>
+	                <li><a href="#" data-value="db.location.city.sz">{{ __('db.location.city.sz') }}</a></li>
+	              </ul>
+	            </div>
+	          </div>
+					</dd>
+					<dt>{{ __('common.locale') }}</dt>
+					<dd>
+						<span data-ng-bind="getOptionsValue(owner.locale, 'locale')" data-ng-show="!isEdit && owner.locale"></span>
+						<span data-ng-if="!isEdit && !owner.locale" data-ng-cloak class="info_noSetting">{{ __('common.noSetting') }}</span>
+						<div class="col-sm-2 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
+	            <div class="btn-group">
+	              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {% raw %} {{ getOptionsValue(owner.locale, 'locale') }} {% endraw %} <span class="caret"></span></button>
+	              <input data-ng-model="owner.locale"  type="text" class="dropdown-menu-selected collapse">
+	              <ul class="dropdown-menu">
+	                <li><a href="#" data-value="zh-cn">中文(简体)</a></li>
+	                <li><a href="#" data-value="zh-hk">中文(繁體)</a></li>
+	                <li><a href="#" data-value="en">English</a></li>
+	              </ul>
+	            </div>
+	          </div>
+					</dd>
+					<dt>{{ __('common.boats') }}</dt>
+					<dd>
+						<span data-ng-bind="owner.boats.length"></span>
+					</dd>
+					<dt>{{ __('common.createDate') }}</dt>
+					<dd>
+						<span data-ng-bind="switchDate(owner.createDate,'lll')"></span>
+					</dd>
+					<dt>{{ __('common.description') }}</dt>
+					<dd>
+						<div contenteditable="false" data-ng-bind="owner.description" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" id="div_input" data-ng-show="isEdit || owner.description">
+						</div>
+						<span data-ng-if="!isEdit && !owner.description" data-ng-cloak class="info_noSetting">{{ __('common.noSetting') }}</span>
+					</dd>
+				</dl>
+				<div class="col-sm-4 col-sm-offset-4 col-xs-6 col-xs-offset-3" data-ng-show="!isEdit">
+					<button class="btn btn-danger btn-block" data-ng-model="owner" edit>
+						 <span class="glyphicon glyphicon-pencil"></span> {{ __('common.edit') }}
+					</button>
+				</div>
+				<div class="row" data-ng-show="isEdit" data-ng-cloak>
+					<div class="col-sm-4 col-sm-offset-2 col-xs-5 col-xs-offset-1">
+						<button class="btn btn-primary btn-block" data-ng-model="owner" cancel >
 					    <span class="glyphicon glyphicon-remove"></span> {{ __('common.cancel') }}
 					  </button>
-					  <button class="btn btn-danger" confirm data-ng-disabled="ownerInfo.$invalid">
-					    <span class="glyphicon glyphicon-ok"></span> {{ __('common.submit') }}
-					  </button>
 					</div>
-					</form>
+					<div class="col-sm-4 col-xs-5">
+						<button class="btn btn-danger btn-block" confirm data-ng-disabled="ownerInfo.$invalid">
+				    	<span class="glyphicon glyphicon-ok"></span> {{ __('common.submit') }}
+				  	</button>
+					</div>
 				</div>
+				</form>
+			</div>
 		</div>
 	</div>
 </div>
@@ -204,8 +226,8 @@
 				{city: "{{ __('db.location.city.hk') }}", value:"db.location.city.hk"}
 		];
 		$scope.currencys = [
-				{currency:"$HKD(港币)", value:"hkd"},
-				{currency:"￥CNY(人民币)", value:"cny"}
+				{currency:"＄ HKD (港币)", value:"hkd"},
+				{currency:"￥ CNY (人民币)", value:"cny"}
 		];
 		
 		$scope.getOptionsValue = function(val, propertyName){
@@ -276,7 +298,8 @@
   				scope.owner.description = angular.element("#div_input").text();
   				
   				!scope.owner.customLink && (scope.owner.customLink = angular.element("#customLink").val());
-  				scope.owner.mobile = $("#input_area_code").val() + scope.mobile;
+  				scope.owner.mobile = scope.mobile ? ($("#input_area_code").val() + scope.mobile) : "";
+
   				$http.post("/owner/setting/updateOwnerInformation", scope.owner, {
   					headers: {
 					    'X-XSRF-TOKEN': angular.element("#csrf").val()

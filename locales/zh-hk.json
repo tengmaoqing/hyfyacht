@@ -34,6 +34,7 @@
     "boats": "船隻",
     "locale": "語言",
     "invaild_email": "不合法的郵箱",
+    "noSetting": "未設置",
     "bind_mobile": "綁定手機",
     "createDate": "註冊時間",
     "forgotpass": "忘記密碼",
@@ -49,7 +50,7 @@
     "termsandprivacy": "服務條款與隱私政策",
     "email": "E-mail",
     "close": "關閉",
-    "edit": "編輯",
+    "edit": "修改",
     "submit": "提交",
     "cancel": "取消",
     "pay": "付款",
@@ -101,8 +102,8 @@
     },
     "user_setting": {
       "notmatch" : "密碼不正確。",
-      "required_nickname": "昵稱是必須的",
-      "required_name": "姓名是必須的"
+      "required_nickname": "請輸入昵稱",
+      "required_name": "請輸入姓名"
     }
   },
   "nav": {
@@ -182,7 +183,8 @@
       "desc": "產品詳情",
       "include": "費用包含",
       "exclude": "費用不含",
-      "notice": "預定須知"
+      "notice": "預定須知",
+      "more": "此船隻其他產品"
     },
     "info": {
       "duration": "遊玩時間",
@@ -208,6 +210,7 @@
         "base": "套餐基本",
         "extra_time": "額外時間",
         "extra": "額外人員",
+        "max": "最多可選",
         "total": "合計"
       },
       "contact": "聯繫方式",
@@ -287,6 +290,7 @@
     "organiser": "發起人",
     "geospatial": "活動地點",
     "desc": "活動詳情",
+    "more": "最新活動",
     "unlimited": "不限制人數",
     "result": {
       "error":{

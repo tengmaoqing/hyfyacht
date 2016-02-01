@@ -34,6 +34,7 @@
     "boats": "船只",
     "locale": "语言",
     "invaild_email": "不合法的邮箱",
+    "noSetting": "未设置",
     "bind_mobile": "绑定手机",
     "createDate": "注册时间",
     "forgotpass": "忘记密码",
@@ -49,7 +50,7 @@
     "termsandprivacy": "服务条款与隐私政策",
     "email": "电子邮箱",
     "close": "关闭",
-    "edit": "编辑",
+    "edit": "修改",
     "submit": "提交",
     "cancel": "取消",
     "pay": "付款",
@@ -101,8 +102,8 @@
     },
     "user_setting": {
       "notmatch" : "密码不正确。",
-      "required_nickname": "昵称是必须的",
-      "required_name": "姓名是必须的"
+      "required_nickname": "请输入昵称",
+      "required_name": "请输入姓名"
     }
   },
   "nav": {
@@ -181,7 +182,8 @@
       "desc": "产品详情",
       "include": "费用包含",
       "exclude": "费用不含",
-      "notice": "预定须知"
+      "notice": "预定须知",
+      "more": "此船只其他产品"
     },
     "info": {
       "duration": "游玩时间",
@@ -207,6 +209,7 @@
         "base": "套餐基本",
         "extra_time": "额外时间",
         "extra": "额外人员",
+        "max": "最多可选",
         "total": "总计"
       },
       "contact": "联系方式",
@@ -286,6 +289,7 @@
     "organiser": "发起人",
     "geospatial": "活动地点",
     "desc": "活动详情",
+    "more": "最新活动",
     "unlimited": "不限制人数",
     "result": {
       "error":{

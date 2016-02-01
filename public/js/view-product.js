@@ -249,6 +249,7 @@
     $scope.extraSlotChargeName = "";
     $scope.availablePackages = false;
     $scope.invalidItems = [];
+    $scope.maxTips = hgdata.maxTips;
 
     $scope.generateCharge = $scope.$parent.generateCharge;
     $scope.displayAmount = $scope.$parent.displayAmount;

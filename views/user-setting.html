@@ -20,151 +20,163 @@
     </li>
   </ul>
   <hr class="hr-divider">
-	<div class="userSetting">
-		<div class="row">
-			<div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
-					<img src="/img/captain.jpg" class="img-circle img-thumbnail img-responsive" data-ng-show="!user.avatar">
-					<img ng-src="{% raw %}{{ user.avatar }}{% endraw %}" class="img-circle img-thumbnail img-responsive" data-ng-show="user.avatar" data-ng-cloak>
-			</div>		
-		</div>
-		<div class="row">
-				<input type="hidden" name="_csrf" id="csrf" value="{{ _csrf }}">
-				<div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
-					<form name="userInfo" novalidate>
-					<dl class="dl-horizontal" id="userSetting_dl" data-ng-show="!updataPass">
-						<dt>{{ __('common.mobile') }}</dt>
-						<dd>
-								<span data-ng-bind="user.mobile"></span>
-						</dd>
-						<dt>{{ __('common.nickname') }}</dt>
-						<dd data-ng-cloak>
-							<input type="text" data-ng-model="user.nickname" name="nickname" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" required placeholder="{{ __('common.nickname') }}">
-							<div class="text-danger" data-ng-cloak data-ng-show="userInfo.nickname.$invalid">
-								<span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('error.user_setting.required_nickname') }}
-							</div>
-						</dd>
-						<dt>{{ __('common.email') }}</dt>
-						<dd data-ng-cloak>
-							<input type="email" data-ng-model="user.email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}">
-						</dd>
-						<dt>{{ __('common.currency') }}</dt>
-						<dd>
-							<span data-ng-bind="getOptionsValue(user.currency, 'currency')" data-ng-show="!isEdit"></span>
-							<div class="col-sm-2 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
-		            <div class="btn-group">
-		              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{ getOptionsValue(user.currency, 'currency') }} {% endraw %} <span class="caret"></span></button>
-		              <input data-ng-model="user.currency"  type="text" class="dropdown-menu-selected collapse">
-		              <ul class="dropdown-menu">
-		                <li><a href="#" data-value="hkd">$ HKD(港元)</a></li>
-		                <li><a href="#" data-value="cny">￥ CNY(人民币)</a></li>
-		              </ul>
-		            </div>
-		          </div>
-						</dd>
-						<dt>{{ __('common.city') }}</dt>
-						<dd>
-							<span data-ng-bind="getOptionsValue(user.location.city, 'city')" data-ng-show="!isEdit"></span>
-							<div class="col-sm-2 col-xs-4 noPadding" ng-show="isEdit" data-ng-cloak>
-		            <div class="btn-group">
-		              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{ getOptionsValue(user.location.city, 'city') }} {% endraw %}<span class="caret"></span></button>
-		              <input data-ng-model="user.location.city"  type="text" class="dropdown-menu-selected collapse">
-		              <ul class="dropdown-menu">
-		                <li><a href="#" data-value="db.location.city.hk">{{ __('db.location.city.hk') }}</a></li>
-		                <li><a href="#" data-value="db.location.city.sz">{{ __('db.location.city.sz') }}</a></li>
-		              </ul>
-		            </div>
-		          </div>
-						</dd>
-						<dt>{{ __('common.locale') }}</dt>
-						<dd>
-							<span data-ng-bind="getOptionsValue(user.locale, 'locale')" data-ng-show="!isEdit"></span>
-							<div class="col-sm-2 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
-		            <div class="btn-group">
-		              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {% raw %} {{ getOptionsValue(user.locale, 'locale') }} {% endraw %} <span class="caret"></span></button>
-		              <input data-ng-model="user.locale"  type="text" class="dropdown-menu-selected collapse">
-		              <ul class="dropdown-menu">
-		                <li><a href="#" data-value="zh-cn">中文(简体)</a></li>
-		                <li><a href="#" data-value="zh-hk">中文(繁体)</a></li>
-		                <li><a href="#" data-value="en">English</a></li>
-		              </ul>
-		            </div>
-		          </div>
-						</dd>
-						<dt>{{ __('common.createDate') }}:</dt>
-						<dd>
-							<p ng-bind="switchDate(user.createDate,'lll')"></p>
-						</dd>
-					</dl>
-					<div class="text-center" data-ng-show="!isEdit && !updataPass">
-						<button class="btn btn-primary" data-ng-model="user" edit>
-							<span class="glyphicon glyphicon-pencil"></span> {{ __('common.edit') }}
-						</button>
-					</div>
-					<div class="text-center" data-ng-show="isEdit && !updataPass" data-ng-cloak>
-						<button class="btn btn-primary" data-ng-model="user" cancel >
-							<span class="glyphicon glyphicon-remove"></span> {{ __('common.cancel') }}
-						</button>
-						<button class="btn btn-danger" confirm data-ng-disabled="userInfo.$invalid">
-							<span class="glyphicon glyphicon-ok"></span> {{ __('common.submit') }}
-						</button>
-					</div>
-					</form>
-				
-					<dl class="dl-horizontal" data-ng-show="updataPass" data-ng-cloak>
-						<dt data-ng-show = "hasMobile">{{ __('common.password') }}</dt>
-						<dd data-ng-show = "hasMobile">
-							<input type="password" data-ng-model="oldPwd" class="form-control" placeholder="{{ __('common.password') }}">
-							<div class="text-danger" data-ng-cloak data-ng-show=" !isResPass && !oldPwd">
-								<span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.user_setting.notmatch') }}
-							</div>
-						</dd>
-						<dt data-ng-show = "hasMobile">{{ __('common.new_password') }}</dt>
-						<dd data-ng-show = "hasMobile">
-							<input type="password" data-ng-model="newPwd1" data-ng-minlength="6" data-ng-maxlength="30" class="form-control" placeholder="{{ __('common.new_password') }}">
-							<div class="text-danger" data-ng-show="!isPass1 && !newPwd1" data-ng-cloak>
-								<span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.password_len') }}
-							</div>
-						</dd>
-						<dt data-ng-show = "hasMobile">{{ __('common.confirmPassword') }}</dt>
-						<dd data-ng-show = "hasMobile">
-							<input type="password" data-ng-model="newPwd2" class="form-control" placeholder="{{ __('common.confirmPassword') }}">
-							<div class="text-danger" data-ng-show="newPwd2 != newPwd1 && !isPass2" data-ng-cloak>
-								<span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('error.signup.confirm_password') }}
-							</div>
-						</dd>
-						<dt data-ng-show = "!hasMobile">{{ __('common.bind_mobile')}}</dt>
-						<dd data-ng-show = "!hasMobile">
-							<div class="col-sm-4 col-xs-4">
-					      <div class="btn-group">
-					        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">+86 <span class="caret"></span></button>
-					        <input id="input_area_code" type="hidden" class="dropdown-menu-selected" value="86">
-					        <ul class="dropdown-menu">
-					          <li><a href="#" data-value="86">+86</a></li>
-					          <li><a href="#" data-value="852">+852</a></li>
-					        </ul>
-					      </div>
-					    </div>
-							<div class="col-sm-8 col-xs-8">
-					      <input type="number" id="input_mobile" data-ng-model="mobile" maxlength="11" class="form-control">
-					    </div>
-						</dd>
-						<dt data-ng-show = "!hasMobile" >{{ __('common.smscode') }}</dt>
-						<dd data-ng-show = "!hasMobile" >
-							<div class="col-sm-4 col-xs-4">
-				        <input type="number" class="form-control" data-ng-model="code" pattern=".{4,4}">
-				      </div>
-					    <div class="col-sm-8 col-xs-8">
-					     	<button id="btn-getsmscode" type="button" class="btn btn-primary btn-block">{{ __('common.getsmscode') }}</button>
-					    </div>
-						</dd>
-					</dl>
-					<div class="col-lg-12 text-center" data-ng-show="updataPass" data-ng-cloak>
-						<button class="btn btn-danger" confirm>
-							<span class="glyphicon glyphicon-ok"></span>{{ __('common.submit') }}
-						</button>
-					</div>
-				</div>
-		</div>
+	<div class="userSetting row">
+    <div class="thumbnail col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
+      <div class="columns-sm text-center">
+        <img src="{{ preset.imgHost }}/captain.jpg" class="img-circle img-thumbnail" data-ng-show="!user.avatar">
+        <img ng-src="{% raw %}{{ user.avatar }}{% endraw %}" class="img-thumbnail img-responsive" data-ng-show="user.avatar" data-ng-cloak>
+      </div>
+      <div>
+        <input type="hidden" name="_csrf" id="csrf" value="{{ _csrf }}">
+        <form name="userInfo" novalidate>
+          <dl class="dl-horizontal" id="userSetting_dl" data-ng-show="!updataPass">
+            <dt>{{ __('common.mobile') }}</dt>
+            <dd>
+              <span data-ng-bind="user.mobile" data-ng-if="user.mobile"></span>
+              <button type="button" class="btn btn-primary" ng-click="toggle(true)" data-ng-if="!user.mobile" data-ng-cloak>{{ __('common.bind_mobile') }}</button>
+            </dd>
+            <dt>{{ __('common.nickname') }}</dt>
+            <dd data-ng-cloak>
+              <input type="text" data-ng-model="user.nickname" name="nickname" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" required placeholder="{{ __('common.nickname') }}" data-ng-show="isEdit || user.nickname">
+              <span data-ng-if = "!user.nickname && !isEdit" class="info_noSetting">{{ __('common.noSetting') }}</span>
+              <div class="text-danger" data-ng-cloak data-ng-show="userInfo.nickname.$invalid && isEdit">
+                <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.user_setting.required_nickname') }}
+              </div>
+            </dd>
+            <dt>{{ __('common.email') }}</dt>
+            <dd data-ng-cloak>
+              <input type="email" data-ng-model="user.email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" data-ng-show="isEdit || user.email">
+              <span data-ng-if = "!user.email && !isEdit" class="info_noSetting">{{ __('common.noSetting') }}</span>
+            </dd>
+            <dt>{{ __('common.currency') }}</dt>
+            <dd>
+              <span data-ng-bind="getOptionsValue(user.currency, 'currency')" data-ng-show="!isEdit && user.currency"></span>
+              <span data-ng-if = "!isEdit && !user.currency" class="info_noSetting">{{ __('common.noSetting') }}</span>
+              <div class="col-sm-2 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{ getOptionsValue(user.currency, 'currency') }} {% endraw %} <span class="caret"></span></button>
+                  <input data-ng-model="user.currency"  type="text" class="dropdown-menu-selected collapse">
+                  <ul class="dropdown-menu">
+                    <li><a href="#" data-value="cny">￥ CNY (人民币)</a></li>
+                    <li><a href="#" data-value="hkd">＄ HKD (港币)</a></li>
+                  </ul>
+                </div>
+              </div>
+            </dd>
+            <dt>{{ __('common.city') }}</dt>
+            <dd>
+              <span data-ng-bind="getOptionsValue(user.location.city, 'city')" data-ng-show="!isEdit && user.location.city"></span>
+              <span data-ng-if = "!isEdit && !user.location.city" class="info_noSetting">{{ __('common.noSetting') }}</span>
+              <div class="col-sm-2 col-xs-4 noPadding" ng-show="isEdit" data-ng-cloak>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{ getOptionsValue(user.location.city, 'city') }} {% endraw %}<span class="caret"></span></button>
+                  <input data-ng-model="user.location.city"  type="text" class="dropdown-menu-selected collapse">
+                  <ul class="dropdown-menu">
+                    <li><a href="#" data-value="db.location.city.hk">{{ __('db.location.city.hk') }}</a></li>
+                    <li><a href="#" data-value="db.location.city.sz">{{ __('db.location.city.sz') }}</a></li>
+                  </ul>
+                </div>
+              </div>
+            </dd>
+            <dt>{{ __('common.locale') }}</dt>
+            <dd>
+              <span data-ng-bind="getOptionsValue(user.locale, 'locale')" data-ng-show="!isEdit && user.locale"></span>
+              <span data-ng-if = "!isEdit && !user.locale" class="info_noSetting">{{ __('common.noSetting') }}</span>
+              <div class="col-sm-2 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {% raw %} {{ getOptionsValue(user.locale, 'locale') }} {% endraw %} <span class="caret"></span></button>
+                  <input data-ng-model="user.locale"  type="text" class="dropdown-menu-selected collapse">
+                  <ul class="dropdown-menu">
+                    <li><a href="#" data-value="en">English</a></li>
+                    <li><a href="#" data-value="zh-cn">中文(简体)</a></li>
+                    <li><a href="#" data-value="zh-hk">中文(繁体)</a></li>
+                  </ul>
+                </div>
+              </div>
+            </dd>
+            <dt>{{ __('common.createDate') }}</dt>
+            <dd>
+              <p ng-bind="switchDate(user.createDate,'lll')"></p>
+            </dd>
+          </dl>
+          <div class="row" data-ng-show="!isEdit && !updataPass">
+            <div class="col-sm-4 col-sm-offset-4 col-xs-6 col-xs-offset-3">
+              <button class="btn btn-danger btn-block" data-ng-model="user" edit>
+                <span class="glyphicon glyphicon-pencil"></span> {{ __('common.edit') }}
+              </button>
+            </div>
+          </div>
+          <div class="row" data-ng-show="isEdit && !updataPass" data-ng-cloak>
+            <div class="col-sm-4 col-sm-offset-2 col-xs-5 col-xs-offset-1">
+              <button class="btn btn-primary btn-block" data-ng-model="user" cancel >
+                <span class="glyphicon glyphicon-remove"></span> {{ __('common.cancel') }}
+              </button>
+            </div>
+            <div class="col-sm-4 col-xs-5">
+              <button class="btn btn-danger btn-block" confirm data-ng-disabled="userInfo.$invalid">
+                <span class="glyphicon glyphicon-ok"></span> {{ __('common.submit') }}
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <dl class="dl-horizontal" data-ng-show="updataPass" data-ng-cloak>
+          <dt data-ng-show = "hasMobile">{{ __('common.password') }}</dt>
+          <dd data-ng-show = "hasMobile">
+            <input type="password" data-ng-model="oldPwd" class="form-control" placeholder="{{ __('common.password') }}">
+            <div class="text-danger" data-ng-cloak data-ng-show=" !isResPass && !oldPwd">
+              <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.user_setting.notmatch') }}
+            </div>
+          </dd>
+          <dt data-ng-show = "hasMobile">{{ __('common.new_password') }}</dt>
+          <dd data-ng-show = "hasMobile">
+            <input type="password" data-ng-model="newPwd1" data-ng-minlength="6" data-ng-maxlength="30" class="form-control" placeholder="{{ __('common.new_password') }}">
+            <div class="text-danger" data-ng-show="!isPass1 && !newPwd1" data-ng-cloak>
+              <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.password_len') }}
+            </div>
+          </dd>
+          <dt data-ng-show = "hasMobile">{{ __('common.confirmPassword') }}</dt>
+          <dd data-ng-show = "hasMobile">
+            <input type="password" data-ng-model="newPwd2" class="form-control" placeholder="{{ __('common.confirmPassword') }}">
+            <div class="text-danger" data-ng-show="newPwd2 != newPwd1 && !isPass2" data-ng-cloak>
+              <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.confirm_password') }}
+            </div>
+          </dd>
+          <dt data-ng-show = "!hasMobile">{{ __('common.bind_mobile')}}</dt>
+          <dd data-ng-show = "!hasMobile">
+            <div class="col-sm-4 col-xs-4">
+              <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">+86 <span class="caret"></span></button>
+                <input id="input_area_code" type="hidden" class="dropdown-menu-selected" value="86">
+                <ul class="dropdown-menu">
+                  <li><a href="#" data-value="86">+86</a></li>
+                  <li><a href="#" data-value="852">+852</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-sm-8 col-xs-8">
+              <input type="number" id="input_mobile" data-ng-model="mobile" maxlength="11" class="form-control">
+            </div>
+          </dd>
+          <dt data-ng-show = "!hasMobile" >{{ __('common.smscode') }}</dt>
+          <dd data-ng-show = "!hasMobile" >
+            <div class="col-sm-4 col-xs-4">
+              <input type="number" class="form-control" data-ng-model="code" pattern=".{4,4}">
+            </div>
+            <div class="col-sm-8 col-xs-8">
+              <button id="btn-getsmscode" type="button" class="btn btn-primary btn-block">{{ __('common.getsmscode') }}</button>
+            </div>
+          </dd>
+        </dl>
+        <div class="row">
+          <div class="col-sm-4 col-sm-offset-4 col-xs-6 col-xs-offset-3" data-ng-show="updataPass" data-ng-cloak>
+            <button class="btn btn-danger btn-block" confirm>
+              <span class="glyphicon glyphicon-ok"></span>{{ __('common.submit') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 	</div>
 </div>
 
@@ -242,8 +254,8 @@
 			];
 
 			$scope.currencys = [
-				{currency:"$HKD(港币)", value:"hkd"},
-				{currency:"￥CNY(人民币)", value:"cny"}
+        {currency:"＄ HKD (港币)", value:"hkd"},
+        {currency:"￥ CNY (人民币)", value:"cny"}
 			];
 
 			$scope.toggle = function(bool){
