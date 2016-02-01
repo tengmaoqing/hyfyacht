@@ -33,6 +33,7 @@
     "boats": "船隻",
     "locale": "語言",
     "invaild_email": "不合法的郵箱",
+    "noSetting": "未設置",
     "bind_mobile": "綁定手機",
     "createDate": "註冊時間",
     "forgotpass": "忘記密碼",
@@ -48,7 +49,7 @@
     "termsandprivacy": "服務條款與隱私政策",
     "email": "E-mail",
     "close": "關閉",
-    "edit": "編輯",
+    "edit": "修改",
     "submit": "提交",
     "cancel": "取消",
     "pay": "付款",
@@ -101,8 +102,8 @@
     },
     "user_setting": {
       "notmatch" : "密碼不正確。",
-      "required_nickname": "昵稱是必須的",
-      "required_name": "姓名是必須的"
+      "required_nickname": "請輸入昵稱",
+      "required_name": "請輸入姓名"
     }
   },
   "nav": {
@@ -165,7 +166,8 @@
         "one": "為您找到 %d 艘船：",
         "other": "為您找到 %d 艘船："
       },
-      "boatsofowner": "此船東的船隻"
+      "boatsofowner": "此船東的船隻",
+      "otherBoats" : "此船東的其它船隻"
     },
     "detail": {
       "about": "關於此船隻",

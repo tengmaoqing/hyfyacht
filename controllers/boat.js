@@ -2,6 +2,7 @@
  * Created by qxj on 15/10/17.
  */
 var Boat = require('hyfbase').Boat;
+var Owner = require('hyfbase').Owner;
 
 exports.getBoat = function(req, res, next) {
   Boat.findOne({
@@ -28,6 +29,26 @@ exports.getBoat = function(req, res, next) {
     return res.render('boat-detail', {boat: boat});
 
   });
+};
+
+exports.getMoreBoats = function(req, res, next){
+
+  Owner.findOne({
+    _id : req.query.ownerId
+  }).populate({
+    path : 'boats',
+    match: {
+      display: true,
+      _id : { $ne: req.query.boatId}
+    }
+  }).exec(function(err, owner){
+    if (err) {
+      err.status = 400;
+      return next(err);
+    }
+
+    return res.json({boats: owner.boats});
+  })
 };
 
 exports.getBoats = function(req, res, next) {

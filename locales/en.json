@@ -33,6 +33,7 @@
     "boats": "Boats",
     "locale": "Locale",
     "invaild_email": "Invaild Email",
+    "noSetting": "Please Setting",
     "bind_mobile": "Bind Mobile No.",
     "createDate": "CreateDate",
     "forgotpass": "Forgot password",
@@ -162,7 +163,8 @@
         "one": "Find %d boat for you:",
         "other": "Find %d boats for you:"
       },
-      "boatsofowner": "Boats of this owner"
+      "boatsofowner": "Boats of this owner",
+      "otherBoats" : "Other boats of this owner"
     },
     "detail": {
       "about": "About this boat",
