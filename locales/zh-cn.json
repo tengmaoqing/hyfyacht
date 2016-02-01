@@ -180,7 +180,8 @@
       "desc": "产品详情",
       "include": "费用包含",
       "exclude": "费用不含",
-      "notice": "预定须知"
+      "notice": "预定须知",
+      "more": "此船只其他产品"
     },
     "info": {
       "duration": "游玩时间",
@@ -206,6 +207,7 @@
         "base": "套餐基本",
         "extra_time": "额外时间",
         "extra": "额外人员",
+        "max": "最多可选",
         "total": "总计"
       },
       "contact": "联系方式",
@@ -285,6 +287,7 @@
     "organiser": "发起人",
     "geospatial": "活动地点",
     "desc": "活动详情",
+    "more": "最新活动",
     "unlimited": "不限制人数",
     "result": {
       "error":{

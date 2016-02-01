@@ -250,7 +250,7 @@
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
                       <div class="row">
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }}){{ item.max ? ' (max: ' + item.max + ')' : '' }} </strong></div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }}){{ item.max ? ' (' + maxTips + ': ' + item.max + ')' : '' }} </strong></div>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right">
                           <strong data-ng-if="item.type == 'single'">{{ selectedItems[item.name] ? selectedItems[item.name].amount : 0 }}</strong>
                           <input type="number" class="form-control input-small text-right" placeholder="0" data-ng-if="item.type == 'multi'" data-ng-model="inputValue[item.name]" data-ng-change="inputItem(item)" min="0" max="{{ item.max }}">
@@ -444,7 +444,7 @@
   </div>
   <div class="container" data-ng-controller="moreController">
     <div data-ng-if="boat.products.length > 0" data-ng-cloak>
-      <h3>{{ __('common.relativeProduct') }}</h3>
+      <h3>{{ __('product.section.more') }}</h3>
       <hr class="hr-divider">
       <div class="row">
         <div class="boat-product col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-repeat="product in boat.products">
@@ -501,7 +501,8 @@
     currency: {{ preset.configCurrency|json|safe }},
     packages: {{ product.packages|json|safe }},
     baseCurrency: "{{ product.currency|safe }}",
-    timeNotAvailable: "{{ __('product.booking.error.invaild_time') }}"
+    timeNotAvailable: "{{ __('product.booking.error.invaild_time') }}",
+    maxTips: "{{ __('product.booking.package.max') }}"
   };
 </script>
 <script src="{{ preset.staticHost }}/js/view-product.js?_=20160120"></script>
