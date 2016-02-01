@@ -96,6 +96,33 @@
   <hr class="hr-divider">
   <div id="boat-geospatial" class="hyf-map-container"></div>
   {% endif %}
+  <div data-ng-controller="moreBoats" data-ng-app="boat">
+    <div data-ng-if="boats.length > 0" data-ng-cloak>
+      <h3>{{ __('boat.list.otherBoats') }}</h3>
+      <hr class="hr-divider">
+      <div class="row">
+        <div class="boat-product col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-repeat="boat in boats">
+          <div class="thumbnail">
+              {% raw %}
+            <a data-ng-href="/boat/{{ boat._id }}">
+              <div class="boat-thumbnail" data-ng-style="{'background-image': 'url({{ boat.thumbnail }})'}"></div>
+              <div class="caption text-muted">
+                <h4 data-ng-bind="boat.name"></h4>
+                <div class="row">
+                  <h3 class="col-xs-6 text-danger">{{ displayAmount(generateCharge(boat.baseCharge, boat.currency)) }}</h3>
+                  <p class="col-xs-6 text-right boat-product-learn">
+                      {% endraw %}
+                      {{ __('boat.detail.learn') }}
+                    <span class="glyphicon glyphicon-menu-right"></span>
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% include './footer.html' %}
@@ -126,6 +153,40 @@
   }
 
   loadBaiduMap();
+</script>
+<script>
+  window.hgdata = {
+    clientCurrency: "{{ preset.currency|safe }}",
+    currency: {{ preset.configCurrency|json|safe }}
+  };
+</script>
+<script src="http://cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
+<script>
+
+(function(window){
+  var hgdata = window.hgdata;
+  var clientCurrency = hgdata.clientCurrency;
+  var currency = hgdata.currency;
+
+  var app = angular.module("boat", []);
+
+  app.controller("moreBoats", function($scope, $http){
+    $scope.prefix = clientCurrency == 'hkd' ? '$' : '￥';
+
+    $http.get("/boat/moreBoats?boatId={{ boat._id.valueOf() }}&ownerId={{ boat.owner._id.valueOf() }}").
+    success(function(res){
+      $scope.boats = res.boats;
+    });
+
+    $scope.generateCharge = function(charge, baseCurrency){
+      return parseInt(charge * currency[clientCurrency] / currency[baseCurrency]);
+    };
+
+    $scope.displayAmount = function(amount){
+      return $scope.prefix + (amount / 100).toFixed(2);
+    };
+  });
+})(window);
 </script>
 {% endif %}
 {% endblock %}

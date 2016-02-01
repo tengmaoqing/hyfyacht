@@ -8,6 +8,7 @@ var boat = require('../controllers/boat');
 
 router.get('/', boat.getBoats);
 
+router.get('/moreBoats', boat.getMoreBoats);
 router.get('/:id', boat.getBoat);
 router.get('/:id/:name', boat.getBoat);
 

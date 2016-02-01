@@ -489,12 +489,12 @@ exports.updataUserInformation = function(req, res, next){
       return next(err);
     }
     
-    if( doc.hashedPassword ){
+    if( doc.hashedPassword && user.newPwd1 ){
       if( !user.oldPwd || doc.hashedPassword != hashPassword(user.oldPwd) ){
         return res.json({ error: 'error.user_setting.notmatch' });
       }
     }
-
+    
     if(!user.newPwd1 && !user.newMobile){
       doc.nickname = user.nickname;
       doc.email = user.email;
