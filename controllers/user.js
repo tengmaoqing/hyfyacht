@@ -488,20 +488,27 @@ exports.updataUserInformation = function(req, res, next){
       err.status = 400;
       return next(err);
     }
-
-    if( user.newPwd1 && doc.hashedPassword && doc.hashedPassword != hashPassword(user.oldPwd) ){
-      return res.json({ error: 'error.user_setting.notmatch' });
+    
+    if( doc.hashedPassword ){
+      if( !user.oldPwd || doc.hashedPassword != hashPassword(user.oldPwd) ){
+        return res.json({ error: 'error.user_setting.notmatch' });
+      }
     }
 
-    doc.nickname = user.nickname;
-    doc.email = user.email;
-    doc.locale = user.locale ? user.locale.value : '';
-    doc.currency = user.currency ? user.currency.value : '';
-    doc.location = user.location ? {
-      country : user.location.country ? user.location.country.value : '',
-      city : user.location.city ? user.location.city.value : ''
-    } : {};
-    user.newPwd1 && (doc.hashedPassword = hashPassword(user.newPwd1));
+    if(!user.newPwd1 && !user.newMobile){
+      doc.nickname = user.nickname;
+      doc.email = user.email;
+      doc.locale = user.locale;
+      doc.currency = user.currency;
+      doc.location = user.location ? {
+        country : user.location.country,
+        city : user.location.city
+      } : {};
+    } 
+    if( user.newPwd1 ) {
+      doc.hashedPassword = hashPassword(user.newPwd1);
+    }
+
     flag && (doc.mobile = newMobile);
     
     doc.save(function(err, savedUser){

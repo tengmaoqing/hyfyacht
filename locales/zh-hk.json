@@ -100,7 +100,9 @@
       "noUser": "該手提電話還沒有註冊。"
     },
     "user_setting": {
-      "notmatch" : "密碼不正確。"
+      "notmatch" : "密碼不正確。",
+      "required_nickname": "昵稱是必須的",
+      "required_name": "姓名是必須的"
     }
   },
   "nav": {
@@ -209,6 +211,8 @@
       },
       "contact": "聯繫方式",
       "name": "姓名",
+      "first_name": "姓",
+      "last_name": "名",
       "name_plh": "聯繫人",
       "mobile": "手提電話",
       "mobile_plh": "中國內地或香港的手提電話",
@@ -324,6 +328,9 @@
       "cancel": "已取消"
     },
     "location": {
+      "country":{
+        "cn": "中國"
+      },
       "city": {
         "sz": "深圳",
         "hk": "香港"

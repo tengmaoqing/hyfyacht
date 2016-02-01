@@ -100,7 +100,9 @@
       "noUser": "该手机号还没有注册。"
     },
     "user_setting": {
-      "notmatch" : "密码不正确。"
+      "notmatch" : "密码不正确。",
+      "required_nickname": "昵称是必须的",
+      "required_name": "姓名是必须的"
     }
   },
   "nav": {
@@ -208,6 +210,8 @@
       },
       "contact": "联系方式",
       "name": "姓名",
+      "first_name": "姓",
+      "last_name": "名",
       "name_plh": "联系人",
       "mobile": "手机号码",
       "mobile_plh": "中国内地或香港的手机号码",
@@ -323,6 +327,9 @@
       "cancel": "已取消"
     },
     "location": {
+      "country":{
+        "cn": "中国"
+      },
       "city": {
         "sz": "深圳",
         "hk": "香港"

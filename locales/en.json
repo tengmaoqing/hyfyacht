@@ -100,7 +100,9 @@
       "noUser": "This mobile no. has not been registered."
     },
     "user_setting": {
-      "notmatch" : "Invalid password."
+      "notmatch" : "Invalid password.",
+      "required_nickname": "Invalid nickname",
+      "required_name": "Invalid name"
     }
   },
   "nav": {
@@ -208,6 +210,8 @@
       },
       "contact": "Contact",
       "name": "Name",
+      "first_name": "First Name",
+      "last_name": "Last Name",
       "name_plh": "Name",
       "mobile": "Mobile",
       "mobile_plh": "Mobile No. (China or HK)",
@@ -323,6 +327,9 @@
       "cancel": "Canceled"
     },
     "location": {
+      "country":{
+        "cn": "China"
+      },
       "city": {
         "sz": "Shenzhen",
         "hk": "Hong Kong"

@@ -735,36 +735,19 @@ td.fc-bgevent {
 }
 
 .userSetting img{
-  width: 100%;
-  max-width: 200px;
-  max-height: 100%;
+  width: 65%;
+  max-width: 100px;
+  max-height: 65%;
 }
 
-.userSetting input{
-  width: 99%;
-  border:none; 
-}
 .userSetting .editInput{
-  background: #eeeeee;
+  border:none;
 }
+
 #div_input{
   border-radius: 6px;
   outline:none;
   min-height: 60px;
-}
-
-p.pwd_unPass{
-  color:red;
-}
-
-.userSetting select{
-  font-size: 12px;
-  height: 30px;
-}
-
-.search-head{
-  padding: 20px 0 20px 0;
-  background: #fff;
 }
 
 .noPadding{
