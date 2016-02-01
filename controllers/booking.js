@@ -218,6 +218,11 @@ exports.checkBooking = function(req, res, next){
         var index = selectedPackage.items.map(function(i){return i.name}).indexOf(items[item].name);
         if(index > -1 && items[item].amount > 0){
           var data = selectedPackage.items[index];
+          
+          if(data.max && data.max < items[item].amount){
+            return fail('product.booking.result.error.other');
+          }
+
           selectedItems.push({
             name: data.name,
             charge: generateCharge(data.charge),
