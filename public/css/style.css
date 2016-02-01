@@ -15,14 +15,22 @@ button, a {
   -webkit-appearance: none;
 }
 
-button, input, a, input:focus, button:focus, a:active {
-  outline: none; !important;
+button, input, a, input:focus, button:focus, a:focus, a:active {
+  outline: none;
+}
+
+button::-moz-focus-inner {
+  border: none;
 }
 
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 a {
