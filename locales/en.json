@@ -1,7 +1,6 @@
 {
   "site": {
     "title": "HGBOATING",
-    "slogan": "KEEP CALM & LOVE BOATING",
     "info": {
       "company": "Company",
       "about": "About",
@@ -79,7 +78,8 @@
     "back_to_top": "Back to top",
     "detail": "Detail",
     "holiday": "Holiday",
-    "filter": "Filter"
+    "filter": "Filter",
+    "coming_soon": "Coming Soon"
   },
   "error": {
     "login": {
@@ -118,7 +118,13 @@
     "booking_detail": "Booking Detail",
     "events": "My Events",
     "event_detail": "Event Detail",
-    "settings": "Account Settings"
+    "settings": "Account Settings",
+    "booking": {
+      "no_booking": "You don't have booking. Book one:"
+    },
+    "event": {
+      "no_event": "You have not attended any event. Attend now:"
+    }
   },
   "owner": {
     "nav": {
@@ -149,8 +155,16 @@
     },
     "column": {
       "hot": "Hot",
-      "entertainments": "Entertainments"
-    }
+      "entertainments": "Entertainments",
+      "diving": "Diving",
+      "fishing": "Fishing",
+      "surfing": "Surfing",
+      "cruise": "Cruise",
+      "share": "Share",
+      "news": "News"
+    },
+    "slogan": "LOVE BOATING",
+    "sub_slogan": "Rent unique boats to having fun"
   },
   "boat": {
     "list": {
