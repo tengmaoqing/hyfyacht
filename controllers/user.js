@@ -448,12 +448,46 @@ exports.updataUserInformation = function(req, res, next){
   var user = req.body;
   var flag = false;
 
-  if(user.newPwd1){
-    if(user.newPwd1.length<6 || user.newPwd1.length>30){
-      var err = new Error();
-      err.status = 400;
-      return next(err);
+  req.checkBody ({
+    'nickname' : {
+      notEmpty : true,
+      isLength : {
+        options: [0, 16]
+      },
+      errorMessage: 'Invalid nickname'
     }
+  });
+
+  if (user.newPwd1) {
+    req.checkBody({
+      'newPwd1' :{
+        notEmpty:true,
+        isLength: {
+          options: [6, 30]
+        },
+        errorMessage: 'Invalid newPwd1'
+      }
+    });
+  }
+
+  if (user.email) {
+    req.checkBody ({
+      'email' : {
+        notEmpty : true,
+        isEmail : {
+
+        },
+        errorMessage: 'Invalid Email'
+      }
+    });
+  }
+
+  var errors = req.validationErrors();
+  if(errors){
+    console.log(errors);
+    var err = new Error('There have been validation errors: ' + util.inspect(errors));
+    err.status = 400;
+    return next(err);
   }
 
   if(user.newMobile){

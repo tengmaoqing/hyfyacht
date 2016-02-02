@@ -84,6 +84,27 @@ exports.updateOwnerInformation = function(req, res, next){
     }
   });
 
+  if (owner.email){
+    req.checkBody ({
+      'email' : {
+        notEmpty : true,
+        isEmail : {
+
+        },
+        errorMessage: 'Invalid Email'
+      }
+    });
+  }
+
+  if(owner.newCustomLink){
+    req.checkBody ({
+      'newCustomLink' : {
+        notEmpty : true,
+        errorMessage: 'Invalid customLink'
+      }
+    });
+  }
+
   var errors = req.validationErrors();
   if(errors){
     console.log(errors);
@@ -96,16 +117,22 @@ exports.updateOwnerInformation = function(req, res, next){
     return res.json({ error: 'error.user_setting.customLink' });
   };
 
-  Owner.findOne({
-    customLink: owner.newCustomLink
-  }).exec(function(err, doc){
-    if (err) {
-      err.status = 400;
-      return next(err);
+  co(function *(){
+    try {
+      var findCustomLink;
+      if (owner.newCustomLink) {
+
+        findCustomLink = yield Owner.findOne({
+          customLink: owner.newCustomLink
+        }).exec();
+      }
+    } catch (err) {
+      err.status = 500;
+      throw err;
     }
 
-    if (doc) {
-        return res.json({ error: 'error.user_setting.customLink' });
+    if (findCustomLink) {
+      return res.json({ error: 'error.user_setting.customLink' });
     }
 
     Owner.findOne({
@@ -138,6 +165,7 @@ exports.updateOwnerInformation = function(req, res, next){
         res.json(newOwner);
       });
     });
+
   });
 };
 
