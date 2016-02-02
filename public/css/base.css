@@ -545,6 +545,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     word-break: keep-all;
+    vertical-align: bottom;
   }
 }
 
