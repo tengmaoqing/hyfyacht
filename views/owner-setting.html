@@ -71,9 +71,9 @@
 					</dd>
 					<dt>{{ __('common.email') }}</dt>
 					<dd>
-						<input type="email" data-ng-model="owner.email" name="email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" data-ng-show="isEdit || owner.email" data-ng-cloak>
+						<input type="email" data-ng-model="owner.email" name="email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" data-ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-z]{2,4})$/" data-ng-show="isEdit || owner.email" data-ng-cloak>
 						<span data-ng-if="!isEdit && !owner.email" data-ng-cloak class="info_noSetting">{{ __('common.noSetting') }}</span>
-						<div class="text-danger" data-ng-cloak data-ng-show="ownerInfo.email.$invalid && isEdit">
+						<div class="text-danger" data-ng-cloak data-ng-show="ownerInfo.email.$error.pattern && isEdit">
               <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('common.invaild_email') }}
             </div>
 					</dd>
@@ -280,6 +280,7 @@
   					
   				angular.copy(scope.userTemp, ngModel.$modelValue);
   				scope.isEdit = false;
+  				scope.ownerInfo_err = false;
   				scope.$apply();
 
   				angular.element("#div_input").text(scope.tempdes);
@@ -303,7 +304,6 @@
 
   				scope.owner.mobile = scope.mobile ? ($("#input_area_code").val() + scope.mobile) : "";
 
-  				console.log(scope.owner)
   				$http.post("/owner/setting/updateOwnerInformation", scope.owner, {
   					headers: {
 					    'X-XSRF-TOKEN': angular.element("#csrf").val()

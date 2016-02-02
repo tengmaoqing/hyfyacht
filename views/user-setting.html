@@ -50,9 +50,9 @@
             </dd>
             <dt>{{ __('common.email') }}</dt>
             <dd data-ng-cloak>
-              <input type="email" name="email" data-ng-model="user.email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" data-ng-show="isEdit || user.email">
+              <input type="email" name="email" data-ng-model="user.email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" data-ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-z]{2,4})$/" data-ng-show="isEdit || user.email">
               <span data-ng-if = "!user.email && !isEdit" class="info_noSetting">{{ __('common.noSetting') }}</span>
-              <div class="text-danger" data-ng-cloak data-ng-show="userInfo.email.$invalid && isEdit">
+              <div class="text-danger" data-ng-cloak data-ng-show="userInfo.email.$error.pattern && isEdit">
                 <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('common.invaild_email') }}
               </div>
             </dd>
@@ -139,9 +139,6 @@
           <dt data-ng-show = "hasMobile">{{ __('common.password') }}</dt>
           <dd data-ng-show = "hasMobile">
             <input type="password" data-ng-model="oldPwd" class="form-control" placeholder="{{ __('common.password') }}">
-            <div class="text-danger" data-ng-cloak data-ng-show=" !isResPass && !oldPwd">
-              <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.user_setting.notmatch') }}
-            </div>
           </dd>
           <dt data-ng-show = "hasMobile">{{ __('common.new_password') }}</dt>
           <dd data-ng-show = "hasMobile">
@@ -247,7 +244,6 @@
   		$scope.isEdit = false;
   		$scope.userTemp = {};
   		$scope.isPass1 = true;
-  		$scope.isResPass = true;
   		$scope.isPass2 = true;
   		$scope.updataPass =false;
   		$scope.isPassEmail = true;
@@ -369,10 +365,10 @@
   						}
 
   						if( user.error){
-  							scope.isResPass = false;
   							scope.oldPwd = "";
+                scope.newPwd1 = "";
+                scope.newPwd2 = "";
                 scope.userInfo_err = true;
-                console.log(user.error);
                 user.error == "error.signup.sms_expired" && (scope.userInfo_err1 = true);
                 user.error == "error.signup.sms" && (scope.userInfo_err2 = true);
                 user.error == "error.user_setting.notmatch" && (scope.userInfo_err3 = true);
