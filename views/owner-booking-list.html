@@ -129,8 +129,9 @@
       widgetPositioning: {
         horizontal: 'auto',
         vertical: 'bottom'
-      }
-    }).on("dp.hide", function(){
+      },
+      useCurrent:false
+    }).on("dp.change", function(){
       window.location.href = "/owner/booking?selectBoat={{ query.selectBoat }}&selectDate="+$("#timepick").val();
     });
   });
