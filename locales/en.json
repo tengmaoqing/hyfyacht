@@ -40,7 +40,7 @@
     "mobile": "Mobile",
     "username": "Username",
     "password": "Password",
-    "change_password":"Change Your Password",
+    "change_password":"Change Password",
     "new_password": "New Password",
     "confirmPassword": "Confirm Password",
     "smscode": "SMS Code",
