@@ -117,7 +117,13 @@
     "booking_detail": "定單詳情",
     "events": "我的活動",
     "event_detail": "活動訂單詳情",
-    "settings": "帳戶設定"
+    "settings": "帳戶設定",
+    "booking": {
+      "no_booking": "你尚未有定單，現在去預定："
+    },
+    "event": {
+      "no_event": "你尚未參加任何活動，現在去看看吧："
+    }
   },
   "owner": {
     "nav": {

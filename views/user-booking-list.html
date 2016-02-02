@@ -15,6 +15,11 @@
     <h1>{{ __('user.bookings') }}</h1>
   </div>
   <div class="booking-list">
+    {% if bookings.length < 1 %}
+    <div class="alert alert-warning">
+      {{ __('user.booking.no_booking') }} <a href="/boat">{{ __('nav.boat') }}</a>
+    </div>
+    {% endif %}
     {% for booking in bookings %}
     <div class="panel panel-info">
       <div class="panel-heading">

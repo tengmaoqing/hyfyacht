@@ -117,7 +117,13 @@
     "booking_detail": "定单详情",
     "events": "我的活动",
     "event_detail": "活动订单详情",
-    "settings": "个人设置"
+    "settings": "个人设置",
+    "booking": {
+      "no_booking": "您目前没有定单，现在去预定："
+    },
+    "event": {
+      "no_event": "您目前还没有参加任何活动，现在去看看吧："
+    }
   },
   "owner": {
     "nav": {

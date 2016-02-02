@@ -115,7 +115,13 @@
     "booking_detail": "Booking Detail",
     "events": "My Events",
     "event_detail": "Event Detail",
-    "settings": "Account Settings"
+    "settings": "Account Settings",
+    "booking": {
+      "no_booking": "You don't have booking. Book one:"
+    },
+    "event": {
+      "no_event": "You have not attended any event. Attend now:"
+    }
   },
   "owner": {
     "nav": {
