@@ -3,6 +3,8 @@
  */
 var Owner = require('hyfbase').Owner;
 var Boat = require('hyfbase').Boat;
+var customLinkTest = require('../public/js/customLinkTest');
+var co = require('co');
 
 exports.getOwnerByCustomLink = function(req, res, next) {
   Owner.getOwnerAndBoats({
@@ -67,34 +69,74 @@ exports.getOwnerInformation = function(req, res, next) {
 exports.updateOwnerInformation = function(req, res, next){
   var owner = req.body;
 
+  req.checkBody({
+    'nickname':{
+      notEmpty:true,
+      errorMessage: 'Invalid nickname'
+    },
+    'name':{
+      notEmpty:true,
+      errorMessage: 'Invalid name'
+    },
+    'mobile' :{
+      notEmpty: true,
+      errorMessage: 'Invalid mobile'
+    }
+  });
+
+  var errors = req.validationErrors();
+  if(errors){
+    console.log(errors);
+    var err = new Error('There have been validation errors: ' + util.inspect(errors));
+    err.status = 400;
+    return next(err);
+  }
+
+  if (owner.newCustomLink && customLinkTest[owner.newCustomLink]) {
+    return res.json({ error: 'error.user_setting.customLink' });
+  };
+
   Owner.findOne({
-    _id:owner._id
+    customLink: owner.newCustomLink
   }).exec(function(err, doc){
-    if(err){
+    if (err) {
       err.status = 400;
       return next(err);
     }
 
-    doc.name = owner.name;
-    doc.mobile = owner.mobile;
-    doc.email = owner.email;
-    doc.nickname = owner.nickname;
-    doc.customLink = owner.customLink;
-    doc.currency = owner.currency ;
-    doc.location = owner.location ? {
-      country : owner.location.country ,
-      city : owner.location.city 
-    } : {};
-    doc.locale = owner.locale ;
-    doc.description = owner.description;
+    if (doc) {
+        return res.json({ error: 'error.user_setting.customLink' });
+    }
 
-    doc.save(function(err, newOwner){
+    Owner.findOne({
+      _id:owner._id
+    }).exec(function(err, doc){
       if(err){
         err.status = 400;
         return next(err);
       }
 
-      res.json(newOwner);
+      doc.name = owner.name;
+      doc.mobile = owner.mobile;
+      doc.email = owner.email;
+      doc.nickname = owner.nickname;
+      owner.newCustomLink && (doc.customLink = owner.newCustomLink);
+      doc.currency = owner.currency ;
+      doc.location = owner.location ? {
+        country : owner.location.country ,
+        city : owner.location.city 
+      } : {};
+      doc.locale = owner.locale ;
+      doc.description = owner.description;
+
+      doc.save(function(err, newOwner){
+        if(err){
+          err.status = 400;
+          return next(err);
+        }
+
+        res.json(newOwner);
+      });
     });
   });
 };

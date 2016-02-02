@@ -15,7 +15,7 @@
   <ul class="nav nav-pills">
     <li role="presentation" ng-class="{'active':!updataPass}" ng-click="toggle(false)"><a href="">{{ __('common.information') }}</a></li>
     <li role="presentation" ng-class="{'active':updataPass}" ng-model="user" cancel ng-click="toggle(true)" data-ng-cloak>
-    <a href="" data-ng-if="user.mobile" data-ng-cloak>{{ __('common.new_password') }}</a>
+    <a href="" data-ng-if="user.mobile" data-ng-cloak>{{ __('common.change_password') }}</a>
     <a href="" data-ng-if="!user.mobile" data-ng-cloak>{{ __('common.bind_mobile') }}</a>
     </li>
   </ul>
@@ -37,16 +37,24 @@
             </dd>
             <dt>{{ __('common.nickname') }}</dt>
             <dd data-ng-cloak>
-              <input type="text" data-ng-model="user.nickname" name="nickname" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" required placeholder="{{ __('common.nickname') }}" data-ng-show="isEdit || user.nickname">
+              <input type="text" data-ng-model="user.nickname" name="nickname" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" required placeholder="{{ __('common.nickname') }}" data-ng-show="isEdit || user.nickname" data-ng-maxlength="16">
               <span data-ng-if = "!user.nickname && !isEdit" class="info_noSetting">{{ __('common.noSetting') }}</span>
               <div class="text-danger" data-ng-cloak data-ng-show="userInfo.nickname.$invalid && isEdit">
-                <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.user_setting.required_nickname') }}
+                <span data-ng-show="userInfo.nickname.$error.required">
+                  <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.user_setting.required_nickname') }}
+                </span>
+                <span data-ng-show="userInfo.nickname.$error.maxlength">
+                  <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.user_setting.nickname_range') }}
+                </span>
               </div>
             </dd>
             <dt>{{ __('common.email') }}</dt>
             <dd data-ng-cloak>
-              <input type="email" data-ng-model="user.email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" data-ng-show="isEdit || user.email">
+              <input type="email" name="email" data-ng-model="user.email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" data-ng-show="isEdit || user.email">
               <span data-ng-if = "!user.email && !isEdit" class="info_noSetting">{{ __('common.noSetting') }}</span>
+              <div class="text-danger" data-ng-cloak data-ng-show="userInfo.email.$invalid && isEdit">
+                <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('common.invaild_email') }}
+              </div>
             </dd>
             <dt>{{ __('common.currency') }}</dt>
             <dd>
@@ -119,7 +127,14 @@
             </div>
           </div>
         </form>
-
+        
+        <div class="alert alert-danger" data-ng-show="updataPass && userInfo_err" data-ng-cloak>
+          <ul class="list-layout">
+            <li data-ng-show="userInfo_err1"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.sms_expired') }}</li>
+            <li data-ng-show="userInfo_err2"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.sms') }}</li>
+            <li data-ng-show="userInfo_err3"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.user_setting.notmatch') }}</li>
+          </ul>
+        </div>
         <dl class="dl-horizontal" data-ng-show="updataPass" data-ng-cloak>
           <dt data-ng-show = "hasMobile">{{ __('common.password') }}</dt>
           <dd data-ng-show = "hasMobile">
@@ -331,7 +346,6 @@
   							if(scope.newPwd1 !== scope.newPwd2 || !scope.newPwd1 || !scope.newPwd2){
 		  						!scope.newPwd1 && (scope.isPass1 = false);
 		  						scope.newPwd1 !== scope.newPwd2 && (scope.isPass2 = false);
-		  						console.log(scope.isPass1, scope.isPass2, scope.newPwd1, scope.newPwd2);
 		  						scope.$apply();
 									return 
 		  					}
@@ -357,7 +371,11 @@
   						if( user.error){
   							scope.isResPass = false;
   							scope.oldPwd = "";
-  							$("#hyf-modal-alert").CustomAlert("{{ __('"+user.error+"') }}");
+                scope.userInfo_err = true;
+                console.log(user.error);
+                user.error == "error.signup.sms_expired" && (scope.userInfo_err1 = true);
+                user.error == "error.signup.sms" && (scope.userInfo_err2 = true);
+                user.error == "error.user_setting.notmatch" && (scope.userInfo_err3 = true);
   							return
   						}
 

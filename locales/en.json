@@ -41,6 +41,7 @@
     "mobile": "Mobile",
     "username": "Username",
     "password": "Password",
+    "change_password":"Change Your Password",
     "new_password": "New Password",
     "confirmPassword": "Confirm Password",
     "smscode": "SMS Code",
@@ -99,6 +100,8 @@
       "noUser": "This mobile no. has not been registered."
     },
     "user_setting": {
+      "customLink": "The customLink has been used",
+      "nickname_range": "Nickname require length less than 16",
       "notmatch" : "Invalid password.",
       "required_nickname": "Invalid nickname",
       "required_name": "Invalid name"

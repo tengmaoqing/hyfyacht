@@ -33,7 +33,7 @@
     "description": "描述",
     "boats": "船只",
     "locale": "语言",
-    "invaild_email": "不合法的邮箱",
+    "invaild_email": "请输入正确的邮箱",
     "noSetting": "未设置",
     "bind_mobile": "绑定手机",
     "createDate": "注册时间",
@@ -41,6 +41,7 @@
     "mobile": "手机号码",
     "username": "用户名",
     "password": "密码",
+    "change_password":"修改密码",
     "new_password": "新密码",
     "confirmPassword": "确认密码",
     "smscode": "短信验证码",
@@ -101,6 +102,8 @@
       "noUser": "该手机号还没有注册。"
     },
     "user_setting": {
+      "customLink": "链接已经存在",
+      "nickname_range": "昵称长度不能超过16位",
       "notmatch" : "密码不正确。",
       "required_nickname": "请输入昵称",
       "required_name": "请输入姓名"

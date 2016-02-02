@@ -21,6 +21,11 @@
 			<input type="hidden" name="_csrf" id="csrf" value="{{ _csrf }}">
 			<div>
 			<form name="ownerInfo" novalidate>
+				<div class="alert alert-danger" data-ng-show="ownerInfo_err" data-ng-cloak>
+          <ul class="list-layout">
+            <li data-ng-show="ownerInfo_err0"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.user_setting.customLink') }}</li>
+          </ul>
+        </div>
 				<dl class="dl-horizontal">
 					<dt>{{ __('common.mobile') }}</dt>
 					<dd>
@@ -62,16 +67,15 @@
 					</dd>
 					<dt>{{ __('common.nickname') }}</dt>
 					<dd>
-						<input type="text" data-ng-model="owner.nickname" name="nickname" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" placeholder="{{ __('common.nickname') }}" required data-ng-show="isEdit || owner.nickname" data-ng-cloak>
-						<span data-ng-if="!isEdit && !owner.nickname" data-ng-cloak class="info_noSetting">{{ __('common.noSetting') }}</span>
-						<div class="text-danger" data-ng-show="ownerInfo.nickname.$invalid && isEdit" data-ng-cloak>
-							<span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('error.user_setting.required_nickname')}}
-						</div>
+						<span data-ng-bind="owner.nickname"></span>
 					</dd>
 					<dt>{{ __('common.email') }}</dt>
 					<dd>
-						<input type="email" data-ng-model="owner.email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" data-ng-show="isEdit || owner.email" data-ng-cloak>
+						<input type="email" data-ng-model="owner.email" name="email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" data-ng-show="isEdit || owner.email" data-ng-cloak>
 						<span data-ng-if="!isEdit && !owner.email" data-ng-cloak class="info_noSetting">{{ __('common.noSetting') }}</span>
+						<div class="text-danger" data-ng-cloak data-ng-show="ownerInfo.email.$invalid && isEdit">
+              <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('common.invaild_email') }}
+            </div>
 					</dd>
 					<dt>{{ __('common.customLink') }}</dt>
 					<dd data-ng-cloak>
@@ -293,24 +297,33 @@
   		link: function(scope, element, attr){
   			element.bind("click", function(e){
 
-  				scope.isEdit = false;
-  				scope.$apply();
   				scope.owner.description = angular.element("#div_input").text();
   				
-  				!scope.owner.customLink && (scope.owner.customLink = angular.element("#customLink").val());
+  				!scope.owner.customLink && (scope.owner.newCustomLink = angular.element("#customLink").val());
+
   				scope.owner.mobile = scope.mobile ? ($("#input_area_code").val() + scope.mobile) : "";
 
+  				console.log(scope.owner)
   				$http.post("/owner/setting/updateOwnerInformation", scope.owner, {
   					headers: {
 					    'X-XSRF-TOKEN': angular.element("#csrf").val()
 					 	}
   				}).success(function(owner){
+  					if( owner.error ){
+  						scope.ownerInfo_err = true;
+  						owner.error == 'error.user_setting.customLink' && (scope.ownerInfo_err0 = true);
+  						return
+  					}
+
+  					scope.ownerInfo_err = false;
+  					scope.isEdit = false;
   					scope.owner = owner;
   					angular.element("#div_input").text(scope.owner.description);
+
+  					angular.element("#div_input").prop("contenteditable", false);
+  					angular.element("input").prop("readOnly", true);
   				});
 
-  				angular.element("#div_input").prop("contenteditable", false);
-  				angular.element("input").prop("readOnly", true);
   			});
   		}
   	}

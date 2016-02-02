@@ -33,7 +33,7 @@
     "description": "描述",
     "boats": "船隻",
     "locale": "語言",
-    "invaild_email": "不合法的郵箱",
+    "invaild_email": "請輸入正確的郵箱",
     "noSetting": "未設置",
     "bind_mobile": "綁定手機",
     "createDate": "註冊時間",
@@ -41,6 +41,7 @@
     "mobile": "手提電話",
     "username": "用戶名",
     "password": "密碼",
+    "change_password":"修改密碼",
     "new_password": "新密碼",
     "confirmPassword": "確認密碼",
     "smscode": "SMS 驗證碼",
@@ -101,6 +102,8 @@
       "noUser": "該手提電話還沒有註冊。"
     },
     "user_setting": {
+      "customLink": "鏈接已經存在",
+      "nickname_range": "昵稱長度不能超過16位",
       "notmatch" : "密碼不正確。",
       "required_nickname": "請輸入昵稱",
       "required_name": "請輸入姓名"
