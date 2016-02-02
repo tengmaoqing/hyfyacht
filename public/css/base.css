@@ -546,6 +546,7 @@
     text-overflow: ellipsis;
     word-break: keep-all;
     vertical-align: bottom;
+    white-space: nowrap;
   }
 }
 
@@ -555,6 +556,7 @@
   }
 
   .hyf-navbar-overlay {
+    opacity: 1;
     display: block;
     z-index: 1040;
     background-color: rgba(21, 164, 231, .9);
