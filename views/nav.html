@@ -16,7 +16,7 @@
         {% if preset.owner %}
         <li><a href="/owner">{{ __('nav.boatowner') }}</a></li>
         {% endif %}
-        <li><img class="hyf-user-avatar hyf-img-circle hyf-img-thumbnail" src="{{ preset.imgHost }}/captain.jpg" height="26">{{ preset.username }}
+        <li class="hyf-user-info"><img class="hyf-user-avatar hyf-img-circle hyf-img-thumbnail" src="{{ preset.imgHost }}/captain.jpg" height="26"><span class="hyf-user-nickname">{{ preset.username }}</span>
           <ul class="list-layout">
             <li><a href="/user/booking">{{ __('user.bookings') }}</a></li>
             <li><a href="/user/event">{{ __('user.events') }}</a></li>

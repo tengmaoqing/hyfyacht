@@ -539,6 +539,18 @@
   .hyf-navbar-overlay {
     display: none;
   }
+
+  .hyf-user-info {
+    max-width: 136px;
+  }
+
+  .hyf-user-nickname {
+    max-width: 100px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: keep-all;
+  }
 }
 
 @media (max-width: 767px) {
