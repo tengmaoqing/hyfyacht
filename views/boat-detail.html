@@ -133,7 +133,9 @@
 {% if boat.geospatial.length > 0 %}
 <script>
   window.hgdata = {
-    geospatial: {{ boat.geospatial|json|safe }}
+    geospatial: {{ boat.geospatial|json|safe }},
+    clientCurrency: "{{ preset.currency|safe }}",
+    currency: {{ preset.configCurrency|json|safe }}
   };
 
   function loadBaiduMap() {
@@ -153,12 +155,6 @@
   }
 
   loadBaiduMap();
-</script>
-<script>
-  window.hgdata = {
-    clientCurrency: "{{ preset.currency|safe }}",
-    currency: {{ preset.configCurrency|json|safe }}
-  };
 </script>
 <script src="http://cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
 <script>
