@@ -33,7 +33,7 @@
   position: relative;
   width: 100%;
   min-height: 100%;
-  background-image: url("/img/banner01.jpg");
+  background-image: url("http://img.hgboating.com/base/banner01.jpg");
 }
 
 .hyf-banner h1, .hyf-banner h2, .hyf-banner p, .hyf-grid h1, .hyf-grid h2, .hyf-grid h3 {
@@ -60,6 +60,11 @@
 .hyf-grid h1, .hyf-grid h2, .hyf-grid h3 {
   color: #fff;
   position: absolute;
+}
+
+.hyf-grid .hyf-banner-slogan-content h1, .hyf-grid .hyf-banner-slogan-content h2, .hyf-grid .hyf-banner-slogan-content div {
+  display: block;
+  position: static;
 }
 
 @media (min-width: 769px) {
@@ -975,6 +980,11 @@
             transition: all 0.6s ease-in-out;
   }
 
+  .hyf-grid .hyf-banner-show-element {
+    -webkit-transition: transform 0.4s ease-in-out, opacity 0.4s linear;
+            transition: transform 0.4s ease-in-out, opacity 0.4s linear;
+  }
+
   .hyf-grid-event:hover > img {
     -webkit-transform: scale(1.2);
     transform: scale(1.2);
@@ -992,6 +1002,18 @@
   .hyf-grid-boat:hover > img {
     -webkit-transform: scale(1.2);
             transform: scale(1.2);
+  }
+
+  .hyf-grid-boat .hyf-banner-show-element {
+    opacity: 0;
+    -webkit-transform: translateY(50%);
+            transform: translateY(50%);
+  }
+
+  .hyf-grid-boat:hover .hyf-banner-show-element {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
   }
 
   .hyf-ocean-function {
