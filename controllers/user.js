@@ -448,15 +448,29 @@ exports.updataUserInformation = function(req, res, next){
   var user = req.body;
   var flag = false;
 
-  req.checkBody ({
-    'nickname' : {
-      notEmpty : true,
-      isLength : {
-        options: [0, 16]
-      },
-      errorMessage: 'Invalid nickname'
-    }
-  });
+  if (user.nickname) {
+    req.checkBody ({
+      'nickname' : {
+        notEmpty : true,
+        isLength : {
+          options: [0, 16]
+        },
+        errorMessage: 'Invalid nickname'
+      }
+    });
+  }
+
+  if (user.newPwd) {
+    req.checkBody({
+      'newPwd' :{
+        notEmpty:true,
+        isLength: {
+          options: [6, 30]
+        },
+        errorMessage: 'Invalid newPwd1'
+      }
+    });
+  }
 
   if (user.newPwd1) {
     req.checkBody({
@@ -490,72 +504,94 @@ exports.updataUserInformation = function(req, res, next){
     return next(err);
   }
 
-  if(user.newMobile){
-    var newMobile = user.area_code + user.newMobile;
-    var now = moment();
+  var newMobile = user.area_code + user.newMobile;
 
-    if(req.session.smsLast){
-      var last = moment(req.session.smsLast);
-
-      last.add(20, 'm');
-      if(last < now){
-        return res.json({ error: 'error.signup.sms_expired' });
+  co(function *(){
+    try {
+      if (user.newMobile) {
+        var hasMobile = yield User.findOne({
+          mobile: newMobile
+        }).exec();
       }
+    } catch (err) {
+      err.status = 500;
+      throw err;
     }
 
-    if(!req.session.smsCode || !req.session.smsMobile || req.session.smsCode != user.code || req.session.smsMobile != newMobile){
-      return res.json({ error: 'error.signup.sms' });
-    }
+    if (user.newMobile) {
 
-    req.session.smsLast = null;
-    req.session.smsCode = null;
-    req.session.smsMobile = null;
-
-    flag = true;
-  }
-  
-
-  User.findOne({
-    _id: user._id
-  }, function(err, doc){
-    if(err){
-      err.status = 400;
-      return next(err);
-    }
-    
-    if( doc.hashedPassword && user.newPwd1 ){
-      if( !user.oldPwd || doc.hashedPassword != hashPassword(user.oldPwd) ){
-        return res.json({ error: 'error.user_setting.notmatch' });
+      if (hasMobile) {
+        return res.json({ error: 'error.signup.registered' });
       }
-    }
-    
-    if(!user.newPwd1 && !user.newMobile){
-      doc.nickname = user.nickname;
-      doc.email = user.email;
-      doc.locale = user.locale;
-      doc.currency = user.currency;
-      doc.location = user.location ? {
-        country : user.location.country,
-        city : user.location.city
-      } : {};
-    } 
-    if( user.newPwd1 ) {
-      doc.hashedPassword = hashPassword(user.newPwd1);
-    }
 
-    flag && (doc.mobile = newMobile);
+      var now = moment();
+
+      if(req.session.smsLast){
+        var last = moment(req.session.smsLast);
+
+        last.add(20, 'm');
+        if(last < now){
+          return res.json({ error: 'error.signup.sms_expired' });
+        }
+      }
+
+      if(!req.session.smsCode || !req.session.smsMobile || req.session.smsCode != user.code || req.session.smsMobile != newMobile){
+        return res.json({ error: 'error.signup.sms' });
+      }
+
+      req.session.smsLast = null;
+      req.session.smsCode = null;
+      req.session.smsMobile = null;
+
+      flag = true;
+    }
     
-    doc.save(function(err, savedUser){
+
+    User.findOne({
+      _id: user._id
+    }, function(err, doc){
       if(err){
         err.status = 400;
         return next(err);
       }
-
-      if(user.newPwd1){
-        return res.redirect('/');
+      
+      if( doc.hashedPassword && user.newPwd1 ){
+        if( !user.oldPwd || doc.hashedPassword != hashPassword(user.oldPwd) ){
+          return res.json({ error: 'error.user_setting.notmatch' });
+        }
       }
       
-      return res.json(savedUser);
+      if(!user.newPwd1 && !user.newMobile){
+        doc.nickname = user.nickname;
+        doc.email = user.email;
+        doc.locale = user.locale;
+        doc.currency = user.currency;
+        doc.location = user.location ? {
+          country : user.location.country,
+          city : user.location.city
+        } : {};
+      } 
+      if ( user.newPwd1 ) {
+        doc.hashedPassword = hashPassword(user.newPwd1);
+      }
+
+      if (flag) {
+        doc.mobile = newMobile;
+        doc.hashedPassword = hashPassword(user.newPwd);
+      }
+      
+      doc.save(function(err, savedUser){
+        if(err){
+          err.status = 400;
+          return next(err);
+        }
+
+        if(user.newPwd1){
+          return res.redirect('/');
+        }
+        
+        return res.json(savedUser);
+      });
     });
   });
 };

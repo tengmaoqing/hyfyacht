@@ -133,6 +133,7 @@
             <li data-ng-show="userInfo_err1"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.sms_expired') }}</li>
             <li data-ng-show="userInfo_err2"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.sms') }}</li>
             <li data-ng-show="userInfo_err3"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.user_setting.notmatch') }}</li>
+            <li data-ng-show="userInfo_err4"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.registered') }}</li>
           </ul>
         </div>
         <dl class="dl-horizontal" data-ng-show="updataPass" data-ng-cloak>
@@ -167,7 +168,7 @@
               </div>
             </div>
             <div class="col-sm-8 col-xs-8">
-              <input type="number" id="input_mobile" data-ng-model="mobile" maxlength="11" class="form-control">
+              <input type="number" id="input_mobile" data-ng-model="mobile" maxlength="11" class="form-control" placeholder="{{ __('common.mobile') }}">
             </div>
           </dd>
           <dt data-ng-show = "!hasMobile" >{{ __('common.smscode') }}</dt>
@@ -177,6 +178,24 @@
             </div>
             <div class="col-sm-8 col-xs-8">
               <button id="btn-getsmscode" type="button" class="btn btn-primary btn-block">{{ __('common.getsmscode') }}</button>
+            </div>
+          </dd>
+          <dt data-ng-show= "!hasMobile">{{ __('common.password') }}</dt>
+          <dd data-ng-show= "!hasMobile">
+            <div class="col-sm-12 col-xs-12">
+              <input type="password" data-ng-model="newPwd" class="form-control" data-ng-minlength="6" data-ng-maxlength="30" placeholder="{{ __('common.password') }}">
+              <div class="text-danger" data-ng-show="!isPassPwd && !newPwd" data-ng-cloak>
+                <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.password_len') }}
+              </div>
+            </div>
+          </dd>
+          <dt data-ng-show = "!hasMobile">{{ __('common.confirmPassword') }}</dt>
+          <dd data-ng-show = "!hasMobile">
+            <div class="col-sm-12 col-xs-12">
+              <input type="password" data-ng-model="newPwd3" class="form-control" placeholder="{{ __('common.confirmPassword') }}">
+              <div class="text-danger" data-ng-show="newPwd3 != newPwd && newPwd3" data-ng-cloak>
+                <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.confirm_password') }}
+              </div>
             </div>
           </dd>
         </dl>
@@ -245,6 +264,7 @@
   		$scope.userTemp = {};
   		$scope.isPass1 = true;
   		$scope.isPass2 = true;
+      $scope.isPassPwd = true;
   		$scope.updataPass =false;
   		$scope.isPassEmail = true;
   		$scope.hasMobile = true;
@@ -337,16 +357,23 @@
   			link: function(scope, element, attr){
   				element.bind("click", function(e){
 
-  					if(scope.updataPass){
-  						if(scope.hasMobile){
-  							if(scope.newPwd1 !== scope.newPwd2 || !scope.newPwd1 || !scope.newPwd2){
+  					if (scope.updataPass) {
+  						if (scope.hasMobile) {
+  							if (scope.newPwd1 !== scope.newPwd2 || !scope.newPwd1 || !scope.newPwd2) {
 		  						!scope.newPwd1 && (scope.isPass1 = false);
 		  						scope.newPwd1 !== scope.newPwd2 && (scope.isPass2 = false);
 		  						scope.$apply();
 									return 
 		  					}
-  						}
+  						} else {
+                if (!scope.newPwd || scope.newPwd != scope.newPwd3) {
+                  !scope.newPwd && (scope.isPassPwd = false);
+                  scope.$apply();
+                  return
+                }
+              }
 
+              scope.user.newPwd = scope.newPwd;
 	  					scope.user.newPwd1 = scope.newPwd1;
 	  					scope.oldPwd && (scope.user.oldPwd = scope.oldPwd);
 	  					scope.user.newMobile = scope.mobile;
@@ -372,12 +399,16 @@
                 user.error == "error.signup.sms_expired" && (scope.userInfo_err1 = true);
                 user.error == "error.signup.sms" && (scope.userInfo_err2 = true);
                 user.error == "error.user_setting.notmatch" && (scope.userInfo_err3 = true);
+                user.error == "error.signup.registered" && (scope.userInfo_err4 = true);
   							return
   						}
 
   						scope.isEdit = false;
 	  					scope.updataPass = false;
 	  					scope.newPwd1 = scope.newPwd2 = "";
+              scope.userInfo_err = false;
+              scope.userInfo_err1 = scope.userInfo_err2 = scope.userInfo_err4 = false;
+              scope.mobile = "";
 	  					scope.hasMobile = true;
   						scope.user = user;
   						$("#userSetting_dl input").prop("readOnly", true);

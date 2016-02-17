@@ -17,7 +17,7 @@
     <div class="col-md-2">
       <label>{{ __('event.type') }}</label>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 col-sm-6">
       <div class="btn-group btn-group-justified">
         <a href="/event/list?type=all&status={{ query.status }}" class="btn {% if query.type == 'all' || query.type == '' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.all') }}</a>
         <a href="/event/list?type=free&status={{ query.status }}" class="btn {% if query.type == 'free' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.free') }}</a>
@@ -28,7 +28,7 @@
     <div class="col-md-2">
       <label>{{ __('event.status') }}</label>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 col-sm-6">
       <div class="btn-group btn-group-justified">
         <a href="/event/list?type={{ query.type }}&status=all" class="btn {% if query.status == 'all' || query.status == '' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.all') }}</a>
         <a href="/event/list?type={{ query.type }}&status=ongoing" class="btn {% if query.status == 'ongoing' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.ongoing_item') }}</a>
@@ -40,9 +40,10 @@
   <div class="event-list">
     {% for event in events %}
     <div class="thumbnail">
-      <div class="row">
-        <div class="col-md-4 col-sm-4 col-xs-12">
+      <div class="row event-list-height">
+        <div class="col-md-4 col-sm-4 col-xs-12 pre-img">
           <a href="/event/{{ event.id }}"><img class="img-responsive" src="{{ event.thumbnail }}" alt="thumbnail"></a>
+          <!-- <a href="/event/{{ event.id }}"><img class="img-responsive" src="{{ preset.imgHost }}/captain.jpg" alt="thumbnail"></a> -->
         </div>
         <div class="col-md-8 col-sm-8 col-xs-12 event-info">
           <div class="row">

@@ -760,16 +760,31 @@ td.fc-bgevent {
   min-height: 34px;
 }
 
-#div_input{
+#div_input {
   border-radius: 6px;
   outline:none;
   min-height: 60px;
 }
 
-.noPadding{
+.noPadding {
   padding: 0;
 }
 
-.info_noSetting{
+.info_noSetting {
   color:#999;
+}
+
+@media (min-width: 769px) {
+  .event-list-height {
+    overflow: hidden;
+    height: 238px;
+  }
+
+  .thumbnail .pre-img a img {
+    height: 100%;
+  }
+
+  .pre-img {
+    height: inherit;
+  }
 }

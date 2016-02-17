@@ -36,7 +36,7 @@ exports.sendSMSCode = function(req, res, next){
   req.session.smsMobile = mobile;
 
   var message = code;
-
+  
   if(type === 'signup'){
     message = res.__('sms.signup') + message;
   }
