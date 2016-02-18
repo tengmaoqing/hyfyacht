@@ -3,6 +3,7 @@
  */
 var Event = require('hyfbase').Event;
 var wechatCore = require('wechat-core');
+var moment = require('moment');
 
 exports.getEvent = function(req, res, next) {
   Event.findOne({
@@ -70,6 +71,26 @@ exports.getEvents = function(req, res, next) {
 
   (query.type && query.type != 'all') && (obj.type = query.type);
   (query.status && query.status != 'all') && (obj.attendedDate = { $gt : new Date() });
+
+  if ( query.selectDate ) {
+    // var date = new Date(query.selectDate);
+    var date = moment(query.selectDate, 'YYYY-MM-DD');
+    // var hours = date.getHours();
+    console.log(date.toDate());
+    // console.log(date.add(1, 'days').toDate());
+    // console.log(new Date(date.setHours(hours-8)));
+    // console.log(new Date(date.setHours(hours+16)));
+    // console.log(new Date(date.setHours(hours-8)));
+    // console.log(new Date(date.setHours(hours+16)));
+    obj.dateEnd = {
+      // $gt: date.setHours(hours-8)
+      $gt: date.toDate()
+    };
+    obj.dateStart = {
+      // $lt: date.setHours(hours+16)
+      $lt: date.add(1, 'days').toDate()
+    };
+  }
 
   Event.paginate(obj, {
     page: page,

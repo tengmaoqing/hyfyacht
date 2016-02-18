@@ -2,6 +2,10 @@
 
 {% extends './layout.html' %}
 
+{% block head %}
+<link href="//cdn.bootcss.com/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 
 {% include './nav.html' with {view_active:'event'} %}
@@ -35,6 +39,19 @@
       </div>
     </div>
   </div>
+  <div class="row search-field">
+    <div class="col-md-2">
+      <label>{{ __('product.booking.findByDate') }}</label>
+    </div>
+    <div class="col-md-4 col-sm-6">
+      <div class="input-group date" id="datetimepicker">
+        <input class="form-control" type="text" id="timepick" {% if query.selectDate %} value="{{ query.selectDate }}" {% endif %}>
+        <span class="input-group-addon">
+          <span class="glyphicon glyphicon-calendar"></span>
+        </span>
+      </div>
+    </div>
+  </div>
   <hr class="hr-divider">
   <h4>{{ __n('event.list.find %d events', 'event.list.find %d events', itemCount) }}</h4>
   <div class="event-list">
@@ -42,8 +59,8 @@
     <div class="thumbnail">
       <div class="row event-list-height">
         <div class="col-md-4 col-sm-4 col-xs-12 pre-img">
-          <a href="/event/{{ event.id }}"><img class="img-responsive" src="{{ event.thumbnail }}" alt="thumbnail"></a>
-          <!-- <a href="/event/{{ event.id }}"><img class="img-responsive" src="{{ preset.imgHost }}/captain.jpg" alt="thumbnail"></a> -->
+          <!-- <a href="/event/{{ event.id }}"><img class="img-responsive" src="{{ event.thumbnail }}" alt="thumbnail"></a> -->
+          <a href="/event/{{ event.id }}"><img class="img-responsive" src="{{ preset.imgHost }}/boat2.jpg" alt="thumbnail"></a>
         </div>
         <div class="col-md-8 col-sm-8 col-xs-12 event-info">
           <div class="row">
@@ -80,5 +97,41 @@
 </div>
 
 {% include './footer.html' %}
+
+{% endblock %}
+
+
+{% block foot %}
+<script src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+
+{% if preset.locale !== "en" %}
+  <script src="//cdn.bootcss.com/moment.js/2.11.1/locale/zh-cn.js"></script>
+{% endif %}
+
+<script>
+  var locale;
+  {% if preset.locale !== "en" %}
+  locale = "zh-cn";
+  {% endif %}
+ $(function (){
+    $("#datetimepicker").datetimepicker({
+      format: "YYYY-MM-DD",
+      viewMode: "days",
+      allowInputToggle: true,
+      showTodayButton: true,
+      showClear: true,
+      locale: locale || "en",
+      widgetPositioning: {
+        horizontal: 'auto',
+        vertical: 'bottom'
+      },
+      useCurrent:false
+    }).on("dp.change", function(){
+      window.location.href = "/event/list?type={{ query.type }}&status={{ query.status }}&selectDate="+$("#timepick").val();
+    });
+  });
+
+</script>
 
 {% endblock %}

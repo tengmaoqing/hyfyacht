@@ -776,15 +776,16 @@ td.fc-bgevent {
 
 @media (min-width: 769px) {
   .event-list-height {
-    overflow: hidden;
     height: 238px;
   }
 
   .thumbnail .pre-img a img {
-    height: 100%;
+    height: 99%;
+    max-width: 1000%;
   }
 
   .pre-img {
     height: inherit;
+    overflow: hidden;
   }
 }
