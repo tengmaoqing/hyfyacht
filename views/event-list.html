@@ -23,8 +23,8 @@
     </div>
     <div class="col-md-4 col-sm-6">
       <div class="btn-group btn-group-justified">
-        <a href="/event/list?type=all&status={{ query.status }}" class="btn {% if query.type == 'all' || query.type == '' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.all') }}</a>
-        <a href="/event/list?type=free&status={{ query.status }}" class="btn {% if query.type == 'free' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.free') }}</a>
+        <a href="/event/list?type=all&selectStartDate={{ query.selectStartDate }}&selectEndDate={{ query.selectEndDate }}&status={{ query.status }}" class="btn {% if query.type == 'all' || query.type == '' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.all') }}</a>
+        <a href="/event/list?type=free&selectStartDate={{ query.selectStartDate }}&selectEndDate={{ query.selectEndDate }}&status={{ query.status }}" class="btn {% if query.type == 'free' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.free') }}</a>
       </div>
     </div>
   </div>
@@ -34,8 +34,8 @@
     </div>
     <div class="col-md-4 col-sm-6">
       <div class="btn-group btn-group-justified">
-        <a href="/event/list?type={{ query.type }}&status=all" class="btn {% if query.status == 'all' || query.status == '' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.all') }}</a>
-        <a href="/event/list?type={{ query.type }}&status=ongoing" class="btn {% if query.status == 'ongoing' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.ongoing_item') }}</a>
+        <a href="/event/list?type={{ query.type }}&selectStartDate={{ query.selectStartDate }}&selectEndDate={{ query.selectEndDate }}&status=all" class="btn {% if query.status == 'all' || query.status == '' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.all') }}</a>
+        <a href="/event/list?type={{ query.type }}&selectStartDate={{ query.selectStartDate }}&selectEndDate={{ query.selectEndDate }}&status=ongoing" class="btn {% if query.status == 'ongoing' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.ongoing_item') }}</a>
       </div>
     </div>
   </div>
@@ -43,9 +43,17 @@
     <div class="col-md-2">
       <label>{{ __('product.booking.findByDate') }}</label>
     </div>
-    <div class="col-md-4 col-sm-6">
-      <div class="input-group date" id="datetimepicker">
-        <input class="form-control" type="text" id="timepick" {% if query.selectDate %} value="{{ query.selectDate }}" {% endif %}>
+    <div class="col-md-4 col-sm-6 col-xs-12">
+      <div class="input-group date" id="datetimepicker1">
+        <input class="form-control" type="text" id="timepick1" {% if query.selectStartDate %} value="{{ query.selectStartDate }}" {% endif %} placeholder="{{ __('product.booking.start') }}">
+        <span class="input-group-addon">
+          <span class="glyphicon glyphicon-calendar"></span>
+        </span>
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-6 col-xs-12 margin_top">
+      <div class="input-group date" id="datetimepicker2">
+        <input class="form-control" type="text" id="timepick2" {% if query.selectEndDate %} value="{{ query.selectEndDate }}" {% endif %} placeholder="{{ __('product.booking.end') }}">
         <span class="input-group-addon">
           <span class="glyphicon glyphicon-calendar"></span>
         </span>
@@ -59,8 +67,7 @@
     <div class="thumbnail">
       <div class="row event-list-height">
         <div class="col-md-4 col-sm-4 col-xs-12 pre-img">
-          <!-- <a href="/event/{{ event.id }}"><img class="img-responsive" src="{{ event.thumbnail }}" alt="thumbnail"></a> -->
-          <a href="/event/{{ event.id }}"><img class="img-responsive" src="{{ preset.imgHost }}/boat2.jpg" alt="thumbnail"></a>
+          <a href="/event/{{ event.id }}"><img class="img-responsive" src="{{ event.thumbnail }}" alt="thumbnail"></a>
         </div>
         <div class="col-md-8 col-sm-8 col-xs-12 event-info">
           <div class="row">
@@ -74,7 +81,7 @@
             <span class="glyphicon glyphicon-map-marker"></span> {{ __(event.location.city) }}{% if event.location.pier %} - {{ __(event.location.pier) }}{% endif %}
           </div>
           <div>
-            <span class="glyphicon glyphicon-user"></span> <label>{{ __('event.organiser') }}</label>: {{ event.organiser.nickname }}
+            <span class="glyphicon glyphicon-user"></span> <label>{{ __('event.organiser') }}</label>: {{ event.organiserNickname }}
           </div>
           <div>
             <span class="glyphicon glyphicon-asterisk"></span> <label>{{ __('product.booking.numberOfPeople') }}</label>: {% if event.maxPersons > 0 %}{{ event.maxPersons }}{% else %}{{ __('event.unlimited') }}{% endif %}
@@ -114,23 +121,38 @@
   {% if preset.locale !== "en" %}
   locale = "zh-cn";
   {% endif %}
- $(function (){
-    $("#datetimepicker").datetimepicker({
-      format: "YYYY-MM-DD",
-      viewMode: "days",
-      allowInputToggle: true,
-      showTodayButton: true,
-      showClear: true,
-      locale: locale || "en",
-      widgetPositioning: {
-        horizontal: 'auto',
-        vertical: 'bottom'
-      },
-      useCurrent:false
-    }).on("dp.change", function(){
-      window.location.href = "/event/list?type={{ query.type }}&status={{ query.status }}&selectDate="+$("#timepick").val();
-    });
+$(function (){
+
+  var config = {
+    format: "YYYY-MM-DD",
+    viewMode: "days",
+    allowInputToggle: true,
+    showTodayButton: true,
+    showClear: true,
+    locale: locale || "en",
+    widgetPositioning: {
+      horizontal: 'auto',
+      vertical: 'bottom'
+    },
+    useCurrent:false
+  };
+  $("#datetimepicker1").datetimepicker(config);
+
+  $("#datetimepicker2").datetimepicker(config);
+
+  $("#datetimepicker1").on("dp.change", function(){
+    window.location.href = "/event/list?type={{ query.type }}&status={{ query.status }}&selectEndDate={{ query.selectEndDate }}&selectStartDate="+$("#timepick1").val();
   });
+
+  if($("#timepick1").val()){
+    $("#datetimepicker2").data("DateTimePicker").minDate($("#timepick1").val());   
+  }
+
+  $("#datetimepicker2").on("dp.change", function(){
+    window.location.href = "/event/list?type={{ query.type }}&status={{ query.status }}&selectStartDate={{ query.selectStartDate }}&selectEndDate="+$("#timepick2").val();
+  });
+
+});
 
 </script>
 

@@ -559,6 +559,77 @@
     };
   });
 
+  //switch Step
+  app.factory("stepService", function() {
+    var temp = {
+      nowStep : 0,
+      elementArray: [],
+      nextStep: function(index) {
+        var lastIndex = index-1;
+        this.elementArray[lastIndex].hide();
+        this.elementArray[index].show();
+      }
+    };
+
+    return temp
+  });
+
+  app.directive("selectstep", function(stepService) {
+    return {
+      restrict: "AE",
+      link : function(scope, element, attrs) {
+
+        var selecteDate = $("#product-booking-date"),
+            selecteDate_date = $("#calendar"),
+            selecteDate_package = $("#product-booking-package"),
+            selecteOption = $("#product-booking-option"),//div#product-booking-option add
+            selecteContact = $("#product-booking-contact");
+
+        stepService.elementArray = [selecteDate_date, selecteDate_package, selecteOption, selecteContact];
+
+        var len = stepService.elementArray.length;
+        for(var i = 0; i<len; i++){
+          if( i != 0 ){
+            stepService.elementArray[i].hide();
+          }
+        }
+
+        element.bind("click", function(){
+
+          switch (stepService.nowStep) {
+            case 0:
+
+              break;
+          }
+          console.log(stepService.nowStep);
+
+          stepService.nowStep++;
+          if (stepService.nowStep == len) {
+            scope.lastStep = true;
+            scope.$apply();
+            stepService.nowStep--;
+          } else {
+            stepService.nextStep(stepService.nowStep);
+          }
+
+        });
+      }
+    }
+  });
+
+  app.directive("back", function(stepService){
+    return {
+      restrict: "A",
+      link: function(scope, element, attrs) {
+        console.log(element);
+        element.bind("click", function(){
+          stepService.elementArray[stepService.nowStep].hide();
+          stepService.elementArray[--stepService.nowStep].show();
+        });
+      }
+    }
+  });
+
   app.filter("santize", ["$sce", function($sce){
     return function(htmlCode){
       return $sce.trustAsHtml(htmlCode);

@@ -788,4 +788,11 @@ td.fc-bgevent {
     height: inherit;
     overflow: hidden;
   }
+
+}
+
+@media (max-width: 767px) {
+  .margin_top {
+    margin-top: 10px;
+  }
 }

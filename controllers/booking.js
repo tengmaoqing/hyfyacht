@@ -490,11 +490,11 @@ exports.getBookingsByOwnerId = function(req, res, next){
   (query.selectBoat && query.selectBoat != 'all') && (obj.boatId = query.selectBoat);
 
   if( query.selectDate ){
-    var date = new Date(query.selectDate);
-    var days = date.getDate();
+    var date = moment(query.selectDate, 'YYYY-MM-DD');
+
     obj.dateEnd = {
-      $gt: date.setDate(days-1),
-      $lt: date.setDate(days+1)
+      $gt: date.toDate(),
+      $lt: moment(date).add(1, 'days').toDate()
     }
   }
 

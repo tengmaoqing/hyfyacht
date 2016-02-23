@@ -63,43 +63,60 @@ exports.getMoreEvents = function(req, res, next){
 
 exports.getEvents = function(req, res, next) {
   var page = req.query.page || 1;
-
   var query = req.query;
   var obj = {
     inStock: true
   };
 
-  (query.type && query.type != 'all') && (obj.type = query.type);
+  (query.type && query.type != 'all') && (obj.baseCharge = 0);
   (query.status && query.status != 'all') && (obj.attendedDate = { $gt : new Date() });
 
-  if ( query.selectDate ) {
-    // var date = new Date(query.selectDate);
-    var date = moment(query.selectDate, 'YYYY-MM-DD');
-    // var hours = date.getHours();
-    console.log(date.toDate());
-    // console.log(date.add(1, 'days').toDate());
-    // console.log(new Date(date.setHours(hours-8)));
-    // console.log(new Date(date.setHours(hours+16)));
-    // console.log(new Date(date.setHours(hours-8)));
-    // console.log(new Date(date.setHours(hours+16)));
+  if ( query.selectStartDate ) {
+    var startDate = moment(query.selectStartDate, 'YYYY-MM-DD');
     obj.dateEnd = {
-      // $gt: date.setHours(hours-8)
-      $gt: date.toDate()
+      $gt: startDate.toDate()
     };
+
+    if( query.selectEndDate && query.selectEndDate < query.selectStartDate) {
+      query.selectEndDate = '';
+    }
+    
+  }
+
+  if ( query.selectEndDate ) {
+    var endDate = moment(query.selectEndDate, 'YYYY-MM-DD');
     obj.dateStart = {
-      // $lt: date.setHours(hours+16)
-      $lt: date.add(1, 'days').toDate()
+      $lt: endDate.toDate()
     };
   }
 
+  if (startDate && endDate) {
+    var newStartDate = moment(startDate),
+        weekDay = [],
+        len = endDate.dayOfYear() - startDate.dayOfYear()+1;
+    
+    if (len<7) {
+      weekDay.push(newStartDate.day());//星期
+      for (var i=0; i<len-1; i++) {
+        weekDay.push(newStartDate.add(1, 'days').day())
+      }
+      obj['$or'] = [
+        {
+          availableDays: {
+            $in: weekDay
+          }
+        },
+        {
+          longTerm: false
+        }
+      ];
+    }
+  }
+  
   Event.paginate(obj, {
     page: page,
     limit: 10,
-    columns: 'title dateStart dateEnd summary location baseCharge currency thumbnail organiser createDate attendedDate',
-    populate:[{
-      path: 'organiser',
-      select: 'nickname'
-    }],
+    columns: 'title dateStart dateEnd summary location baseCharge currency thumbnail nickname createDate attendedDate',
     sort: {
       createDate: -1
     }
@@ -119,6 +136,12 @@ exports.getEvents = function(req, res, next) {
       pager.pages.push(i);
     }
 
-    return res.render('event-list', {events: result.docs, pager: pager, itemCount: result.total, dateNow: new Date(), query: query});
+    return res.render('event-list', {
+      events: result.docs, 
+      pager: pager, 
+      itemCount: result.total, 
+      dateNow: new Date(), 
+      query: query
+    });
   });
 };

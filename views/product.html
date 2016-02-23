@@ -38,6 +38,22 @@
           <div class="caption">
             <h3>{{ __('product.section.booking') }}</h3>
             <hr class="hr-divider">
+            <!-- /*选择步骤 -->
+            <div class="text-center">
+              <div class="col-xs-3">
+                1.选择日期
+              </div>
+              <div class="col-xs-3">
+                2.选择套餐
+              </div>
+              <div class="col-xs-3">
+                3.确定选选
+              </div>
+              <div class="col-xs-3">
+                4.联系方式
+              </div>
+            </div>
+            <!-- 选择步骤*/ -->
             <div id="product-booking-date" class="product-booking-container">
               <p><strong>{{ __('product.booking.selectDate') }}</strong></p>
               <div id="calendar"></div>
@@ -129,151 +145,153 @@
               </ul>
             </div>
 
-            <div id="product-booking-person" class="product-booking-container">
-              <p data-ng-cloak><strong>{{ __('product.booking.numberOfPeople') }} (1 - {% raw %}{{ packages[currPackage].maxPersons }}{% endraw %})</strong></p>
-              <div class="alert alert-danger" data-ng-show="booking.numberOfPersons.$dirty && booking.numberOfPersons.$invalid" data-ng-cloak>
-                <ul class="list-layout">
-                  <li data-ng-show="booking.numberOfPersons.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.required') }}</li>
-                  <li data-ng-show="booking.numberOfPersons.$error.min || booking.numberOfPersons.$error.max"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.outOfRange') }}</li>
-                  <li data-ng-show="booking.numberOfPersons.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.invaild') }}</li>
-                </ul>
+            <div id="product-booking-option">
+              <div id="product-booking-person" class="product-booking-container">
+                <p data-ng-cloak><strong>{{ __('product.booking.numberOfPeople') }} (1 - {% raw %}{{ packages[currPackage].maxPersons }}{% endraw %})</strong></p>
+                <div class="alert alert-danger" data-ng-show="booking.numberOfPersons.$dirty && booking.numberOfPersons.$invalid" data-ng-cloak>
+                  <ul class="list-layout">
+                    <li data-ng-show="booking.numberOfPersons.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.required') }}</li>
+                    <li data-ng-show="booking.numberOfPersons.$error.min || booking.numberOfPersons.$error.max"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.outOfRange') }}</li>
+                    <li data-ng-show="booking.numberOfPersons.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.invaild') }}</li>
+                  </ul>
+                </div>
+                <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" min="1" max="{% raw %}{{ packages[currPackage].maxPersons }}{% endraw %}" required>
               </div>
-              <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" min="1" max="{% raw %}{{ packages[currPackage].maxPersons }}{% endraw %}" required>
-            </div>
-            <div id="product-booking-items" class="product-booking-container" data-ng-if="currPackage > -1" data-ng-cloak>
-              <p><strong>{{ __('product.booking.package.items') }}</strong></p>
-              <div class="alert alert-danger" data-ng-show="invalidItems.length > 0" data-ng-cloak>
-                <ul class="list-layout">
-                  <li><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.items') }}</li>
-                </ul>
-              </div>
-              <ul class="list-group list-table">
-                <li class="list-group-item">
-                  <div class="row">
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><strong>{{ __('product.booking.package.check') }}</strong></div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
-                      <div class="row">
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{{ __('product.booking.package.item') }}</strong></div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right"><strong>{{ __('product.booking.package.quantity') }}</strong></div>
-                      </div>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right"><strong>{{ __('product.booking.package.subtotal') }}</strong></div>
-                  </div>
-                </li>
-                <li class="list-group-item">
-                  <div class="row">
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                      <div class="btn-group btn-group-sm" data-toggle="buttons">
-                        <label class="btn btn-default disabled">
-                          <span class="glyphicon glyphicon-ok"></span>
-                          <input type="checkbox" autocomplete="off">
-                        </label>
-                      </div>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
-                      <div class="row">
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{% raw %}{{ baseChargeName }} ({{ displayAmount(generateCharge(baseCharge)) }}){% endraw %}</strong></div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right"><strong>{% raw %}{{ slotCount }}{% endraw %}</strong></div>
-                      </div>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
-                      <strong>{% raw %}{{ displayAmount(generateCharge(baseCharge) * slotCount) }}{% endraw %}</strong>
-                    </div>
-                  </div>
-                </li>
-                <li class="list-group-item" data-ng-if="extraSlot > 0">
-                  <div class="row">
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                      <div class="btn-group btn-group-sm" data-toggle="buttons">
-                        <label class="btn btn-default disabled">
-                          <span class="glyphicon glyphicon-ok"></span>
-                          <input type="checkbox" autocomplete="off">
-                        </label>
-                      </div>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
-                      <div class="row">
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{% raw %}{{ extraSlotChargeName }} ({{ displayAmount(generateCharge(extraSlotCharge)) }}){% endraw %}</strong></div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right"><strong>{% raw %}{{ extraSlot }}{% endraw %}</strong></div>
-                      </div>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
-                      <strong>{% raw %}{{ displayAmount(generateCharge(extraSlotCharge) * extraSlot ) }}{% endraw %}</strong>
-                    </div>
-                  </div>
-                </li>
-                <li class="list-group-item" data-ng-if="packages[currPackage].extraCharge >0 && (numberOfPersons - packages[currPackage].basePersons) > 0">
-                  <div class="row">
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                      <div class="btn-group btn-group-sm" data-toggle="buttons">
-                        <label class="btn btn-default disabled">
-                          <span class="glyphicon glyphicon-ok"></span>
-                          <input type="checkbox" autocomplete="off">
-                        </label>
-                      </div>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
-                      <div class="row">
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{{ __('product.booking.package.extra') }} ({% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge)) }}{% endraw %})</strong></div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right"><strong>{% raw %}{{ numberOfPersons - packages[currPackage].basePersons }}{% endraw %}</strong></div>
-                      </div>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
-                      <strong>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge) * (numberOfPersons - packages[currPackage].basePersons)) }}{% endraw %}</strong>
-                    </div>
-                  </div>
-                </li>
-                {% raw %}
-                <li class="list-group-item" data-ng-repeat="item in packages[currPackage].items">
-                  <div class="row">
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                      <div class="btn-group btn-group-sm" data-toggle="buttons" data-ng-if="item.type == 'single' " data-ng-click="toggleItem(item)">
-                        <label class="btn btn-default" data-ng-if="!selectedItems[item.name]">
-                          <span class="glyphicon glyphicon-unchecked"></span>
-                          <input type="checkbox" autocomplete="off">
-                        </label>
-                        <label class="btn btn-primary" data-ng-if="selectedItems[item.name]">
-                          <span class="glyphicon glyphicon-ok"></span>
-                          <input type="checkbox" autocomplete="off">
-                        </label>
-                      </div>
-                      <div class="btn-group btn-group-sm" data-toggle="buttons" data-ng-if="item.type == 'multi' ">
-                        <label class="btn btn-default disabled" data-ng-if="!selectedItems[item.name]">
-                          <span class="glyphicon glyphicon-unchecked"></span>
-                          <input type="checkbox" autocomplete="off">
-                        </label>
-                        <label class="btn btn-primary disabled" data-ng-if="selectedItems[item.name]">
-                          <span class="glyphicon glyphicon-ok"></span>
-                          <input type="checkbox" autocomplete="off">
-                        </label>
-                      </div>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
-                      <div class="row">
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }}){{ item.max ? ' (' + maxTips + ': ' + item.max + ')' : '' }} </strong></div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right">
-                          <strong data-ng-if="item.type == 'single'">{{ selectedItems[item.name] ? selectedItems[item.name].amount : 0 }}</strong>
-                          <input type="number" class="form-control input-small text-right" placeholder="0" data-ng-if="item.type == 'multi'" data-ng-model="inputValue[item.name]" data-ng-change="inputItem(item)" min="0" max="{{ item.max }}">
+              <div id="product-booking-items" class="product-booking-container" data-ng-if="currPackage > -1" data-ng-cloak>
+                <p><strong>{{ __('product.booking.package.items') }}</strong></p>
+                <div class="alert alert-danger" data-ng-show="invalidItems.length > 0" data-ng-cloak>
+                  <ul class="list-layout">
+                    <li><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.items') }}</li>
+                  </ul>
+                </div>
+                <ul class="list-group list-table">
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><strong>{{ __('product.booking.package.check') }}</strong></div>
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{{ __('product.booking.package.item') }}</strong></div>
+                          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right"><strong>{{ __('product.booking.package.quantity') }}</strong></div>
                         </div>
                       </div>
+                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right"><strong>{{ __('product.booking.package.subtotal') }}</strong></div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
-                      <strong>{{ selectedItems[item.name] ? displayAmount(generateCharge(selectedItems[item.name].charge) * selectedItems[item.name].amount) : displayAmount(0) }}</strong>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div class="btn-group btn-group-sm" data-toggle="buttons">
+                          <label class="btn btn-default disabled">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            <input type="checkbox" autocomplete="off">
+                          </label>
+                        </div>
+                      </div>
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{% raw %}{{ baseChargeName }} ({{ displayAmount(generateCharge(baseCharge)) }}){% endraw %}</strong></div>
+                          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right"><strong>{% raw %}{{ slotCount }}{% endraw %}</strong></div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
+                        <strong>{% raw %}{{ displayAmount(generateCharge(baseCharge) * slotCount) }}{% endraw %}</strong>
+                      </div>
                     </div>
-                  </div>
-                </li>
-                {% endraw %}
-                <li class="list-group-item">
-                  <div class="row">
-                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-8 text-right">
-                      <h4>{{ __('product.booking.package.total') }}</h4>
+                  </li>
+                  <li class="list-group-item" data-ng-if="extraSlot > 0">
+                    <div class="row">
+                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div class="btn-group btn-group-sm" data-toggle="buttons">
+                          <label class="btn btn-default disabled">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            <input type="checkbox" autocomplete="off">
+                          </label>
+                        </div>
+                      </div>
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{% raw %}{{ extraSlotChargeName }} ({{ displayAmount(generateCharge(extraSlotCharge)) }}){% endraw %}</strong></div>
+                          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right"><strong>{% raw %}{{ extraSlot }}{% endraw %}</strong></div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
+                        <strong>{% raw %}{{ displayAmount(generateCharge(extraSlotCharge) * extraSlot ) }}{% endraw %}</strong>
+                      </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
-                      <h4>{% raw %}{{ displayAmount(getTotal()) }}{% endraw %}</h4>
+                  </li>
+                  <li class="list-group-item" data-ng-if="packages[currPackage].extraCharge >0 && (numberOfPersons - packages[currPackage].basePersons) > 0">
+                    <div class="row">
+                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div class="btn-group btn-group-sm" data-toggle="buttons">
+                          <label class="btn btn-default disabled">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            <input type="checkbox" autocomplete="off">
+                          </label>
+                        </div>
+                      </div>
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{{ __('product.booking.package.extra') }} ({% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge)) }}{% endraw %})</strong></div>
+                          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right"><strong>{% raw %}{{ numberOfPersons - packages[currPackage].basePersons }}{% endraw %}</strong></div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
+                        <strong>{% raw %}{{ displayAmount(generateCharge(packages[currPackage].extraCharge) * (numberOfPersons - packages[currPackage].basePersons)) }}{% endraw %}</strong>
+                      </div>
                     </div>
-                  </div>
-                </li>
-              </ul>
+                  </li>
+                  {% raw %}
+                  <li class="list-group-item" data-ng-repeat="item in packages[currPackage].items">
+                    <div class="row">
+                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div class="btn-group btn-group-sm" data-toggle="buttons" data-ng-if="item.type == 'single' " data-ng-click="toggleItem(item)">
+                          <label class="btn btn-default" data-ng-if="!selectedItems[item.name]">
+                            <span class="glyphicon glyphicon-unchecked"></span>
+                            <input type="checkbox" autocomplete="off">
+                          </label>
+                          <label class="btn btn-primary" data-ng-if="selectedItems[item.name]">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            <input type="checkbox" autocomplete="off">
+                          </label>
+                        </div>
+                        <div class="btn-group btn-group-sm" data-toggle="buttons" data-ng-if="item.type == 'multi' ">
+                          <label class="btn btn-default disabled" data-ng-if="!selectedItems[item.name]">
+                            <span class="glyphicon glyphicon-unchecked"></span>
+                            <input type="checkbox" autocomplete="off">
+                          </label>
+                          <label class="btn btn-primary disabled" data-ng-if="selectedItems[item.name]">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            <input type="checkbox" autocomplete="off">
+                          </label>
+                        </div>
+                      </div>
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }}){{ item.max ? ' (' + maxTips + ': ' + item.max + ')' : '' }} </strong></div>
+                          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right">
+                            <strong data-ng-if="item.type == 'single'">{{ selectedItems[item.name] ? selectedItems[item.name].amount : 0 }}</strong>
+                            <input type="number" class="form-control input-small text-right" placeholder="0" data-ng-if="item.type == 'multi'" data-ng-model="inputValue[item.name]" data-ng-change="inputItem(item)" min="0" max="{{ item.max }}">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
+                        <strong>{{ selectedItems[item.name] ? displayAmount(generateCharge(selectedItems[item.name].charge) * selectedItems[item.name].amount) : displayAmount(0) }}</strong>
+                      </div>
+                    </div>
+                  </li>
+                  {% endraw %}
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-8 text-right">
+                        <h4>{{ __('product.booking.package.total') }}</h4>
+                      </div>
+                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
+                        <h4>{% raw %}{{ displayAmount(getTotal()) }}{% endraw %}</h4>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
             <div id="product-booking-contact" class="product-booking-container">
               <p><strong>{{ __('product.booking.contact') }}</strong></p>
@@ -336,8 +354,17 @@
                 </ul>
               </div>
               <div class="row">
-                <div class="col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10 col-sm-4 col-sm-offset-8 col-xs-6 col-xs-offset-6">
+                <!-- <div class="col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10 col-sm-4 col-sm-offset-8 col-xs-6 col-xs-offset-6">
                   <button type="button" class="btn btn-danger btn-block" data-ng-click="validate()">{{ __('product.booking.book') }}</button>
+                </div> -->
+                <div class="col-lg-1 col-lg-offset-9 col-md-1 col-md-offset-9 col-sm-2 col-sm-offset-6 col-xs-6">
+                  <button type="button" class="btn btn-info btn-block" back >返回</button>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+                  <button type="button" class="btn btn-danger btn-block" data-ng-show="lastStep" data-ng-click="validate()">{{ __('product.booking.book') }}</button>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+                  <button type="button" class="btn btn-danger btn-block" selectstep data-ng-show="!lastStep" >下一步</button>
                 </div>
               </div>
             </div>
