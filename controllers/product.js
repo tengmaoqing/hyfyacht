@@ -4,8 +4,6 @@
 var Boat = require('hyfbase').Boat;
 var Product = require('hyfbase').Product;
 var co = require('co');
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
 
 exports.getProduct = function(req, res, next){
   var boatId = req.params.boatId;

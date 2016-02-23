@@ -538,8 +538,8 @@ exports.getBookingsByOwnerId = function(req, res, next){
 };
 
 exports.getBookingsForCalendarEvent = function(req, res, next){
-  var start = new Date(req.query.start);
-  var end = new Date(req.query.end);
+  var start = moment(req.query.start).toDate();
+  var end = moment(req.query.end).toDate();
 
   Booking.find({
     boatId: req.params.bid,
@@ -584,8 +584,8 @@ exports.getBookingsForOwnerCalendarEvent = function(req, res, next){
 
   var status = type == 'success' ? 'db.booking.pay_success' : 'db.booking.wait_to_pay';
 
-  var start = new Date(req.query.start);
-  var end = new Date(req.query.end);
+  var start = moment(req.query.start).toDate();
+  var end = moment(req.query.end).toDate();
   Booking.find({
     boatId: req.params.bid,
     dateStart: {
