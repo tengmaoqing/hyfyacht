@@ -732,6 +732,12 @@ dl.dl-horizontal dt {
   background: #eee;
 }
 
+.fc-day.fc-day-selected {
+  text-align: center;
+  vertical-align: middle;
+  font-size: x-large;
+}
+
 td.fc-bgevent {
   opacity: .4;
   filter: alpha(opacity=40);
@@ -795,4 +801,8 @@ td.fc-bgevent {
   .margin_top {
     margin-top: 10px;
   }
+}
+
+#product-booking-date {
+  min-height: 201px;
 }

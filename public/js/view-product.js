@@ -3,6 +3,7 @@
   var FC = $.fullCalendar;
   var View = FC.View;
   var CustomView;
+  var lastSelectedDay;
 
   var holidayUrl = "/api/getHoliday?country=" + hgdata.region.country;
   if(hgdata.region.region){
@@ -72,8 +73,20 @@
       if(date < moment()){
         $(cell).addClass("fc-day-disable");
       }
+
+        $(cell).html("1");
+      // console.log(moment($("#data-selected-date").val()).add(8, "h"));
+      // console.log(moment(date));
+      // console.log(moment(date) == moment($("#data-selected-date").val()).add(8, "h"));
+      if(moment(date).isSame(moment($("#data-selected-date").val()).add(8, "h"))){
+        console.log("dayRender");
+        $(cell).addClass("fc-day-selected");
+        $(cell).html("<span class='text-success glyphicon glyphicon-ok'></span>");
+        lastSelectedDay = $(cell);
+      }
     },
-    dayClick: function(date, jsEvent, view){
+    dayClick: function(date, jsEvent, view) {
+      console.log("1");
       if(view.name == "custom"){
         return;
       }
@@ -95,11 +108,21 @@
 
       $("#data-calendar-events").val(JSON.stringify(clientEvents)).change();
 
+      if(lastSelectedDay && lastSelectedDay != $(this)) {
+        console.log(2)
+        lastSelectedDay.removeClass("fc-day-selected");
+        lastSelectedDay.html("");
+      }
+      lastSelectedDay = $(this);
       $("#calendar").fullCalendar("gotoDate", date);
-      $("#product-booking-package").show();
-      $("#calendar").fullCalendar("changeView", "custom");
+
+      
+      $(this).addClass("fc-day-selected");
+      $(this).html("<span class='text-success glyphicon glyphicon-ok'></span>");
+      // $("#product-booking-package").show();
+      // $("#calendar").fullCalendar("changeView", "custom");
     },
-    eventClick: function(calEvent, jsEvent, view){
+    eventClick: function(calEvent, jsEvent, view) {
       var date = calEvent.start;
       if(date < moment().hour(0).minute(0).second(0)){
         return false;
@@ -144,10 +167,10 @@
     }
   });
 
-  $("#calendar-month").click(function(){
-    $("#calendar").fullCalendar("changeView", "month");
-    $("#product-booking-package").hide();
-  });
+  // $("#calendar-month").click(function(){
+  //   $("#calendar").fullCalendar("changeView", "month");
+  //   $("#product-booking-package").hide();
+  // });
 
   $("#calendar-today").click(function(){
     $("#calendar").fullCalendar("today");
@@ -342,7 +365,7 @@
       }
     };
 
-    $scope.toggleSlot = function(index, slotIndex){
+    $scope.toggleSlot = function(index, slotIndex) {
       if(moment($scope.dateStart).format("YYYYMMDD") == moment($scope.selectedDate).format("YYYYMMDD") && $scope.currPackage == index && $scope.currSlot == slotIndex){
         $scope.currPackage = -1;
         $scope.currSlot = -1;
@@ -402,7 +425,7 @@
       return false;
     };
 
-    $scope.toggleTime = function(index, slotIndex, time){
+    $scope.toggleTime = function(index, slotIndex, time) {
       var slot = $scope.getSlotFromTime(time);
 
       var type = $scope.packages[index].type;
@@ -570,7 +593,6 @@
         this.elementArray[index].show();
       }
     };
-
     return temp
   });
 
@@ -586,31 +608,47 @@
             selecteContact = $("#product-booking-contact");
 
         stepService.elementArray = [selecteDate_date, selecteDate_package, selecteOption, selecteContact];
+        $("#backStep").hide();
 
         var len = stepService.elementArray.length;
-        for(var i = 0; i<len; i++){
+        for(var i = 0; i<len; i++) {
           if( i != 0 ){
             stepService.elementArray[i].hide();
           }
         }
 
-        element.bind("click", function(){
+        element.bind("click", function() {
 
           switch (stepService.nowStep) {
             case 0:
-
+              if ( !scope.selectedDate) {
+                scope.step0 = true;
+                scope.$apply();
+                return;
+              }
+              $("#calendar-controller").hide();
+              $("#backStep").show();
+              $("#step1Hide").hide();
+              break;
+            case 1:
+              if (scope.currTimes.length === 0 ) {
+                scope.step1 = true;
+                scope.$apply();
+                return;
+              }
+              selecteDate.hide();
+              break;
+            case 2:
+              if (!scope.numberOfPersons) {
+                return;
+              }
+              scope.lastStep = true;
+              scope.$apply();
               break;
           }
-          console.log(stepService.nowStep);
 
           stepService.nowStep++;
-          if (stepService.nowStep == len) {
-            scope.lastStep = true;
-            scope.$apply();
-            stepService.nowStep--;
-          } else {
-            stepService.nextStep(stepService.nowStep);
-          }
+          stepService.nextStep(stepService.nowStep);
 
         });
       }
@@ -621,8 +659,23 @@
     return {
       restrict: "A",
       link: function(scope, element, attrs) {
-        console.log(element);
-        element.bind("click", function(){
+        element.bind("click", function() {
+
+          switch (stepService.nowStep) {
+            case 1:
+              $("#backStep").hide();
+              $("#step1Hide").show();
+              $("#calendar-controller").show();
+              break;
+            case 2:
+              $("#product-booking-date").show();
+              break;
+            case 3:
+              scope.lastStep = false;
+              scope.$apply();
+              break;
+          }
+
           stepService.elementArray[stepService.nowStep].hide();
           stepService.elementArray[--stepService.nowStep].show();
         });
