@@ -3,7 +3,6 @@
   var FC = $.fullCalendar;
   var View = FC.View;
   var CustomView;
-  var lastSelectedDay;
 
   var holidayUrl = "/api/getHoliday?country=" + hgdata.region.country;
   if(hgdata.region.region){
@@ -74,19 +73,21 @@
         $(cell).addClass("fc-day-disable");
       }
 
-        $(cell).html("1");
-      // console.log(moment($("#data-selected-date").val()).add(8, "h"));
-      // console.log(moment(date));
-      // console.log(moment(date) == moment($("#data-selected-date").val()).add(8, "h"));
       if(moment(date).isSame(moment($("#data-selected-date").val()).add(8, "h"))){
-        console.log("dayRender");
-        $(cell).addClass("fc-day-selected");
-        $(cell).html("<span class='text-success glyphicon glyphicon-ok'></span>");
-        lastSelectedDay = $(cell);
+        var parentDiv = $(cell).parent().parent().parent().parent().parent();
+        if(!document.getElementById("date-div")) {
+          $(".fc-month-view").append("<div id='date-div' class='fc-day-selected'><span class='text-success glyphicon glyphicon-ok'></span></div>");
+        }
+        $("#date-div").css({
+          "width": $(cell).css("width"),
+          "height": $(cell).css("height"),
+          "top":parentDiv[0].offsetTop+"px",
+          "left":$(cell)[0].offsetLeft+"px",
+          "line-height":"2"
+        });
       }
     },
     dayClick: function(date, jsEvent, view) {
-      console.log("1");
       if(view.name == "custom"){
         return;
       }
@@ -95,8 +96,6 @@
         return false;
       }
 
-      //$("#data-available-packages").val("0").change();
-
       var endDate = moment(date.local());
       endDate.add(1, "day");
 
@@ -108,42 +107,19 @@
 
       $("#data-calendar-events").val(JSON.stringify(clientEvents)).change();
 
-      if(lastSelectedDay && lastSelectedDay != $(this)) {
-        console.log(2)
-        lastSelectedDay.removeClass("fc-day-selected");
-        lastSelectedDay.html("");
+      var parentDiv = $(this).parent().parent().parent().parent().parent();
+      if(!document.getElementById("date-div")) {
+        $(".fc-month-view").append("<div id='date-div' class='fc-day-selected'><span class='text-success glyphicon glyphicon-ok'></span></div>");
       }
-      lastSelectedDay = $(this);
-      $("#calendar").fullCalendar("gotoDate", date);
-
-      
-      $(this).addClass("fc-day-selected");
-      $(this).html("<span class='text-success glyphicon glyphicon-ok'></span>");
-      // $("#product-booking-package").show();
-      // $("#calendar").fullCalendar("changeView", "custom");
-    },
-    eventClick: function(calEvent, jsEvent, view) {
-      var date = calEvent.start;
-      if(date < moment().hour(0).minute(0).second(0)){
-        return false;
-      }
-
-      //$("#data-available-packages").val("0").change();
-
-      var endDate = moment(date.local());
-      endDate.add(1, "day");
-
-      var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
-        return !e.allDay && (e.start >= date && e.end <= endDate);
+      $("#date-div").css({
+        "width": $(this).css("width"),
+        "height": $(this).css("height"),
+        "top":parentDiv[0].offsetTop+"px",
+        "left":$(this)[0].offsetLeft+"px",
+        "line-height":"2"
       });
 
-      $("#data-selected-date").val(date.format("YYYY-MM-DD")).change();
-
-      $("#data-calendar-events").val(JSON.stringify(clientEvents)).change();
-
       $("#calendar").fullCalendar("gotoDate", date);
-      $("#product-booking-package").show();
-      $("#calendar").fullCalendar("changeView", "custom");
     },
     eventSources:[
       {
@@ -418,7 +394,7 @@
       return false;
     };
 
-    $scope.timeNotAvailable = function(){
+    $scope.timeNotAvailable = function() {
       $("#hyf-modal-alert").CustomAlert(hgdata.timeNotAvailable);
       $scope.currPackage = -1;
       setSelectedTime("", "");
@@ -591,6 +567,9 @@
         var lastIndex = index-1;
         this.elementArray[lastIndex].hide();
         this.elementArray[index].show();
+        if(document.body.clientWidth<=768) {
+          this.elementArray[index][0].scrollIntoView();
+        }
       }
     };
     return temp
@@ -617,39 +596,87 @@
           }
         }
 
+        var cancelStyle = function(index) {
+          for(; index<len; index++) {
+            console.log("1");
+            $(".booking-step")[index].style.color = "#999";
+            $(".borderline")[index] && ($(".borderline")[index].style.borderColor = "#999");
+          }
+        }
+
+        scope.$watch("selectedDate", function(){
+          if (scope.selectedDate) {
+            $(".booking-step")[0].style.color = "green";
+          }
+        });
+
+        scope.$watch("dateEnd", function(){
+          if (scope.dateEnd) {
+            $(".booking-step")[1].style.color = "green";
+          } else {
+            cancelStyle(1);
+          }
+        });
+
+        scope.$watch("contact", function(){
+          if (scope.booking.$valid) {
+            $(".booking-step")[3].style.color = "green";
+          } else {
+            $(".booking-step")[3].style.color = "#999";
+          }
+        }, true);
+
         element.bind("click", function() {
 
           switch (stepService.nowStep) {
             case 0:
-              if ( !scope.selectedDate) {
+              if (!scope.selectedDate) {
                 scope.step0 = true;
                 scope.$apply();
                 return;
               }
+
               $("#calendar-controller").hide();
               $("#backStep").show();
               $("#step1Hide").hide();
               break;
             case 1:
-              if (scope.currTimes.length === 0 ) {
+              if (!scope.dateEnd) {
                 scope.step1 = true;
                 scope.$apply();
                 return;
               }
+
+              if (scope.numberOfPersons) {
+                $(".booking-step")[2].style.color = "green";
+              }
+
+              scope.$watch("numberOfPersons", function(newValue,oldValue){
+                if (newValue == oldValue) {
+                  return
+                }
+                if (scope.numberOfPersons ) {
+                  angular.element(".booking-step")[2].style.color = "green";
+                } else {
+                  cancelStyle(2);
+                }
+              });
+
               selecteDate.hide();
               break;
             case 2:
               if (!scope.numberOfPersons) {
                 return;
               }
+
               scope.lastStep = true;
               scope.$apply();
               break;
           }
 
           stepService.nowStep++;
+          $(".borderline")[stepService.nowStep-1].style.borderColor = "green";
           stepService.nextStep(stepService.nowStep);
-
         });
       }
     }

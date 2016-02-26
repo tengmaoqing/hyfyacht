@@ -732,10 +732,16 @@ dl.dl-horizontal dt {
   background: #eee;
 }
 
-.fc-day.fc-day-selected {
+.fc-day-selected {
   text-align: center;
+  display: table-cell;
   vertical-align: middle;
   font-size: x-large;
+  position: absolute;
+  z-index: 10;
+  line-height: 1.5;
+  background-color: rgb(255,255,255);
+  background-color: rgba(255,255,255,.6);
 }
 
 td.fc-bgevent {
@@ -805,4 +811,58 @@ td.fc-bgevent {
 
 #product-booking-date {
   min-height: 201px;
+}
+
+.booking-step-out {
+  top:0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: rgb(255,255,255);
+}
+
+#product-booking-step {
+  margin: 0 auto;
+}
+
+.booking-step {
+  position: relative;
+  color:#999;
+  padding-left:8px;
+  padding-right: 8px; 
+}
+
+.booking-step-font-size {
+  font-size:inherit;
+}
+
+.booking-step-glyphicon {
+  background-color: #fff;
+  z-index: 2;
+  border:10px solid #fff;
+  font-size: xx-large;
+}
+
+.borderline {
+  height: 0;
+  border-top: 2px solid #999;
+  position: absolute;
+  z-index: 1;
+  top: 48%;
+  right: 50%;
+  margin-right:8%;
+}
+
+.styleTransition {
+          transition: all .5s;
+  -webkit-transition: all .5s;
+}
+
+@media (max-width: 767px) {
+  .booking-step-font-size {
+    font-size:12px;
+  }
+  .booking-step-glyphicon {
+    font-size: x-large;
+  }
 }

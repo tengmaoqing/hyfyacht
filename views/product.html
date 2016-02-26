@@ -39,26 +39,35 @@
             <h3>{{ __('product.section.booking') }}</h3>
             <hr class="hr-divider">
             <!-- /*选择步骤 -->
-            <div class="text-center product-booking-container clearfix">
-              <div class="col-xs-3">
-                1.选择日期
-              </div>
-              <div class="col-xs-3">
-                2.选择套餐
-              </div>
-              <div class="col-xs-3">
-                3.确定选择
-              </div>
-              <div class="col-xs-3">
-                4.联系方式
+            <div class="booking-step-out text-center styleTransition" id="booking-step-out">
+              <div class="text-center clearfix" id="product-booking-step">
+                <div class="col-xs-3 booking-step styleTransition">
+                  <span class="booking-step-glyphicon glyphicon glyphicon-calendar"></span>
+                  <div class="booking-step-font-size">选择日期</div>
+                </div>
+                <div class="col-xs-3 booking-step styleTransition">
+                  <span class="booking-step-glyphicon glyphicon glyphicon-time"></span>
+                  <div class="booking-step-font-size">选择套餐</div>
+                  <div class="col-xs-10 borderline styleTransition"></div>
+                </div>
+                <div class="col-xs-3 booking-step styleTransition">
+                  <span class="booking-step-glyphicon glyphicon glyphicon-th-list"></span>
+                  <div class="booking-step-font-size">确认选项</div>
+                  <div class="col-xs-10 borderline styleTransition"></div>
+                </div>
+                <div class="col-xs-3 booking-step styleTransition">
+                  <span class="booking-step-glyphicon glyphicon glyphicon-phone"></span>
+                  <div class="booking-step-font-size">联系方式</div>
+                  <div class="col-xs-10 borderline styleTransition"></div>
+                </div>
               </div>
             </div>
             <!-- 选择步骤*/ -->
             <div id="product-booking-date" class="product-booking-container">
-              <p id="step1Hide"><strong>{{ __('product.booking.selectDate') }}</strong></p>
+              <p id="step1Hide" class="text-center"><strong>{{ __('product.booking.selectDate') }}</strong></p>
               <div id="calendar"></div>
               <div id="product-booking-package" class="product-booking-container">
-                <p><strong>{{ __('product.booking.selectPackage') }}</strong></p>
+                <p class="text-center"><strong>{{ __('product.booking.selectPackage') }}</strong></p>
                 <div class="panel-group" id="package-accordion" role="tablist">
                   {% raw %}
                   <input id="data-selected-date" name="selectedDate" class="collapse" type="text" data-ng-model="selectedDate">
@@ -115,8 +124,8 @@
               </div>
               <div class="alert alert-danger" data-ng-show="(step0 && !selectedDate) || (step1 && !dateStart)" data-ng-cloak>
                 <ul class="list-layout">
-                  <li data-ng-show="step0 && !selectedDate"><span class="glyphicon glyphicon-exclamation-sign"></span> 请选择日期 </li>
-                  <li data-ng-show="step1 && (!dateStart || !dateEnd)"><span class="glyphicon glyphicon-exclamation-sign"></span> 请选择具体套餐时间 </li>
+                  <li data-ng-show="step0 && !selectedDate"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.time') }} </li>
+                  <li data-ng-show="step1 && (!dateStart || !dateEnd)"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.package') }} </li>
                 </ul>
               </div>
               <div class="row calendar-controller" id="calendar-controller">
@@ -138,6 +147,7 @@
             </div>
 
             <div id="product-booking-option">
+              <p class="text-center"><strong>{{ __('product.booking.package.items') }}</strong></p>
               <div id="product-booking-person" class="product-booking-container">
                 <p data-ng-cloak><strong>{{ __('product.booking.numberOfPeople') }} (1 - {% raw %}{{ packages[currPackage].maxPersons }}{% endraw %})</strong></p>
                 <div class="alert alert-danger" data-ng-show="booking.numberOfPersons.$dirty && booking.numberOfPersons.$invalid" data-ng-cloak>
@@ -150,7 +160,6 @@
                 <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" min="1" max="{% raw %}{{ packages[currPackage].maxPersons }}{% endraw %}" required data-ng-cloak>
               </div>
               <div id="product-booking-items" class="product-booking-container" data-ng-if="currPackage > -1" data-ng-cloak>
-                <p><strong>{{ __('product.booking.package.items') }}</strong></p>
                 <div class="alert alert-danger" data-ng-show="invalidItems.length > 0" data-ng-cloak>
                   <ul class="list-layout">
                     <li><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.items') }}</li>
@@ -286,7 +295,7 @@
               </div>
             </div>
             <div id="product-booking-contact" class="product-booking-container" data-ng-cloak>
-              <p><strong>{{ __('product.booking.contact') }}</strong></p>
+              <p class="text-center"><strong>{{ __('product.booking.contact') }}</strong></p>
               <div>
                 <div class="alert alert-danger" data-ng-show="booking.contact.$dirty && booking.contact.$invalid">
                   <ul class="list-layout">
@@ -346,12 +355,9 @@
                 </ul>
               </div>
               <div class="row product-booking-container">
-                <!-- <div class="col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10 col-sm-4 col-sm-offset-8 col-xs-6 col-xs-offset-6">
-                  <button type="button" class="btn btn-danger btn-block" data-ng-click="validate()">{{ __('product.booking.book') }}</button>
-                </div> -->
                 <div class="col-md-2 col-md-offset-8 col-sm-4 col-sm-offset-4 col-xs-6">
                   <div data-ng-cloak>
-                    <button type="button" class="btn btn-primary btn-block" back id="backStep">上一步</button>
+                    <button type="button" class="btn btn-primary btn-block" back id="backStep">{{ __('product.booking.back') }}</button>
                   </div>
                 </div>
                 <div class="col-md-2 col-sm-4 col-xs-6">
@@ -359,7 +365,7 @@
                     <button type="button" class="btn btn-danger btn-block" data-ng-show="lastStep" data-ng-click="validate()">{{ __('product.booking.book') }}</button>
                   </div>
                   <div>
-                    <button type="button" class="btn btn-danger btn-block" selectstep data-ng-show="!lastStep" >下一步</button>
+                    <button type="button" class="btn btn-danger btn-block" selectstep data-ng-show="!lastStep" >{{ __('product.booking.next') }}</button>
                   </div>
                 </div>
               </div>
@@ -382,9 +388,9 @@
             </div>
           </div>
         </div>
-        <div id="selected-package" class="navbar-fixed-top fix-container-top" data-ng-if="currPackage >= 0" data-ng-cloak>
+        <!-- <div id="selected-package" class="navbar-fixed-top fix-container-top" data-ng-if="currPackage >= 0" data-ng-cloak>
           {{ __('product.booking.selectedPackage') }}: <span class="text-primary">{% raw %}{{ packages[currPackage].name }}{% endraw %}</span> {{ __('product.booking.package.total') }}: <span class="text-danger">{% raw %}{{ displayAmount(getTotal()) }}{% endraw %}</span>
-        </div>
+        </div> -->
         <div id="product-detail" class="thumbnail">
           <div class="caption">
             <h3>{{ __('product.section.desc') }}</h3>
@@ -551,6 +557,10 @@
   $("#product-nav").onePageNav();
 
   var show = false;
+  var bookingWidth = $("#product-booking-step")[0].offsetWidth;
+  $("#product-booking-step").css("width", bookingWidth+"px");
+
+  var bookingTop = $("#product-booking-step").offset().top;
 
   $(w).on("scroll", function(){
     if($(this).scrollTop() < 80){
@@ -565,12 +575,26 @@
       }
     }
 
+    if ($(this).scrollTop() < bookingTop) {
+      $("#booking-step-out").css({
+        "position": "static",
+        "box-shadow":"none"
+      });
+    } else {
+      $("#booking-step-out").css({
+        "position": "fixed",
+        "box-shadow":"1px 1px 8px #aaa"
+      });
+    }
+
+
     if($(".hyf-info").hadScrollToEl()){
       $(".navbar-fixed-bottom").css("position", "relative");
     }else{
       $(".navbar-fixed-bottom").css("position", "fixed");
     }
   });
+
 })(jQuery, window);
 </script>
 {% endblock %}

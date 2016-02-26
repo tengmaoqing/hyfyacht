@@ -213,6 +213,8 @@
       "selectedPackage": "已選套餐",
       "start": "開始時間",
       "end": "結束時間",
+      "travel_guide": "出行指導",
+      "mobile_of_owner": "船東聯繫電話",
       "selectPackage": "選擇套餐",
       "no_package": "此日期沒有可以預定的套餐，請選擇其他日期",
       "numberOfPeople": "人數",
@@ -245,6 +247,8 @@
       "bookingPackage": "預定套餐",
       "contract": "《海龜租船租賃協議》",
       "book": "預定",
+      "back": "上一步",
+      "next": "下一步",
       "error": {
         "invaild_time": "此時間不可預定。",
         "numberOfPeople": {

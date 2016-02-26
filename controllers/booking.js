@@ -379,7 +379,10 @@ exports.getBookingByBookingId = function(req, res, next){
   Booking.findOne({
     bookingId: bookingId,
     userId: req.session.user._id
-  }, function (err, booking) {
+  }).populate('boatId', 'geospatial').populate({
+    path: 'ownerId',
+    select: 'nickname mobile'
+  }).exec(function (err, booking) {
     if (err) {
       err.status = 400;
       return next(err);

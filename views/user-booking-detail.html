@@ -38,6 +38,28 @@
   {% endif %}
   <hr class="hr-divider">
   {% endif %}
+  {% if booking.status == 'db.booking.pay_success' %}
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-md-8 col-sm-8 col-xs-6">
+          <h4>{{ __('product.booking.travel_guide') }}</h4>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <dl class="dl-horizontal">
+        <dt>{{ __('product.booking.mobile_of_owner') }}</dt>
+        <dd>{{ booking.ownerId.mobile }}</dd>
+      </dl>
+      {% if booking.boatId.geospatial.length > 0 %}
+      <h3>{{ __('boat.detail.anchorage') }}</h3>
+      <hr class="hr-divider">
+      <div id="boat-geospatial" class="hyf-map-container"></div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
   {{ bookingView.detail(booking) }}
 </div>
 <div id="hyf-modal-alipay" class="modal fade">
@@ -97,6 +119,32 @@
       $("#hyf-modal-alert").CustomAlert("{{ __('common.choose_pay_mode') }}");
     }
   });
+</script>
+{% endif %}
+
+{% if booking.boatId.geospatial.length > 0 %}
+  <script>
+  window.hgdata = {
+    geospatial: {{ booking.boatId.geospatial|json|safe }}
+  };
+
+  function loadBaiduMap() {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "http://api.map.baidu.com/api?v=2.0&ak=XpLGCrdpWiH4k02rOXlWQBro&callback=initBaiduMap";
+    document.body.appendChild(script);
+  }
+
+  function initBaiduMap() {
+    var map = new BMap.Map("boat-geospatial");
+    var point = new BMap.Point(hgdata.geospatial[0], hgdata.geospatial[1]);
+    map.centerAndZoom(point, 11);
+    map.enableScrollWheelZoom();
+    var marker = new BMap.Marker(point);
+    map.addOverlay(marker);
+  }
+
+  loadBaiduMap();
 </script>
 {% endif %}
 {% endblock %}

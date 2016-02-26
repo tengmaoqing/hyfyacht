@@ -210,6 +210,8 @@
       "selectedPackage": "Selected Package",
       "start": "Start",
       "end": "End",
+      "travel_guide": "Travel Guide",
+      "mobile_of_owner": "Mobile Of Owner",
       "selectPackage": "Select a package",
       "no_package": "No package available, Please select another date.",
       "numberOfPeople": "Number of people",
@@ -242,6 +244,8 @@
       "bookingPackage": "Package",
       "contract": "HGBOATING Lease Contract",
       "book": "Book",
+      "back": "Back",
+      "next": "Next",
       "error": {
         "invaild_time": "Invalid Time",
         "numberOfPeople": {
