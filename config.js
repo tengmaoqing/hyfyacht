@@ -40,6 +40,11 @@ var config = {
     alipay_gateway_new: 'https://mapi.alipay.com/gateway.do?',
     https_verify_url: "https://mapi.alipay.com/gateway.do?service=notify_verify&",
     http_verify_url: "http://notify.alipay.com/trade/notify_query.do?"
+  },
+  paypalConfig: {
+    mode: "sandbox",
+    client_id: "AcvQoejObmeIaXb_m3Oib20ih6McBbYdcVm20f1Cn3P-Vf54sbYydkkq7oKw6zud7JZF2bfVRGqyy2Q1",
+    client_secret: "EOvajnMoyFrfjSTcj6832G8Jf0TtNQ3TOPS7ql60-zU1EkWAYe69M2fRdnHZGtL6EVCOj_nfF3NkeYYh"
   }
 };
 

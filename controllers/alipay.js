@@ -10,30 +10,64 @@ var EventOrder = require('hyfbase').EventOrder;
 var co = require('co');
 
 exports.submitDirectPayByUser = function(req, res, next){
-  var parameter = {
-    service: 'create_direct_pay_by_user',
-    partner: alipayConfig.partner,
-    seller_email: alipayConfig.seller_email,
-    payment_type: '1',
-    notify_url: alipayConfig.notify_url,
-    return_url: alipayConfig.return_url,
-    out_trade_no: req.body.WIDout_trade_no,
-    extra_common_param: req.body.WIDextra_common_param,
-    it_b_pay: req.body.WIDit_b_pay,
-    subject: req.body.WIDsubject,
-    total_fee: req.body.WIDtotal_fee,
-    body: req.body.WIDbody,
-    show_url: req.body.WIDshow_url,
-    anti_phishing_key: '',
-    exter_invoke_ip: req.headers['x-real-ip'],
-    _input_charset: alipayConfig.input_charset
-  };
+  var product = req.query.product;
+  var bookingId = req.query.order;
 
-  var params = alipayCore.buildRequestFormParams(parameter);
+  co(function *() {
+    var order = null;
+    var show_url = null;
+    var paymentDescription = null;
 
-  var action = alipayConfig.alipay_gateway_new + '_input_charset=' + alipayConfig.input_charset.toLocaleLowerCase();
+    try {
+      if(product === 'boat'){
+        order = yield Booking.findOne({bookingId: bookingId}).exec();
+        show_url = 'http://localhost:3000/user/booking/detail/' + order.bookingId;
+        paymentDescription = order.boatName + '-' + order.productName + '-' + order.packageName;
+      }
 
-  return res.render('payment/alipay', {action: action, params: params});
+      if(product === 'event'){
+        order = yield EventOrder.findOne({orderId: bookingId}).exec();
+        show_url = 'http://localhost:3000/user/event';
+        paymentDescription = order.eventName;
+      }
+    } catch (err) {
+      err.status = 500;
+      throw err;
+    }
+
+    if(!order){
+      throw new Error('Order Not Found');
+    }
+
+    var total = (order.total / 100).toFixed(2);
+
+    var parameter = {
+      service: 'create_direct_pay_by_user',
+      partner: alipayConfig.partner,
+      seller_email: alipayConfig.seller_email,
+      payment_type: '1',
+      notify_url: alipayConfig.notify_url,
+      return_url: alipayConfig.return_url,
+      out_trade_no: bookingId,
+      extra_common_param: product,
+      it_b_pay: '29m',
+      subject: paymentDescription,
+      total_fee: total,
+      body: paymentDescription,
+      show_url: show_url,
+      anti_phishing_key: '',
+      exter_invoke_ip: req.headers['x-real-ip'],
+      _input_charset: alipayConfig.input_charset
+    };
+
+    var params = alipayCore.buildRequestFormParams(parameter);
+
+    var action = alipayConfig.alipay_gateway_new + '_input_charset=' + alipayConfig.input_charset.toLocaleLowerCase();
+
+    return res.render('payment/alipay', {action: action, params: params});
+  }).catch(function (err) {
+    return next(err);
+  });
 };
 
 exports.notify = function(req, res, next){
@@ -70,7 +104,7 @@ exports.notify = function(req, res, next){
     var bookingId = data.out_trade_no;
     var product = data.extra_common_param;
 
-    var order = false;
+    var order = null;
 
     try {
       var payment = yield Payment.findOne({

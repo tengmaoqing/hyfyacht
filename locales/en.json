@@ -79,7 +79,8 @@
     "detail": "Detail",
     "holiday": "Holiday",
     "filter": "Filter",
-    "coming_soon": "Coming Soon"
+    "coming_soon": "Coming Soon",
+    "paypayl_pay_methods": "Payment types:"
   },
   "error": {
     "login": {
