@@ -13,7 +13,7 @@ var tools = require('../lib/tools');
 var co = require('co');
 var Boat = require('hyfbase').Boat;
 
-exports.checkBooking = function(req, res, next){
+exports.checkBooking = function (req, res, next) {
   if (!req.session.bookingForm) {
     req.checkBody({
       'productId': {
@@ -81,7 +81,7 @@ exports.checkBooking = function(req, res, next){
   var dateStart = moment(bookingForm.dateStart);
   var dateEnd = moment(bookingForm.dateEnd);
 
-  co(function *(){
+  co(function *() {
     try {
       var selectedPackage = yield Package.findByIdForCheckBooking(bookingForm.packageId).exec();
 
@@ -93,24 +93,26 @@ exports.checkBooking = function(req, res, next){
       var unavailableCount = yield Unavailable.countUnavailableByDateRange({
         boatId: bookingForm.boatId
       }, dateStart.toDate(), dateEnd.toDate());
-    } catch (err){
+    } catch (err) {
       err.status = 500;
       throw err;
     }
 
-    if(!selectedPackage){
-      var err =  new Error('Invalid Package');
+    if (!selectedPackage) {
+      var err = new Error('Invalid Package');
       err.status = 400;
       throw err;
     }
 
-    var generateCharge = function(charge){
+    var generateCharge = function (charge) {
       return parseInt(charge * config.currency[req.session.currency] / config.currency[selectedPackage.currency]);
     };
 
-    var boatIndex = selectedPackage.boats.map(function(b){return b.id}).indexOf(bookingForm.boatId);
+    var boatIndex = selectedPackage.boats.map(function (b) {
+      return b.id
+    }).indexOf(bookingForm.boatId);
 
-    var fail = function(error){
+    var fail = function (error) {
       var bookingInfo = new Booking({
         boatId: selectedPackage.boats[boatIndex].id,
         boatName: selectedPackage.boats[boatIndex].name,
@@ -125,27 +127,27 @@ exports.checkBooking = function(req, res, next){
       return res.render('booking-result', {error: error, booking: bookingInfo});
     };
 
-    if(bookingCount > 0){
+    if (bookingCount > 0) {
       return fail('product.booking.result.error.date');
     }
 
-    if(unavailableCount > 0){
+    if (unavailableCount > 0) {
       return fail('product.booking.result.error.date');
     }
 
-    if(req.session.owner._id === selectedPackage.owner.id){
+    if (req.session.owner._id === selectedPackage.owner.id) {
       var err2 = new Error('Can not book boats of yours');
       err2.status = 403;
       throw err2;
     }
 
     //Check product
-    if(selectedPackage.product.id != bookingForm.productId){
+    if (selectedPackage.product.id != bookingForm.productId) {
       return fail('product.booking.result.error.other');
     }
 
     //Check boat
-    if(boatIndex < 0){
+    if (boatIndex < 0) {
       return fail('product.booking.result.error.other');
     }
 
@@ -155,11 +157,11 @@ exports.checkBooking = function(req, res, next){
     var slotCount = moment(bookingForm.dateEnd).diff(moment(bookingForm.dateStart)) / 60000;
     var charges = selectedPackage.charges;
 
-    for(var j = 0; j < charges.length; j++){
+    for (var j = 0; j < charges.length; j++) {
       var condition = charges[j].condition;
 
-      if(slotCount >= condition.start && ((condition.end != 0 && slotCount < condition.end) || (condition.end == 0))){
-        if(charges[j].type == "slot") {
+      if (slotCount >= condition.start && ((condition.end != 0 && slotCount < condition.end) || (condition.end == 0))) {
+        if (charges[j].type == "slot") {
           if (charges[j].baseCharge) {
             var extraSlot = (slotCount - selectedPackage.type.baseDuration) / selectedPackage.type.slotDuration;
 
@@ -188,7 +190,7 @@ exports.checkBooking = function(req, res, next){
               subtotal: generateCharge(charges[j].charge) * baseCount
             });
           }
-        }else if(charges[j].type == "all"){
+        } else if (charges[j].type == "all") {
           selectedItems.push({
             name: charges[j].name,
             charge: generateCharge(charges[j].charge),
@@ -202,7 +204,7 @@ exports.checkBooking = function(req, res, next){
 
     var extraPersons = bookingForm.numberOfPersons - selectedPackage.basePersons;
 
-    if(extraPersons > 0 && selectedPackage.extraCharge > 0){
+    if (extraPersons > 0 && selectedPackage.extraCharge > 0) {
       selectedItems.push({
         name: res.__('product.booking.package.extra'),
         charge: generateCharge(selectedPackage.extraCharge),
@@ -213,13 +215,15 @@ exports.checkBooking = function(req, res, next){
     }
 
     //Check items
-    for(var item in items){
-      if(items.hasOwnProperty(item)){
-        var index = selectedPackage.items.map(function(i){return i.name}).indexOf(items[item].name);
-        if(index > -1 && items[item].amount > 0){
+    for (var item in items) {
+      if (items.hasOwnProperty(item)) {
+        var index = selectedPackage.items.map(function (i) {
+          return i.name
+        }).indexOf(items[item].name);
+        if (index > -1 && items[item].amount > 0) {
           var data = selectedPackage.items[index];
-          
-          if(data.max && data.max < items[item].amount){
+
+          if (data.max && data.max < items[item].amount) {
             return fail('product.booking.result.error.other');
           }
 
@@ -230,7 +234,7 @@ exports.checkBooking = function(req, res, next){
             amount: items[item].amount,
             subtotal: generateCharge(data.charge) * items[item].amount
           });
-        }else{
+        } else {
           return fail('product.booking.result.error.other');
         }
       }
@@ -238,40 +242,40 @@ exports.checkBooking = function(req, res, next){
 
     var total = 0;
 
-    for(var i = 0; i < selectedItems.length; i++){
+    for (var i = 0; i < selectedItems.length; i++) {
       total += selectedItems[i].subtotal;
     }
 
     //Check total
-    if(total != bookingForm.total){
+    if (total != bookingForm.total) {
       return fail('product.booking.result.error.other');
     }
 
-    if(parseInt(bookingForm.numberOfPersons) > selectedPackage.maxPersons){
+    if (parseInt(bookingForm.numberOfPersons) > selectedPackage.maxPersons) {
       return fail('product.booking.result.error.other');
     }
 
     var slots = selectedPackage.type.slots;
     var availableDate = false;
 
-    for(var i = 0; i < slots.length; i++){
+    for (var i = 0; i < slots.length; i++) {
       var start = slots[i].start.split(':');
       var end = slots[i].end.split(':');
 
       var workingHoursStart = moment(dateStart).hour(start[0]).minute(start[1]);
       var workingHoursEnd = moment(dateEnd).hour(end[0]).minute(end[1]);
 
-      if(dateStart >= workingHoursStart && dateEnd <= workingHoursEnd){
+      if (dateStart >= workingHoursStart && dateEnd <= workingHoursEnd) {
         availableDate = true;
       }
     }
 
-    if(!availableDate){
+    if (!availableDate) {
       return fail('product.booking.result.error.other');
     }
 
     //Check package availableDate
-    if(!selectedPackage.availableMonths[dateStart.month()] || !selectedPackage.availableDays[dateStart.days()] || !selectedPackage.availableMonths[dateEnd.month()] || !selectedPackage.availableDays[dateEnd.days()]){
+    if (!selectedPackage.availableMonths[dateStart.month()] || !selectedPackage.availableDays[dateStart.days()] || !selectedPackage.availableMonths[dateEnd.month()] || !selectedPackage.availableDays[dateEnd.days()]) {
       return fail('product.booking.result.error.other');
     }
 
@@ -311,18 +315,18 @@ exports.checkBooking = function(req, res, next){
 
     try {
       var savedBooing = yield booking.save();
-    } catch (err){
+    } catch (err) {
       err.status = 500;
       throw err;
     }
 
     req.session.bookingForm = null;
 
-    if(!savedBooing){
+    if (!savedBooing) {
       return res.render('booking-result', {error: 'product.booking.result.error.other'});
     }
 
-    if(!req.isFromWechat){
+    if (!req.isFromWechat) {
       return res.render('booking-result', {booking: savedBooing});
     }
 
@@ -338,39 +342,42 @@ exports.checkBooking = function(req, res, next){
     try {
       var unifiedorderResult = yield new Promise(function (resolve, reject) {
         wechatCore.unifiedorder(payParams, function (err, response, result) {
-          if(!err && response.statusCode === 200){
+          if (!err && response.statusCode === 200) {
             resolve(result);
           } else {
             reject(result);
           }
         });
       });
-    } catch(err) {
+    } catch (err) {
       err.status = 500;
       throw err;
     }
 
-    parseXML2String(unifiedorderResult, function(err, wpResult){
-      if(!err) {
+    parseXML2String(unifiedorderResult, function (err, wpResult) {
+      if (!err) {
         wpResult = tools.ripXMLCDATA(wpResult.xml);
-        if(wechatCore.verifySign(wpResult) && wpResult.return_code === 'SUCCESS' && wpResult.result_code === 'SUCCESS'){
+        if (wechatCore.verifySign(wpResult) && wpResult.return_code === 'SUCCESS' && wpResult.result_code === 'SUCCESS') {
           var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
 
-          return res.render('booking-result', {booking: savedBooing, wpParams: wpParams});
+          return res.render('booking-result', {
+            booking: savedBooing,
+            wpParams: wpParams
+          });
         }
       }
 
       return res.render('booking-result', {booking: savedBooing});
     });
-  }).catch(function(err){
+  }).catch(function (err) {
     return next(err);
   });
 };
 
-exports.getBookingByBookingId = function(req, res, next){
+exports.getBookingByBookingId = function (req, res, next) {
   var bookingId = req.params.bookingId;
 
-  if(!bookingId){
+  if (!bookingId) {
     var err = new Error('Not Found');
     err.status = 404;
     return next(err);
@@ -388,13 +395,13 @@ exports.getBookingByBookingId = function(req, res, next){
       return next(err);
     }
 
-    if (!booking){
+    if (!booking) {
       var httpErr = new Error('Not Found');
       httpErr.status = 404;
       return next(httpErr);
     }
 
-    if(req.isFromWechat && booking.status === 'db.booking.wait_to_pay'){
+    if (req.isFromWechat && booking.status === 'db.booking.wait_to_pay') {
       var payParams = {
         body: booking.boatName + '-' + booking.productName + '-' + booking.packageName,
         attach: 'boat',
@@ -404,33 +411,36 @@ exports.getBookingByBookingId = function(req, res, next){
         openid: req.session.wechat
       };
 
-      wechatCore.unifiedorder(payParams, function(err, response, result){
-        if(err || response.statusCode !== 200){
+      wechatCore.unifiedorder(payParams, function (err, response, result) {
+        if (err || response.statusCode !== 200) {
           return res.render('user-booking-detail', {booking: booking});
         }
 
-        parseXML2String(result, function(xmlErr, wpResult){
-          if(!xmlErr) {
+        parseXML2String(result, function (xmlErr, wpResult) {
+          if (!xmlErr) {
             wpResult = tools.ripXMLCDATA(wpResult.xml);
-            if(wechatCore.verifySign(wpResult) && wpResult.return_code === 'SUCCESS' && wpResult.result_code === 'SUCCESS'){
+            if (wechatCore.verifySign(wpResult) && wpResult.return_code === 'SUCCESS' && wpResult.result_code === 'SUCCESS') {
               var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
 
-              return res.render('user-booking-detail', {booking: booking, wpParams: wpParams});
+              return res.render('user-booking-detail', {
+                booking: booking,
+                wpParams: wpParams
+              });
             }
           }
           return res.render('user-booking-detail', {booking: booking});
         });
       });
-    }else{
+    } else {
       return res.render('user-booking-detail', {booking: booking});
     }
   });
 };
 
-exports.getBookingByBookingIdForOwner = function(req, res, next){
+exports.getBookingByBookingIdForOwner = function (req, res, next) {
   var bookingId = req.params.bookingId;
 
-  if(!bookingId){
+  if (!bookingId) {
     var err = new Error('Not Found');
     err.status = 404;
     return next(err);
@@ -445,7 +455,7 @@ exports.getBookingByBookingIdForOwner = function(req, res, next){
       return next(err);
     }
 
-    if (!booking){
+    if (!booking) {
       var httpErr = new Error('Not Found');
       httpErr.status = 404;
       return next(httpErr);
@@ -455,13 +465,13 @@ exports.getBookingByBookingIdForOwner = function(req, res, next){
   });
 };
 
-exports.getBookingsByUserId = function(req, res, next){
+exports.getBookingsByUserId = function (req, res, next) {
   var page = req.query.page || 1;
 
   Booking.getBookingsAndPaginate({
     userId: req.session.user._id
   }, page, 10, function (err, result) {
-    if(err){
+    if (err) {
       err.status = 400;
       return next(err);
     }
@@ -472,15 +482,19 @@ exports.getBookingsByUserId = function(req, res, next){
       pages: []
     };
 
-    for(var i = 1; i <= result.pages; i++){
+    for (var i = 1; i <= result.pages; i++) {
       pager.pages.push(i);
     }
 
-    return res.render('user-booking-list', {bookings: result.docs, pager: pager, itemCount: result.total});
+    return res.render('user-booking-list', {
+      bookings: result.docs,
+      pager: pager,
+      itemCount: result.total
+    });
   });
 };
 
-exports.getBookingsByOwnerId = function(req, res, next){
+exports.getBookingsByOwnerId = function (req, res, next) {
   var id = req.session.owner._id;
   var page = req.query.page || 1;
 
@@ -492,7 +506,7 @@ exports.getBookingsByOwnerId = function(req, res, next){
 
   (query.selectBoat && query.selectBoat != 'all') && (obj.boatId = query.selectBoat);
 
-  if( query.selectDate ){
+  if (query.selectDate) {
     var date = moment(query.selectDate, 'YYYY-MM-DD');
 
     obj.dateEnd = {
@@ -502,7 +516,7 @@ exports.getBookingsByOwnerId = function(req, res, next){
   }
 
   Booking.getBookingsAndPaginate(obj, page, 10, function (err, result) {
-    if(err){
+    if (err) {
       err.status = 400;
       return next(err);
     }
@@ -513,34 +527,40 @@ exports.getBookingsByOwnerId = function(req, res, next){
       pages: []
     };
 
-    for(var i = 1; i <= result.pages; i++){
+    for (var i = 1; i <= result.pages; i++) {
       pager.pages.push(i);
     }
 
     Boat.find({
       owner: id
     }).select('id name region').sort({
-      _id:1
-    }).exec(function(err, doc){
-      if(err){
+      _id: 1
+    }).exec(function (err, doc) {
+      if (err) {
         err.status = 400;
         return next(err);
       }
 
-      for( var i in doc){
-        if (doc[i]._id == query.selectBoat){
+      for (var i in doc) {
+        if (doc[i]._id == query.selectBoat) {
           query.boatName = doc[i].name;
           break;
         }
       }
-      
-      return res.render('owner-booking-list', {bookings: result.docs, pager: pager, itemCount: result.total, boats: doc, query:query});
+
+      return res.render('owner-booking-list', {
+        bookings: result.docs,
+        pager: pager,
+        itemCount: result.total,
+        boats: doc,
+        query: query
+      });
     });
-   
+
   });
 };
 
-exports.getBookingsForCalendarEvent = function(req, res, next){
+exports.getBookingsForCalendarEvent = function (req, res, next) {
   var start = moment(req.query.start).toDate();
   var end = moment(req.query.end).toDate();
 
@@ -551,13 +571,13 @@ exports.getBookingsForCalendarEvent = function(req, res, next){
       $lt: end
     },
     status: {$ne: 'db.booking.cancel'}
-  }).select('dateStart dateEnd').exec(function(err, bookings){
-    if(err){
+  }).select('dateStart dateEnd').exec(function (err, bookings) {
+    if (err) {
       err.status = 400;
       return res.json(err);
     }
 
-    if(!bookings){
+    if (!bookings) {
       var err = new Error('Not Found');
       err.status = 404;
       return res.json(err);
@@ -565,7 +585,7 @@ exports.getBookingsForCalendarEvent = function(req, res, next){
 
     var events = [];
 
-    for(var i = 0; i < bookings.length; i++){
+    for (var i = 0; i < bookings.length; i++) {
       events.push({
         title: " ",
         start: moment(bookings[i].dateStart).format('YYYY-MM-DDTHH:mm'),
@@ -578,10 +598,10 @@ exports.getBookingsForCalendarEvent = function(req, res, next){
   });
 };
 
-exports.getBookingsForOwnerCalendarEvent = function(req, res, next){
+exports.getBookingsForOwnerCalendarEvent = function (req, res, next) {
   var type = req.query.type;
 
-  if(!type){
+  if (!type) {
     return res.json({});
   }
 
@@ -596,13 +616,13 @@ exports.getBookingsForOwnerCalendarEvent = function(req, res, next){
       $lt: end
     },
     status: status
-  }).select('bookingId dateStart dateEnd').exec(function(err, bookings){
-    if(err){
+  }).select('bookingId dateStart dateEnd').exec(function (err, bookings) {
+    if (err) {
       err.status = 400;
       return res.json(err);
     }
 
-    if(!bookings){
+    if (!bookings) {
       var httpErr = new Error('Not Found');
       httpErr.status = 404;
       return res.json(httpErr);
@@ -610,7 +630,7 @@ exports.getBookingsForOwnerCalendarEvent = function(req, res, next){
 
     var events = [];
 
-    for(var i = 0; i < bookings.length; i++){
+    for (var i = 0; i < bookings.length; i++) {
       events.push({
         title: ' ',
         start: moment(bookings[i].dateStart).format('YYYY-MM-DDTHH:mm'),

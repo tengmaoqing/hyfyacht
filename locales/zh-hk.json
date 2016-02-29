@@ -81,7 +81,8 @@
     "detail": "詳情",
     "holiday": "假期",
     "filter": "篩選",
-    "coming_soon": "敬請期待"
+    "coming_soon": "敬請期待",
+    "paypayl_pay_methods": "PayPal 支持以下付款類型:"
   },
   "error": {
     "login": {

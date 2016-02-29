@@ -5,7 +5,9 @@ var express = require('express');
 var router = express.Router();
 
 var alipay = require('../controllers/alipay');
+var paypal = require('../controllers/paypal');
 
-router.post('/alipay', alipay.submitDirectPayByUser);
+router.get('/alipay', alipay.submitDirectPayByUser);
+router.get('/paypal', paypal.createPayment);
 
 module.exports = router;

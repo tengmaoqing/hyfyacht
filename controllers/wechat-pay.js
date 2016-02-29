@@ -42,7 +42,7 @@ exports.notify = function(req, res, next){
   var product = data.attach;
 
   co(function *(){
-    var order = false;
+    var order = null;
 
     try {
       var payment = yield Payment.findOne({

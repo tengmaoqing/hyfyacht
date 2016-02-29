@@ -81,7 +81,8 @@
     "detail": "详情",
     "holiday": "节日",
     "filter": "筛选",
-    "coming_soon": "敬请期待"
+    "coming_soon": "敬请期待",
+    "paypayl_pay_methods": "PayPal 支持以下付款方式:"
   },
   "error": {
     "login": {

@@ -24,15 +24,22 @@
   </div>
   <h4>{{ __('product.booking.result.amount') }} {% if eventOrder.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ (eventOrder.total / 100).toFixed(2) }}</h4>
     {% if !wpParams %}
-    <p>{{ __('product.booking.result.modeOfPayment') }}</p>
     <p>
-      {{ payment.createEventForm(eventOrder) }}
-    </p>
-    <div class="row">
-      <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
-        <button id="btn-pay" type="button" class="btn btn-danger btn-block">{{ __('common.pay') }}</button>
+      {% if booking.settlementCurrency == 'cny' %}
+      <label class="btn btn-default">
+        <input type="radio" autocomplete="off" checked> <img src="{{ preset.imgHost }}/alipay165x58.png" height="40" alt="alipay">
+      </label>
+      <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+          <a class="btn btn-danger btn-block" href="/pay/alipay?product=event&order={{ eventOrder.orderId }}">{{ __('common.pay') }}</a>
+        </div>
       </div>
-    </div>
+      {% else %}
+      <a href="/pay/paypal?product=event&order={{ eventOrder.orderId }}"><img src="https://www.paypalobjects.com/webstatic/en_AU/i/buttons/btn_paywith_primary_l.png" alt="付款用 PayPal" /></a>
+      <br><br>{{ __('common.paypayl_pay_methods') }}<br>
+      <img src="https://www.paypalobjects.com/webstatic/mktg/logo/PP_AcceptanceMarkTray-NoDiscover_243x40.png" alt="PayPal 立即買" />
+      {% endif %}
+    </p>
     {% else %}
     <div class="row">
       <div class="col-xs-offset-1 col-xs-10">
@@ -43,23 +50,6 @@
     {% endif %}
   {% endif %}
 </div>
-<div id="hyf-modal-alipay" class="modal fade">
-  <div class="modal-table">
-    <div class="modal-table-cell">
-      <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">{{ __('site.title') }}</h4>
-          </div>
-          <div class="modal-body">
-            <a id="btn-pay-completed" type="button" class="btn btn-primary btn-block" href="/user/event">{{ __('common.pay_success') }}</a><br>
-            <a id="btn-pay-notcompleted" type="button" class="btn btn-danger btn-block" href="https://help.alipay.com/hall/index.htm">{{ __('common.pay_fail') }}</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 {% include './footer.html' %}
 
 {% endblock %}
@@ -67,7 +57,6 @@
 {% block foot %}
 {% if wpParams %}
 <script>
-
   function onBridgeReady(){
     WeixinJSBridge.invoke('getBrandWCPayRequest', {{ wpParams|json|safe }}, function(res){
       if(res.err_msg == "get_brand_wcpay_request:ok") {
@@ -90,15 +79,4 @@
   });
 </script>
 {% endif %}
-<script>
-  $("#btn-pay").click(function() {
-    var paymentType = $("input[name=payway]:checked", "#payment-selection").val();
-    if (paymentType) {
-      $("form[name=" + paymentType + "]").submit();
-      $("#hyf-modal-alipay").modal();
-    }else{
-      $("#hyf-modal-alert").CustomAlert("{{ __('common.choose_pay_mode') }}");
-    }
-  });
-</script>
 {% endblock %}

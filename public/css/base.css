@@ -454,7 +454,6 @@
 .hyf-navbar-nav {
   list-style: none;
   margin: 0;
-  padding: 10px 0;
   float: right;
 }
 
@@ -502,8 +501,17 @@
     margin-right: -20px;
   }
 
+  .hyf-navbar-nav > li > ul > li{
+    line-height: 30px;
+  }
+
   .hyf-navbar-page .hyf-navbar-nav > li > ul {
     background-color: #15a4e7;
+    text-align: right;
+  }
+
+  .hyf-navbar-absolute .hyf-navbar-nav > li > ul {
+    background-color: rgba(21, 164, 231, .7);
     text-align: right;
   }
 
@@ -511,7 +519,7 @@
     display: inline-block;
     margin-left: 40px;
     font-size: 14px;
-    line-height: 30px;
+    line-height: 50px;
     position: relative;
   }
 
