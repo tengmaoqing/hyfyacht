@@ -205,6 +205,7 @@
       "workinghours": "Working hours"
     },
     "booking": {
+      "step": "Booking Process",
       "selectTime": "Select Time",
       "selectDate": "Select Date",
       "selectedPackage": "Selected Package",
@@ -366,6 +367,11 @@
         "szshuangyong": "Nanao Shuangyong Pier",
         "szshekoufishingport": "Shekou Fishing Port"
       }
+    },
+    "unit": {
+      "hour":"h",
+      "day":"d",
+      "half_day":"4h"
     },
     "boat": {
       "type": {

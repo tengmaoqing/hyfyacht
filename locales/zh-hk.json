@@ -208,6 +208,7 @@
       "workinghours": "可選時段"
     },
     "booking": {
+      "step": "預訂流程",
       "selectTime": "選擇時間",
       "selectDate": "選擇日期",
       "selectedPackage": "已選套餐",
@@ -369,6 +370,11 @@
         "szshuangyong": "南澳月亮灣雙擁碼頭",
         "szshekoufishingport": "蛇口漁港"
       }
+    },
+    "unit": {
+      "hour":"小時",
+      "day":"天",
+      "half_day":"半天"
     },
     "boat": {
       "type": {

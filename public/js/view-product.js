@@ -40,7 +40,7 @@
     timezone: "local",
     header: {
       left: "title",
-      right: ""
+      right: "today prev next"
     },
     eventLimit: 3,
     eventLimitClick: function(cellInfo, jsEvent){
@@ -74,16 +74,12 @@
       }
 
       if(moment(date).isSame(moment($("#data-selected-date").val()).add(8, "h"))){
-        var parentDiv = $(cell).parent().parent().parent().parent().parent();
-        if(!document.getElementById("date-div")) {
-          $(".fc-month-view").append("<div id='date-div' class='fc-day-selected'><span class='text-success glyphicon glyphicon-ok'></span></div>");
-        }
+        var parentDiv = $(cell).parents(".fc-row");
+        var newNode = "<div id='date-div' class='fc-selected'><div class='hyf-banner-slogan-table'><div class='hyf-banner-slogan-content'><span class='text-success glyphicon glyphicon-ok'></span></div></div></div>";
+        parentDiv.append(newNode);
         $("#date-div").css({
-          "width": $(cell).css("width"),
-          "height": $(cell).css("height"),
-          "top":parentDiv[0].offsetTop+"px",
-          "left":$(cell)[0].offsetLeft+"px",
-          "line-height":"2"
+          "left":($(cell).index()/7)*100+"%",
+          "width": $(cell).css("width")
         });
       }
     },
@@ -95,7 +91,7 @@
       if(date < moment().hour(0).minute(0).second(0)){
         return false;
       }
-
+      
       var endDate = moment(date.local());
       endDate.add(1, "day");
 
@@ -107,16 +103,52 @@
 
       $("#data-calendar-events").val(JSON.stringify(clientEvents)).change();
 
-      var parentDiv = $(this).parent().parent().parent().parent().parent();
-      if(!document.getElementById("date-div")) {
-        $(".fc-month-view").append("<div id='date-div' class='fc-day-selected'><span class='text-success glyphicon glyphicon-ok'></span></div>");
+      var index = $(this).index();
+      var that = $(this);
+      var parentDiv = $(this).parents(".fc-row");
+
+      if($("#date-div").parent() != parentDiv){
+        $("#date-div").remove();
+        var newNode = "<div id='date-div' class='fc-selected'><div class='hyf-banner-slogan-table'><div class='hyf-banner-slogan-content'><span class='text-success glyphicon glyphicon-ok'></span></div></div></div>";
+        parentDiv.append(newNode);
       }
+
       $("#date-div").css({
-        "width": $(this).css("width"),
-        "height": $(this).css("height"),
-        "top":parentDiv[0].offsetTop+"px",
-        "left":$(this)[0].offsetLeft+"px",
-        "line-height":"2"
+          "left":(index/7)*100+"%",
+          "width": $(this).css("width")
+      });
+
+      $("#calendar").fullCalendar("gotoDate", date);
+    },
+    eventClick: function(calEvent, jsEvent, view) {
+      var date = moment(calEvent.start).hour(8).minute(0).second(0);
+
+      if(date < moment().hour(0).minute(0).second(0)){
+        return false;
+      }
+      
+      var endDate = moment(date.local());
+      endDate.add(1, "day");
+
+      var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
+        return !e.allDay && (e.start >= date && e.end <= endDate);
+      });
+
+      $("#data-selected-date").val(date.format("YYYY-MM-DD")).change();
+
+      $("#data-calendar-events").val(JSON.stringify(clientEvents)).change();
+
+      var parentDiv = $(this).parents(".fc-row");
+
+      if ($("#date-div").parent() != parentDiv) {
+        $("#date-div").remove();
+        var newNode = "<div id='date-div' class='fc-selected'><div class='hyf-banner-slogan-table'><div class='hyf-banner-slogan-content'><span class='text-success glyphicon glyphicon-ok'></span></div></div></div>";
+        parentDiv.append(newNode);
+      }
+      
+      $("#date-div").css({
+        "left":($(this).parents(".fc-content-skeleton tbody").find("tr:first td.fc-event-container").index()/7)*100+"%",
+        "width": $(this).parent().css("width")
       });
 
       $("#calendar").fullCalendar("gotoDate", date);
@@ -140,65 +172,6 @@
         element.append(event.title);
       }
       $(element).find(".fc-time").text(moment(event.start).format("HH:mm") + "-" + moment(event.end).format("HH:mm"));
-    }
-  });
-
-  // $("#calendar-month").click(function(){
-  //   $("#calendar").fullCalendar("changeView", "month");
-  //   $("#product-booking-package").hide();
-  // });
-
-  $("#calendar-today").click(function(){
-    $("#calendar").fullCalendar("today");
-    var view = $("#calendar").fullCalendar("getView");
-    if(view.name == "custom"){
-      var date = $("#calendar").fullCalendar("getDate");
-      var endDate = moment(date);
-      endDate.add(1, "day");
-
-      var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
-        return !e.allDay && (e.start >= date && e.end <= endDate);
-      });
-
-      $("#data-selected-date").val(date.format("YYYY-MM-DD")).change();
-
-      $("#data-calendar-events").val(JSON.stringify(clientEvents)).change();
-    }
-  });
-
-  $("#calendar-prev").click(function(){
-    $("#calendar").fullCalendar("prev");
-    var view = $("#calendar").fullCalendar("getView");
-    if(view.name == "custom"){
-      var date = $("#calendar").fullCalendar("getDate");
-      var endDate = moment(date);
-      endDate.add(1, "day");
-
-      var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
-        return !e.allDay && (e.start >= date && e.end <= endDate);
-      });
-
-      $("#data-selected-date").val(date.format("YYYY-MM-DD")).change();
-
-      $("#data-calendar-events").val(JSON.stringify(clientEvents)).change();
-    }
-  });
-
-  $("#calendar-next").click(function(){
-    $("#calendar").fullCalendar("next");
-    var view = $("#calendar").fullCalendar("getView");
-    if(view.name == "custom"){
-      var date = $("#calendar").fullCalendar("getDate");
-      var endDate = moment(date);
-      endDate.add(1, "day");
-
-      var clientEvents = $("#calendar").fullCalendar("clientEvents", function(e){
-        return !e.allDay && (e.start >= date && e.end <= endDate);
-      });
-
-      $("#data-selected-date").val(date.format("YYYY-MM-DD")).change();
-
-      $("#data-calendar-events").val(JSON.stringify(clientEvents)).change();
     }
   });
 
@@ -287,7 +260,6 @@
 
     $scope.inputItem = function(item){
       var value = $scope.inputValue[item.name];
-
       if(item.max){
         if(item.max < value || value === undefined){
           $scope.invalidItems.push(item.name);
@@ -297,15 +269,16 @@
         }
       }
 
-      if(value <= 0){
+      if(value <= 0 || !value){
         delete $scope.selectedItems[item.name];
-      }else{
+      } else {
         $scope.selectedItems[item.name] = {
           name: item.name,
           charge: item.charge,
           amount: value
         };
       }
+      $scope.testInputStep();
     };
 
     $scope.getTotal = function(){
@@ -598,7 +571,6 @@
 
         var cancelStyle = function(index) {
           for(; index<len; index++) {
-            console.log("1");
             $(".booking-step")[index].style.color = "#999";
             $(".borderline")[index] && ($(".borderline")[index].style.borderColor = "#999");
           }
@@ -662,11 +634,23 @@
                 }
               });
 
+              scope.testInputStep = function() {
+                if(scope.invalidItems.length > 0) {
+                  cancelStyle(2);
+                } else {
+                  angular.element(".booking-step")[2].style.color = "green";
+                }
+              }
+
               selecteDate.hide();
               break;
             case 2:
-              if (!scope.numberOfPersons) {
+              if (!scope.numberOfPersons || scope.invalidItems.length>0) {
                 return;
+              }
+
+              if (scope.booking.$valid) {
+                $(".booking-step")[3].style.color = "green";
               }
 
               scope.lastStep = true;

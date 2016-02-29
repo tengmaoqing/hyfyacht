@@ -39,25 +39,28 @@
             <h3>{{ __('product.section.booking') }}</h3>
             <hr class="hr-divider">
             <!-- /*选择步骤 -->
-            <div class="booking-step-out text-center styleTransition" id="booking-step-out">
+            <p class="text-center">
+              <strong>{{ __('product.booking.step') }}</strong>
+            </p>
+            <div class="booking-step-out text-center" id="booking-step-out">
               <div class="text-center clearfix" id="product-booking-step">
                 <div class="col-xs-3 booking-step styleTransition">
                   <span class="booking-step-glyphicon glyphicon glyphicon-calendar"></span>
-                  <div class="booking-step-font-size">选择日期</div>
+                  <div class="booking-step-font-size">{{ __('product.booking.selectDate') }}</div>
                 </div>
                 <div class="col-xs-3 booking-step styleTransition">
                   <span class="booking-step-glyphicon glyphicon glyphicon-time"></span>
-                  <div class="booking-step-font-size">选择套餐</div>
+                  <div class="booking-step-font-size">{{ __('product.booking.selectedPackage') }}</div>
                   <div class="col-xs-10 borderline styleTransition"></div>
                 </div>
                 <div class="col-xs-3 booking-step styleTransition">
                   <span class="booking-step-glyphicon glyphicon glyphicon-th-list"></span>
-                  <div class="booking-step-font-size">确认选项</div>
+                  <div class="booking-step-font-size">{{ __('product.booking.package.items') }}</div>
                   <div class="col-xs-10 borderline styleTransition"></div>
                 </div>
                 <div class="col-xs-3 booking-step styleTransition">
                   <span class="booking-step-glyphicon glyphicon glyphicon-phone"></span>
-                  <div class="booking-step-font-size">联系方式</div>
+                  <div class="booking-step-font-size">{{ __('product.booking.contact') }}</div>
                   <div class="col-xs-10 borderline styleTransition"></div>
                 </div>
               </div>
@@ -135,19 +138,11 @@
                   <span class="glyphicon glyphicon-stop calendar-event-icon-unavailable-client"></span>
                   {{ __('calendar.unavailable') }}
                 </div>
-                <div class="col-md-8 col-sm-6 col-xs-12 text-right">
-                  <button id="calendar-month" type="button" class="btn btn-default invisible" data-ng-click="clearPackages()">{{ __('calendar.selectdate') }}</button>
-                  <button id="calendar-today" type="button" class="btn btn-default" data-ng-click="clearPackages()">{{ __('calendar.today') }}</button>
-                  <div class="btn-group">
-                    <button id="calendar-prev" type="button" class="btn btn-default" data-ng-click="clearPackages()"><span class="glyphicon glyphicon-menu-left"></span></button>
-                    <button id="calendar-next" type="button" class="btn btn-default" data-ng-click="clearPackages()"><span class="glyphicon glyphicon-menu-right"></span></button>
-                  </div>
-                </div>
               </div>
             </div>
 
             <div id="product-booking-option">
-              <p class="text-center"><strong>{{ __('product.booking.package.items') }}</strong></p>
+              <p class="text-center" data-ng-cloak><strong>{{ __('product.booking.package.items') }}</strong></p>
               <div id="product-booking-person" class="product-booking-container">
                 <p data-ng-cloak><strong>{{ __('product.booking.numberOfPeople') }} (1 - {% raw %}{{ packages[currPackage].maxPersons }}{% endraw %})</strong></p>
                 <div class="alert alert-danger" data-ng-show="booking.numberOfPersons.$dirty && booking.numberOfPersons.$invalid" data-ng-cloak>
@@ -368,22 +363,6 @@
                     <button type="button" class="btn btn-danger btn-block" selectstep data-ng-show="!lastStep" >{{ __('product.booking.next') }}</button>
                   </div>
                 </div>
-              </div>
-              <div class="product-booking-container">
-                <ul class="list-group">
-                  <li class="list-group-item">
-                    <label>{{ __('product.booking.selectedPackage') }}</label>
-                    <p data-ng-cloak>{% raw %}{{ packages[currPackage].name }}{% endraw %}</p>
-                  </li>
-                  <li class="list-group-item">
-                    <label>{{ __('product.booking.start') }}</label>
-                    <p id="selectedTime-start"></p>
-                  </li>
-                  <li class="list-group-item">
-                    <label>{{ __('product.booking.end') }}</label>
-                    <p id="selectedTime-end"></p>
-                  </li>
-                </ul>
               </div>
             </div>
           </div>
