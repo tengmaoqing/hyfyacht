@@ -124,11 +124,15 @@
                     {{ __('product.booking.no_package') }}
                   </div>
                 </div>
+                <div class="alert alert-danger" data-ng-show="step1 && (!dateStart || !dateEnd)" data-ng-cloak>
+                  <ul class="list-layout">
+                    <li data-ng-show="step1 && (!dateStart || !dateEnd)"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.package') }} </li>
+                  </ul>
+                </div>
               </div>
-              <div class="alert alert-danger" data-ng-show="(step0 && !selectedDate) || (step1 && !dateStart)" data-ng-cloak>
+              <div class="alert alert-danger" data-ng-show="step0 && !selectedDate" data-ng-cloak>
                 <ul class="list-layout">
                   <li data-ng-show="step0 && !selectedDate"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.time') }} </li>
-                  <li data-ng-show="step1 && (!dateStart || !dateEnd)"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.package') }} </li>
                 </ul>
               </div>
               <div class="row calendar-controller" id="calendar-controller">
@@ -338,8 +342,6 @@
                   <input type="email" class="form-control" name="email" placeholder="{{ __('product.booking.email_plh') }}" data-ng-model="contact.email" data-maxlength="100" data-ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-z]{2,4})$/" required>
                 </div>
               </div>
-            </div>
-            <div class="product-booking-container">
               <div class="alert alert-danger" data-ng-show="booking.$invalid && submitted" data-ng-cloak>
                 <ul class="list-layout">
                   <li data-ng-show="booking.dateEnd.$invalid"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.time') }}</li>
@@ -349,6 +351,8 @@
                   <li data-ng-show="booking.contact.$invalid || booking.mobile.$invalid || booking.email.$invalid"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.contact') }}</li>
                 </ul>
               </div>
+            </div>
+            <div class="product-booking-container">
               <div class="row product-booking-container">
                 <div class="col-md-2 col-md-offset-8 col-sm-4 col-sm-offset-4 col-xs-6">
                   <div data-ng-cloak>
@@ -367,9 +371,6 @@
             </div>
           </div>
         </div>
-        <!-- <div id="selected-package" class="navbar-fixed-top fix-container-top" data-ng-if="currPackage >= 0" data-ng-cloak>
-          {{ __('product.booking.selectedPackage') }}: <span class="text-primary">{% raw %}{{ packages[currPackage].name }}{% endraw %}</span> {{ __('product.booking.package.total') }}: <span class="text-danger">{% raw %}{{ displayAmount(getTotal()) }}{% endraw %}</span>
-        </div> -->
         <div id="product-detail" class="thumbnail">
           <div class="caption">
             <h3>{{ __('product.section.desc') }}</h3>

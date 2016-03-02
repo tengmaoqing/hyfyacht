@@ -35,6 +35,8 @@ var notify = require('./routes/notify');
 var sms = require('./routes/sms');
 var event = require('./routes/event');
 var eventOrder = require('./routes/event-order');
+var article = require('./routes/article');
+var news = require('./routes/news');
 
 var userController = require('./controllers/user');
 
@@ -270,6 +272,8 @@ app.use('/user', user);
 app.use('/owner', owner);
 app.use('/pay', pay);
 app.use('/sms', sms);
+app.use('/article', article);
+app.use('/news', news);
 app.use('/', index);
 
 //check bookings, auto cancel booking if user do not pay after booking by 30m

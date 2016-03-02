@@ -1,0 +1,36 @@
+{% extends './layout.html' %}
+
+{% block content %}
+
+{% include './nav.html' %}
+<div class="container columns-sm">
+  <ol class="breadcrumb">
+    <li><a href="/">{{ __('nav.home') }}</a></li>
+    <li class="active">新闻</li>
+  </ol>
+  <h3>最新新闻</h3>
+  <hr class="hr-divider">
+  <div class="event-list">
+    {% for news in allNews %}
+    <div class="thumbnail">
+      <div class="row event-list-height">
+        <div class="col-md-4 col-sm-4 col-xs-12 pre-img">
+          <a href="news/detail/{{ news._id.valueOf() }}"><img class="img-responsive" src="{{ news.thumbnail }}" alt="thumbnail"></a>
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-12 event-info">
+          <div>
+            <h3>{{ news.title }}</h3>
+          </div>
+          <p>展示的是首页html，博客页面布局格式简单，没有复杂的背景，色彩局部点缀，动态的幻灯片展示，切换卡，标签云..</p>
+          <div class="text-right"><a class="btn btn-primary" href="news/detail/{{ news._id.valueOf() }}">阅读全文</a></div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {{ pagerView.create(pager) }}
+</div>
+
+{% include './footer.html' %}
+
+{% endblock %}

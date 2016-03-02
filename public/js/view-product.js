@@ -145,7 +145,7 @@
         var newNode = "<div id='date-div' class='fc-selected'><div class='hyf-banner-slogan-table'><div class='hyf-banner-slogan-content'><span class='text-success glyphicon glyphicon-ok'></span></div></div></div>";
         parentDiv.append(newNode);
       }
-      
+
       $("#date-div").css({
         "left":($(this).parents(".fc-content-skeleton tbody").find("tr:first td.fc-event-container").index()/7)*100+"%",
         "width": $(this).parent().css("width")
@@ -569,7 +569,7 @@
           }
         }
 
-        var cancelStyle = function(index) {
+        function cancelStyle(index) {
           for(; index<len; index++) {
             $(".booking-step")[index].style.color = "#999";
             $(".borderline")[index] && ($(".borderline")[index].style.borderColor = "#999");
@@ -577,9 +577,10 @@
         }
 
         scope.$watch("selectedDate", function(){
-          if (scope.selectedDate) {
+          if(scope.selectedDate) {
             $(".booking-step")[0].style.color = "green";
           }
+          setSelectedTime("", "");
         });
 
         scope.$watch("dateEnd", function(){
@@ -611,6 +612,10 @@
               $("#calendar-controller").hide();
               $("#backStep").show();
               $("#step1Hide").hide();
+
+              if (scope.dateEnd) {
+                 $(".booking-step")[1].style.color = "green";
+              }
               break;
             case 1:
               if (!scope.dateEnd) {
@@ -619,7 +624,7 @@
                 return;
               }
 
-              if (scope.numberOfPersons) {
+              if (scope.numberOfPersons && scope.invalidItems.length ==0 ) {
                 $(".booking-step")[2].style.color = "green";
               }
 
@@ -666,10 +671,18 @@
     }
   });
 
-  app.directive("back", function(stepService){
+  app.directive("back", function(stepService) {
     return {
       restrict: "A",
       link: function(scope, element, attrs) {
+
+        function cancelStyle(index) {
+          for(; index<4; index++) {
+            $(".booking-step")[index].style.color = "#999";
+            $(".borderline")[index-1] && ($(".borderline")[index-1].style.borderColor = "#999");
+          }
+        }
+
         element.bind("click", function() {
 
           switch (stepService.nowStep) {
@@ -687,6 +700,7 @@
               break;
           }
 
+          cancelStyle(stepService.nowStep);
           stepService.elementArray[stepService.nowStep].hide();
           stepService.elementArray[--stepService.nowStep].show();
         });
