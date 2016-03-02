@@ -104,7 +104,6 @@
       $("#data-calendar-events").val(JSON.stringify(clientEvents)).change();
 
       var index = $(this).index();
-      var that = $(this);
       var parentDiv = $(this).parents(".fc-row");
 
       if($("#date-div").parent() != parentDiv){
@@ -145,9 +144,9 @@
         var newNode = "<div id='date-div' class='fc-selected'><div class='hyf-banner-slogan-table'><div class='hyf-banner-slogan-content'><span class='text-success glyphicon glyphicon-ok'></span></div></div></div>";
         parentDiv.append(newNode);
       }
-
+      
       $("#date-div").css({
-        "left":($(this).parents(".fc-content-skeleton tbody").find("tr:first td.fc-event-container").index()/7)*100+"%",
+        "left": $(this).parent()[0].offsetLeft+"px",
         "width": $(this).parent().css("width")
       });
 
