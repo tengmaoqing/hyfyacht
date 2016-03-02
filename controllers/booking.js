@@ -173,13 +173,15 @@ exports.checkBooking = function (req, res, next) {
               subtotal: generateCharge(charges[j].baseCharge)
             });
 
-            selectedItems.push({
-              name: charges[j].extraName,
-              charge: generateCharge(charges[j].charge),
-              originCharge: charges[j].charge,
-              amount: extraSlot,
-              subtotal: generateCharge(charges[j].charge) * extraSlot
-            });
+            if(extraSlot > 0) {
+              selectedItems.push({
+                name: charges[j].extraName,
+                charge: generateCharge(charges[j].charge),
+                originCharge: charges[j].charge,
+                amount: extraSlot,
+                subtotal: generateCharge(charges[j].charge) * extraSlot
+              });
+            }
           } else {
             var baseCount = slotCount / selectedPackage.type.slotDuration;
             selectedItems.push({
