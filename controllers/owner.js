@@ -175,8 +175,7 @@ exports.getBoats = function(req, res, next){
   var page = req.query.page || 1;
 
   Boat.paginate({
-    owner: ownerId,
-    display: true
+    owner: ownerId
   },{
     page: page,
     limit: 10,
