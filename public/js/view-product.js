@@ -117,7 +117,7 @@
           "width": $(this).css("width")
       });
 
-      $("#calendar").fullCalendar("gotoDate", date);
+      // $("#calendar").fullCalendar("gotoDate", date);
     },
     eventClick: function(calEvent, jsEvent, view) {
       var date = moment(calEvent.start).hour(8).minute(0).second(0);
@@ -150,7 +150,7 @@
         "width": $(this).parent().css("width")
       });
 
-      $("#calendar").fullCalendar("gotoDate", date);
+      // $("#calendar").fullCalendar("gotoDate", date);
     },
     eventSources:[
       {
@@ -539,9 +539,7 @@
         var lastIndex = index-1;
         this.elementArray[lastIndex].hide();
         this.elementArray[index].show();
-        if(document.body.clientWidth<=768) {
-          this.elementArray[index][0].scrollIntoView();
-        }
+        $("#booking-step-title")[0].scrollIntoView();
       }
     };
     return temp
@@ -700,6 +698,7 @@
           }
 
           cancelStyle(stepService.nowStep);
+          $("#booking-step-title")[0].scrollIntoView();
           stepService.elementArray[stepService.nowStep].hide();
           stepService.elementArray[--stepService.nowStep].show();
         });
