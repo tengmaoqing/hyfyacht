@@ -35,14 +35,14 @@
           </div>
         </div>
         <div id="product-booking" class="thumbnail">
-          <div class="caption">
+          <div class="caption" id="product-booking-caption">
             <h3>{{ __('product.section.booking') }}</h3>
             <hr class="hr-divider">
             <!-- /*选择步骤 -->
-            <p class="text-center">
+            <p class="text-center" id="booking-step-title">
               <strong>{{ __('product.booking.step') }}</strong>
             </p>
-            <div class="booking-step-out text-center" id="booking-step-out">
+            <div class="booking-step-out text-center col-xs-12" id="booking-step-out">
               <div class="text-center clearfix" id="product-booking-step">
                 <div class="col-xs-3 booking-step styleTransition">
                   <span class="booking-step-glyphicon glyphicon glyphicon-calendar"></span>
@@ -537,10 +537,15 @@
   $("#product-nav").onePageNav();
 
   var show = false;
-  var bookingWidth = $("#product-booking-step")[0].offsetWidth;
+  var bookingWidth = $("#product-booking-caption")[0].offsetWidth-parseInt($("#product-booking-caption").css("padding-left"))*2;
   $("#product-booking-step").css("width", bookingWidth+"px");
 
-  var bookingTop = $("#product-booking-step").offset().top;
+  w.addEventListener("resize", function(ev){
+    var bookingWidth = $("#product-booking-caption")[0].offsetWidth-parseInt($("#product-booking-caption").css("padding-left"))*2;
+    $("#product-booking-step").css("width", bookingWidth+"px");
+  })
+
+  var bookingTop = parseInt($("#product-booking-step").offset().top);
 
   $(w).on("scroll", function(){
     if($(this).scrollTop() < 80){

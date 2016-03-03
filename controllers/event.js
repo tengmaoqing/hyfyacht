@@ -77,7 +77,7 @@ exports.getEvents = function(req, res, next) {
       $gt: startDate.toDate()
     };
 
-    if( query.selectEndDate && query.selectEndDate < query.selectStartDate) {
+    if( query.selectEndDate && query.selectEndDate <= query.selectStartDate) {
       query.selectEndDate = '';
     }
     
@@ -100,7 +100,7 @@ exports.getEvents = function(req, res, next) {
       for (var i=0; i<len-1; i++) {
         weekDay.push(newStartDate.add(1, 'days').day())
       }
-      obj['$or'] = [
+      obj.$or = [
         {
           availableDays: {
             $in: weekDay
@@ -108,11 +108,14 @@ exports.getEvents = function(req, res, next) {
         },
         {
           longTerm: false
+        },
+        {
+          longTerm:{ $exists : false }
         }
       ];
     }
   }
-  
+
   Event.paginate(obj, {
     page: page,
     limit: 10,
