@@ -7,5 +7,6 @@ var router = express.Router();
 var holiday = require('../controllers/holiday');
 
 router.get('/getHoliday', holiday.getPublicHolidaysForCal);
+router.get('/checkHoliday', holiday.isPublicHoliday);
 
 module.exports = router;

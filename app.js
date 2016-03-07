@@ -66,9 +66,8 @@ alipayCore.configure(config.alipayConfig);
 
 wechatCore.configure(config.wechatConfig);
 //wechatCore.getAppAccessToken();
-//cache.put('wechatAccessToken', 'raW3m2xeOxvHUdPH1NlrPWLIVZjmMSOXy9bqGSFbdOXrrzpB_52_vVux_usUcHiGGiQbeGLn9OYFm4HgutfNYkHDNCopZIfIRv3r9VJKZFYHDChAEAXTS');
 
-paypal.configure(config.paypalConfig);
+//paypal.configure(config.paypalConfig);
 
 //i18n init
 i18n.configure({
@@ -187,7 +186,7 @@ app.use(function(req, res, next){
 
 //set currency
 app.use(function(req, res, next){
-  var currency = req.query.curr || req.cookies['client_currency'] || ( preset.locale == 'zh-cn' ? 'cny' : 'hkd');
+  var currency = 'cny';//req.query.curr || req.cookies['client_currency'] || ( preset.locale == 'zh-cn' ? 'cny' : 'hkd');
 
   req.session.currency = currency;
 

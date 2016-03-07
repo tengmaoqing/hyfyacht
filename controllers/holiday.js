@@ -45,3 +45,31 @@ exports.getPublicHolidaysForCal = function(req, res, next){
     return res.json(err);
   })
 };
+
+exports.isPublicHoliday = function(req, res, next){
+  var checkDate = moment(req.query.date);
+  var country = req.query.country;
+  var region = req.query.region;
+  
+  co(function *(){
+    try {
+      var isHoliday = yield holiday.isPublicHoliday(checkDate,  country, region);
+    } catch (err){
+      err.status = 500;
+      throw err;
+    }
+
+    if(!isHoliday){
+      throw new Error('No holidays');
+    }
+
+    isHoliday = JSON.parse(isHoliday);
+    
+    /**
+     * return isPublicHoliday {Boolean}
+     */
+    return res.json(isHoliday);
+  }).catch(function(err){
+    return res.json(err);
+  })
+};
