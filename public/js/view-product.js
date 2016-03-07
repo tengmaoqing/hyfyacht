@@ -117,7 +117,6 @@
           "width": $(this).css("width")
       });
 
-      // $("#calendar").fullCalendar("gotoDate", date);
     },
     eventClick: function(calEvent, jsEvent, view) {
       var date = moment(calEvent.start).hour(8).minute(0).second(0);
@@ -192,7 +191,7 @@
     };
   });
 
-  app.controller("bookingController", function($scope){
+  app.controller("bookingController", function($scope, $http){
     $scope.packages = hgdata.packages;
 
     $scope.numberOfPersons = 1;
@@ -230,7 +229,15 @@
       $scope.selectedItems = {};
     };
 
-    $scope.checkAvailable = function(package){
+    $scope.checkIsHoliday = function() {
+      var selectedDate = moment($scope.selectedDate, "YYYY-MM-DD HH:mm");
+      
+      $http.get(holidayUrl+"&date="+selectedDate).success(function(res){
+        $scope.isHoliday = res.result;
+      });
+    }
+
+    $scope.checkAvailable = function(package) {
       var selectedDate = moment($scope.selectedDate, "YYYY-MM-DD HH:mm");
 
       if(package.availableMonths[selectedDate.month()] && package.availableDays[selectedDate.day()]){

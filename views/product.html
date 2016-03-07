@@ -537,12 +537,15 @@
   $("#product-nav").onePageNav();
 
   var show = false;
-  var bookingWidth = $("#product-booking-caption")[0].offsetWidth-parseInt($("#product-booking-caption").css("padding-left"))*2;
-  $("#product-booking-step").css("width", bookingWidth+"px");
 
-  w.addEventListener("resize", function(ev){
+  function setBookingStepW(){
     var bookingWidth = $("#product-booking-caption")[0].offsetWidth-parseInt($("#product-booking-caption").css("padding-left"))*2;
     $("#product-booking-step").css("width", bookingWidth+"px");
+  }
+  setBookingStepW();
+  
+  w.addEventListener("resize", function(ev){
+    setBookingStepW();
   })
 
   var bookingTop = parseInt($("#product-booking-step").offset().top);
