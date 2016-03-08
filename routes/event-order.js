@@ -7,5 +7,6 @@ var router = express.Router();
 var eventOrder = require('../controllers/event-order');
 
 router.get('/number/:eventId', eventOrder.getEventOrderNumberByEventId);
+router.get('/getContact', eventOrder.getContact);
 
 module.exports = router;

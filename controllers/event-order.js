@@ -310,3 +310,33 @@ exports.getEventByOrderId = function(req, res, next){
     return res.render('user-event-detail', {order: order});
   });
 };
+
+exports.getContact = function(req, res, next) {
+  if (!req.session.user) {
+    var httpErr = new Error('Forbiden');
+    httpErr.status = 400;
+    return res.json({result:false, error: httpErr});
+  }
+
+  var userId = req.session.user._id;
+
+  EventOrder.findOne({
+    userId: userId
+  }).select('contact').exec(function(err, eventOrder){
+    if (err) {
+      err.status = 400;
+      return res.json({result:false, error: err});
+    }
+
+    if (!eventOrder) {
+      var httpErr = new Error('Not Found');
+      httpErr.status = 404;
+      return res.json({result:false, error: httpErr});
+    }
+
+    console.log(eventOrder);
+
+    return res.json(eventOrder.contact);
+
+  })
+};

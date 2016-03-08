@@ -660,6 +660,12 @@ exports.getBookingsForOwnerCalendarEvent = function (req, res, next) {
 };
 
 exports.getContact = function(req, res, next) {
+  if (!req.session.user) {
+    var httpErr = new Error('Forbiden');
+    httpErr.status = 400;
+    return res.json({result:false, error: httpErr});
+  }
+
   var userId = req.session.user._id;
 
   Booking.findOne({
@@ -679,4 +685,4 @@ exports.getContact = function(req, res, next) {
     return res.json(booking.contact);
 
   })
-}
+};
