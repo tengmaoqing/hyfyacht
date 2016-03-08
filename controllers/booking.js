@@ -12,6 +12,7 @@ var parseXML2String = require('xml2js').parseString;
 var tools = require('../lib/tools');
 var co = require('co');
 var Boat = require('hyfbase').Boat;
+var holiday = require('../lib/holiday');
 
 exports.checkBooking = function (req, res, next) {
   if (!req.session.bookingForm) {
@@ -93,12 +94,22 @@ exports.checkBooking = function (req, res, next) {
       var unavailableCount = yield Unavailable.countUnavailableByDateRange({
         boatId: bookingForm.boatId
       }, dateStart.toDate(), dateEnd.toDate());
+      
+      var bookingBoat = yield Boat.findOne({
+        _id: bookingForm.boatId
+      }).exec();
+      
+      var isHoliday = yield holiday.isPublicHoliday(dateStart, bookingBoat.region.country, bookingBoat.region.region);
+      
+      isHoliday = JSON.parse(isHoliday).isPublicHoliday;
+      console.log(isHoliday);
+      
     } catch (err) {
       err.status = 500;
       throw err;
     }
 
-    if (!selectedPackage) {
+    if (!selectedPackage || (isHoliday && !selectedPackage.onlyHoliday)) {
       var err = new Error('Invalid Package');
       err.status = 400;
       throw err;
@@ -277,8 +288,10 @@ exports.checkBooking = function (req, res, next) {
     }
 
     //Check package availableDate
-    if (!selectedPackage.availableMonths[dateStart.month()] || !selectedPackage.availableDays[dateStart.days()] || !selectedPackage.availableMonths[dateEnd.month()] || !selectedPackage.availableDays[dateEnd.days()]) {
-      return fail('product.booking.result.error.other');
+    if(!isHoliday){
+      if (!selectedPackage.availableMonths[dateStart.month()] || !selectedPackage.availableDays[dateStart.days()] || !selectedPackage.availableMonths[dateEnd.month()] || !selectedPackage.availableDays[dateEnd.days()]) {
+        return fail('product.booking.result.error.other');
+      }
     }
 
     var booking = new Booking({
