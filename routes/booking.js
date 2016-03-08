@@ -16,5 +16,6 @@ router.get('/cal/unavailable/:bid', unavailable.getUnavailableEventByBoatId);
 
 router.get('/submit', booking.checkBooking);
 router.post('/submit', booking.checkBooking);
+router.get('/getContact', booking.getContact);
 
 module.exports = router;

@@ -658,3 +658,25 @@ exports.getBookingsForOwnerCalendarEvent = function (req, res, next) {
     return res.json(events);
   });
 };
+
+exports.getContact = function(req, res, next) {
+  var userId = req.session.user._id;
+
+  Booking.findOne({
+    userId: userId
+  }).select('contact').exec(function(err, booking){
+    if (err) {
+      err.status = 400;
+      return res.json({result:false, error: err});
+    }
+
+    if (!booking) {
+      var httpErr = new Error('Not Found');
+      httpErr.status = 404;
+      return res.json({result:false, error: httpErr});
+    }
+
+    return res.json(booking.contact);
+
+  })
+}

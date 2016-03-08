@@ -314,6 +314,7 @@
                     <li data-ng-show="booking.mobile.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.required') }}</li>
                     <li data-ng-show="booking.mobile.$error.maxlength"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.maxlength') }}</li>
                     <li data-ng-show="booking.mobile.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.invaild') }}</li>
+                    <li data-ng-show="booking.mobile.$error.pattern"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.invaild') }}</li>
                   </ul>
                 </div>
                 <div class="input-group">
@@ -321,14 +322,14 @@
                     <span class="glyphicon glyphicon-phone"></span>
                   </span>
                   <div class="input-group-btn">
-                    <button type="button" class="btn btn-default dropdown-toggle btn-middle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">+86 <span class="caret"></span></button>
-                    <input class="dropdown-menu-selected collapse" type="text" name="area_code" data-ng-model="contact.areaCode">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-middle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} +{{ contact.areaCode || 86}} {% endraw %}<span class="caret"></span></button>
+                    <input class="dropdown-menu-selected collapse" type="text" name="area_code" data-ng-model="contact.areaCode" data-ng-change="areaCodeChange()">
                     <ul class="dropdown-menu">
                       <li><a href="#" data-value="86">+86</a></li>
                       <li><a href="#" data-value="852">+852</a></li>
                     </ul>
                   </div>
-                  <input type="number" class="form-control" name="mobile" placeholder="{{ __('product.booking.mobile_plh') }}" data-ng-model="contact.mobile" maxlength="11" required>
+                  <input type="number" class="form-control" name="mobile" placeholder="{{ __('product.booking.mobile_plh') }}" data-ng-model="contact.mobile" maxlength="11" required data-ng-pattern="mobileTest">
                 </div>
                 <div class="alert alert-danger" data-ng-show="booking.email.$dirty && booking.email.$invalid">
                   <ul class="list-layout">

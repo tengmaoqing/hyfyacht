@@ -221,10 +221,33 @@
     $scope.invalidItems = [];
     $scope.maxTips = hgdata.maxTips;
     $scope.isHoliday = false;
-    $scope.packageAlready =false;
+    $scope.packageAlready = false;
+    $scope.mobileTest = /(^(13\d|14[57]|15[^4,\D]|17[678]|18\d)\d{8}|170[059]\d{7})$/;
 
     $scope.generateCharge = $scope.$parent.generateCharge;
     $scope.displayAmount = $scope.$parent.displayAmount;
+
+
+    $scope.getContact = function() {
+
+      $http.get("/booking/getContact").success(function(res){
+        $scope.contact.email = res.email;
+        $scope.contact.areaCode = res.mobile.lenght == 13? res.mobile.slice(0,2):res.mobile.slice(0,3);
+        $scope.contact.name = res.name;
+        $scope.contact.mobile = res.mobile.lenght == 13? parseInt(res.mobile.slice(2)):parseInt(res.mobile.slice(3));
+        $scope.areaCodeChange();
+      });
+    };
+    $scope.getContact();
+
+    $scope.areaCodeChange = function() {
+
+      if ($scope.contact.areaCode == "86") {
+        $scope.mobileTest = /(^(13\d|14[57]|15[^4,\D]|17[678]|18\d)\d{8}|170[059]\d{7})$/;
+      } else {
+        $scope.mobileTest = /(^(\d{8})$)/;
+      }
+    }
 
     $scope.togglePackage = function(index){
       $scope.currPackage == index ? $scope.currPackage = -1 : $scope.currPackage = index;
@@ -247,12 +270,6 @@
     $scope.selectedDateChange = function() {
       $scope.packageAlready = false;
     };
-
-    $scope.getContact = function() {
-      $http.get().success(function(res){
-
-      });
-    }
 
     $scope.checkAvailable = function(package) {
       var selectedDate = moment($scope.selectedDate, "YYYY-MM-DD HH:mm");
