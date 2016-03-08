@@ -233,7 +233,7 @@
 
     $scope.checkIsHoliday = function() {
       if ($scope.packageAlready) {
-        return
+        return;
       }
 
       var url = "/api/checkHoliday?country=" + hgdata.region.country + "&region=" + hgdata.region.region + "&date="+$scope.selectedDate;
@@ -256,11 +256,16 @@
 
     $scope.checkAvailable = function(package) {
       var selectedDate = moment($scope.selectedDate, "YYYY-MM-DD HH:mm");
+      
+      if ($scope.isHoliday) {
+        if(package.onlyHoliday){
+          $scope.availablePackages = true;
+        }
+        
+        return package.onlyHoliday;
+      }
 
       if (package.availableMonths[selectedDate.month()] && package.availableDays[selectedDate.day()]) {
-        if (package.onlyHoliday && !$scope.isHoliday) {
-          return false
-        }
 
         $scope.availablePackages = true;
         return true

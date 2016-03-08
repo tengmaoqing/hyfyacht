@@ -80,7 +80,7 @@
                   <input name="total" class="collapse" type="text" value="{{ getTotal() }}">
                   <input id="data-calendar-events" name="events" class="collapse" type="text" data-ng-model="events">
                   <div data-ng-show="!packageAlready" class="text-center">
-                    <i class="fa-2x fa fa-spinner fa-spin"></i>
+                    <i class="fa fa-spinner fa-2x fa-spin text-muted"></i>
                   </div>
                   <div class="panel panel-custom" data-ng-repeat="package in packages" data-ng-if="checkAvailable(package)" data-ng-show="packageAlready" data-ng-cloak>
                     <div class="panel-heading" role="tab" id="package-heading-{{ $index }}">
