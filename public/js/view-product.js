@@ -242,10 +242,16 @@
         $scope.isHoliday = res.isPublicHoliday;
         $scope.packageAlready = true;
       });
-    }
+    };
 
     $scope.selectedDateChange = function() {
       $scope.packageAlready = false;
+    };
+
+    $scope.getContact = function() {
+      $http.get().success(function(res){
+
+      });
     }
 
     $scope.checkAvailable = function(package) {
