@@ -220,6 +220,8 @@
     $scope.availablePackages = false;
     $scope.invalidItems = [];
     $scope.maxTips = hgdata.maxTips;
+    $scope.isHoliday = false;
+    $scope.packageAlready =false;
 
     $scope.generateCharge = $scope.$parent.generateCharge;
     $scope.displayAmount = $scope.$parent.displayAmount;
@@ -230,19 +232,32 @@
     };
 
     $scope.checkIsHoliday = function() {
-      var selectedDate = moment($scope.selectedDate, "YYYY-MM-DD HH:mm");
-      
-      $http.get(holidayUrl+"&date="+selectedDate).success(function(res){
-        $scope.isHoliday = res.result;
+      if ($scope.packageAlready) {
+        return
+      }
+
+      var url = "/api/checkHoliday?country=" + hgdata.region.country + "&region=" + hgdata.region.region + "&date="+$scope.selectedDate;
+      $http.get(url).success(function(res){
+        $scope.availablePackages = false;
+        $scope.isHoliday = res.isPublicHoliday;
+        $scope.packageAlready = true;
       });
+    }
+
+    $scope.selectedDateChange = function() {
+      $scope.packageAlready = false;
     }
 
     $scope.checkAvailable = function(package) {
       var selectedDate = moment($scope.selectedDate, "YYYY-MM-DD HH:mm");
 
-      if(package.availableMonths[selectedDate.month()] && package.availableDays[selectedDate.day()]){
+      if (package.availableMonths[selectedDate.month()] && package.availableDays[selectedDate.day()]) {
+        if (package.onlyHoliday && !$scope.isHoliday) {
+          return false
+        }
+
         $scope.availablePackages = true;
-        return true;
+        return true
       }
 
       return false;
@@ -612,6 +627,8 @@
                 scope.$apply();
                 return;
               }
+
+              scope.checkIsHoliday();
 
               $("#calendar-controller").hide();
               $("#backStep").show();

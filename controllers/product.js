@@ -12,7 +12,7 @@ exports.getProduct = function(req, res, next){
     try {
       var product = yield Product.findOne({_id: req.params.id}).populate({
         path: 'packages',
-        select: 'id name summary currency baseCharge basePersons maxPersons extraCharge items availableMonths availableDays type charges',
+        select: 'id name summary onlyHoliday currency baseCharge basePersons maxPersons extraCharge items availableMonths availableDays type charges',
         match: {
           boats: boatId,
           inStock: true

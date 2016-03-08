@@ -5,9 +5,7 @@
 {% endblock %}
 
 {% block content %}
-
 {% include './nav.html' %}
-
 <div data-ng-app="product" data-ng-controller="productController">
   <div class="columns-sm" data-ng-controller="bookingController">
     <form name="booking" method="post" action="/booking/submit" novalidate>
@@ -73,7 +71,7 @@
                 <p class="text-center"><strong>{{ __('product.booking.selectPackage') }}</strong></p>
                 <div class="panel-group" id="package-accordion" role="tablist">
                   {% raw %}
-                  <input id="data-selected-date" name="selectedDate" class="collapse" type="text" data-ng-model="selectedDate">
+                  <input id="data-selected-date" name="selectedDate" class="collapse" type="text" data-ng-model="selectedDate" data-ng-change="selectedDateChange()">
                   <input id="data-selected-date-start" name="dateStart" class="collapse" type="text" data-ng-model="dateStart" required>
                   <input id="data-selected-date-end" name="dateEnd" class="collapse" type="text" data-ng-model="dateEnd" required>
                   <input name="currPackage" class="collapse" type="number" data-ng-model="currPackage" min="0" required>
@@ -81,7 +79,10 @@
                   <input name="items" class="collapse" type="text" value="{{ getItems() }}">
                   <input name="total" class="collapse" type="text" value="{{ getTotal() }}">
                   <input id="data-calendar-events" name="events" class="collapse" type="text" data-ng-model="events">
-                  <div class="panel panel-custom" data-ng-repeat="package in packages" data-ng-if="checkAvailable(package)" data-ng-cloak>
+                  <div data-ng-show="!packageAlready" class="text-center">
+                    <i class="fa-2x fa fa-spinner fa-spin"></i>
+                  </div>
+                  <div class="panel panel-custom" data-ng-repeat="package in packages" data-ng-if="checkAvailable(package)" data-ng-show="packageAlready" data-ng-cloak>
                     <div class="panel-heading" role="tab" id="package-heading-{{ $index }}">
                       <h4 class="panel-title relative-container" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index }}" aria-expanded="true" aria-controls="package-collapse-{{ $index }}">
                         {{ package.name }}({{ displayAmount(generateCharge(package.baseCharge)) }})
@@ -120,11 +121,11 @@
                     </div>
                   </div>
                   {% endraw %}
-                  <div class="alert alert-warning" data-ng-if="!availablePackages" data-ng-cloak>
+                  <div class="alert alert-warning" data-ng-if="!availablePackages && packageAlready" data-ng-cloak>
                     {{ __('product.booking.no_package') }}
                   </div>
                 </div>
-                <div class="alert alert-danger" data-ng-show="step1 && (!dateStart || !dateEnd)" data-ng-cloak>
+                <div class="alert alert-danger" data-ng-show="packageAlready && step1 && (!dateStart || !dateEnd)" data-ng-cloak>
                   <ul class="list-layout">
                     <li data-ng-show="step1 && (!dateStart || !dateEnd)"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.package') }} </li>
                   </ul>
