@@ -235,8 +235,10 @@
           return
         }
 
+        if (res.mobile) {
+          $scope.contact.areaCode = res.mobile.length == 13? res.mobile.slice(0,2):res.mobile.slice(0,3);
+        }
         $scope.contact.email = res.email;
-        $scope.contact.areaCode = res.mobile.length == 13? res.mobile.slice(0,2):res.mobile.slice(0,3);
         $scope.contact.name = res.name;
         $scope.contact.mobile = res.mobile.length == 13? parseInt(res.mobile.slice(2)):parseInt(res.mobile.slice(3));
         $scope.areaCodeChange();
@@ -245,7 +247,6 @@
     $scope.getContact();
 
     $scope.areaCodeChange = function() {
-
       if ($scope.contact.areaCode == "86") {
         $scope.mobileTest = /(^(13\d|14[57]|15[^4,\D]|17[678]|18\d)\d{8}|170[059]\d{7})$/;
       } else {

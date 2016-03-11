@@ -334,8 +334,6 @@ exports.getContact = function(req, res, next) {
       return res.json({result:false, error: httpErr});
     }
 
-    console.log(eventOrder);
-
     return res.json(eventOrder.contact);
 
   })

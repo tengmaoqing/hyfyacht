@@ -17,7 +17,7 @@
           <div class="col-sm-2 col-xs-4">
             <div class="btn-group">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">+86 <span class="caret"></span></button>
-              <input id="input_area_code" type="text" class="dropdown-menu-selected collapse" name="area_code" value="86">
+              <input id="input_area_code" type="text" class="dropdown-menu-selected collapse" data-ng-model="areaCode" name="area_code" value="86" data-ng-change="areaCodeChange()">
               <ul class="dropdown-menu">
                 <li><a href="#" data-value="86">+86</a></li>
                 <li><a href="#" data-value="852">+852</a></li>
@@ -25,13 +25,14 @@
             </div>
           </div>
           <div class="col-sm-6 col-xs-8">
-            <input id="input_mobile" type="number" class="form-control" name="mobile" maxlength="11" data-ng-model="mobile" required>
+            <input id="input_mobile" type="number" class="form-control" name="mobile" maxlength="11" data-ng-model="mobile" data-ng-pattern="mobileTest" required>
           </div>
           <div class="text-danger col-sm-8 col-sm-offset-4 col-xs-12" data-ng-show="login.mobile.$dirty && login.mobile.$invalid" data-ng-cloak>
             <ul class="list-layout">
               <li data-ng-show="login.mobile.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('error.signup.input_mobile') }}</li>
               <li data-ng-show="login.mobile.$error.maxlength"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.maxlength') }}</li>
               <li data-ng-show="login.mobile.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.invaild') }}</li>
+              <li data-ng-show="login.mobile.$error.pattern"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.invaild') }}</li>
             </ul>
           </div>
         </div>
@@ -78,6 +79,17 @@
       $scope.submit = function(){
         document.forms[0].submit();
       };
+
+      $scope.areaCode = "86";
+      $scope.mobileTest = /(^(13\d|14[57]|15[^4,\D]|17[678]|18\d)\d{8}|170[059]\d{7})$/;
+
+      $scope.areaCodeChange = function() {
+        if ($scope.areaCode == "86") {
+          $scope.mobileTest = /(^(13\d|14[57]|15[^4,\D]|17[678]|18\d)\d{8}|170[059]\d{7})$/;
+        } else {
+          $scope.mobileTest = /(^(\d{8})$)/;
+        }
+      }
     });
   })(angular);
 </script>

@@ -871,7 +871,7 @@ td.fc-bgevent {
 }
 
 .boat-unti {
-  color:#ff5a5e;
+  color:inherit;
 }
 
 .share-title{
@@ -881,4 +881,3 @@ td.fc-bgevent {
   color:#999;
   margin-bottom: 0px;
 }
-

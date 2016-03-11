@@ -10,7 +10,7 @@ exports.getBoat = function(req, res, next) {
     display: true
   }).populate('owner', 'nickname').populate({
     path: 'products',
-    select: 'id name summary baseCharge currency photo',
+    select: 'id name summary baseCharge baseUnit currency photo',
     match: {
       display: true
     }

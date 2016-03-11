@@ -15,7 +15,7 @@
 	<div class="userSetting row" ng-app="ownerSetting" ng-controller="ownerSettingCtrl">
 		<div class="thumbnail col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
 			<div class="columns-sm text-center">
-        <img src="{{ preset.imgHost }}/captain.jpg" class="img-circle img-thumbnail" data-ng-show="!owner.logo">
+        <img src="{{ preset.imgHost }}/captain.jpg" class="img-circle img-thumbnail" data-ng-show="!owner.logo" data-ng-cloak>
         <img ng-src="{% raw %}{{ owner.logo }}{% endraw %}" class="img-circle img-thumbnail" data-ng-show="owner.logo" data-ng-cloak>
       </div>
 			<input type="hidden" name="_csrf" id="csrf" value="{{ _csrf }}">
@@ -34,7 +34,7 @@
 						<div class="col-sm-4 col-xs-4 noPadding" data-ng-show="isEdit" data-ng-cloak>
 				      <div class="btn-group">
 				        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% raw %} {{ area_code }} {% endraw %}<span class="caret"></span></button>
-				        <input id="input_area_code" type="hidden" class="dropdown-menu-selected" value="86">
+				        <input id="input_area_code" type="text" class="dropdown-menu-selected collapse" data-ng-model="areaCode" value="86" data-ng-change="areaCodeChange()">
 				        <ul class="dropdown-menu">
 				          <li><a href="#" data-value="86">+86</a></li>
 				          <li><a href="#" data-value="852">+852</a></li>
@@ -42,9 +42,14 @@
 				      </div>
 				    </div>
 						<div class="col-sm-8 col-xs-8 noPadding" data-ng-show="isEdit" data-ng-cloak>
-				      <input type="text" data-ng-model="mobile" name="mobile" maxlength="11" class="form-control" placeholder="{{ __('common.mobile') }}" required>
+				      <input type="text" data-ng-model="mobile" name="mobile" maxlength="11" class="form-control" placeholder="{{ __('common.mobile') }}" data-ng-pattern="mobileTest" required>
 				      <div class="text-danger" data-ng-show="ownerInfo.mobile.$invalid" data-ng-cloak>
-				      	<span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('error.signup.input_mobile')}}
+				      	<div data-ng-show="ownerInfo.mobile.$error.required">
+				      		<span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('error.signup.input_mobile')}}
+				      	</div>
+				      	<div data-ng-show="ownerInfo.mobile.$error.pattern">
+				      		<span class="glyphicon glyphicon-exclamation-sign"></span>{{ __('product.booking.error.mobile.invaild') }}
+				      	</div>
 				      </div>
 				    </div>
 					</dd>
@@ -248,6 +253,17 @@
 			var time = moment(date).format("YYYY-MM-DD HH:mm:ss");
 			return time;
 		};
+
+		$scope.areaCode = "86";
+    $scope.mobileTest = /(^(13\d|14[57]|15[^4,\D]|17[678]|18\d)\d{8}|170[059]\d{7})$/;
+
+    $scope.areaCodeChange = function() {
+      if ($scope.areaCode == "86") {
+        $scope.mobileTest = /(^(13\d|14[57]|15[^4,\D]|17[678]|18\d)\d{8}|170[059]\d{7})$/;
+      } else {
+        $scope.mobileTest = /(^(\d{8})$)/;
+      }
+    };
 
 	}); 
 

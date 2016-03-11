@@ -25,7 +25,10 @@
               <h3>{{ product.name }}</h3>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
-              <h3 class="text-danger">{{ preset.generateCharge(product.baseCharge, product.currency) }}</h3>
+              <h3 class="text-danger">{{ preset.generateCharge(product.baseCharge, product.currency) }}
+              {% if product.baseUnit %}
+              /<small class="boat-unti">{{ __(product.baseUnit)}}</small>
+              {% endif %}</h3>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <p>{{ product.summary }}</p>
@@ -341,7 +344,7 @@
                   <span class="input-group-addon">
                     <span class="glyphicon glyphicon-envelope"></span>
                   </span>
-                  <input type="email" class="form-control" name="email" placeholder="{{ __('product.booking.email_plh') }}" data-ng-model="contact.email" data-maxlength="100" data-ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-z]{2,4})$/" required>
+                  <input type="email" class="form-control" name="email" placeholder="{{ __('product.booking.email_plh') }}" data-ng-model="contact.email" data-maxlength="100" data-ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/" required>
                 </div>
               </div>
               <div class="alert alert-danger" data-ng-show="booking.$invalid && submitted" data-ng-cloak>
