@@ -315,6 +315,7 @@
     "desc": "活動詳情",
     "more": "最新活動",
     "unlimited": "不限制人數",
+    "eventName": "活動名稱",
     "result": {
       "error":{
         "out_date": "此活動已經停止報名",

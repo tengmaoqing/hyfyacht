@@ -314,6 +314,7 @@
     "desc": "活动详情",
     "more": "最新活动",
     "unlimited": "不限制人数",
+    "eventName": "活动名称",
     "result": {
       "error":{
         "out_date": "此活动已经结束报名",

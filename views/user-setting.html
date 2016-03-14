@@ -50,7 +50,7 @@
             </dd>
             <dt>{{ __('common.email') }}</dt>
             <dd data-ng-cloak>
-              <input type="email" name="email" data-ng-model="user.email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" data-ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-z]{2,4})$/" data-ng-show="isEdit || user.email">
+              <input type="email" name="email" data-ng-model="user.email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" data-ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/" data-ng-show="isEdit || user.email">
               <span data-ng-if = "!user.email && !isEdit" class="info_noSetting">{{ __('common.noSetting') }}</span>
               <div class="text-danger" data-ng-cloak data-ng-show="userInfo.email.$error.pattern && isEdit">
                 <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('common.invaild_email') }}

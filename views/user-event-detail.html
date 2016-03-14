@@ -1,10 +1,161 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+{% extends './layout.html' %}
 
-</body>
-</html>
+{% block content %}
+
+{% include './nav.html' %}
+
+<div class="container columns-sm">
+	<ol class="breadcrumb">
+    <li><a href="/">{{ __('nav.home') }}</a></li>
+    <li><a href="/user/event">{{ __('user.events') }}</a></li>
+    <li class="active">{{ __('user.event_detail') }}</li>
+  </ol>
+  <div class="page-header">
+    <h1>{{ __('user.event_detail') }}</h1>
+  </div>
+  {% if order.status == 'db.booking.wait_to_pay' %}
+  {% if result && result != 'pay_can' %}
+	<div class="alert alert-warning">
+    {{ __('event.result.error.out_date') }}
+  </div>
+  {% else %}
+		<h4>{{ __('product.booking.result.amount') }} {% if order.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ (order.total / 100).toFixed(2) }}</h4>
+		{% if !wpParams %}
+		<p>
+	    {% if order.settlementCurrency == 'cny' %}
+	    <label class="btn btn-default">
+	      <input type="radio" autocomplete="off" checked> <img src="{{ preset.imgHost }}/alipay165x58.png" height="40" alt="alipay">
+	    </label>
+	    <div class="row">
+	      <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+	        <a class="btn btn-danger btn-block" href="/pay/alipay?product=event&order={{ order.orderId }}">{{ __('common.pay') }}</a>
+	      </div>
+	    </div>
+	    {% else %}
+	    <a href="/pay/paypal?product=event&order={{ order.orderId }}"><img src="https://www.paypalobjects.com/webstatic/en_AU/i/buttons/btn_paywith_primary_l.png" alt="付款用 PayPal" /></a>
+	    <br><br>{{ __('common.paypayl_pay_methods') }}<br>
+	    <img src="https://www.paypalobjects.com/webstatic/mktg/logo/PP_AcceptanceMarkTray-NoDiscover_243x40.png" alt="PayPal 立即買" />
+	    {% endif %}
+	  </p>
+	  {% else %}
+	  <div class="row">
+	    <div class="col-xs-offset-1 col-xs-10">
+	      <button id="btn-wppay" type="button" class="btn btn-success btn-block">{{ __('common.wechat_pay') }}</button>
+	    </div>
+	  </div>
+	  {% endif %}
+  {% endif %}
+  {% endif %}
+  {% if order.status == 'db.booking.pay_success' %}
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-md-8 col-sm-8 col-xs-6">
+          <h4>{{ __('product.booking.travel_guide') }}</h4>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <dl class="dl-horizontal">
+	      <dt>{{ __('common.location') }}</dt>
+	      <dd>{{ __(order.eventId.location.city) }} {% if order.eventId.location.pier %}- {{ __(booking.eventId.location.pier) }}{% endif %}</dd>
+      </dl>
+      {% if order.eventId.geospatial.length > 0 %}
+      <h3>{{ __('event.geospatial') }}</h3>
+      <hr class="hr-divider">
+      <div id="boat-geospatial" class="hyf-map-container"></div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+	<div class="panel panel-info">
+	  <div class="panel-heading">
+	    <div class="row">
+	      <div class="col-md-8 col-sm-8 col-xs-6">
+	        <h4>{{ __('product.booking.result.bookingDate') }}: {{ preset.getDateString(order.createDate) }} {{ __('product.booking.result.bookingId') }}: {{ order.bookingId }}</h4>
+	      </div>
+	      <div class="col-md-4 col-sm-4 col-xs-6 text-right">
+	        <h4>{{ __('product.booking.result.status') }}：{{ __(order.status) }}</h4>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="panel-body">
+	    <dl class="dl-horizontal">
+	      <dt>{{ __('event.eventName') }}</dt>
+	      <dd>{{ order.eventName }}</dd>
+	      <dt>{{ __('product.booking.start') }}</dt>
+	      <dd>{{ preset.getDateString(order.eventId.dateStart) }}</dd>
+	      <dt>{{ __('product.booking.end') }}</dt>
+	      <dd>{{ preset.getDateString(order.eventId.dateEnd) }}</dd>
+	      <dt>{{ __('product.booking.name') }}</dt>
+	      <dd>{{ order.contact.name }}</dd>
+	      <dt>{{ __('product.booking.mobile') }}</dt>
+	      <dd>+{{ order.contact.mobile }}</dd>
+	      <dt>{{ __('product.booking.email') }}</dt>
+	      <dd>{{ order.contact.email }}</dd>
+	    </dl>
+	    <div class="text-right">
+	      <h4>{{ __('product.booking.package.total') }} {% if order.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ (order.total / 100).toFixed(2) }}</h4>
+	    </div>
+	  </div>
+	</div>
+</div>
+
+
+{% include './footer.html' %}
+
+{% endblock %}
+
+{% block foot %}
+{% if wpParams %}
+<script>
+  function onBridgeReady(){
+    WeixinJSBridge.invoke('getBrandWCPayRequest', {{ wpParams|json|safe }}, function(res){
+      if(res.err_msg == "get_brand_wcpay_request:ok") {
+        location.reload(true);
+      }
+    });
+  }
+
+  $("#btn-wppay").click(function(){
+    if (typeof WeixinJSBridge == "undefined"){
+      if( document.addEventListener ){
+        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+      }else if (document.attachEvent){
+        document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+        document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+      }
+    }else{
+      onBridgeReady();
+    }
+  });
+</script>
+{% endif %}
+
+{% if order.status == 'db.booking.pay_success' && order.eventId.geospatial.length > 0 %}
+  <script>
+  window.hgdata = {
+    geospatial: {{ order.eventId.geospatial|json|safe }}
+  };
+
+  function loadBaiduMap() {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "http://api.map.baidu.com/api?v=2.0&ak=XpLGCrdpWiH4k02rOXlWQBro&callback=initBaiduMap";
+    document.body.appendChild(script);
+  }
+
+  function initBaiduMap() {
+    var map = new BMap.Map("boat-geospatial");
+    var point = new BMap.Point(hgdata.geospatial[0], hgdata.geospatial[1]);
+    map.centerAndZoom(point, 11);
+    map.enableScrollWheelZoom();
+    var marker = new BMap.Marker(point);
+    map.addOverlay(marker);
+  }
+
+  loadBaiduMap();
+</script>
+{% endif %}
+
+{% endblock %}
