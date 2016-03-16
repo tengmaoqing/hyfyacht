@@ -3,6 +3,35 @@
     <li><a href="/">{{ __('nav.home') }}</a></li>
     <li class="active">{{ __('site.info.privacy') }}</li>
   </ol>
+  {% if currLocale == 'zh-hk' %}
+  <div class="page-header text-center">
+    <h1>用戶隱私保護</h1>
+  </div>
+  <div class="static-article">
+    <p>HGBOATING非常重視用戶資訊的保護，在使用HGBOATING的所有產品和服務前，請您務必仔細閱讀並透徹理解本聲明。一旦您選擇使用，即表示您認可並接受本條款現有內容及其可能隨時更新的內容。</p>
+    <ol>
+      <li>保護用戶隱私是HGBOATING的一項基本政策，HGBOATING不對外公開或向第三方提供用戶的註冊資料及用戶在使用網路服務時存儲在HGBOATING的非公開內容，但下列情況除外：
+        <ul>
+          <li>1) 事先獲得用戶的明確授權；</li>
+          <li>2) 根據有關的法律法規要求；</li>
+          <li>3) 按照相關政府主管部門的要求；</li>
+          <li>4) 為維護社會公眾的利益；</li>
+          <li>5) 為維護HGBOATING的合法權益等</li>
+        </ul>
+      </li>
+      <li>在以下（包括但不限於）幾種情況下，HGBOATING有權使用用戶的個人資訊：
+        <ul>
+          <li>1) 某些情況下為進行相關商業合作需要調取用戶的個人資訊，HGBOATING可能會與贊助商共用用戶的個人資訊，在這些情況下HGBOATING可能會在發送用戶資訊之前進行提示， 您可以通過不參與來終止傳送過程。</li>
+          <li>2) HGBOATING可能會將用戶資訊與第三方數據匹配。</li>
+          <li>3) HGBOATING會披露用戶統計數據，向未來的合作夥伴、廣告商及其他第三方以及為了其他合法目的而描述公司的服務。 在對用戶隱私資料進行去身份化處理的前提下，HGBOATING有權對整個用戶數據庫進行分析並對用戶數據庫進行商業上 的利用。</li>
+        </ul>
+      </li>
+      <li>如您認為您的個人資訊被HGBOATING超目的使用、或被其他用戶侵權，請立即與HGBOATING聯繫，並按照要求提供相應的證明資料，HGBOATING將及時調查核實處理。</li>
+    </ol>
+    <p class="text-right">海雲帆遊艇國際有限公司</p>
+    <p class="text-right">2015年10月</p>
+  </div>
+  {% else %}
   <div class="page-header text-center">
     <h1>用户隐私保护</h1>
   </div>
@@ -30,5 +59,6 @@
     <p class="text-right">深圳市海云帆游艇发展有限公司</p>
     <p class="text-right">2015年10月</p>
   </div>
+  {% endif %}
   <hr class="hr-divider">
 </div>

@@ -71,7 +71,7 @@
                 <li data-ng-show="event.numberOfPersons.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.invaild') }}</li>
               </ul>
             </div>
-            <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" min="1" max="{% raw %}{{ maxPersons }}{% endraw %}" required data-ng-disabled="eventType == 'free'">
+            <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" min="1" max="{% raw %}{{ maxPersons }}{% endraw %}" required data-ng-disabled="eventType == 'free' || maxPerUser > 0">
           </div>
           <div id="product-booking-contact" class="product-booking-container">
             <p><strong>{{ __('product.booking.contact') }}</strong></p>
@@ -232,6 +232,7 @@
     baseCurrency: "{{ event.currency|safe }}",
     baseCharge: {{ event.baseCharge|safe }},
     maxPersons: {{ event.maxPersons|safe }},
+    maxPerUser: {{ event.maxPerUser|safe }},
     attendedDate: "{{ event.attendedDate|safe }}",
     geospatial: {{ event.geospatial|json|safe }},
     dateStart: {{ event.dateStart.valueOf() }}

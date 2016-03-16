@@ -25,7 +25,7 @@
   <h4>{{ __('product.booking.result.amount') }} {% if eventOrder.settlementCurrency == 'hkd' %}${% else %}￥{% endif %}{{ (eventOrder.total / 100).toFixed(2) }}</h4>
     {% if !wpParams %}
     <p>
-      {% if booking.settlementCurrency == 'cny' %}
+      {% if eventOrder.settlementCurrency == 'cny' %}
       <label class="btn btn-default">
         <input type="radio" autocomplete="off" checked> <img src="{{ preset.imgHost }}/alipay165x58.png" height="40" alt="alipay">
       </label>

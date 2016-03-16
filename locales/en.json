@@ -359,7 +359,8 @@
       },
       "city": {
         "sz": "Shenzhen",
-        "hk": "Hong Kong"
+        "hk": "Hong Kong",
+        "sy": "Sanya"
       },
       "pier": {
         "saikung": "Sai Kung",
@@ -367,7 +368,9 @@
         "nanao": "Nanao",
         "nanaoxiexiacun": "Nanao Xiexia Village Pier",
         "szshuangyong": "Nanao Shuangyong Pier",
-        "szshekoufishingport": "Shekou Fishing Port"
+        "szshekoufishingport": "Shekou Fishing Port",
+        "szdmsjjxld": "Sheraton Dameisha Resort Pier",
+        "syxhyt": "Sanya Xinghua Yacht Pier"
       }
     },
     "unit": {

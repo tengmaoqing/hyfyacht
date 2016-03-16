@@ -7,12 +7,22 @@
     <h1>{{ __('site.info.contact') }}</h1>
   </div>
   <div class="text-center">
+    {% if currLocale == 'zh-hk' %}
+    <p>WeChat公眾號直接聯繫：工作時間：週一~週五9：00~18：00 節假日不定時線上</p>
+    <p>熱線電話：00852 60668350</p>
+    <p>官方網站：http://www.hgboating.com</p>
+    <p>微博：@海龜租船</p>
+    <p>服務郵箱：service@hgboating.com</p>
+    <p>香港九龍旺角彌敦道610號荷李活商業中心1318-19室</p>
+    <p>Room1318-19, Hollywood Plaza, 610 Nathan Road, Mongkok, Kowloon, Hong Kong</p>
+    {% else %}
     <p>微信公众号直接联系：工作时间：周一~周五9：00~18：00 节假日不定时在线</p>
     <p>热线电话：400 008 3731</p>
     <p>官方网站：http://www.hgboating.com</p>
     <p>微博：@海龟租船</p>
     <p>服务邮箱：service@hgboating.com</p>
     <p>地址：深圳市福田区紫竹七道求是大厦东座2501</p>
+    {% endif %}
   </div>
   <hr class="hr-divider">
 </div>

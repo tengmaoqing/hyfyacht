@@ -12,7 +12,7 @@
   },
   "site": "網站導航",
   "hotline": "服務熱線",
-  "copyright": "深圳市海雲帆遊艇發展有限公司"
+  "copyright": "海雲帆遊艇國際有限公司"
   },
   "common": {
     "login": "登入",
@@ -362,7 +362,8 @@
       },
       "city": {
         "sz": "深圳",
-        "hk": "香港"
+        "hk": "香港",
+        "sy": "三亞"
       },
       "pier": {
         "saikung": "西貢",
@@ -370,7 +371,9 @@
         "nanao": "南澳",
         "nanaoxiexiacun": "南澳斜吓村碼頭",
         "szshuangyong": "南澳月亮灣雙擁碼頭",
-        "szshekoufishingport": "蛇口漁港"
+        "szshekoufishingport": "蛇口漁港",
+        "szdmsjjxld": "大梅沙京基喜來登碼頭",
+        "syxhyt": "三亞星華遊艇碼頭"
       }
     },
     "unit": {

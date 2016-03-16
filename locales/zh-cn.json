@@ -361,7 +361,8 @@
       },
       "city": {
         "sz": "深圳",
-        "hk": "香港"
+        "hk": "香港",
+        "sy": "三亚"
       },
       "pier": {
         "saikung": "西贡",
@@ -369,7 +370,9 @@
         "nanao": "南澳",
         "nanaoxiexiacun": "南澳斜吓村码头",
         "szshuangyong": "南澳月亮湾双拥码头",
-        "szshekoufishingport": "蛇口渔港"
+        "szshekoufishingport": "蛇口渔港",
+        "szdmsjjxld": "大梅沙京基喜来登码头",
+        "syxhyt": "三亚星华游艇码头"
       }
     },
     "unit": {
