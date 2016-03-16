@@ -186,7 +186,10 @@ app.use(function(req, res, next){
 
 //set currency
 app.use(function(req, res, next){
-  var currency = 'cny';//req.query.curr || req.cookies['client_currency'] || ( preset.locale == 'zh-cn' ? 'cny' : 'hkd');
+  var currency = req.query.curr || req.cookies['client_currency'] || ( preset.locale == 'zh-cn' ? 'cny' : 'hkd');
+  if(req.isFromWechat){
+    currency = 'cny';
+  }
 
   req.session.currency = currency;
 

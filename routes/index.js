@@ -10,27 +10,27 @@ router.get('/', function(req, res, next){
 });
 
 router.get('/about.html', function(req, res, next){
-  return res.render('static', {page: 'about'});
+  return res.render('static', {page: 'about', currLocale: req.getLocale()});
 });
 
 router.get('/contact.html', function(req, res, next){
-  return res.render('static', {page: 'contact'});
+  return res.render('static', {page: 'contact', currLocale: req.getLocale()});
 });
 
 router.get('/terms.html', function(req, res, next){
-  return res.render('static', {page: 'terms'});
+  return res.render('static', {page: 'terms', currLocale: req.getLocale()});
 });
 
 router.get('/privacy.html', function(req, res, next){
-  return res.render('static', {page: 'privacy'});
+  return res.render('static', {page: 'privacy', currLocale: req.getLocale()});
 });
 
 router.get('/disclaimer.html', function(req, res, next){
-  return res.render('static', {page: 'disclaimer'});
+  return res.render('static', {page: 'disclaimer', currLocale: req.getLocale()});
 });
 
 router.get('/copyright.html', function(req, res, next){
-  return res.render('static', {page: 'copyright'});
+  return res.render('static', {page: 'copyright', currLocale: req.getLocale()});
 });
 
 router.get('/resetpass', function(req, res, next){

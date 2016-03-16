@@ -87,7 +87,8 @@ exports.submit = function(req, res, next) {
 
       var orders = yield EventOrder.find({
         eventId: eventForm.eventId,
-        userId: req.session.user._id
+        userId: req.session.user._id,
+        status: 'db.booking.pay_success'
       }).exec();
 
       var attendedPeople = yield EventOrder.aggregate([
@@ -134,8 +135,19 @@ exports.submit = function(req, res, next) {
       return fail('event.result.error.multiorder');
     }
 
-    if(event.type === 'free'){
+    if(event.type === 'free' || !eventForm.numberOfPersons){
       eventForm.numberOfPersons = 1;
+    }
+    
+    if(event.maxPerUser && event.maxPerUser > 0  && orders.length > 0){
+      var attendedNumber = 0;
+      for(var i = 0; i < orders.length; i++){
+        attendedNumber += orders[i].numberOfPersons;
+      }
+      
+      if((parseInt(eventForm.numberOfPersons) + attendedNumber) > event.maxPerUser){
+        return fail('event.result.error.multiorder');
+      }
     }
 
     var total = generateCharge(event.baseCharge) * eventForm.numberOfPersons;

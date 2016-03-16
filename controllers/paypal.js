@@ -21,15 +21,15 @@ exports.createPayment = function (req, res, next) {
     try {
       if(product === 'boat'){
         order = yield Booking.findOne({bookingId: bookingId}).exec();
-        return_url = 'http://localhost:3000/notify/paypal/execute?product=boat&order=' + bookingId;
-        cancel_url = 'http://localhost:3000/user/booking/detail/' + order.bookingId;
+        return_url = 'http://hgboating.com/notify/paypal/execute?product=boat&order=' + bookingId;
+        cancel_url = 'http://hgboating.com/user/booking/detail/' + order.bookingId;
         paymentDescription = order.boatName + '-' + order.productName + '-' + order.packageName;
       }
 
       if(product === 'event'){
         order = yield EventOrder.findOne({orderId: bookingId}).exec();
-        return_url = 'http://localhost:3000/notify/paypal/execute?product=event&order=' + bookingId;
-        cancel_url = 'http://localhost:3000/user/event';
+        return_url = 'http://hgboating.com/notify/paypal/execute?product=event&order=' + bookingId;
+        cancel_url = 'http://hgboating.com/user/event';
         paymentDescription = order.eventName;
       }
     } catch (err) {
@@ -104,12 +104,12 @@ exports.executePayment = function (req, res, next) {
     try {
       if(product === 'boat'){
         order = yield Booking.findOne({bookingId: bookingId}).exec();
-        redirect_url = 'http://localhost:3000/user/booking/detail/' + order.bookingId;
+        redirect_url = 'http://hgboating.com/user/booking/detail/' + order.bookingId;
       }
 
       if(product === 'event'){
         order = yield EventOrder.findOne({orderId: bookingId}).exec();
-        redirect_url = 'http://localhost:3000/user/event';
+        redirect_url = 'http://hgboating.com/user/event';
       }
     } catch (err) {
       err.status = 500;

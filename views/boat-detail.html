@@ -4,13 +4,25 @@
 
 {% include './nav.html' with {absolute: true} %}
 
-<div id="hyf-carousel-index" class="carousel slide index-slide" data-ride="carousel">
+<div id="hyf-carousel-index" class="carousel slide index-slide" data-ride="carousel" data-interval="4000">
+  <ol class="carousel-indicators">
+    {% for photo in boat.photos %}
+    <li data-target="#hyf-carousel-index" data-slide-to="{{ loop.index - 1 }}" {% if loop.first %}class="active"{% endif %}></li>
+    {% endfor %}
+  </ol>
   <div class="carousel-inner" role="listbox">
     {% for photo in boat.photos %}
-    <div class="item index-slide-item {% if loop.first %}active{% endif %}" style="background-image: url({{ photo }})">
-    </div>
+    <div class="item index-slide-item {% if loop.first %}active{% endif %}" style="background-image: url({{ photo }})"></div>
     {% endfor %}
   </div>
+  <a class="left carousel-control" href="#hyf-carousel-index" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#hyf-carousel-index" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
 </div>
 <div class="boat-detail columns-sm container">
     <h2>{{ boat.name }}</h2>
@@ -35,7 +47,7 @@
     </div>
     <hr class="hr-divider">
     <h3>{{ __('boat.detail.about') }}</h3>
-    <p>{{ boat.description }}</p>
+    <p>{% autoescape %}{{ boat.description }}{% endautoescape %}</p>
     {% if boat.baseFacilities.length > 0 %}
     <h4>{{ __('boat.detail.facilities') }}</h4>
     <div class="row">

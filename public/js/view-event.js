@@ -15,6 +15,7 @@
     $scope.numberOfPersons = 1;
     $scope.currPersons = 0;
     $scope.maxPersons = 1;
+    $scope.maxPerUser = hgdata.maxPerUser;
     $scope.contact = {
       name: "",
       areaCode: "86",
@@ -28,6 +29,9 @@
     $http.get("/eventorder/number/" + hgdata.eventId).success(function (res) {
       $scope.currPersons = res.count;
       $scope.maxPersons = hgdata.maxPersons - res.count;
+//      if($scope.maxPerUser){
+//        $scope.maxPersons = $scope.maxPerUser - res.count;
+//      }
     });
 
     $scope.getContact = function() {
