@@ -881,3 +881,19 @@ td.fc-bgevent {
   color:#999;
   margin-bottom: 0px;
 }
+
+.collapsed .showInCollapsed{
+  display: inline-block;
+}
+
+.showInCollapsed{
+  display: none;
+}
+
+.hideInCollapsed{
+  display: inline-block;
+}
+
+.collapsed .hideInCollapsed {
+  display: none;
+}

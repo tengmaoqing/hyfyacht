@@ -263,6 +263,9 @@
   	var app = angular.module("userSetting", []);
 
   	app.controller("userSettingCtrl", function($scope, $http){
+      $scope.user = {
+        mobile : true
+      };
   		$scope.isEdit = false;
   		$scope.userTemp = {};
   		$scope.isPass1 = true;

@@ -2,6 +2,8 @@
 
 {% block head %}
 <link rel="stylesheet" href="http://cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.css">
+<link href="http://cdn.bootcss.com/photoswipe/4.1.1/photoswipe.min.css" rel="stylesheet">
+<link href="http://cdn.bootcss.com/photoswipe/4.1.1/default-skin/default-skin.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -87,10 +89,11 @@
                   </div>
                   <div class="panel panel-custom" data-ng-repeat="package in packages" data-ng-if="checkAvailable(package)" data-ng-show="packageAlready" data-ng-cloak>
                     <div class="panel-heading" role="tab" id="package-heading-{{ $index }}">
-                      <h4 class="panel-title relative-container" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index }}" aria-expanded="true" aria-controls="package-collapse-{{ $index }}">
+                      <h4 class="panel-title relative-container collapsed" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index }}" aria-expanded="true" aria-controls="package-collapse-{{ $index }}">
                         {{ package.name }}({{ displayAmount(generateCharge(package.baseCharge)) }})
                         <a class="absolute-right-top more" role="button" data-toggle="collapse" data-parent="#package-accordion" href="#package-collapse-{{ $index }}" aria-expanded="true" aria-controls="package-collapse-{{ $index }}">
-                          <span class="glyphicon glyphicon-option-horizontal"></span>
+                          <span class="showInCollapsed glyphicon glyphicon-triangle-bottom"></span>
+                          <span class="hideInCollapsed glyphicon glyphicon-triangle-top"></span>
                         </a>
                       </h4>
                     </div>
@@ -512,6 +515,42 @@
     </div>
   </div>
 </div>
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="pswp__bg"></div>
+  <div class="pswp__scroll-wrap">
+  <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+  </div>
+  <div class="pswp__ui pswp__ui--hidden">
+      <div class="pswp__top-bar">
+        <div class="pswp__counter"></div>
+        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+        <div class="pswp__preloader">
+          <div class="pswp__preloader__icn">
+            <div class="pswp__preloader__cut">
+              <div class="pswp__preloader__donut"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+        <div class="pswp__share-tooltip"></div> 
+      </div>
+      <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+      </button>
+      <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+      </button>
+      <div class="pswp__caption">
+        <div class="pswp__caption__center"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% include './footer.html' %}
 
 {% endblock %}
@@ -522,6 +561,8 @@
 <script src="http://cdn.bootcss.com/fullcalendar/2.4.0/fullcalendar.min.js"></script>
 <script src="http://cdn.bootcss.com/fullcalendar/2.4.0/lang/{% if preset.locale == 'zh-cn' %}zh-cn{% elseif preset.locale == 'zh-hk' %}zh-tw{% elseif preset.locale == 'en' %}en-gb{% endif %}.js"></script>
 <script src="http://cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
+<script src="http://cdn.bootcss.com/photoswipe/4.1.1/photoswipe.min.js"></script>
+<script src="http://cdn.bootcss.com/photoswipe/4.1.1/photoswipe-ui-default.min.js"></script>
 <script>
   window.hgdata = {
     boatId: "{{ boat.id|safe }}",
@@ -534,6 +575,66 @@
     timeNotAvailable: "{{ __('product.booking.error.invaild_time') }}",
     maxTips: "{{ __('product.booking.package.max') }}"
   };
+
+  (function(){
+
+    var init = function (oElement) {
+      var pswpElement = document.querySelectorAll(".pswp")[0];
+
+      var itemArr = function() {
+        var oTemp = [],
+            imgs = oElement.querySelectorAll("img")||oElement.getElementsByTagName("img");
+            
+        for (var i=0, l=imgs.length; i<l; i++) {
+          var item = {
+              w: imgs[i].width,
+              h: imgs[i].height
+          };
+          item.src = imgs[i].getAttribute("src");
+          item.el = imgs[i];
+          oTemp.push(item);
+        }
+        return oTemp;
+      };
+
+      var items = itemArr();
+      var onImgClick = function (ev){
+        ev = ev || window.event;
+        ev.preventDefault ? ev.preventDefault() : ev.returnValue = false;
+        openPswipe(this.index, this);
+      };
+
+      var openPswipe = function (index, imgEl){
+        
+        var options = {
+          galleryUID: imgEl.getAttribute('data-pswp-uid'),
+
+          getThumbBoundsFn: function(index) {
+              var pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
+                  rect = galleryElements[index].getBoundingClientRect();
+              return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
+          },
+          index: index,
+          loop:true
+        };
+
+        var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+        gallery.init();
+      };
+
+      var galleryElements = oElement.querySelectorAll("img");
+
+      for(var i = 0, l = galleryElements.length; i < l; i++) {
+          galleryElements[i].setAttribute('data-pswp-uid', i+1);
+          galleryElements[i].index = i;
+          galleryElements[i].onclick = onImgClick;
+      }
+    }
+    window.onload = function(){
+      var oElement = document.getElementById("product-detail");
+      init(oElement);
+    }
+  })();
 </script>
 <script src="{{ preset.staticHost }}/js/view-product.js?_=201603031"></script>
 <script src="http://cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
