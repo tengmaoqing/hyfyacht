@@ -1,6 +1,10 @@
 {% extends './layout.html' %}
 {% block title %}{{ event.title }} | {% parent %}{% endblock %}
 
+{% block head %}
+<link href="http://cdn.bootcss.com/photoswipe/4.1.1/photoswipe.min.css" rel="stylesheet">
+<link href="http://cdn.bootcss.com/photoswipe/4.1.1/default-skin/default-skin.min.css" rel="stylesheet">
+{% endblock %}
 {% block content %}
 
 {% include './nav.html' %}
@@ -178,11 +182,47 @@
     </div>
   </div>
 </div>
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="pswp__bg"></div>
+  <div class="pswp__scroll-wrap">
+    <div class="pswp__container">
+        <div class="pswp__item"></div>
+        <div class="pswp__item"></div>
+        <div class="pswp__item"></div>
+    </div>
+    <div class="pswp__ui pswp__ui--hidden">
+      <div class="pswp__top-bar">
+        <div class="pswp__counter"></div>
+        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+        <div class="pswp__preloader">
+          <div class="pswp__preloader__icn">
+            <div class="pswp__preloader__cut">
+              <div class="pswp__preloader__donut"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+        <div class="pswp__share-tooltip"></div> 
+      </div>
+      <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+      </button>
+      <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+      </button>
+      <div class="pswp__caption">
+        <div class="pswp__caption__center"></div>
+      </div>
+    </div>
+  </div>
+</div>
 {% include './footer.html' %}
 
 {% endblock %}
 
 {% block foot %}
+<script src="http://cdn.bootcss.com/photoswipe/4.1.1/photoswipe.min.js"></script>
+<script src="http://cdn.bootcss.com/photoswipe/4.1.1/photoswipe-ui-default.min.js"></script>
 <script>
   window.hgdata = {
     eventId: "{{ event.id|safe }}",
@@ -196,6 +236,65 @@
     geospatial: {{ event.geospatial|json|safe }},
     dateStart: {{ event.dateStart.valueOf() }}
   };
+
+  (function(){
+    var init = function (oElement) {
+      var pswpElement = document.querySelectorAll(".pswp")[0];
+
+      var itemArr = function() {
+        var oTemp = [],
+            imgs = oElement.querySelectorAll("img")||oElement.getElementsByTagName("img");
+            
+        for (var i=0, l=imgs.length; i<l; i++) {
+          var item = {
+              w: imgs[i].width,
+              h: imgs[i].height
+          };
+          item.src = imgs[i].getAttribute("src");
+          item.el = imgs[i];
+          oTemp.push(item);
+        }
+        return oTemp;
+      };
+
+      var items = itemArr();
+      var onImgClick = function (ev){
+        ev = ev || window.event;
+        ev.preventDefault ? ev.preventDefault() : ev.returnValue = false;
+        openPswipe(this.index, this);
+      };
+
+      var openPswipe = function (index, imgEl){
+        
+        var options = {
+          galleryUID: imgEl.getAttribute('data-pswp-uid'),
+
+          getThumbBoundsFn: function(index) {
+              var pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
+                  rect = galleryElements[index].getBoundingClientRect();
+              return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
+          },
+          index: index,
+          loop:true
+        };
+
+        var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+        gallery.init();
+      };
+
+      var galleryElements = oElement.querySelectorAll("img");
+
+      for(var i = 0, l = galleryElements.length; i < l; i++) {
+          galleryElements[i].setAttribute('data-pswp-uid', i+1);
+          galleryElements[i].index = i;
+          galleryElements[i].onclick = onImgClick;
+      }
+    }
+    window.onload = function(){
+      var oElement = document.getElementById("event-detail");
+      init(oElement);
+    }
+  })();
 </script>
 {% if event.geospatial.length > 0 %}
 <script>
