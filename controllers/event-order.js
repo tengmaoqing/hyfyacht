@@ -261,8 +261,7 @@ exports.getEventsByUserId = function(req, res, next){
   var page = req.query.page || 1;
 
   EventOrder.paginate({
-    userId: req.session.user._id,
-    status: 'db.booking.pay_success'
+    userId: req.session.user._id
   }, {
     page: page,
     limit: 10,
@@ -296,6 +295,7 @@ exports.getEventsByUserId = function(req, res, next){
 
 exports.getEventByOrderId = function(req, res, next){
   var orderId = req.params.orderId;
+  var eventId = req.query.eventId;
 
   if(!orderId){
     var err = new Error('Not Found');
@@ -303,14 +303,46 @@ exports.getEventByOrderId = function(req, res, next){
     return next(err);
   }
 
-  EventOrder.findOne({
-    orderId: orderId,
-    userId: req.session.user._id,
-    status: 'db.booking.pay_success'
-  }, function (err, order) {
-    if (err) {
-      err.status = 400;
-      return next(err);
+  co(function *(){
+    try{
+      var event = yield Event.findOne({
+        _id: eventId,
+        inStock: true
+      }).exec();
+
+      var orders = yield EventOrder.find({
+        eventId: eventId,
+        userId: req.session.user._id
+      }).exec();
+
+      var attendedPeople = yield EventOrder.aggregate([
+        {
+          $match:{
+            eventId: mongoose.Types.ObjectId(eventId),
+            status: 'db.booking.pay_success'
+          }
+        },
+        {
+          $group:{
+            _id: '$eventId',
+            count: {
+              $sum: '$numberOfPersons'
+            }
+          }
+        }
+      ]).exec();
+
+      var order = yield EventOrder.findOne({
+        orderId: orderId,
+        userId: req.session.user._id
+      }).populate([{
+          path: 'eventId',
+          select: 'title dateStart dateEnd location geospatial currency baseCharge organiserNickname'
+        }]).exec();
+
+    }catch (err){
+      err.status = 500;
+      throw err;
     }
 
     if (!order){
@@ -319,7 +351,63 @@ exports.getEventByOrderId = function(req, res, next){
       return next(httpErr);
     }
 
-    return res.render('user-event-detail', {order: order});
+    if (order.status != 'db.booking.wait_to_pay') {
+      return res.render('user-event-detail', {order: order});
+    }
+
+    var now = moment();
+
+    if(moment(event.attendedDate) <= now){
+      return res.render('user-event-detail', {order: order, result: 'over_time'});
+    }
+
+    if( attendedPeople.length > 0 && attendedPeople[0].count >= event.maxPersons ){
+      return res.render('user-event-detail', {order: order, result: 'over_people'});
+    }
+
+    if (!req.isFromWechat) {
+      return res.render('user-event-detail', {order: order, result: 'pay_can'});
+    }
+
+    var payParams = {
+      body: order.eventName,
+      attach: 'event',
+      out_trade_no: order.orderId,
+      total_fee: order.total,
+      spbill_create_ip: req.headers['x-real-ip'],
+      openid: req.session.wechat
+    };
+
+    try {
+      var unifiedorderResult = yield new Promise(function (resolve, reject) {
+        wechatCore.unifiedorder(payParams, function (err, response, result) {
+          if (!err && response.statusCode === 200) {
+            resolve(result);
+          } else {
+            reject(result);
+          }
+        });
+      });
+    } catch(err) {
+      err.status = 500;
+      throw err;
+    }
+
+    parseXML2String(unifiedorderResult, function (err, wpResult) {
+      if (!err) {
+        wpResult = tools.ripXMLCDATA(wpResult.xml);
+        if (wechatCore.verifySign(wpResult) && wpResult.return_code === 'SUCCESS' && wpResult.result_code === 'SUCCESS') {
+          var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
+
+          return res.render('user-event-detail', {order: order, result: 'pay_can', wpParams: wpParams});
+        }
+      }
+
+      return res.render('user-event-detail', {order: order, result: 'pay_can'});
+    });
+
+  }).catch(function(err){
+    return next(err);
   });
 };
 
@@ -345,8 +433,6 @@ exports.getContact = function(req, res, next) {
       httpErr.status = 404;
       return res.json({result:false, error: httpErr});
     }
-
-    console.log(eventOrder);
 
     return res.json(eventOrder.contact);
 

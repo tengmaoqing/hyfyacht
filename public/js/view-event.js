@@ -40,8 +40,9 @@
         if(res.result == false) {
           return
         }
-        
-        $scope.contact.areaCode = res.mobile.length == 13? res.mobile.slice(0,2):res.mobile.slice(0,3);
+        if(res.mobile){
+          $scope.contact.areaCode = res.mobile.length == 13? res.mobile.slice(0,2):res.mobile.slice(0,3);
+        }
         $scope.contact.name = res.name;
         $scope.contact.mobile = res.mobile.length == 13? parseInt(res.mobile.slice(2)):parseInt(res.mobile.slice(3));
         $scope.areaCodeChange();

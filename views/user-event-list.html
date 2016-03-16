@@ -27,11 +27,9 @@
           <div class="col-md-10 col-sm-10 col-xs-8">
             <strong>{{ __('product.booking.result.bookingDate') }}: {{ preset.getDateString(event.createDate) }} {{ __('product.booking.result.bookingId') }}: {{ event.orderId }}</strong>
           </div>
-          {% if false %}
           <div class="col-md-2 col-sm-2 col-xs-4 text-right">
-            <a href="/user/event/detail/{{ event.orderId }}" class="btn btn-default btn-sm">{{ __('common.detail') }}</a>
+            <a href="/user/event/detail/{{ event.orderId }}?eventId={{ event.eventId._id.valueOf() }}" class="btn btn-default btn-sm">{{ __('common.detail') }}</a>
           </div>
-          {% endif %}
         </div>
       </div>
       <div class="panel-body">
@@ -40,7 +38,7 @@
             <div class="row">
               <div class="col-md-4 col-sm-4 col-xs-4">
                 <div class="thumbnail">
-                  <a href="/event/{{ event.eventId.id }}">
+                  <a href="/event/{{ event.eventId._id.valueOf }}">
                     <img src="{{ event.eventId.thumbnail }}" alt="product photo">
                   </a>
                 </div>

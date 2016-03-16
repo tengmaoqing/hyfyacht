@@ -312,6 +312,7 @@
     "desc": "Description",
     "more": "More",
     "unlimited": "Unlimited",
+    "eventName": "Event Name",
     "result": {
       "error":{
         "out_date": "This event is out date.",

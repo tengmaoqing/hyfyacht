@@ -23,7 +23,7 @@
 	<div class="userSetting row">
     <div class="thumbnail col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
       <div class="columns-sm text-center">
-        <img src="{{ preset.imgHost }}/captain.jpg" class="img-circle img-thumbnail" data-ng-show="!user.avatar">
+        <img src="{{ preset.imgHost }}/captain.jpg" class="img-circle img-thumbnail" data-ng-show="!user.avatar" data-ng-cloak>
         <img ng-src="{% raw %}{{ user.avatar }}{% endraw %}" class="img-thumbnail img-responsive" data-ng-show="user.avatar" data-ng-cloak>
       </div>
       <div>
@@ -50,7 +50,7 @@
             </dd>
             <dt>{{ __('common.email') }}</dt>
             <dd data-ng-cloak>
-              <input type="email" name="email" data-ng-model="user.email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" data-ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-z]{2,4})$/" data-ng-show="isEdit || user.email">
+              <input type="email" name="email" data-ng-model="user.email" data-ng-class="{'editInput':!isEdit, 'form-control':isEdit}" data-ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/" data-ng-show="isEdit || user.email">
               <span data-ng-if = "!user.email && !isEdit" class="info_noSetting">{{ __('common.noSetting') }}</span>
               <div class="text-danger" data-ng-cloak data-ng-show="userInfo.email.$error.pattern && isEdit">
                 <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('common.invaild_email') }}
@@ -160,7 +160,7 @@
             <div class="col-sm-4 col-xs-4">
               <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">+86 <span class="caret"></span></button>
-                <input id="input_area_code" type="hidden" class="dropdown-menu-selected" value="86">
+                <input id="input_area_code" type="text" class="dropdown-menu-selected collapse" data-ng-model="areaCode" value="86" data-ng-change="areaCodeChange()">
                 <ul class="dropdown-menu">
                   <li><a href="#" data-value="86">+86</a></li>
                   <li><a href="#" data-value="852">+852</a></li>
@@ -168,7 +168,10 @@
               </div>
             </div>
             <div class="col-sm-8 col-xs-8">
-              <input type="number" id="input_mobile" data-ng-model="mobile" maxlength="11" class="form-control" placeholder="{{ __('common.mobile') }}">
+              <input type="number" id="input_mobile" data-ng-model="mobile" maxlength="11" class="form-control" placeholder="{{ __('common.mobile') }}" data-ng-change="mobileChange()">
+              <div class="text-danger" data-ng-show="!mobileTrue" data-ng-cloak>
+                <span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.mobile.invaild') }}
+              </div>
             </div>
           </dd>
           <dt data-ng-show = "!hasMobile" >{{ __('common.smscode') }}</dt>
@@ -260,6 +263,9 @@
   	var app = angular.module("userSetting", []);
 
   	app.controller("userSettingCtrl", function($scope, $http){
+      $scope.user = {
+        mobile : true
+      };
   		$scope.isEdit = false;
   		$scope.userTemp = {};
   		$scope.isPass1 = true;
@@ -268,6 +274,8 @@
   		$scope.updataPass =false;
   		$scope.isPassEmail = true;
   		$scope.hasMobile = true;
+      $scope.mobileTrue = true;
+      $scope.areaCode = "86";
 
   		$http.get("/user/setting/getUserInformation").success(function(user){
   			$scope.user = user;
@@ -312,6 +320,25 @@
 					}
 				}
 			};
+
+      $scope.mobileTest = /(^(13\d|14[57]|15[^4,\D]|17[678]|18\d)\d{8}|170[059]\d{7})$/;
+
+      $scope.areaCodeChange = function() {
+        if ($scope.areaCode == "86") {
+          $scope.mobileTest = /(^(13\d|14[57]|15[^4,\D]|17[678]|18\d)\d{8}|170[059]\d{7})$/;
+        } else {
+          $scope.mobileTest = /(^(\d{8})$)/;
+        }
+        $scope.mobileChange();
+      }
+
+      $scope.mobileChange = function() {
+        if ($scope.mobileTest.test($scope.mobile)) {
+          $scope.mobileTrue = true ;
+        } else {
+          $scope.mobileTrue = false ;
+        }
+      }
 
   	});
 
@@ -366,7 +393,7 @@
 									return 
 		  					}
   						} else {
-                if (!scope.newPwd || scope.newPwd != scope.newPwd3) {
+                if (!scope.newPwd || scope.newPwd != scope.newPwd3 || !scope.mobileTrue) {
                   !scope.newPwd && (scope.isPassPwd = false);
                   scope.$apply();
                   return

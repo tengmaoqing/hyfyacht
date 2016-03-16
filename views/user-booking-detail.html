@@ -99,7 +99,7 @@
 </script>
 {% endif %}
 
-{% if booking.boatId.geospatial.length > 0 %}
+{% if booking.boatId.geospatial.length > 0 && booking.status == 'db.booking.pay_success' %}
   <script>
   window.hgdata = {
     geospatial: {{ booking.boatId.geospatial|json|safe }}
