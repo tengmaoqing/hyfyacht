@@ -15,7 +15,7 @@
     <li class="active">{{ __('nav.event') }}</li>
   </ol>
   <div class="page-header">
-    <h3>{{ __('common.filter') }}</h3>
+    <h3>{{ __('common.filter') }}/<a href="/event/list">{{ __('event.all') }}</a></h3>
   </div>
   <div class="row search-field">
     <div class="col-md-2">
@@ -45,7 +45,7 @@
     </div>
     <div class="col-md-4 col-sm-6 col-xs-12">
       <div class="input-group date" id="datetimepicker1">
-        <input class="form-control" type="text" id="timepick1" {% if query.selectStartDate %} value="{{ query.selectStartDate }}" {% endif %} placeholder="{{ __('product.booking.start') }}">
+        <input class="form-control" type="text" id="timepick1" {% if query.selectStartDate %} value="{{ query.selectStartDate }}" {% endif %} placeholder="{{ __('product.booking.start') }}" readonly>
         <span class="input-group-addon">
           <span class="glyphicon glyphicon-calendar"></span>
         </span>
@@ -53,7 +53,7 @@
     </div>
     <div class="col-md-4 col-sm-6 col-xs-12 margin_top">
       <div class="input-group date" id="datetimepicker2">
-        <input class="form-control" type="text" id="timepick2" {% if query.selectEndDate %} value="{{ query.selectEndDate }}" {% endif %} placeholder="{{ __('product.booking.end') }}">
+        <input class="form-control" type="text" id="timepick2" {% if query.selectEndDate %} value="{{ query.selectEndDate }}" {% endif %} placeholder="{{ __('product.booking.end') }}" readonly>
         <span class="input-group-addon">
           <span class="glyphicon glyphicon-calendar"></span>
         </span>
@@ -129,6 +129,7 @@ $(function (){
     allowInputToggle: true,
     showTodayButton: true,
     showClear: true,
+    ignoreReadonly: true,
     locale: locale || "en",
     widgetPositioning: {
       horizontal: 'auto',

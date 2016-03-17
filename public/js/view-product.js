@@ -314,8 +314,9 @@
 
     $scope.inputItem = function(item){
       var value = $scope.inputValue[item.name];
-      if(item.max){
-        if(item.max < value || value === undefined){
+
+      if(item.max || !value || value<0){
+        if(item.max < value|| value<0 || value === undefined){
           $scope.invalidItems.push(item.name);
         }else {
           var index = $scope.invalidItems.indexOf(item.name);
@@ -323,7 +324,7 @@
         }
       }
 
-      if(value <= 0 || !value){
+      if(value <= 0){
         delete $scope.selectedItems[item.name];
       } else {
         $scope.selectedItems[item.name] = {
@@ -778,6 +779,16 @@
     $http.get("/product/moreProducts?boatId=" + hgdata.boatId + "&productId=" + hgdata.productId).success(function(boat){
       $scope.boat = boat;
     });
+
+    var baseUnits = {
+      "db.unit.hour":"{{ __('db.unit.hour') }}",
+      "db.unit.day": "{{ __('db.unit.day')}}",
+      "db.unit.half_day": "{{ __('db.unit.half_day')}}"
+    };
+
+    $scope.switchUnit = function(unti) {
+      return baseUnits[unti]
+    };
 
     $scope.generateCharge = $scope.$parent.generateCharge;
     $scope.displayAmount = $scope.$parent.displayAmount;

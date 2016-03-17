@@ -277,7 +277,7 @@
                           <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }}){{ item.max ? ' (' + maxTips + ': ' + item.max + ')' : '' }} </strong></div>
                           <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right">
                             <strong data-ng-if="item.type == 'single'">{{ selectedItems[item.name] ? selectedItems[item.name].amount : 0 }}</strong>
-                            <input type="number" class="form-control input-small text-right" placeholder="0" data-ng-if="item.type == 'multi'" data-ng-model="inputValue[item.name]" data-ng-change="inputItem(item)" min="0" max="{{ item.max }}">
+                            <input type="number" class="form-control input-small text-right" placeholder="0" data-ng-if="item.type == 'multi'" data-ng-model="inputValue[item.name]" data-ng-keyup="inputItem(item)" min="0" max="{{ item.max }}">
                           </div>
                         </div>
                       </div>
@@ -490,6 +490,7 @@
                 <p data-ng-bind=" product.summary "></p>
                 <div class="row">
                   <h3 class="col-xs-6 text-danger">{{ displayAmount(generateCharge(product.baseCharge)) }}</h3>
+                  <span data-ng-if="product.baseUnit">/<small class="boat-unti">{{switchUnit(product.baseUnit)}}</small></span>
                   <p class="col-xs-6 text-right boat-product-learn">
                     {% endraw %}
                     {{ __('boat.detail.learn') }}
