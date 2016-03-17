@@ -317,7 +317,7 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
 }
 
 #product-detail img, #event-detail img {
-  margin: 16px 0;
+  margin: 16px auto;
   display:block;
   max-width: 100%;
   height: auto;
