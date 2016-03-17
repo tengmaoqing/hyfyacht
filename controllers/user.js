@@ -203,8 +203,16 @@ exports.login = function(req, res, next){
         nickname: userinfo.nickname,
         wechatOpenId: userinfo.openid,
         role: 'client',
-        locale: req.getLocale()
+        locale: req.getLocale(),
+        sex: userinfo.sex,
+        wechatUnionId: userinfo.unionid,
+        subscribe: userinfo.subscribe == 1,
+        avatar: userinfo.headimgurl
       });
+
+      if (userinfo.subscribe_time) {
+        user.subscribeTime = new Date(parseInt(userinfo.subscribe_time)*1000)
+      }
 
       user.save(function (err) {
         if (err) {
