@@ -628,14 +628,14 @@
           galleryElements[i].index = i;
           galleryElements[i].onclick = onImgClick;
       }
-    }
+    };
     window.onload = function(){
       var oElement = document.getElementById("product-detail");
       init(oElement);
-    }
+    };
   })();
 </script>
-<script src="{{ preset.staticHost }}/js/view-product.js?_=201603031"></script>
+<script src="{{ preset.staticHost }}/js/view-product.js?_=20160317"></script>
 <script src="http://cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
 <script>
 (function($,w){
@@ -651,7 +651,7 @@
   
   w.addEventListener("resize", function(ev){
     setBookingStepW();
-  })
+  });
 
   var bookingTop = parseInt($("#product-booking-step").offset().top);
 

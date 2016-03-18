@@ -82,6 +82,7 @@
     "holiday": "假期",
     "filter": "篩選",
     "coming_soon": "敬請期待",
+    "click": "點擊",
     "paypayl_pay_methods": "PayPal 支持以下付款類型:"
   },
   "error": {
@@ -163,6 +164,7 @@
       "fishing": "海釣",
       "surfing": "衝浪",
       "cruise": "游船河",
+      "sightseeing": "觀光",
       "share": "遊記",
       "news": "新聞"
     },

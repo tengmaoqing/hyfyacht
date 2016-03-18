@@ -206,13 +206,8 @@ exports.login = function(req, res, next){
         locale: req.getLocale(),
         sex: userinfo.sex,
         wechatUnionId: userinfo.unionid,
-        subscribe: userinfo.subscribe == 1,
         avatar: userinfo.headimgurl
       });
-
-      if (userinfo.subscribe_time) {
-        user.subscribeTime = new Date(parseInt(userinfo.subscribe_time)*1000)
-      }
 
       user.save(function (err) {
         if (err) {
@@ -305,7 +300,7 @@ exports.autoLogin = function(req, res, next){
   if(uid){
     User.findOne({
       _id: uid
-    }).select('nickname role relatedOwner wechatOpenId').populate('relatedOwner', 'id').exec(function(err, user){
+    }).select('nickname role relatedOwner wechatOpenId avatar').populate('relatedOwner', 'id').exec(function(err, user){
       if (!err && user) {
         setSessionAndCookie(req, res, user);
       }
@@ -329,7 +324,7 @@ exports.autoLogin = function(req, res, next){
 
           User.findOne({
             wechatOpenId: wechat.openid
-          }).select('nickname role relatedOwner wechatOpenId').populate('relatedOwner', 'id').exec(function(err, user){
+          }).select('nickname role relatedOwner wechatOpenId avatar').populate('relatedOwner', 'id').exec(function(err, user){
             if (!err && user) {
               setSessionAndCookie(req, res, user);
             }

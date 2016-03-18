@@ -163,8 +163,10 @@ var removeSubdomain = function(req){
 app.use(function(req, res, next){
   var username = false;
 
+  var avatar = null;
   if(req.signedCookies['client_username']){
     username = req.signedCookies['client_username'];
+    avatar =  req.session.user.avatar ?  req.session.user.avatar : null;
   }
 
   util._extend(preset, {
@@ -172,6 +174,7 @@ app.use(function(req, res, next){
     imgHost: config.staticMode === 'express' ? '/img' : 'http://img.' + removeSubdomain(req) + '/base',
     originalUrl: req.originalUrl,
     username: username,
+    avatar: avatar,
     locale: req.getLocale(),
     getUrlWithQuery: function(key, value){
       return URI(req.originalUrl).setQuery(key, value).toString();
