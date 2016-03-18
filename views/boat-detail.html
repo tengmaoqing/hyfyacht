@@ -125,9 +125,12 @@
               <div class="caption text-muted">
                 <h4 data-ng-bind="boat.name"></h4>
                 <div class="row">
-                  <h3 class="col-xs-6 text-danger">{{ displayAmount(generateCharge(boat.baseCharge, boat.currency)) }}</h3>
+                  <h3 class="col-xs-6 text-danger">{{ displayAmount(generateCharge(boat.baseCharge, boat.currency)) }}
+                  <span data-ng-if="boat.baseUnit">/<small class="boat-unti">{{switchUnit(boat.baseUnit)}}</small></span>
+                  {% endraw %}
+                  </h3>
                   <p class="col-xs-6 text-right boat-product-learn">
-                      {% endraw %}
+                      
                       {{ __('boat.detail.learn') }}
                     <span class="glyphicon glyphicon-menu-right"></span>
                   </p>
@@ -189,6 +192,17 @@
     success(function(res){
       $scope.boats = res.boats;
     });
+
+    var baseUnits = {
+      "db.unit.hour":"{{ __('db.unit.hour') }}",
+      "db.unit.day": "{{ __('db.unit.day')}}",
+      "db.unit.half_day": "{{ __('db.unit.half_day')}}"
+    };
+    
+
+    $scope.switchUnit = function(unti) {
+      return baseUnits[unti]
+    }
 
     $scope.generateCharge = function(charge, baseCurrency){
       return parseInt(charge * currency[clientCurrency] / currency[baseCurrency]);
