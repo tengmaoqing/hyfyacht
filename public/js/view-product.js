@@ -218,7 +218,7 @@
     $scope.extraSlot = 0;
     $scope.extraSlotChargeName = "";
     $scope.availablePackages = false;
-    $scope.invalidItems = [];
+    $scope.invalidItem = false;
     $scope.maxTips = hgdata.maxTips;
     $scope.isHoliday = false;
     $scope.packageAlready = false;
@@ -312,16 +312,13 @@
       }
     };
 
-    $scope.inputItem = function(item){
+    $scope.inputItem = function(item, indexed){
       var value = $scope.inputValue[item.name];
 
-      if(item.max || !value || value<0){
-        if(item.max < value|| value<0 || value === undefined){
-          $scope.invalidItems.push(item.name);
-        }else {
-          var index = $scope.invalidItems.indexOf(item.name);
-          $scope.invalidItems.splice(index, 1);
-        }
+      if ($scope.booking["item"+indexed].$invalid) {
+        $scope.invalidItem = true;
+      } else {
+        $scope.invalidItem = false;
       }
 
       if(value <= 0){
@@ -333,7 +330,7 @@
           amount: value
         };
       }
-      $scope.testInputStep();
+      $scope.testInputStep(item.name);
     };
 
     $scope.getTotal = function(){
@@ -679,7 +676,7 @@
                 return;
               }
 
-              if (scope.numberOfPersons && scope.invalidItems.length ==0 ) {
+              if (scope.numberOfPersons &&  !scope.invalidItem) {
                 $(".booking-step")[2].style.color = "green";
               }
 
@@ -695,7 +692,7 @@
               });
 
               scope.testInputStep = function() {
-                if(scope.invalidItems.length > 0) {
+                if (scope.invalidItem) {
                   cancelStyle(2);
                 } else {
                   angular.element(".booking-step")[2].style.color = "green";
@@ -705,7 +702,7 @@
               selecteDate.hide();
               break;
             case 2:
-              if (!scope.numberOfPersons || scope.invalidItems.length>0) {
+              if (!scope.numberOfPersons || scope.invalidItem) {
                 return;
               }
 
