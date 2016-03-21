@@ -22,8 +22,10 @@
     <div class="col-md-6">
       <div class="btn-group btn-group-justified">
         <a href="/boat/all/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.location == 'all' %}btn-primary{% else %}btn-default{% endif %}">{{ __('common.all') }}</a>
-        <a href="/boat/sz/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.location == 'sz' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.city.sz') }}</a>
         <a href="/boat/hk/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.location == 'hk' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.city.hk') }}</a>
+        <a href="/boat/sz/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.location == 'sz' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.city.sz') }}</a>
+        <a href="/boat/hz/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.location == 'hz' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.city.hz') }}</a>
+        <a href="/boat/sy/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.location == 'sy' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.city.sy') }}</a>
       </div>
     </div>
   </div>
