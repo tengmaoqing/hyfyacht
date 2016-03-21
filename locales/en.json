@@ -21,7 +21,7 @@
     "language": "Language",
     "sns": "SNS",
     "wechat_mp": "Wechat",
-    "learn": "Learn more",
+    "learn": "Learn More",
     "information":"User Information",
     "reset_password": "Reset Password",
     "nickname": "Nickname",
@@ -80,6 +80,7 @@
     "holiday": "Holiday",
     "filter": "Filter",
     "coming_soon": "Coming Soon",
+    "click": "Click To ",
     "paypayl_pay_methods": "Payment types:"
   },
   "error": {
@@ -161,6 +162,7 @@
       "fishing": "Fishing",
       "surfing": "Surfing",
       "cruise": "Cruise",
+      "sightseeing": "Sight Seeing",
       "share": "Share",
       "news": "News"
     },
