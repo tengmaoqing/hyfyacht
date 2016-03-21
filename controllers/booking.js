@@ -670,7 +670,7 @@ exports.getContact = function(req, res, next) {
 
   Booking.findOne({
     userId: userId
-  }).select('contact').exec(function(err, booking){
+  }).sort({createDate:-1}).select('contact').exec(function(err, booking){
     if (err) {
       err.status = 400;
       return res.json({result:false, error: err});

@@ -24,6 +24,7 @@
         <a href="/boat/all/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.location == 'all' %}btn-primary{% else %}btn-default{% endif %}">{{ __('common.all') }}</a>
         <a href="/boat/sz/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.location == 'sz' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.city.sz') }}</a>
         <a href="/boat/hk/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.location == 'hk' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.city.hk') }}</a>
+        <a href="/boat/hk/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.location == 'hk' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.city.hk') }}</a>
       </div>
     </div>
   </div>
@@ -122,7 +123,7 @@
               <h4 class="text-danger">
               {{ __('boat.detail.from %s', preset.generateCharge(boat.baseCharge, boat.currency)) }}
               {% if boat.baseUnit %}
-              /<small class="boat-unti">{{ __(boat.baseUnit)}}</small>
+              /<small class="boat-unti">{{ boat.baseAmount }}{{ __(boat.baseUnit)}}</small>
               {% endif %}
               </h4>
             </div>

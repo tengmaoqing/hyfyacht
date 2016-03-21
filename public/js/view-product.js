@@ -312,24 +312,20 @@
       }
     };
 
-    $scope.inputItem = function(item, indexed){
+    $scope.inputItem = function(item, index) {
       var value = $scope.inputValue[item.name];
 
-      if ($scope.booking["item"+indexed].$invalid) {
+      if ($scope.booking["item"+index].$invalid || parseInt(value) !== value) {
         $scope.invalidItem = true;
       } else {
         $scope.invalidItem = false;
       }
 
-      if(value <= 0){
-        delete $scope.selectedItems[item.name];
-      } else {
-        $scope.selectedItems[item.name] = {
-          name: item.name,
-          charge: item.charge,
-          amount: value
-        };
-      }
+      $scope.selectedItems[item.name] = {
+        name: item.name,
+        charge: item.charge,
+        amount: value
+      };
       $scope.testInputStep(item.name);
     };
 
@@ -777,14 +773,8 @@
       $scope.boat = boat;
     });
 
-    var baseUnits = {
-      "db.unit.hour":"{{ __('db.unit.hour') }}",
-      "db.unit.day": "{{ __('db.unit.day')}}",
-      "db.unit.half_day": "{{ __('db.unit.half_day')}}"
-    };
-
     $scope.switchUnit = function(unti) {
-      return baseUnits[unti]
+      return hgdata.baseUnits[unti]
     };
 
     $scope.generateCharge = $scope.$parent.generateCharge;
