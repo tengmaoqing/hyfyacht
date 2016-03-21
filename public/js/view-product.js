@@ -296,7 +296,7 @@
       return false;
     };
 
-    $scope.clearPackages = function(){
+    $scope.clearPackages = function() {
       $scope.availablePackages = false;
     };
 
