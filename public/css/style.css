@@ -470,7 +470,7 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   margin-bottom: 20px;
 }
 
-.search-field .btn-group {
+.search-field .btn-group, .search-field .btn {
   margin-bottom: 10px;
 }
 
@@ -866,7 +866,7 @@ td.fc-bgevent {
   }
 }
 
-.boat-unti {
+.boat-unit {
   color:inherit;
 }
 

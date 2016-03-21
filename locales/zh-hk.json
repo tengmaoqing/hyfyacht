@@ -63,6 +63,7 @@
     "unlimited": "不限",
     "all": "全部",
     "location": "地點",
+    "pier": "碼頭",
     "price_range": "價格範圍",
     "number_of_people": "人數",
     "entertainments": "活動",
@@ -168,7 +169,7 @@
       "share": "遊記",
       "news": "新聞"
     },
-    "slogan": "藍天白雲 以海為家",
+    "slogan": "擁抱海洋 心飛翔",
     "sub_slogan": "想游船河? 來 HGBOATING"
   },
   "boat": {
@@ -188,7 +189,7 @@
       "facilities": "基礎設施",
       "entertainments": "娛樂活動",
       "extras": "其他",
-      "products": "可預訂的產品",
+      "products": "可預定遊玩項目",
       "learn": "了解詳情",
       "anchorage": "停泊位置",
       "length": "船身長度",
@@ -376,7 +377,8 @@
         "szshuangyong": "南澳月亮灣雙擁碼頭",
         "szshekoufishingport": "蛇口漁港",
         "szdmsjjxld": "大梅沙京基喜來登碼頭",
-        "syxhyt": "三亞星華遊艇碼頭"
+        "syxhyt": "星華遊艇碼頭",
+        "hzxlw": "巽寮灣"
       }
     },
     "unit": {

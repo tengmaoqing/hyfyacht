@@ -12,6 +12,6 @@ router.get('/moreBoats', boat.getMoreBoats);
 router.get('/:id', boat.getBoat);
 router.get('/:id/:name', boat.getBoat);
 
-router.get('/:location/:price/:capacity/:entertainments/:extras', boat.getBoats);
+router.get('/:location/:pier/:price/:capacity/:entertainments/:extras', boat.getBoats);
 
 module.exports = router;

@@ -29,7 +29,7 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
               <h3 class="text-danger">{{ preset.generateCharge(product.baseCharge, product.currency) }}
               {% if product.baseUnit %}
-              /<small class="boat-unti">{{ product.baseAmount }}{{ __(product.baseUnit)}}</small>
+              /<small class="boat-unit">{{ product.baseAmount }}{{ __(product.baseUnit)}}</small>
               {% endif %}</h3>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -488,7 +488,7 @@
                 <p data-ng-bind=" product.summary "></p>
                 <div class="row">
                   <h3 class="col-xs-6 text-danger">{{ displayAmount(generateCharge(product.baseCharge)) }}
-                  <span data-ng-if="product.baseUnit">/<small class="boat-unti">{{ product.baseAmount }}{{switchUnit(product.baseUnit)}}</small></span>
+                  <span data-ng-if="product.baseUnit">/<small class="boat-unit">{{ product.baseAmount }}{{switchUnit(product.baseUnit)}}</small></span>
                   </h3>
                   
                   <p class="col-xs-6 text-right boat-product-learn">
@@ -641,7 +641,7 @@
     };
   })();
 </script>
-<script src="{{ preset.staticHost }}/js/view-product.js?_=20160317"></script>
+<script src="{{ preset.staticHost }}/js/view-product.js?_=20160321"></script>
 <script src="http://cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
 <script>
 (function($,w){

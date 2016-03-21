@@ -67,6 +67,12 @@ exports.getBoats = function(req, res, next) {
     params.location = 'all';
   }
 
+  if (req.params.pier && req.params.pier != 'all') {
+    query['location.pier'] = 'db.location.pier.' + req.params.pier;
+  }else {
+    params.pier = 'all';
+  }
+
   if (req.params.price && req.params.price != 'all') {
     var prices = req.params.price.split('-');
     prices[0] = parseInt(prices[0]) * 100;

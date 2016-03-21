@@ -63,6 +63,7 @@
     "unlimited": "All",
     "all": "All",
     "location": "Location",
+    "pier": "Pier",
     "price_range": "Price Range",
     "number_of_people": "Number of People",
     "entertainments": "Entertainments",
@@ -373,7 +374,8 @@
         "szshuangyong": "Nanao Shuangyong Pier",
         "szshekoufishingport": "Shekou Fishing Port",
         "szdmsjjxld": "Sheraton Dameisha Resort Pier",
-        "syxhyt": "Sanya Xinghua Yacht Pier"
+        "syxhyt": "Xinghua Yacht Pier",
+        "hzxlw": "Xunliaowan"
       }
     },
     "unit": {
