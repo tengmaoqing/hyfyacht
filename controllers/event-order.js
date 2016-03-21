@@ -422,7 +422,7 @@ exports.getContact = function(req, res, next) {
 
   EventOrder.findOne({
     userId: userId
-  }).select('contact').exec(function(err, eventOrder){
+  }).sort({createDate:-1}).select('contact').exec(function(err, eventOrder){
     if (err) {
       err.status = 400;
       return res.json({result:false, error: err});

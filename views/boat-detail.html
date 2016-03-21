@@ -42,10 +42,7 @@
         <span class="glyphicon glyphicon-user"></span> <a href="/{{ boat.owner.id }}/{{ boat.owner.nickname }}">{{ boat.owner.nickname }}</a>
       </div>
       <div class="col-md-4 col-sm-12 col-xs-12">
-        <a href="#products" class="btn btn-danger">{{ __('boat.detail.instant_book') }}({{ __('boat.detail.from %s', preset.generateCharge(boat.baseCharge, boat.currency)) }}
-        {% if boat.baseUnit %}
-        /<small class="boat-unti">{{ __(boat.baseUnit)}}</small>
-        {% endif %})</a>
+        <a href="#products" class="btn btn-primary">{{ __('boat.detail.products') }}</a>
       </div>
     </div>
     <hr class="hr-divider">
@@ -96,10 +93,14 @@
             <div class="row">
               <h3 class="col-xs-6 text-danger">{{ preset.generateCharge(product.baseCharge, product.currency) }}
               {% if product.baseUnit %}
-              /<small class="boat-unti">{{ __(product.baseUnit)}}</small>
+              /<small class="boat-unti">{{ product.baseAmount }}{{ __(product.baseUnit)}}</small>
               {% endif %}
               </h3>
-              <p class="col-xs-6 text-right boat-product-learn">{{ __('boat.detail.learn') }} <span class="glyphicon glyphicon-menu-right"></span></p>
+              <div class="col-xs-6 text-right">
+                <button class=" btn btn-danger ">
+                {{ __('boat.detail.instant_book') }}
+                </button>
+              </div>
             </div>
           </div>
         </a>
@@ -126,7 +127,7 @@
                 <h4 data-ng-bind="boat.name"></h4>
                 <div class="row">
                   <h3 class="col-xs-6 text-danger">{{ displayAmount(generateCharge(boat.baseCharge, boat.currency)) }}
-                  <span data-ng-if="boat.baseUnit">/<small class="boat-unti">{{switchUnit(boat.baseUnit)}}</small></span>
+                  <span data-ng-if="boat.baseUnit">/<small class="boat-unti">{{ boat.baseAmount }}{{switchUnit(boat.baseUnit)}}</small></span>
                   {% endraw %}
                   </h3>
                   <p class="col-xs-6 text-right boat-product-learn">

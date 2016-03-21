@@ -45,7 +45,7 @@ exports.getMoreProducts = function(req, res, next){
     display:true
   }).populate({
     path: 'products',
-    select: 'id name summary baseCharge currency photo',
+    select: 'id name summary baseAmount baseUnit baseCharge currency photo',
     match: {
       display: true,
       _id : {$ne:req.query.productId}
