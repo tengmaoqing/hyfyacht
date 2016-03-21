@@ -37,7 +37,7 @@
             <div class="boat-basecharge">
               <h4>{{ boat.name }}</h4>
               <h4 class="text-danger">{{ __('boat.detail.from %s', preset.generateCharge(boat.baseCharge, boat.currency)) }}{% if boat.baseUnit %}
-              /<small class="boat-unti">{{ __(boat.baseUnit)}}</small>
+              /<small class="boat-unit">{{ boat.baseAmount }}{{ __(boat.baseUnit)}}</small>
               {% endif %}</h4>
             </div>
           </div>
