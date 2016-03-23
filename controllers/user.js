@@ -428,14 +428,14 @@ exports.resetPassword = function(req, res, next){
 exports.getUserInformation = function(req, res, next){
   var user = req.session.user;
 
-  User.findOne({
+  User.getUser({
     _id: user._id
-  }, function(err, user){
+  },function(err, user){
     if(err){
       err.status = 400;
       return next(err);
     }
-
+    
     if(user){
       return res.json(user);
     }
@@ -596,9 +596,137 @@ exports.updataUserInformation = function(req, res, next){
         return res.json(savedUser);
       });
     });
+  }).catch(function(err){
+    console.log(err.message);
+    return res.json(err);
   });
 };
 
 exports.bindMobile = function (req, res, next) {
-  
+  var from = req.query.from || false;
+
+  req.checkBody({
+    'area_code': {
+      notEmpty: true,
+      errorMessage: 'Invalid Area Code'
+    },
+    'mobile': {
+      notEmpty: true,
+      errorMessage: 'Invalid Mobile Number'
+    },
+    'password': {
+      notEmpty: true,
+      isLength: {
+        options: [6, 30]
+      },
+      errorMessage: 'Invalid Password'
+    },
+    'code': {
+      notEmpty: true,
+      errorMessage: 'Invalid SMS Code'
+    }
+  });
+
+  var errors = req.validationErrors();
+  if (errors) {
+    console.log(errors);
+    var err = new Error('There have been validation errors: ' + util.inspect(errors));
+    err.status = 400;
+    return next(err);
+  }
+
+  var mobileTest;
+  if (req.body.area_code == "86") {
+    mobileTest = /(^(13\d|14[57]|15[^4,\D]|17[678]|18\d)\d{8}|170[059]\d{7})$/;
+  } else {
+    mobileTest = /(^(\d{8})$)/;
+  }
+
+  if (!mobileTest.test(req.body.mobile)) {
+    var err = new Error('Invalid Mobile Number');
+    err.status = 400;
+    return next(err);
+  }
+
+  var mobile = req.body.area_code + req.body.mobile;
+
+  if (!req.session.wechat) {
+    var err = new Error('only for wechat');
+    err.status = 400;
+    return next(err);
+  }
+
+  co(function *(){
+    try {
+      var hasMobile = yield User.findOne({mobile:mobile}).exec();
+      var user = yield User.findOne({
+        wechatOpenId: req.session.wechat
+      }).exec();
+    } catch(err) {
+      console.log(err);
+      err.status = 500;
+      throw err;
+    }
+
+    if (hasMobile) {
+      var err = new Error('existing');
+      err.status = 400;
+      return next(err);
+    }
+
+    var now = moment();
+
+    if(req.session.smsLast){
+      var last = moment(req.session.smsLast);
+
+      last.add(20, 'm');
+      if(last < now){
+        return res.render('user-bind-mobile', { error: 'error.signup.sms_expired' });
+      }
+    }
+
+    if(!req.session.smsCode || !req.session.smsMobile || req.session.smsCode != req.body.code || req.session.smsMobile != mobile){
+      return res.render('user-bind-mobile', { error: 'error.signup.sms' });
+    }
+
+    req.session.smsLast = null;
+    req.session.smsCode = null;
+    req.session.smsMobile = null;
+
+    user.mobile = mobile;
+    user.hashedPassword = hashPassword(req.body.password);
+
+    user.save(function(err, savedUser) {
+      if (err) {
+        err.status = 400;
+        return next(err);
+      }
+
+      if (from) {
+        return res.redirect(encodeURI(from));
+      }
+        
+      return res.redirect('/');
+    });
+
+  }).catch(function(err){
+    console.log(err.message);
+    return res.redirect(encodeURI(from));
+  });;
+};
+
+exports.checkMobile = function(req, res) {
+  var mobile = req.query.mobile;
+
+  User.findOne({mobile:mobile}).select('mobile').exec(function(err, mobile){
+    if (err) {
+      return res.json({result:false,err:err});
+    }
+
+    if (mobile) {
+      return res.json({result:false, reason:"existing"});
+    }
+
+    return res.json({result:true});
+  });
 };

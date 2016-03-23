@@ -321,7 +321,7 @@
 <script type="text/javascript" src="{{ preset.staticHost }}/js/baidu-map.js"></script>
 <script>
 
-  var src = "http://api.map.baidu.com/marker?location="+hgdata.geospatial[1]+","+hgdata.geospatial[0]+"&title={{event.title }}&content={{ event.description }}&output=html&src=海龟租船";
+  var src = "http://api.map.baidu.com/marker?location="+hgdata.geospatial[1]+","+hgdata.geospatial[0]+"&title={{event.title }}&content=海龟租船&output=html&src=海龟租船";
   var html = "<span class='glyphicon glyphicon-fullscreen'></span>"
   var fullscreen = new ZoomControl(html, new BMap.Size(10, 10)); //自定义控件
   var ctrfn = newMap("src-to-map", "modal-big-map", "map-modal", encodeURI(src));
