@@ -145,12 +145,34 @@
   </div>
 </div>
 
+<div id="map-modal" class="modal fade">
+  <div class="modal-table">
+    <div class="modal-table-cell">
+      <div class="modal-dialog" id="modal-big-map">
+        <div class="modal-content">
+          <div class="modal-header clearfix">
+            <h4 class="modal-title col-xs-10">{{ __(boat.location.city) }} - {{ __(boat.location.pier) }}</h4>
+            <div class="col-xs-2 text-right">
+              <span id="quit-map" class="quit-map glyphicon glyphicon-remove"></span>
+            </div>
+          </div>
+          <div class="modal-body">
+            <iframe id="src-to-map" width="100%" src="" frameborder="0"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% include './footer.html' %}
 
 {% endblock %}
 
 {% block foot %}
 {% if boat.geospatial.length > 0 %}
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=XpLGCrdpWiH4k02rOXlWQBro"></script>
+<script type="text/javascript" src="{{ preset.staticHost }}/js/baidu-map.js"></script>
 <script>
   window.hgdata = {
     geospatial: {{ boat.geospatial|json|safe }},
@@ -158,24 +180,19 @@
     currency: {{ preset.configCurrency|json|safe }}
   };
 
-  function loadBaiduMap() {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = "http://api.map.baidu.com/api?v=2.0&ak=XpLGCrdpWiH4k02rOXlWQBro&callback=initBaiduMap";
-    document.body.appendChild(script);
-  }
+  var src = "http://api.map.baidu.com/marker?location="+hgdata.geospatial[1]+","+hgdata.geospatial[0]+"&title={{ boat.name }}&content={{ boat.description }}&output=html&src=海龟租船";
+  var html = "<span class='glyphicon glyphicon-fullscreen'></span>"
+  var fullscreen = new ZoomControl(html, new BMap.Size(10, 10)); //自定义控件
+  var ctrfn = newMap("src-to-map", "modal-big-map", "map-modal", encodeURI(src));
+  var geospatial = hgdata.geospatial;
 
-  function initBaiduMap() {
-    var map = new BMap.Map("boat-geospatial");
-    var point = new BMap.Point(hgdata.geospatial[0], hgdata.geospatial[1]);
-    map.centerAndZoom(point, 11);
-    map.enableScrollWheelZoom();
-    var marker = new BMap.Marker(point);
-    map.addOverlay(marker);
-  }
-
-  loadBaiduMap();
+  initBaiduMap("boat-geospatial", geospatial, fullscreen, ctrfn);
+  
+  $("#quit-map").click(function(e){
+    $("#map-modal").modal("hide");
+  });
 </script>
+{% endif %}
 <script src="http://cdn.bootcss.com/angular.js/1.4.7/angular.min.js"></script>
 <script>
 
@@ -215,5 +232,4 @@
   });
 })(window);
 </script>
-{% endif %}
 {% endblock %}

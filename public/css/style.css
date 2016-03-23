@@ -357,6 +357,11 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   border-radius: 6px;
 }
 
+.map-outer .hyf-map-container {
+  height: 100%;
+  width: 100%;
+}
+
 .index-slide-item, .boat-thumbnail {
   background-position: center center;
   background-size: cover;
@@ -820,10 +825,6 @@ td.fc-bgevent {
   background-color: rgb(255,255,255);
 }
 
-#product-booking-step {
-  margin: 0 auto;
-}
-
 .booking-step {
   position: relative;
   color:#999;
@@ -892,4 +893,13 @@ td.fc-bgevent {
 
 .collapsed .hideInCollapsed {
   display: none;
+}
+
+.quit-map {
+  font-size: x-large;
+  cursor: pointer;
+}
+
+.bg_color_white {
+  background-color: #fff!important;
 }
