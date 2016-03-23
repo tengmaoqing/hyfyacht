@@ -24,4 +24,14 @@ router.post('/setting/updataUserInformation', user.updataUserInformation);
 
 router.get('/setting/getUserInformation', user.getUserInformation);
 
+router.get('/mobile', function (req, res, next) {
+  // if(req.session.user.mobile){
+  //   return res.redirect('/user/setting');
+  // }
+
+  return res.render('user-bind-mobile');
+});
+
+router.post('/mobile', user.bindMobile);
+
 module.exports = router;

@@ -63,6 +63,7 @@
     "unlimited": "不限",
     "all": "全部",
     "location": "地点",
+    "pier": "码头",
     "price_range": "价格范围",
     "number_of_people": "人数",
     "entertainments": "活动",
@@ -168,7 +169,7 @@
       "share": "游记",
       "news": "新闻"
     },
-    "slogan": "蓝天白云 以海为家",
+    "slogan": "拥抱海洋 心飞翔",
     "sub_slogan": "在海龟租船开启您的出海休闲新方式"
   },
   "boat": {
@@ -187,7 +188,7 @@
       "facilities": "基础设备",
       "entertainments": "娱乐活动",
       "extras": "其他",
-      "products": "可预定产品",
+      "products": "可预定游玩项目",
       "learn": "了解详情",
       "anchorage": "停泊位置",
       "length": "船身长度",
@@ -375,7 +376,8 @@
         "szshuangyong": "南澳月亮湾双拥码头",
         "szshekoufishingport": "蛇口渔港",
         "szdmsjjxld": "大梅沙京基喜来登码头",
-        "syxhyt": "三亚星华游艇码头"
+        "syxhyt": "星华游艇码头",
+        "hzxlw": "巽寮湾"
       }
     },
     "unit": {

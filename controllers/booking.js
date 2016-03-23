@@ -4,6 +4,7 @@
 var Booking = require('hyfbase').Booking;
 var Package = require('hyfbase').Package;
 var Unavailable = require('hyfbase').Unavailable;
+var OwnerSchedule = require('hyfbase').OwnerSchedule;
 var config = require('../config');
 var util = require('util');
 var moment = require('moment');
@@ -94,6 +95,11 @@ exports.checkBooking = function (req, res, next) {
       var unavailableCount = yield Unavailable.countUnavailableByDateRange({
         boatId: bookingForm.boatId
       }, dateStart.toDate(), dateEnd.toDate());
+
+      var ownerScheduleCount = yield OwnerSchedule.countScheduleByDateRange({
+        boatId: bookingForm.boatId,
+        disabled: false
+      }, dateStart.toDate(), dateEnd.toDate());
       
       var bookingBoat = yield Boat.findOne({
         _id: bookingForm.boatId
@@ -102,8 +108,6 @@ exports.checkBooking = function (req, res, next) {
       var isHoliday = yield holiday.isPublicHoliday(dateStart, bookingBoat.region.country, bookingBoat.region.region);
       
       isHoliday = JSON.parse(isHoliday).isPublicHoliday;
-      console.log(isHoliday);
-      
     } catch (err) {
       err.status = 500;
       throw err;
@@ -138,11 +142,7 @@ exports.checkBooking = function (req, res, next) {
       return res.render('booking-result', {error: error, booking: bookingInfo});
     };
 
-    if (bookingCount > 0) {
-      return fail('product.booking.result.error.date');
-    }
-
-    if (unavailableCount > 0) {
+    if (bookingCount > 0 || unavailableCount > 0 || ownerScheduleCount > 0) {
       return fail('product.booking.result.error.date');
     }
 
@@ -329,7 +329,7 @@ exports.checkBooking = function (req, res, next) {
     });
 
     try {
-      var savedBooing = yield booking.save();
+      var savedBooking = yield booking.save();
     } catch (err) {
       err.status = 500;
       throw err;
@@ -337,19 +337,23 @@ exports.checkBooking = function (req, res, next) {
 
     req.session.bookingForm = null;
 
-    if (!savedBooing) {
+    if (!savedBooking) {
       return res.render('booking-result', {error: 'product.booking.result.error.other'});
     }
 
     if (!req.isFromWechat) {
-      return res.render('booking-result', {booking: savedBooing});
+      return res.render('booking-result', {booking: savedBooking});
+    }
+
+    if (req.isFromWechat && savedBooking.settlementCurrency !== 'cny'){
+      return res.redirect('/user/mobile');
     }
 
     var payParams = {
-      body: savedBooing.boatName + '-' + savedBooing.productName + '-' + savedBooing.packageName,
+      body: savedBooking.boatName + '-' + savedBooking.productName + '-' + savedBooking.packageName,
       attach: 'boat',
-      out_trade_no: savedBooing.bookingId,
-      total_fee: savedBooing.total,
+      out_trade_no: savedBooking.bookingId,
+      total_fee: savedBooking.total,
       spbill_create_ip: req.headers['x-real-ip'],
       openid: req.session.wechat
     };
@@ -376,13 +380,13 @@ exports.checkBooking = function (req, res, next) {
           var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
 
           return res.render('booking-result', {
-            booking: savedBooing,
+            booking: savedBooking,
             wpParams: wpParams
           });
         }
       }
 
-      return res.render('booking-result', {booking: savedBooing});
+      return res.render('booking-result', {booking: savedBooking});
     });
   }).catch(function (err) {
     return next(err);
