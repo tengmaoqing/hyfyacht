@@ -1,5 +1,3 @@
-
-
 var Blog = require('hyfbase').Blog;
 var News = require('hyfbase').News;
 
@@ -25,7 +23,7 @@ exports.getArticle = function(req, res, next) {
 
     res.render('article-detail', {blog:blog});
   });
-}
+};
 
 exports.getArticles = function(req, res, next) {
   var page = req.query.page || 1;
@@ -59,7 +57,7 @@ exports.getArticles = function(req, res, next) {
       itemCount: result.total
     });
   });
-}
+};
 
 exports.getANews = function (req, res, next) {
   News.findOne({
@@ -82,7 +80,7 @@ exports.getANews = function (req, res, next) {
 
     res.render('news', {news:news});
   });
-}
+};
 
 exports.getAllNews = function (req, res, next) {
   var page = req.query.page || 1;
@@ -116,4 +114,4 @@ exports.getAllNews = function (req, res, next) {
       itemCount: result.total
     });
   });
-}
+};

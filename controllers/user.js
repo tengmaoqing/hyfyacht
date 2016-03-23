@@ -270,7 +270,7 @@ exports.loginSubmit = function(req, res, next){
 
   User.findOne({
     mobile: mobile
-  }).select('nickname hashedPassword role relatedOwner wechatOpenId').populate('relatedOwner', 'id').exec(function(err, user){
+  }).select('mobile nickname hashedPassword role relatedOwner wechatOpenId').populate('relatedOwner', 'id').exec(function(err, user){
     if(err){
       err.status = 400;
       return next(err);
@@ -300,7 +300,7 @@ exports.autoLogin = function(req, res, next){
   if(uid){
     User.findOne({
       _id: uid
-    }).select('nickname role relatedOwner wechatOpenId avatar').populate('relatedOwner', 'id').exec(function(err, user){
+    }).select('mobile nickname role relatedOwner wechatOpenId avatar').populate('relatedOwner', 'id').exec(function(err, user){
       if (!err && user) {
         setSessionAndCookie(req, res, user);
       }
@@ -324,7 +324,7 @@ exports.autoLogin = function(req, res, next){
 
           User.findOne({
             wechatOpenId: wechat.openid
-          }).select('nickname role relatedOwner wechatOpenId avatar').populate('relatedOwner', 'id').exec(function(err, user){
+          }).select('mobile nickname role relatedOwner wechatOpenId avatar').populate('relatedOwner', 'id').exec(function(err, user){
             if (!err && user) {
               setSessionAndCookie(req, res, user);
             }
@@ -597,4 +597,8 @@ exports.updataUserInformation = function(req, res, next){
       });
     });
   });
+};
+
+exports.bindMobile = function (req, res, next) {
+  
 };
