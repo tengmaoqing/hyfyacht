@@ -17,7 +17,7 @@
   </div>
   <div class="row search-field">
     <div class="col-md-2">
-      <label>{{ __('common.location') }}</label>
+      <label>{{ __('common.city') }}</label>
     </div>
     <div class="col-md-10">
       <a href="/boat/all/all/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.location == 'all' %}btn-primary{% else %}btn-default{% endif %}">{{ __('common.all') }}</a>
@@ -30,33 +30,32 @@
   {% if params.location != 'all' %}
   <div class="row search-field">
     <div class="col-md-2">
-      <label>{{ __('common.pier') }}</label>
+      <label>{{ __('common.district') }}</label>
     </div>
     {% if params.location == 'hk' %}
     <div class="col-md-10">
-      <a href="/boat/hk/all/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.pier == 'all' %}btn-primary{% else %}btn-default{% endif %}">{{ __('common.all') }}</a>
-      <a href="/boat/hk/saikung/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.pier == 'saikung' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.pier.saikung') }}</a>
+      <a href="/boat/hk/all/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.district == 'all' %}btn-primary{% else %}btn-default{% endif %}">{{ __('common.all') }}</a>
+      <a href="/boat/hk/hk_saikung/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.district == 'hk_saikung' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.district.hk_saikung') }}</a>
     </div>
     {% endif %}
     {% if params.location == 'sz' %}
     <div class="col-md-10">
-      <a href="/boat/sz/all/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.pier == 'all' %}btn-primary{% else %}btn-default{% endif %}">{{ __('common.all') }}</a>
-      <a href="/boat/sz/nanaoxiexiacun/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.pier == 'nanaoxiexiacun' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.pier.nanaoxiexiacun') }}</a>
-      <a href="/boat/sz/szshuangyong/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.pier == 'szshuangyong' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.pier.szshuangyong') }}</a>
-      <a href="/boat/sz/szshekoufishingport/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.pier == 'szshekoufishingport' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.pier.szshekoufishingport') }}</a>
-      <a href="/boat/sz/szdmsjjxld/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.pier == 'szdmsjjxld' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.pier.szdmsjjxld') }}</a>
+      <a href="/boat/sz/all/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.district == 'all' %}btn-primary{% else %}btn-default{% endif %}">{{ __('common.all') }}</a>
+      <a href="/boat/sz/sz_nanao/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.district == 'sz_nanao' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.district.sz_nanao') }}</a>
+      <a href="/boat/sz/sz_shekou/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.district == 'sz_shekou' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.district.sz_shekou') }}</a>
+      <a href="/boat/sz/sz_dms/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.district == 'sz_dms' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.district.sz_dms') }}</a>
     </div>
     {% endif %}
     {% if params.location == 'sy' %}
     <div class="col-md-10">
-      <a href="/boat/sy/all/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.pier == 'all' %}btn-primary{% else %}btn-default{% endif %}">{{ __('common.all') }}</a>
-      <a href="/boat/sy/syxhyt/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.pier == 'syxhyt' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.pier.syxhyt') }}</a>
+      <a href="/boat/sy/all/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.district == 'all' %}btn-primary{% else %}btn-default{% endif %}">{{ __('common.all') }}</a>
+      <a href="/boat/sy/sy_ddh/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.district == 'sy_ddh' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.district.sy_ddh') }}</a>
     </div>
     {% endif %}
     {% if params.location == 'hz' %}
     <div class="col-md-10">
-      <a href="/boat/hz/all/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.pier == 'all' %}btn-primary{% else %}btn-default{% endif %}">{{ __('common.all') }}</a>
-      <a href="/boat/hz/hzxlw/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.pier == 'hzxlw' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.pier.hzxlw') }}</a>
+      <a href="/boat/hz/all/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.district == 'all' %}btn-primary{% else %}btn-default{% endif %}">{{ __('common.all') }}</a>
+      <a href="/boat/hz/hz_xlw/{{ params.price }}/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}" class="btn {% if params.district == 'hz_xlw' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.location.district.hz_xlw') }}</a>
     </div>
     {% endif %}
   </div>
