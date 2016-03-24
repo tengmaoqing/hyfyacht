@@ -24,10 +24,10 @@ router.post('/setting/updataUserInformation', user.updataUserInformation);
 
 router.get('/setting/getUserInformation', user.getUserInformation);
 
-router.get('/mobile', function (req, res, next) {
-  return res.render('user-bind-mobile');
-});
+router.get('/mobile', user.requestBindMobile);
+
 router.get('/mobile/check', user.checkMobile);
+
 router.post('/mobile', user.bindMobile);
 
 module.exports = router;

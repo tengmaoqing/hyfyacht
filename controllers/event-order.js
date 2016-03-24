@@ -12,18 +12,18 @@ var moment = require('moment');
 var util = require('util');
 var co = require('co');
 
-exports.getEventOrderNumberByEventId = function(req, res, next){
+exports.getEventOrderNumberByEventId = function (req, res, next) {
   var eventId = req.params.eventId;
 
   EventOrder.aggregate([
     {
-      $match:{
+      $match: {
         eventId: mongoose.Types.ObjectId(eventId),
         status: 'db.booking.pay_success'
       }
     },
     {
-      $group:{
+      $group: {
         _id: '$eventId',
         count: {
           $sum: '$numberOfPersons'
@@ -31,8 +31,8 @@ exports.getEventOrderNumberByEventId = function(req, res, next){
       }
     }
   ], function (err, result) {
-    if(err){
-      return res.json({code:0});
+    if (err) {
+      return res.json({code: 0});
     }
 
     var count = result.length > 0 ? result[0].count : 0;
@@ -41,7 +41,7 @@ exports.getEventOrderNumberByEventId = function(req, res, next){
   });
 };
 
-exports.submit = function(req, res, next) {
+exports.submit = function (req, res, next) {
   if (!req.session.eventForm) {
     req.checkBody({
       'eventId': {
@@ -78,8 +78,8 @@ exports.submit = function(req, res, next) {
 
   var eventForm = req.session.eventForm;
 
-  co(function *(){
-    try{
+  co(function *() {
+    try {
       var event = yield Event.findOne({
         _id: eventForm.eventId,
         inStock: true
@@ -93,13 +93,13 @@ exports.submit = function(req, res, next) {
 
       var attendedPeople = yield EventOrder.aggregate([
         {
-          $match:{
+          $match: {
             eventId: mongoose.Types.ObjectId(eventForm.eventId),
             status: 'db.booking.pay_success'
           }
         },
         {
-          $group:{
+          $group: {
             _id: '$eventId',
             count: {
               $sum: '$numberOfPersons'
@@ -107,18 +107,18 @@ exports.submit = function(req, res, next) {
           }
         }
       ]).exec();
-    }catch (err){
+    } catch (err) {
       err.status = 500;
       throw err;
     }
 
-    if(!event){
+    if (!event) {
       var err = new Error('Invalid Event');
       err.status = 400;
       throw err;
     }
 
-    var fail = function(error){
+    var fail = function (error) {
       var eventInfo = new EventOrder({
         eventName: event.title
       });
@@ -127,40 +127,44 @@ exports.submit = function(req, res, next) {
       return res.render('event-result', {error: error, eventOrder: eventInfo});
     };
 
-    var generateCharge = function(charge){
-      return parseInt(charge * config.currency[req.session.currency] / config.currency[event.currency]);
-    };
-
-    if(event.type === 'free' && orders.length > 0){
-      return fail('event.result.error.multiorder');
-    }
-
-    if(event.type === 'free' || !eventForm.numberOfPersons){
-      eventForm.numberOfPersons = 1;
-    }
-    
-    if(event.maxPerUser && event.maxPerUser > 0  && orders.length > 0){
-      var attendedNumber = 0;
-      for(var i = 0; i < orders.length; i++){
-        attendedNumber += orders[i].numberOfPersons;
-      }
-      
-      if((parseInt(eventForm.numberOfPersons) + attendedNumber) > event.maxPerUser){
-        return fail('event.result.error.multiorder');
-      }
-    }
-
-    var total = generateCharge(event.baseCharge) * eventForm.numberOfPersons;
-
     var now = moment();
 
-    if(moment(event.attendedDate) <= now){
+    if (moment(event.attendedDate) <= now) {
       return fail('event.result.error.out_date');
     }
 
-    if( attendedPeople.length > 0 && (attendedPeople[0].count + parseInt(eventForm.numberOfPersons)) > event.maxPersons ){
+    if (attendedPeople.length > 0 && attendedPeople[0].count >= event.maxPersons) {
       return fail('event.result.error.full');
     }
+
+    if (!eventForm.numberOfPersons) {
+      eventForm.numberOfPersons = 1;
+    }
+
+    if (attendedPeople.length > 0 && (attendedPeople[0].count + parseInt(eventForm.numberOfPersons)) > event.maxPersons) {
+      return fail('event.result.error.more_than_max');
+    }
+
+    if (event.maxPerUser && event.maxPerUser > 0 && orders.length > 0) {
+      var attendedNumber = 0;
+      for (var i = 0; i < orders.length; i++) {
+        attendedNumber += orders[i].numberOfPersons;
+      }
+
+      if ((parseInt(eventForm.numberOfPersons) + attendedNumber) > event.maxPerUser) {
+        if (event.maxPerUser === 1) {
+          return fail('event.result.error.multiorder');
+        }
+
+        return fail('event.result.error.more_than_user_max');
+      }
+    }
+
+    var generateCharge = function (charge) {
+      return parseInt(charge * config.currency[req.session.currency] / config.currency[event.currency]);
+    };
+
+    var total = generateCharge(event.baseCharge) * eventForm.numberOfPersons;
 
     var eventOrder = new EventOrder({
       userId: req.session.user._id,
@@ -186,7 +190,7 @@ exports.submit = function(req, res, next) {
       ]
     });
 
-    if(event.type === 'free'){
+    if (event.type === 'free') {
       eventOrder.status = 'db.booking.pay_success';
       eventOrder.statusLogs.push({
         status: 'db.booking.pay_success',
@@ -197,23 +201,31 @@ exports.submit = function(req, res, next) {
 
     try {
       var savedOrder = yield eventOrder.save();
-    } catch (err){
+    } catch (err) {
       err.status = 500;
       throw err;
     }
 
     req.session.eventForm = null;
 
-    if(!savedOrder){
+    if (!savedOrder) {
       return res.render('event-result', {error: 'event.result.error.other'});
     }
 
-    if(event.type === 'free') {
-      return res.redirect('/user/event');
+    if (event.type === 'free') {
+      return res.redirect('/user/event/detail/' + savedOrder.orderId);
     }
 
     if (!req.isFromWechat) {
       return res.render('event-result', {eventOrder: savedOrder});
+    }
+
+    if (req.isFromWechat && savedOrder.settlementCurrency !== 'cny') {
+      if (req.session.user.mobile) {
+        return res.redirect('/user/event/detail/' + savedOrder.orderId);
+      }
+
+      return res.redirect('/user/mobile?warning=bind&from=/user/event/detail/' + savedOrder.orderId);
     }
 
     var payParams = {
@@ -235,7 +247,7 @@ exports.submit = function(req, res, next) {
           }
         });
       });
-    } catch(err) {
+    } catch (err) {
       err.status = 500;
       throw err;
     }
@@ -246,18 +258,21 @@ exports.submit = function(req, res, next) {
         if (wechatCore.verifySign(wpResult) && wpResult.return_code === 'SUCCESS' && wpResult.result_code === 'SUCCESS') {
           var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
 
-          return res.render('event-result', {eventOrder: savedOrder, wpParams: wpParams});
+          return res.render('event-result', {
+            eventOrder: savedOrder,
+            wpParams: wpParams
+          });
         }
       }
 
       return res.render('event-result', {eventOrder: savedOrder});
     });
-  }).catch(function(err){
+  }).catch(function (err) {
     return next(err);
   });
 };
 
-exports.getEventsByUserId = function(req, res, next){
+exports.getEventsByUserId = function (req, res, next) {
   var page = req.query.page || 1;
 
   EventOrder.paginate({
@@ -266,7 +281,7 @@ exports.getEventsByUserId = function(req, res, next){
     page: page,
     limit: 10,
     columns: 'orderId eventId eventName total settlementCurrency status createDate',
-    populate:[{
+    populate: [{
       path: 'eventId',
       select: 'thumbnail dateStart dateEnd'
     }],
@@ -274,7 +289,7 @@ exports.getEventsByUserId = function(req, res, next){
       createDate: -1
     }
   }, function (err, result) {
-    if(err){
+    if (err) {
       err.status = 400;
       return next(err);
     }
@@ -285,26 +300,30 @@ exports.getEventsByUserId = function(req, res, next){
       pages: []
     };
 
-    for(var i = 1; i <= result.pages; i++){
+    for (var i = 1; i <= result.pages; i++) {
       pager.pages.push(i);
     }
 
-    return res.render('user-event-list', {events: result.docs, pager: pager, itemCount: result.total});
+    return res.render('user-event-list', {
+      events: result.docs,
+      pager: pager,
+      itemCount: result.total
+    });
   });
 };
 
-exports.getEventByOrderId = function(req, res, next){
+exports.getEventByOrderId = function (req, res, next) {
   var orderId = req.params.orderId;
   var eventId = req.query.eventId;
 
-  if(!orderId){
+  if (!orderId) {
     var err = new Error('Not Found');
     err.status = 404;
     return next(err);
   }
 
-  co(function *(){
-    try{
+  co(function *() {
+    try {
       var event = yield Event.findOne({
         _id: eventId,
         inStock: true
@@ -317,13 +336,13 @@ exports.getEventByOrderId = function(req, res, next){
 
       var attendedPeople = yield EventOrder.aggregate([
         {
-          $match:{
+          $match: {
             eventId: mongoose.Types.ObjectId(eventId),
             status: 'db.booking.pay_success'
           }
         },
         {
-          $group:{
+          $group: {
             _id: '$eventId',
             count: {
               $sum: '$numberOfPersons'
@@ -336,16 +355,16 @@ exports.getEventByOrderId = function(req, res, next){
         orderId: orderId,
         userId: req.session.user._id
       }).populate([{
-          path: 'eventId',
-          select: 'title dateStart dateEnd location geospatial currency baseCharge organiserNickname'
-        }]).exec();
+        path: 'eventId',
+        select: 'title dateStart dateEnd location geospatial currency baseCharge organiserNickname'
+      }]).exec();
 
-    }catch (err){
+    } catch (err) {
       err.status = 500;
       throw err;
     }
 
-    if (!order){
+    if (!order) {
       var httpErr = new Error('Not Found');
       httpErr.status = 404;
       return next(httpErr);
@@ -357,16 +376,33 @@ exports.getEventByOrderId = function(req, res, next){
 
     var now = moment();
 
-    if(moment(event.attendedDate) <= now){
-      return res.render('user-event-detail', {order: order, result: 'over_time'});
+    if (moment(event.attendedDate) <= now) {
+      return res.render('user-event-detail', {
+        order: order,
+        result: 'over_time'
+      });
     }
 
-    if( attendedPeople.length > 0 && attendedPeople[0].count >= event.maxPersons ){
-      return res.render('user-event-detail', {order: order, result: 'over_people'});
+    if (attendedPeople.length > 0 && attendedPeople[0].count >= event.maxPersons) {
+      return res.render('user-event-detail', {
+        order: order,
+        result: 'over_people'
+      });
     }
 
     if (!req.isFromWechat) {
       return res.render('user-event-detail', {order: order, result: 'pay_can'});
+    }
+
+    if (req.isFromWechat && order.settlementCurrency !== 'cny') {
+      if (req.session.user.mobile) {
+        return res.render('user-event-detail', {
+          order: order,
+          warning: 'warning.pay.wechat_hkd'
+        });
+      }
+
+      return res.redirect('/user/mobile?warning=bind&from=/user/event/detail/' + order.orderId);
     }
 
     var payParams = {
@@ -388,7 +424,7 @@ exports.getEventByOrderId = function(req, res, next){
           }
         });
       });
-    } catch(err) {
+    } catch (err) {
       err.status = 500;
       throw err;
     }
@@ -399,39 +435,43 @@ exports.getEventByOrderId = function(req, res, next){
         if (wechatCore.verifySign(wpResult) && wpResult.return_code === 'SUCCESS' && wpResult.result_code === 'SUCCESS') {
           var wpParams = wechatCore.getJSAPIParamsByPrepayId(wpResult.prepay_id);
 
-          return res.render('user-event-detail', {order: order, result: 'pay_can', wpParams: wpParams});
+          return res.render('user-event-detail', {
+            order: order,
+            result: 'pay_can',
+            wpParams: wpParams
+          });
         }
       }
 
       return res.render('user-event-detail', {order: order, result: 'pay_can'});
     });
 
-  }).catch(function(err){
+  }).catch(function (err) {
     return next(err);
   });
 };
 
-exports.getContact = function(req, res, next) {
+exports.getContact = function (req, res, next) {
   if (!req.session.user) {
     var httpErr = new Error('Forbiden');
     httpErr.status = 400;
-    return res.json({result:false, error: httpErr});
+    return res.json({result: false, error: httpErr});
   }
 
   var userId = req.session.user._id;
 
   EventOrder.findOne({
     userId: userId
-  }).sort({createDate:-1}).select('contact').exec(function(err, eventOrder){
+  }).sort({createDate: -1}).select('contact').exec(function (err, eventOrder) {
     if (err) {
       err.status = 400;
-      return res.json({result:false, error: err});
+      return res.json({result: false, error: err});
     }
 
     if (!eventOrder) {
       var httpErr = new Error('Not Found');
       httpErr.status = 404;
-      return res.json({result:false, error: httpErr});
+      return res.json({result: false, error: httpErr});
     }
 
     return res.json(eventOrder.contact);

@@ -72,10 +72,17 @@
         <div class="col-md-8 col-sm-8 col-xs-12 event-info">
           <div class="row">
             <div class="col-md-8 col-sm-8 col-xs-12"><h3>{{ event.title }}</h3></div>
+            {% if event.baseCharge > 0 %}
             <div class="col-md-4 col-sm-4 col-xs-12">
               <h3 class="text-danger text-right hidden-xs">{{ preset.generateCharge(event.baseCharge, event.currency) }}</h3>
               <h3 class="text-danger visible-xs">{{ preset.generateCharge(event.baseCharge, event.currency) }}</h3>
             </div>
+            {% else %}
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <h3 class="text-danger text-right hidden-xs">{{ __('event.free') }}</h3>
+              <h3 class="text-danger visible-xs">{{ __('event.free') }}</h3>
+            </div>
+            {% endif %}
           </div>
           <div>
             <span class="glyphicon glyphicon-map-marker"></span> {{ __(event.location.city) }}{% if event.location.pier %} - {{ __(event.location.pier) }}{% endif %}

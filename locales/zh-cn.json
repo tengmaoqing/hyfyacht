@@ -84,7 +84,11 @@
     "filter": "筛选",
     "coming_soon": "敬请期待",
     "click": "点击",
-    "paypayl_pay_methods": "PayPal 支持以下付款方式:"
+    "paypayl_pay_methods": "PayPal 支持以下付款方式："
+  },
+  "currency": {
+    "cny": "人民币",
+    "hkd": "港币"
   },
   "error": {
     "login": {
@@ -110,6 +114,12 @@
       "notmatch" : "密码不正确。",
       "required_nickname": "请输入昵称",
       "required_name": "请输入姓名"
+    }
+  },
+  "warning": {
+    "pay": {
+      "wechat_hkd_bind": "很抱歉，在微信里不能支付港币，请绑定您的手机号码，然后在浏览器中打开页面进行支付。",
+      "wechat_hkd": "很抱歉，在微信里不能支付港币，请在浏览器中打开页面进行支付。"
     }
   },
   "nav": {
@@ -291,6 +301,7 @@
         },
         "payment_notice": "请支付定单款项，如在30分钟未完成支付，则会取消定单。",
         "amount": "金额:",
+        "settlement_currency": "结算货币:",
         "modeOfPayment": "付款方式:",
         "bookingId": "定单号",
         "status": "定单状态",
@@ -323,7 +334,9 @@
         "out_date": "此活动已经结束报名",
         "full": "此活动已经满员",
         "other": "订单信息错误",
-        "multiorder": "您已经参加了本活动"
+        "multiorder": "您已经参加了本活动",
+        "more_than_max": "参加人数超出了活动可申请名额",
+        "more_than_user_max": "参加人数超出了活动规定的每用户可申请名额"
       }
     },
     "list": {

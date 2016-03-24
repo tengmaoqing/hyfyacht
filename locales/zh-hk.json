@@ -86,6 +86,10 @@
     "click": "點擊",
     "paypayl_pay_methods": "PayPal 支持以下付款類型:"
   },
+  "currency": {
+    "cny": "人民幣",
+    "hkd": "港幣"
+  },
   "error": {
     "login": {
       "donotmatch": "無此用戶或者密碼錯誤。"
@@ -110,6 +114,12 @@
       "notmatch" : "密碼不正確。",
       "required_nickname": "請輸入昵稱",
       "required_name": "請輸入姓名"
+    }
+  },
+  "warning": {
+    "pay": {
+      "wechat_hkd_bind": "很抱歉，在 Wechat 裡面不能使用港幣，請綁定你的手提電話，然後在瀏覽器打開頁面進行付款。",
+      "wechat_hkd": "很抱歉，在 Wechat 裡面不能使用港幣，請在瀏覽器打開頁面進行付款。"
     }
   },
   "nav": {
@@ -292,6 +302,7 @@
         },
         "payment_notice": "請支付定單款項，如在30分鐘內未完成支付，則會取消定單。",
         "amount": "金額:",
+        "settlement_currency": "結算貨幣:",
         "modeOfPayment": "付款方式:",
         "bookingId": "定單號",
         "status": "定單狀態",
@@ -324,7 +335,9 @@
         "out_date": "此活動已經停止報名",
         "full": "此活動已經滿員",
         "other": "訂單信息錯誤",
-        "multiorder": "您已經參加了本活動"
+        "multiorder": "您已經參加了本活動",
+        "more_than_max": "參加人數超出了活動可申請名額",
+        "more_than_user_max": "參加人數超出了活動規定每用戶可申請名額"
       }
     },
     "list": {
