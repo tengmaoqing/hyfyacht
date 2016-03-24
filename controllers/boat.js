@@ -67,10 +67,10 @@ exports.getBoats = function(req, res, next) {
     params.location = 'all';
   }
 
-  if (req.params.pier && req.params.pier != 'all') {
-    query['location.pier'] = 'db.location.pier.' + req.params.pier;
+  if (req.params.district && req.params.district != 'all') {
+    query['location.district'] = 'db.location.district.' + req.params.district;
   }else {
-    params.pier = 'all';
+    params.district = 'all';
   }
 
   if (req.params.price && req.params.price != 'all') {

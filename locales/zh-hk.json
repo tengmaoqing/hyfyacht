@@ -64,6 +64,7 @@
     "all": "全部",
     "location": "地點",
     "pier": "碼頭",
+    "district": "區域",
     "price_range": "價格範圍",
     "number_of_people": "人數",
     "entertainments": "活動",
@@ -379,6 +380,14 @@
         "szdmsjjxld": "大梅沙京基喜來登碼頭",
         "syxhyt": "星華遊艇碼頭",
         "hzxlw": "巽寮灣"
+      },
+      "district": {
+        "hk_saikung": "西贡",
+        "sz_nanao": "南澳",
+        "sz_shekou": "蛇口",
+        "sz_dms": "大梅沙",
+        "hz_xlw": "巽寮灣",
+        "sy_ddh": "大東海"
       }
     },
     "unit": {

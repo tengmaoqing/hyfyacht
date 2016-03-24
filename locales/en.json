@@ -64,6 +64,7 @@
     "all": "All",
     "location": "Location",
     "pier": "Pier",
+    "district": "District",
     "price_range": "Price Range",
     "number_of_people": "Number of People",
     "entertainments": "Entertainments",
@@ -376,6 +377,14 @@
         "szdmsjjxld": "Sheraton Dameisha Resort Pier",
         "syxhyt": "Xinghua Yacht Pier",
         "hzxlw": "Xunliaowan"
+      },
+      "district": {
+        "hk_saikung": "Sai Kung",
+        "sz_nanao": "Nanao",
+        "sz_shekou": "Shekou",
+        "sz_dms": "Dameisha",
+        "hz_xlw": "Xunliaowan",
+        "sy_ddh": "Dadonghai"
       }
     },
     "unit": {
