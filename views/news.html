@@ -7,18 +7,17 @@
 <div class="container columns-sm">
 	<ol class="breadcrumb">
     <li><a href="/">{{ __('nav.home') }}</a></li>
-    <li><a href="/news">海龟新闻</a></li>
-    <li class="active">xxxxsd</li>
+    <li class="active">{{ news.title }}</li>
   </ol>
   <div class="page-header text-center">
     <h1>{{ news.title }}</h1>
     <p class="share-title">
-	    <span class="share-title"><span class="glyphicon glyphicon-time"></span>{{ preset.getDateString(news.createDate) }}</span>
-	    <span class="share-title"><span class="glyphicon glyphicon-user"></span><a href="#">{{ news.userId.nickname }}</a></span>
+	    <span class="share-title"><span class="glyphicon glyphicon-time"></span> {{ preset.getDateString(news.createDate) }}</span>
+	    <span class="share-title"><span class="glyphicon glyphicon-user"></span> {{ news.userName }}</span>
     </p>
   </div>
   <div class="static-article">
-	  {{ news.content }}
+    {% autoescape %}{{ news.content }}{% endautoescape %}
   </div>
   <hr class="hr-divider">
 </div>
