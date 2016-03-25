@@ -264,7 +264,8 @@
         return;
       }
 
-      var url = "/api/checkHoliday?country=" + hgdata.region.country + "&region=" + hgdata.region.region + "&date="+$scope.selectedDate;
+      var url = "/api/checkHoliday?country=" + hgdata.region.country + "&region="
+       + hgdata.region.region + "&date="+$scope.selectedDate + "&curtime="+new Date().valueOf();
       $http.get(url).success(function(res){
         $scope.availablePackages = false;
         $scope.isHoliday = res.isPublicHoliday;
