@@ -1,10 +1,10 @@
 var Blog = require('hyfbase').Blog;
 var News = require('hyfbase').News;
 
-exports.getArticle = function(req, res, next) {
+exports.getBlog = function(req, res, next) {
 
   Blog.findOne({
-    _id: req.params.articleId,
+    _id: req.params.id,
     display: true
   }).populate({
     path: 'userId',
@@ -21,11 +21,11 @@ exports.getArticle = function(req, res, next) {
       return next(err);
     }
 
-    res.render('article-detail', {blog:blog});
+    res.render('blog-detail', {blog:blog});
   });
 };
 
-exports.getArticles = function(req, res, next) {
+exports.getBlogs = function(req, res, next) {
   var page = req.query.page || 1;
   Blog.paginate({
     display:true
@@ -51,7 +51,7 @@ exports.getArticles = function(req, res, next) {
       pager.pages.push(i);
     }
 
-    return  res.render('article-list', {
+    return  res.render('blog-list', {
       articles:result.docs,
       pager:pager, 
       itemCount: result.total

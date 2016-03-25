@@ -2,8 +2,8 @@
 var express = require('express');
 var router = express.Router();
 
-var article = require('../controllers/article');
+var news = require('../controllers/news');
 
-router.get('/', article.getAllNews)
-router.get('/detail/:newsId', article.getANews);
+// router.get('/', news.getAllNews);
+router.get('/:id', news.getANews);
 module.exports = router;
