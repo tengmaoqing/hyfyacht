@@ -87,8 +87,7 @@ exports.submit = function (req, res, next) {
 
       var orders = yield EventOrder.find({
         eventId: eventForm.eventId,
-        userId: req.session.user._id,
-        status: 'db.booking.pay_success'
+        userId: req.session.user._id
       }).exec();
 
       var attendedPeople = yield EventOrder.aggregate([
@@ -190,7 +189,7 @@ exports.submit = function (req, res, next) {
       ]
     });
 
-    if (event.type === 'free') {
+    if (event.baseCharge === 0) {
       eventOrder.status = 'db.booking.pay_success';
       eventOrder.statusLogs.push({
         status: 'db.booking.pay_success',
@@ -212,7 +211,7 @@ exports.submit = function (req, res, next) {
       return res.render('event-result', {error: 'event.result.error.other'});
     }
 
-    if (event.type === 'free') {
+    if (event.baseCharge === 0) {
       return res.redirect('/user/event/detail/' + savedOrder.orderId);
     }
 
@@ -314,7 +313,6 @@ exports.getEventsByUserId = function (req, res, next) {
 
 exports.getEventByOrderId = function (req, res, next) {
   var orderId = req.params.orderId;
-  var eventId = req.query.eventId;
 
   if (!orderId) {
     var err = new Error('Not Found');
@@ -324,20 +322,30 @@ exports.getEventByOrderId = function (req, res, next) {
 
   co(function *() {
     try {
+      var order = yield EventOrder.findOne({
+        orderId: orderId,
+        userId: req.session.user._id
+      }).populate([{
+        path: 'eventId',
+        select: '_id title dateStart dateEnd location geospatial currency baseCharge organiserNickname'
+      }]).exec();
+
+      var eventId = order.eventId;
+
       var event = yield Event.findOne({
-        _id: eventId,
-        inStock: true
+        _id: order.eventId
       }).exec();
 
       var orders = yield EventOrder.find({
         eventId: eventId,
-        userId: req.session.user._id
+        userId: req.session.user._id,
+        status: 'db.booking.pay_success'
       }).exec();
 
       var attendedPeople = yield EventOrder.aggregate([
         {
           $match: {
-            eventId: mongoose.Types.ObjectId(eventId),
+            eventId: event._id,
             status: 'db.booking.pay_success'
           }
         },
@@ -351,13 +359,7 @@ exports.getEventByOrderId = function (req, res, next) {
         }
       ]).exec();
 
-      var order = yield EventOrder.findOne({
-        orderId: orderId,
-        userId: req.session.user._id
-      }).populate([{
-        path: 'eventId',
-        select: 'title dateStart dateEnd location geospatial currency baseCharge organiserNickname'
-      }]).exec();
+
 
     } catch (err) {
       err.status = 500;
@@ -388,6 +390,20 @@ exports.getEventByOrderId = function (req, res, next) {
         order: order,
         result: 'over_people'
       });
+    }
+
+    if (event.maxPerUser && event.maxPerUser > 0 && orders.length > 0) {
+      var attendedNumber = 0;
+      for (var i = 0; i < orders.length; i++) {
+        attendedNumber += orders[i].numberOfPersons;
+      }
+
+      if ((order.numberOfPersons + attendedNumber) > event.maxPerUser) {
+        return res.render('user-event-detail', {
+          order: order,
+          result: 'over_people'
+        });
+      }
     }
 
     if (!req.isFromWechat) {

@@ -70,13 +70,13 @@
         <div class="btn-group">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if params.price == 'all' %}{{ __('common.unlimited') }}{% else %}￥{{ params.price }}{% endif %} <span class="caret"></span></button>
           <ul class="dropdown-menu dropdown-menu-justified disabled">
-            <li><a href="/boat/{{ params.location }}/{{ params.pier }}/all/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">{{ __('common.unlimited') }}</a></li>
-            <li><a href="/boat/{{ params.location }}/{{ params.pier }}/0-1000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥1000以下</a></li>
-            <li><a href="/boat/{{ params.location }}/{{ params.pier }}/1000-5000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥1000-5000</a></li>
-            <li><a href="/boat/{{ params.location }}/{{ params.pier }}/5000-10000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥5000-10000</a></li>
-            <li><a href="/boat/{{ params.location }}/{{ params.pier }}/10000-15000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥10000-15000</a></li>
-            <li><a href="/boat/{{ params.location }}/{{ params.pier }}/15000-20000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥15000-20000</a></li>
-            <li><a href="/boat/{{ params.location }}/{{ params.pier }}/20000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥20000以上</a></li>
+            <li><a href="/boat/{{ params.location }}/{{ params.district }}/all/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">{{ __('common.unlimited') }}</a></li>
+            <li><a href="/boat/{{ params.location }}/{{ params.district }}/0-1000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥1000以下</a></li>
+            <li><a href="/boat/{{ params.location }}/{{ params.district }}/1000-5000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥1000-5000</a></li>
+            <li><a href="/boat/{{ params.location }}/{{ params.district }}/5000-10000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥5000-10000</a></li>
+            <li><a href="/boat/{{ params.location }}/{{ params.district }}/10000-15000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥10000-15000</a></li>
+            <li><a href="/boat/{{ params.location }}/{{ params.district }}/15000-20000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥15000-20000</a></li>
+            <li><a href="/boat/{{ params.location }}/{{ params.district }}/20000/{{ params.capacity }}/{{ params.entertainments }}/{{ params.extras }}">￥20000以上</a></li>
           </ul>
         </div>
       </div>
@@ -93,11 +93,11 @@
             {% if params.capacity == 'all' %}{{ __('common.unlimited') }}{% else %}{{ params.capacity }}{% endif %} <span class="caret"></span>
           </button>
           <ul class="dropdown-menu dropdown-menu-justified disabled">
-            <li><a href="/boat/{{ params.location }}/{{ params.pier }}/{{ params.price }}/all/{{ params.entertainments }}/{{ params.extras }}">{{ __('common.unlimited') }}</a></li>
-            <li><a href="/boat/{{ params.location }}/{{ params.pier }}/{{ params.price }}/1-10/{{ params.entertainments }}/{{ params.extras }}">1-10</a></li>
-            <li><a href="/boat/{{ params.location }}/{{ params.pier }}/{{ params.price }}/10-20/{{ params.entertainments }}/{{ params.extras }}">10-20</a></li>
-            <li><a href="/boat/{{ params.location }}/{{ params.pier }}/{{ params.price }}/20-30/{{ params.entertainments }}/{{ params.extras }}">20-30</a></li>
-            <li><a href="/boat/{{ params.location }}/{{ params.pier }}/{{ params.price }}/30-40/{{ params.entertainments }}/{{ params.extras }}">30-40</a></li>
+            <li><a href="/boat/{{ params.location }}/{{ params.district }}/{{ params.price }}/all/{{ params.entertainments }}/{{ params.extras }}">{{ __('common.unlimited') }}</a></li>
+            <li><a href="/boat/{{ params.location }}/{{ params.district }}/{{ params.price }}/1-10/{{ params.entertainments }}/{{ params.extras }}">1-10</a></li>
+            <li><a href="/boat/{{ params.location }}/{{ params.district }}/{{ params.price }}/10-20/{{ params.entertainments }}/{{ params.extras }}">10-20</a></li>
+            <li><a href="/boat/{{ params.location }}/{{ params.district }}/{{ params.price }}/20-30/{{ params.entertainments }}/{{ params.extras }}">20-30</a></li>
+            <li><a href="/boat/{{ params.location }}/{{ params.district }}/{{ params.price }}/30-40/{{ params.entertainments }}/{{ params.extras }}">30-40</a></li>
           </ul>
         </div>
       </div>

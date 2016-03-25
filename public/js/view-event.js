@@ -29,9 +29,9 @@
     $http.get("/eventorder/number/" + hgdata.eventId).success(function (res) {
       $scope.currPersons = res.count;
       $scope.maxPersons = hgdata.maxPersons - res.count;
-//      if($scope.maxPerUser){
-//        $scope.maxPersons = $scope.maxPerUser - res.count;
-//      }
+     if($scope.maxPerUser){
+       $scope.maxPersons = $scope.maxPerUser;
+     }
     });
 
     $scope.getContact = function() {

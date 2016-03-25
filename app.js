@@ -16,6 +16,7 @@ var moment = require('moment');
 var CronJob = require('cron').CronJob;
 var cache = require('memory-cache');
 var Booking = require('hyfbase').Booking;
+var EventOrder = require('hyfbase').EventOrder;
 
 var wechatCore = require('wechat-core');
 var alipayCore = require('alipay-core');
@@ -65,9 +66,9 @@ swig.setDefaults({
 alipayCore.configure(config.alipayConfig);
 
 wechatCore.configure(config.wechatConfig);
-//wechatCore.getAppAccessToken();
+// wechatCore.getAppAccessToken();
 
-//paypal.configure(config.paypalConfig);
+paypal.configure(config.paypalConfig);
 
 //i18n init
 i18n.configure({
@@ -190,9 +191,9 @@ app.use(function(req, res, next){
 //set currency
 app.use(function(req, res, next){
   var currency = req.query.curr || req.cookies['client_currency'] || ( preset.locale == 'zh-cn' ? 'cny' : 'hkd');
-  if(req.isFromWechat){
-    currency = 'cny';
-  }
+  // if(req.isFromWechat){
+  //   currency = 'cny';
+  // }
 
   req.session.currency = currency;
 
@@ -287,6 +288,23 @@ var job = new CronJob({
   onTick: function(){
     var date = moment().add(-30, 'minutes');
     Booking.update({
+      status: 'db.booking.wait_to_pay',
+      createDate: { $lte: date.toDate() }
+    },{
+      $set:{
+        status: 'db.booking.cancel'
+      },
+      $push:{
+        statusLogs: {
+          status: 'db.booking.cancel',
+          description: 'auto_cancel',
+          updateDate: new Date()
+        }
+      }
+    }, function(err){
+    });
+
+    EventOrder.update({
       status: 'db.booking.wait_to_pay',
       createDate: { $lte: date.toDate() }
     },{
