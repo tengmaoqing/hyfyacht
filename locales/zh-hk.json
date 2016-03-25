@@ -325,6 +325,7 @@
     "ongoing_item" : "正在進行",
     "over": "已經結束",
     "attend": "參加",
+    "attend_date": "截止時間",
     "organiser": "發起人",
     "geospatial": "活動地點",
     "desc": "活動詳情",

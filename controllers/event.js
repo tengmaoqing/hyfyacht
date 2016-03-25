@@ -35,14 +35,13 @@ exports.getEvent = function(req, res, next) {
 
 exports.getMoreEvents = function(req, res, next){
 
-  var date = new Date(parseInt(req.query.dateStart));
-  var days = date.getDate();
+  var date = new Date();
   Event.paginate({
     _id : {$ne: req.query.eventId},
-    dateStart : {
-      $gt: date.setDate(days-3),
-      $lt: date.setDate(days+3)
-    }
+    attendedDate : {
+      $gt: date
+    },
+    inStock : true
   },{
     page: 1,
     limit: 2,

@@ -324,6 +324,7 @@
     "ongoing_item" : "正在进行",
     "over": "已经结束",
     "attend": "参加",
+    "attend_date": "截止时间",
     "organiser": "发起人",
     "geospatial": "活动地点",
     "desc": "活动详情",
