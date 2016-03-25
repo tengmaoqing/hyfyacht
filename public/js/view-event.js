@@ -37,17 +37,21 @@
     $scope.getContact = function() {
 
       $http.get("/eventorder/getContact").success(function(res){
-        if(res.result == false) {
+
+        if (res.result == false) {
           return
         }
-        if(res.mobile){
+
+        if (res.mobile) {
           $scope.contact.areaCode = res.mobile.length == 13? res.mobile.slice(0,2):res.mobile.slice(0,3);
         }
+
         $scope.contact.name = res.name;
         $scope.contact.mobile = res.mobile.length == 13? parseInt(res.mobile.slice(2)):parseInt(res.mobile.slice(3));
         $scope.areaCodeChange();
       });
     };
+    
     $scope.getContact();
 
     $scope.areaCodeChange = function() {
@@ -74,12 +78,16 @@
 
   app.controller("moreEvents", function($scope, $http){
 
-    $http.get("/event/moreEvents?eventId="+hgdata.eventId+"&dateStart="+hgdata.dateStart).success(function(res){
+    $http.get("/event/moreEvents?eventId="+hgdata.eventId).success(function(res){
       $scope.events = res.events;
     });
 
-    $scope.generateCharge = $scope.$parent.generateCharge;
+
     $scope.displayAmount = $scope.$parent.displayAmount;
+
+    $scope.generateCharge = function(charge, baseCurrency){
+      return parseInt(charge * currency[clientCurrency] / currency[baseCurrency]);
+    };
   });
 
 })(window);

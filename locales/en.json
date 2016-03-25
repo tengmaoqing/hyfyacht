@@ -85,6 +85,10 @@
     "click": "Click To ",
     "paypayl_pay_methods": "Payment types:"
   },
+  "currency": {
+    "cny": "CNY",
+    "hkd": "HKD"
+  },
   "error": {
     "login": {
       "donotmatch": "Invalid mobile no. or password."
@@ -109,6 +113,12 @@
       "notmatch" : "Invalid password.",
       "required_nickname": "Invalid nickname",
       "required_name": "Invalid name"
+    }
+  },
+  "warning": {
+    "pay": {
+      "wechat_hkd_bind": "Sorry, can not pay HKD in Wechat, Please bind mobile no. with your account, then open page in browser.",
+      "wechat_hkd": "Sorry, can not pay HKD in Wechat, Please open this page in browser."
     }
   },
   "nav": {
@@ -290,6 +300,7 @@
         },
         "payment_notice": "Booking will be cancel, if you don't complete the payment in 30 minutes.",
         "amount": "Amount:",
+        "settlement_currency": "Currency:",
         "modeOfPayment": "Mode of payment:",
         "bookingId": "Booking No.",
         "status": "Status",
@@ -311,6 +322,7 @@
     "ongoing_item" : "Ongoing Item",
     "over": "Over",
     "attend": "Attend",
+    "attend_date": "Closing Date",
     "organiser": "Organiser",
     "geospatial": "Location",
     "desc": "Description",
@@ -322,7 +334,9 @@
         "out_date": "This event is out date.",
         "full": "This event is full.",
         "other": "Order information incorrect.",
-        "multiorder": "You had attended this event."
+        "multiorder": "You had attended this event.",
+        "more_than_max": "Number of people is more than available.",
+        "more_than_user_max": "Number of people is more than available for per user."
       }
     },
     "list": {

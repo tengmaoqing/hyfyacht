@@ -21,10 +21,17 @@
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
           <h3>{{ event.title }}</h3>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        {% if event.baseCharge > 0 %}
+        <div class="col-sm-6 col-xs-12">
           <h3 class="text-danger text-right hidden-xs">{{ preset.generateCharge(event.baseCharge, event.currency) }}</h3>
           <h3 class="text-danger visible-xs">{{ preset.generateCharge(event.baseCharge, event.currency) }}</h3>
         </div>
+        {% else %}
+        <div class="col-sm-6 col-xs-12">
+          <h3 class="text-danger text-right hidden-xs">{{ __('event.free') }}</h3>
+          <h3 class="text-danger visible-xs">{{ __('event.free') }}</h3>
+        </div>
+        {% endif %}
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="row">
             <div class="col-md-4 col-sm-4 col-xs-12">
@@ -35,7 +42,7 @@
             </div>
             <div class="col-md-4 col-sm-4 col-xs-12" data-ng-cloak>
               <span class="glyphicon glyphicon-import"></span>
-              <label>截止时间:</label> {{ preset.getDateString(event.attendedDate) }}
+              <label>{{ __('event.attend_date') }}:</label> {{ preset.getDateString(event.attendedDate) }}
             </div>
             {% if event.dateStart %}
             <div class="col-md-8 col-sm-8 col-xs-12" data-ng-cloak>
@@ -158,9 +165,10 @@
                 <div class="caption text-muted">
                   <h4 data-ng-bind="event.title"></h4>
                   <div class="row">
-                    <h3 class="col-xs-6 text-danger">{{ displayAmount(generateCharge(event.baseCharge)) }}</h3>
+                    <h3 class="col-xs-6 text-danger" data-ng-if="event.baseCharge">{{ displayAmount(generateCharge(event.baseCharge,event.currency)) }}</h3>
+                    <h3 class="col-xs-6 text-danger" data-ng-if="!event.baseCharge">{% endraw %}{{ __('event.free') }}</h3>
                     <p class="col-xs-6 text-right boat-product-learn">
-                      {% endraw %}
+                      
                       {{ __('boat.detail.learn') }}
                       <span class="glyphicon glyphicon-menu-right"></span></p>
                   </div>

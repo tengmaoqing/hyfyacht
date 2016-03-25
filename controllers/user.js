@@ -602,6 +602,29 @@ exports.updataUserInformation = function(req, res, next){
   });
 };
 
+exports.requestBindMobile = function (req, res, next) {
+  var warning_query = req.query.warning;
+
+  if(req.session.user.mobile){
+    var forbidden = new Error('Forbidden');
+    forbidden.status = 403;
+
+    return next(forbidden);
+  }
+
+  var warning = 'warning.pay.wechat_hkd';
+
+  switch (warning_query){
+    case 'bind':
+      warning = warning + '_bind';
+      break;
+    default:
+      break;
+  }
+
+  return res.render('user-bind-mobile', { warning: warning });
+};
+
 exports.bindMobile = function (req, res, next) {
   var from = req.query.from || false;
 
@@ -706,13 +729,13 @@ exports.bindMobile = function (req, res, next) {
         return res.redirect(encodeURI(from));
       }
         
-      return res.redirect('/');
+      return res.redirect('/user/setting');
     });
 
   }).catch(function(err){
     console.log(err.message);
     return res.redirect(encodeURI(from));
-  });;
+  });
 };
 
 exports.checkMobile = function(req, res) {

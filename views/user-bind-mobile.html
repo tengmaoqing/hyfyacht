@@ -17,6 +17,9 @@
       <div class="row" data-ng-app="bindMobile" data-ng-controller="bindCtrl">
         <div class="col-xs-10 col-xs-offset-1">
           <div class="form-group"></div>
+          {% if warning %}
+          <div class="alert alert-warning"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __(warning) }}</div>
+          {% endif %}
           {% if error %}
           <div class="alert alert-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __(error) }}</div>
           {% endif %}

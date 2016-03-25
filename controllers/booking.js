@@ -346,7 +346,11 @@ exports.checkBooking = function (req, res, next) {
     }
 
     if (req.isFromWechat && savedBooking.settlementCurrency !== 'cny'){
-      return res.redirect('/user/mobile');
+      if(req.session.user.mobile) {
+        return res.redirect('/user/booking/detail/' + savedBooking.bookingId);
+      }
+
+      return res.redirect('/user/mobile?warning=bind&from=/user/booking/detail/' + savedBooking.bookingId);
     }
 
     var payParams = {
@@ -421,6 +425,17 @@ exports.getBookingByBookingId = function (req, res, next) {
     }
 
     if (req.isFromWechat && booking.status === 'db.booking.wait_to_pay') {
+      if (req.isFromWechat && booking.settlementCurrency !== 'cny'){
+        if(req.session.user.mobile) {
+          return res.render('user-booking-detail', {
+            booking: booking,
+            warning: 'warning.pay.wechat_hkd'
+          });
+        }
+
+        return res.redirect('/user/mobile?warning=bind&from=/user/booking/detail/' + booking.bookingId);
+      }
+
       var payParams = {
         body: booking.boatName + '-' + booking.productName + '-' + booking.packageName,
         attach: 'boat',
