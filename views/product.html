@@ -154,21 +154,11 @@
               <p class="text-center" data-ng-cloak><strong>{{ __('product.booking.package.items') }}</strong></p>
               <div id="product-booking-person" class="product-booking-container">
                 <p data-ng-cloak><strong>{{ __('product.booking.numberOfPeople') }} (1 - {% raw %}{{ packages[currPackage].maxPersons }}{% endraw %})</strong></p>
-                <div class="alert alert-danger" data-ng-show="booking.numberOfPersons.$dirty && booking.numberOfPersons.$invalid" data-ng-cloak>
-                  <ul class="list-layout">
-                    <li data-ng-show="booking.numberOfPersons.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.required') }}</li>
-                    <li data-ng-show="booking.numberOfPersons.$error.min || booking.numberOfPersons.$error.max"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.outOfRange') }}</li>
-                    <li data-ng-show="booking.numberOfPersons.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.invaild') }}</li>
-                  </ul>
-                </div>
-                <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" min="1" max="{% raw %}{{ packages[currPackage].maxPersons }}{% endraw %}" required data-ng-cloak>
+                
+                <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" placeholder="{{ __('product.booking.error.numberOfPeople.required') }}" min="1" max="{% raw %}{{ packages[currPackage].maxPersons }}{% endraw %}" required data-ng-cloak>
               </div>
               <div id="product-booking-items" class="product-booking-container" data-ng-if="currPackage > -1" data-ng-cloak>
-                <div class="alert alert-danger" data-ng-show="invalidItem" data-ng-cloak>
-                  <ul class="list-layout">
-                    <li><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.items') }}</li>
-                  </ul>
-                </div>
+                
                 <ul class="list-group list-table">
                   <li class="list-group-item">
                     <div class="row">
@@ -259,7 +249,7 @@
                             <input type="checkbox" autocomplete="off">
                           </label>
                         </div>
-                        <div class="btn-group btn-group-sm" data-toggle="buttons" data-ng-if="item.type == 'multi' ">
+                        <div class="btn-group btn-group-sm" data-toggle="buttons" data-ng-if="item.type == 'multi' " data-ng-click="focus(item, $index)">
                           <label class="btn btn-default disabled" data-ng-if="!selectedItems[item.name]">
                             <span class="glyphicon glyphicon-unchecked"></span>
                             <input type="checkbox" autocomplete="off">
@@ -275,7 +265,7 @@
                           <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7"><strong>{{ item.name }} ({{ displayAmount(generateCharge(item.charge)) }}){{ item.max ? ' (' + maxTips + ': ' + item.max + ')' : '' }} </strong></div>
                           <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 text-right">
                             <strong data-ng-if="item.type == 'single'">{{ selectedItems[item.name] ? selectedItems[item.name].amount : 0 }}</strong>
-                            <input type="number" name="{{'item'+$index}}" class="form-control input-small text-right" placeholder="0" data-ng-if="item.type == 'multi'" data-ng-model="inputValue[item.name]" data-ng-step="1" data-ng-keyup="inputItem(item, $index)" min="0" max="{{ item.max }}" >
+                            <input type="number" id="{{'item'+$index}}" name="{{'item'+$index}}" class="form-control input-small text-right" placeholder="0" data-ng-if="item.type == 'multi'" data-ng-model="inputValue[item.name]" data-ng-step="1" onkeydown="inputCheck(event,this)" data-ng-keyup="inputItem(item, $index)"  min="0" max="{{ item.max }}" >
                           </div>
                         </div>
                       </div>
@@ -295,6 +285,14 @@
                       </div>
                     </div>
                   </li>
+                </ul>
+              </div>
+              <div class="alert alert-danger" data-ng-show="(booking.numberOfPersons.$dirty && booking.numberOfPersons.$invalid) || errStep2 || invalidItem" data-ng-cloak>
+                <ul class="list-layout">
+                  <li data-ng-show="booking.numberOfPersons.$error.required"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.required') }}</li>
+                  <li data-ng-show="booking.numberOfPersons.$error.min || booking.numberOfPersons.$error.max"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.outOfRange') }}</li>
+                  <li data-ng-show="booking.numberOfPersons.$error.number"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.numberOfPeople.invaild') }}</li>
+                  <li data-ng-show="invalidItem"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ __('product.booking.error.submit.items') }}</li>
                 </ul>
               </div>
             </div>

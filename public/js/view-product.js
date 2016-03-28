@@ -183,18 +183,24 @@
     $scope.prefix = clientCurrency == 'hkd' ? '$' : '￥';
 
     $scope.generateCharge = function(charge){
-      return parseInt(charge * currency[clientCurrency] / currency[$scope.baseCurrency]);
+      var all = parseInt(charge * currency[clientCurrency] / currency[$scope.baseCurrency]);
+      return all;
     };
 
     $scope.displayAmount = function(amount){
-      return $scope.prefix + (amount / 100).toFixed(2);
+      var all = $scope.prefix + (amount / 100).toFixed(2)
+
+      if (isNaN(amount)) {
+        return
+      }
+      return all;
     };
   });
 
   app.controller("bookingController", function($scope, $http){
     $scope.packages = hgdata.packages;
 
-    $scope.numberOfPersons = 1;
+    // $scope.numberOfPersons = 1;
     $scope.contact = {
       name: "",
       areaCode: "86",
@@ -265,7 +271,7 @@
       }
 
       var url = "/api/checkHoliday?country=" + hgdata.region.country + "&region="
-       + hgdata.region.region + "&date="+$scope.selectedDate + "&curtime="+new Date().valueOf();
+       + hgdata.region.region + "&date="+$scope.selectedDate;
       $http.get(url).success(function(res){
         $scope.availablePackages = false;
         $scope.isHoliday = res.isPublicHoliday;
@@ -313,20 +319,29 @@
       }
     };
 
+    $scope.focus = function(item, index) {
+      var input = document.getElementById("item"+index)
+      input.focus();
+    };
+
     $scope.inputItem = function(item, index) {
       var value = $scope.inputValue[item.name];
-
-      if ($scope.booking["item"+index].$invalid || parseInt(value) !== value) {
+      if ($scope.booking["item"+index].$invalid) {
         $scope.invalidItem = true;
       } else {
         $scope.invalidItem = false;
       }
 
-      $scope.selectedItems[item.name] = {
-        name: item.name,
-        charge: item.charge,
-        amount: value
-      };
+      if ($scope.booking["item"+index].$invalid || !value) {
+        delete $scope.selectedItems[item.name];
+      } else {
+        $scope.selectedItems[item.name] = {
+          name: item.name,
+          charge: item.charge,
+          amount: value
+        };
+      }
+
       $scope.testInputStep(item.name);
     };
 
@@ -348,7 +363,9 @@
         }
       }
 
-      return $scope.generateCharge($scope.baseCharge) * $scope.slotCount + $scope.generateCharge($scope.extraSlotCharge) * $scope.extraSlot + $scope.generateCharge(package.extraCharge) * extraPersons + itemsAmount;
+      var all = $scope.generateCharge($scope.baseCharge) * $scope.slotCount + $scope.generateCharge($scope.extraSlotCharge) * $scope.extraSlot + $scope.generateCharge(package.extraCharge) * extraPersons + itemsAmount;
+
+      return all
     };
 
     $scope.getItems = function() {
@@ -683,13 +700,14 @@
                 }
                 if (scope.numberOfPersons ) {
                   angular.element(".booking-step")[2].style.color = "green";
+                  scope.errStep2 = false;
                 } else {
                   cancelStyle(2);
                 }
               });
 
               scope.testInputStep = function() {
-                if (scope.invalidItem) {
+                if (scope.invalidItem || !scope.numberOfPersons) {
                   cancelStyle(2);
                 } else {
                   angular.element(".booking-step")[2].style.color = "green";
@@ -700,9 +718,13 @@
               break;
             case 2:
               if (!scope.numberOfPersons || scope.invalidItem) {
+                if (!scope.numberOfPersons) {
+                  scope.errStep2 = true;
+                  scope.$apply();
+                }
                 return;
               }
-
+              
               if (scope.booking.$valid) {
                 $(".booking-step")[3].style.color = "green";
               }
@@ -782,4 +804,14 @@
     $scope.displayAmount = $scope.$parent.displayAmount;
 
   });
+
 })(jQuery, window);
+
+function inputCheck(ev,that) {
+  ev.keyCode = event.keyCode|| event.which;
+  if (ev.keyCode == 109 || ev.keyCode==110 || ev.keyCode==187 || ev.keyCode==107 || ev.keyCode==229 || ev.keyCode == 189 || ev.keyCode==190) {
+
+    ev.preventDefault();
+    return false
+  }
+}
