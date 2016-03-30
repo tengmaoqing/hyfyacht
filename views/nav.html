@@ -5,7 +5,9 @@
 </div>
 <nav class="hyf-navbar{% if !index_page %} hyf-navbar-page{% endif %}{% if absolute %} hyf-navbar-absolute{% endif %}">
   <div class="hyf-field-container">
+    {% if !index_page %}
     <div class="hyf-navbar-brand"><a href="/"><img src="{{ preset.imgHost }}/logo-white{% if preset.locale == 'en' || preset.locale =='zh-hk' %}-en{% endif %}.png" alt="logo" height="30"></a></div>
+    {% endif %}
     <div class="hyf-navbar-right">
       <button class="hyf-navbar-toggle" type="button"><i class="fa fa-bars fa-2x"></i></button>
       <ul class="hyf-navbar-nav hyf-hide">

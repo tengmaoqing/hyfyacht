@@ -8,7 +8,8 @@
     <div class="hyf-banner-slogan">
       <div class="hyf-banner-slogan-table">
         <div class="hyf-banner-slogan-content">
-          <h1 class="hyf-banner-show-element">{{ __('index.slogan') }}</h1>
+          <!--<h1 class="hyf-banner-show-element">{{ __('index.slogan') }}</h1>-->
+          <h2 class="hyf-banner-show-element"><img class="index-logo" src="{{ preset.imgHost }}/logo-white-b{% if preset.locale == 'en' || preset.locale =='zh-hk' %}-en{% endif %}.png" alt="logo"></h2>
           <h2 class="hyf-banner-show-element">{{ __('index.sub_slogan') }}</h2>
           <div class="hyf-banner-controller">
             <a id="btn-learn-more" href="javascript:void(0)">{{ __('common.learn') }}<br><i class="fa fa-angle-down fa-4x"></i></a>
