@@ -62,7 +62,7 @@
   <div class="hyf-info-cell">
     <h3>{{ __('common.sns') }}</h3>
     <ul class="list-layout">
-      <li><a href="/" class="btn-sns"><i class="fa fa-weibo fa-2x"></i></a><a href="/"><i class="fa fa-facebook-square fa-2x"></i></a></li>
+      <li><a href="http://weibo.com/hgboating" class="btn-sns"><i class="fa fa-weibo fa-2x"></i></a><a href="http://facebook.com/hgboating"><i class="fa fa-facebook-square fa-2x"></i></a></li>
     </ul>
   </div>
   <div class="hyf-info-cell">
@@ -76,6 +76,6 @@
 <footer class="hyf-footer">
   <div class="hyf-field-container">
     <div class="footer-brand"><img src="{{ preset.imgHost }}/logo-white{% if preset.locale == 'en' || preset.locale =='zh-hk' %}-en{% endif %}.png" alt="logo" height="30"></div>
-    <p>&copy; {{ __('site.copyright') }} <a href="http://www.miitbeian.gov.cn">粤ICP备15044583号-1</a></p>
+    <p>&copy; {{ __('site.copyright') }} {% if preset.locale == 'zh-cn' %}<a href="http://www.miitbeian.gov.cn">粤ICP备15044583号-1</a>{% endif %}</p>
   </div>
 </footer>
