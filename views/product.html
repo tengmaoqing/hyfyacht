@@ -505,16 +505,17 @@
     <div class="container">
       <div class="row nav-bottom-font" data-ng-cloak>
         <div class="col-xs-12 col-sm-offset-3 col-sm-6 text-center text-primary">
-          <div class="text-hidden">
-            <span data-ng-show="selectedDate">{{ __('common.selected') }}:</span>&nbsp;
-            <span data-ng-show="selectedDate">&nbsp;
+          <div class="text-hidden" data-ng-show="selectedDate">
+            <span>{{ __('common.selected') }}:</span>&nbsp;
+            <span>&nbsp;
               <span class="glyphicon glyphicon-calendar "></span> {% raw %}{{ selectedDate }}{% endraw %}
             </span>&nbsp;
             <span data-ng-show="currPackage">
               <span class="glyphicon glyphicon-th-list"></span> {% raw %}{{ currPackage }}{% endraw %}
             </span>
           </div>
-        <div class="col-xs-12 col-sm-3 text-center text-out nav-bottom-font large-font" data-ng-show="total">
+        </div>
+        <div class="col-xs-12 col-sm-3 text-center large-font" data-ng-show="total">
           <span class="text-primary">{{ __('product.booking.package.total') }}:</span><span class="text-danger">{% raw %}{{ displayAmount(total) || "0.00" }}{% endraw %}</span>
         </div>
         <div class="col-sm-2 col-sm-offset-10 col-xs-6 col-xs-offset-6" data-ng-show="!selectedDate">
@@ -588,93 +589,6 @@
       "db.unit.half_day": "{{ __('db.unit.half_day')}}"
     }
   };
-
-  (function(){
-
-    var init = function (oElement) {
-      var pswpElement = document.querySelectorAll(".pswp")[0];
-
-      var itemArr = function() {
-        var oTemp = [],
-            imgs = oElement.querySelectorAll("img")||oElement.getElementsByTagName("img");
-            
-        for (var i=0, l=imgs.length; i<l; i++) {
-          var item = {
-              w: imgs[i].width,
-              h: imgs[i].height
-          };
-          item.src = imgs[i].getAttribute("src");
-          item.el = imgs[i];
-          oTemp.push(item);
-        }
-        return oTemp;
-      };
-
-      var items = itemArr();
-      var onImgClick = function (ev){
-        ev = ev || window.event;
-        ev.preventDefault ? ev.preventDefault() : ev.returnValue = false;
-        openPswipe(this.index, this);
-      };
-
-      var openPswipe = function (index, imgEl){
-        
-        var options = {
-          galleryUID: imgEl.getAttribute('data-pswp-uid'),
-
-          getThumbBoundsFn: function(index) {
-              var pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
-                  rect = galleryElements[index].getBoundingClientRect();
-              return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
-          },
-          index: index,
-          loop:true
-        };
-
-        var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
-        gallery.init();
-      };
-
-      var galleryElements = oElement.querySelectorAll("img");
-
-      for(var i = 0, l = galleryElements.length; i < l; i++) {
-          galleryElements[i].setAttribute('data-pswp-uid', i+1);
-          galleryElements[i].index = i;
-          galleryElements[i].onclick = onImgClick;
-      }
-    };
-    window.onload = function(){
-      var oElement = document.getElementById("product-detail");
-      init(oElement);
-    };
-  })();
 </script>
 <script src="{{ preset.staticHost }}/js/view-product.js?_=20160321"></script>
-<script src="http://cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
-<script>
-(function($,w){
-
-  $(".navbar-fixed-bottom").css("position", "relative");
-  $(w).on("scroll", function(){
-
-    if($(".hyf-info").hadScrollToEl()){
-      $(".navbar-fixed-bottom").css("position", "relative");
-      return
-    }
-
-    if ($("#data-selected-date").val()) {
-      $(".navbar-fixed-bottom").css("position", "fixed");
-      return
-    }
-
-    if($(this).scrollTop() > $("#btns-div").offset().top){
-      $(".navbar-fixed-bottom").css("position", "fixed");
-    }else {
-      $(".navbar-fixed-bottom").css("position", "relative");
-    }
-
-  });
-
-})(jQuery, window);
-</script>
 {% endblock %}

@@ -378,7 +378,7 @@
       // console.log($scope.$parent.currPackage);
       return all
     };
-    
+
     $scope.getItems = function() {
       return JSON.stringify($scope.selectedItems);
     };
@@ -838,3 +838,87 @@ function inputCheck(ev,that) {
     return false
   }
 }
+
+(function(){
+
+  var init = function (oElement) {
+    var pswpElement = document.querySelectorAll(".pswp")[0];
+
+    var itemArr = function() {
+      var oTemp = [],
+          imgs = oElement.querySelectorAll("img")||oElement.getElementsByTagName("img");
+          
+      for (var i=0, l=imgs.length; i<l; i++) {
+        var item = {
+            w: imgs[i].width,
+            h: imgs[i].height
+        };
+        item.src = imgs[i].getAttribute("src");
+        item.el = imgs[i];
+        oTemp.push(item);
+      }
+      return oTemp;
+    };
+
+    var items = itemArr();
+    var onImgClick = function (ev){
+      ev = ev || window.event;
+      ev.preventDefault ? ev.preventDefault() : ev.returnValue = false;
+      openPswipe(this.index, this);
+    };
+
+    var openPswipe = function (index, imgEl){
+      
+      var options = {
+        galleryUID: imgEl.getAttribute('data-pswp-uid'),
+
+        getThumbBoundsFn: function(index) {
+            var pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
+                rect = galleryElements[index].getBoundingClientRect();
+            return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
+        },
+        index: index,
+        loop:true
+      };
+
+      var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+      gallery.init();
+    };
+
+    var galleryElements = oElement.querySelectorAll("img");
+
+    for(var i = 0, l = galleryElements.length; i < l; i++) {
+        galleryElements[i].setAttribute('data-pswp-uid', i+1);
+        galleryElements[i].index = i;
+        galleryElements[i].onclick = onImgClick;
+    }
+  };
+  window.onload = function(){
+    var oElement = document.getElementById("product-detail");
+    init(oElement);
+  };
+})();
+
+(function($,w){
+
+  $(".navbar-fixed-bottom").css("position", "relative");
+  $(w).on("scroll", function(){
+
+    if($(".hyf-info").hadScrollToEl()){
+      $(".navbar-fixed-bottom").css("position", "relative");
+      return
+    }
+
+    if ($("#data-selected-date").val()) {
+      $(".navbar-fixed-bottom").css("position", "fixed");
+      return
+    }
+
+    if($(this).scrollTop() > $("#btns-div").offset().top){
+      $(".navbar-fixed-bottom").css("position", "fixed");
+    }else {
+      $(".navbar-fixed-bottom").css("position", "relative");
+    }
+
+  });
+})(jQuery, window);
