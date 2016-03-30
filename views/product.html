@@ -504,15 +504,16 @@
   <div class="navbar-fixed-bottom fix-container">
     <div class="container">
       <div class="row nav-bottom-font" data-ng-cloak>
-        <div class="col-xs-12 col-sm-offset-3 col-sm-6 text-center text-primary text-out text-hidden">
-          <span class="nav-bottom-margin" data-ng-show="selectedDate">已选:</span>
-          <span class="nav-bottom-margin" data-ng-show="selectedDate">
-            <span class="glyphicon glyphicon-calendar "></span> {% raw %}{{ selectedDate }}{% endraw %}
-          </span>
-          <span class="nav-bottom-margin" data-ng-show="currPackage">
-            <span class="glyphicon glyphicon-th-list"></span> {% raw %}{{ currPackage }}{% endraw %}
-          </span>
-        </div>
+        <div class="col-xs-12 col-sm-offset-3 col-sm-6 text-center text-primary">
+          <div class="text-hidden">
+            <span data-ng-show="selectedDate">{{ __('common.selected') }}:</span>&nbsp;
+            <span data-ng-show="selectedDate">&nbsp;
+              <span class="glyphicon glyphicon-calendar "></span> {% raw %}{{ selectedDate }}{% endraw %}
+            </span>&nbsp;
+            <span data-ng-show="currPackage">
+              <span class="glyphicon glyphicon-th-list"></span> {% raw %}{{ currPackage }}{% endraw %}
+            </span>
+          </div>
         <div class="col-xs-12 col-sm-3 text-center text-out nav-bottom-font large-font" data-ng-show="total">
           <span class="text-primary">{{ __('product.booking.package.total') }}:</span><span class="text-danger">{% raw %}{{ displayAmount(total) || "0.00" }}{% endraw %}</span>
         </div>
@@ -656,18 +657,20 @@
   $(".navbar-fixed-bottom").css("position", "relative");
   $(w).on("scroll", function(){
 
-    if ($("#data-selected-date").val()) {
-      $(".navbar-fixed-bottom").css("position", "fixed");
-    }
-
     if($(".hyf-info").hadScrollToEl()){
       $(".navbar-fixed-bottom").css("position", "relative");
+      return
+    }
 
+    if ($("#data-selected-date").val()) {
+      $(".navbar-fixed-bottom").css("position", "fixed");
       return
     }
 
     if($(this).scrollTop() > $("#btns-div").offset().top){
       $(".navbar-fixed-bottom").css("position", "fixed");
+    }else {
+      $(".navbar-fixed-bottom").css("position", "relative");
     }
 
   });

@@ -73,7 +73,7 @@
     "packages": "套餐",
     "relativeProduct" : "相关产品",
     "relativeEvent" : "相关活动",
-    "select":"筛选",
+    "selected":"已选",
     "hour": {
       "one": "%d 小时",
       "other": "%d 小时"

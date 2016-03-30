@@ -189,7 +189,8 @@ html, body {
 }
 
 .nav-bottom-margin {
-  margin: 0 5px;
+  display: inline-block;
+  max-width: 50%;
 }
 
 .text-hidden {

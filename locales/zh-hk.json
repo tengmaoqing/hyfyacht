@@ -73,7 +73,7 @@
     "packages": "套餐",
     "relativeProduct" : "相關產品",
     "relativeEvent" : "相關活動",
-    "select":"篩選",
+    "selected":"已選",
     "hour": {
       "one": "%d 小時",
       "other": "%d 小時"

@@ -71,7 +71,7 @@
     "extra": "Extra",
     "capacity": "Capacity",
     "packages": "Packages",
-    "select":"Select",
+    "selected":"Selected",
     "hour": {
       "one": "%d hour",
       "other": "%d hours"
