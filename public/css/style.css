@@ -188,6 +188,30 @@ html, body {
   color: #fff;
 }
 
+.nav-bottom-margin {
+  margin: 0 5px;
+}
+
+.text-hidden {
+  text-overflow: ellipsis;
+  word-break: keep-all;
+  white-space:nowrap; 
+  overflow:hidden;
+}
+
+.nav-bottom-font {
+  font-size: 14px;
+  padding: 0 13px;
+}
+
+.large-font {
+  font-size: 16px;
+}
+
+.text-out {
+  line-height: 25px;
+}
+
 .navbar {
   margin-bottom: 0;
 }

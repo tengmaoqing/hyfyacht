@@ -81,6 +81,7 @@
     "detail": "Detail",
     "holiday": "Holiday",
     "filter": "Filter",
+    "clear_filter": "Clear Filter",
     "coming_soon": "Coming Soon",
     "click": "Click To ",
     "paypayl_pay_methods": "Payment types:"
@@ -404,6 +405,13 @@
       "hour":"h",
       "day":"d",
       "half_day":"4h"
+    },
+    "event" : {
+      "type": {
+        "fish" : "Fishing",
+        "train" : "Training",
+        "sailing" : "Sailing"
+      }
     },
     "boat": {
       "type": {

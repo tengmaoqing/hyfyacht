@@ -193,14 +193,19 @@
       if (isNaN(amount)) {
         return
       }
+      
       return all;
     };
+
+    $scope.currPackage = "";
+    $scope.selectedDate = "";
+    $scope.total = 0;
   });
 
   app.controller("bookingController", function($scope, $http){
     $scope.packages = hgdata.packages;
 
-    // $scope.numberOfPersons = 1;
+    // $scope.numberOfPersons = null;
     $scope.contact = {
       name: "",
       areaCode: "86",
@@ -263,6 +268,8 @@
     $scope.togglePackage = function(index){
       $scope.currPackage == index ? $scope.currPackage = -1 : $scope.currPackage = index;
       $scope.selectedItems = {};
+
+      
     };
 
     $scope.checkIsHoliday = function() {
@@ -285,7 +292,8 @@
 
     $scope.checkAvailable = function(package) {
       var selectedDate = moment($scope.selectedDate, "YYYY-MM-DD HH:mm");
-      
+      $scope.$parent.selectedDate = $scope.selectedDate;
+
       if ($scope.isHoliday) {
         if(package.onlyHoliday){
           $scope.availablePackages = true;
@@ -365,9 +373,12 @@
 
       var all = $scope.generateCharge($scope.baseCharge) * $scope.slotCount + $scope.generateCharge($scope.extraSlotCharge) * $scope.extraSlot + $scope.generateCharge(package.extraCharge) * extraPersons + itemsAmount;
 
+      $scope.$parent.total = all;
+      $scope.$parent.currPackage = $scope.packages[$scope.currPackage].name;
+      // console.log($scope.$parent.currPackage);
       return all
     };
-
+    
     $scope.getItems = function() {
       return JSON.stringify($scope.selectedItems);
     };
@@ -663,6 +674,16 @@
           }
         }, true);
 
+        ///
+        scope.personChange = function(){
+          if (scope.numberOfPersons ) {
+            angular.element(".booking-step")[2].style.color = "green";
+            scope.errStep2 = false;
+          } else {
+            cancelStyle(2);
+          }
+        }; 
+
         element.bind("click", function() {
 
           switch (stepService.nowStep) {
@@ -694,17 +715,19 @@
                 $(".booking-step")[2].style.color = "green";
               }
 
-              scope.$watch("numberOfPersons", function(newValue,oldValue){
-                if (newValue == oldValue) {
-                  return
-                }
-                if (scope.numberOfPersons ) {
-                  angular.element(".booking-step")[2].style.color = "green";
-                  scope.errStep2 = false;
-                } else {
-                  cancelStyle(2);
-                }
-              });
+              // scope.$watch("numberOfPersons", function(newValue,oldValue){
+              //   console.log(newValue,oldValue);
+              //   if (newValue == oldValue) {
+              //     return
+              //   }
+
+              //   if (scope.numberOfPersons ) {
+              //     angular.element(".booking-step")[2].style.color = "green";
+              //     scope.errStep2 = false;
+              //   } else {
+              //     cancelStyle(2);
+              //   }
+              // });
 
               scope.testInputStep = function() {
                 if (scope.invalidItem || !scope.numberOfPersons) {
@@ -802,8 +825,8 @@
 
     $scope.generateCharge = $scope.$parent.generateCharge;
     $scope.displayAmount = $scope.$parent.displayAmount;
-
   });
+
 
 })(jQuery, window);
 

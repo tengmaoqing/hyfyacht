@@ -83,6 +83,7 @@
     "detail": "詳情",
     "holiday": "假期",
     "filter": "篩選",
+    "clear_filter": "清除篩選",
     "coming_soon": "敬請期待",
     "click": "點擊",
     "paypayl_pay_methods": "PayPal 支持以下付款類型:"
@@ -407,6 +408,13 @@
       "hour":"小時",
       "day":"天",
       "half_day":"半天"
+    },
+    "event" : {
+      "type": {
+        "fish" : "海釣",
+        "train" : "培訓",
+        "sailing" : "帆船體驗"
+      }
     },
     "boat": {
       "type": {

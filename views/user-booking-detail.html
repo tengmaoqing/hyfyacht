@@ -130,21 +130,25 @@
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=XpLGCrdpWiH4k02rOXlWQBro"></script>
 <script type="text/javascript" src="{{ preset.staticHost }}/js/baidu-map.js"></script>
 <script>
+(function(window){
   window.hgdata = {
     geospatial: {{ booking.boatId.geospatial|json|safe }}
   };
 
   var src = "http://api.map.baidu.com/marker?location="+hgdata.geospatial[1]+","+hgdata.geospatial[0]+"&title={{ booking.boatName }}&content={{ booking.productName }}&output=html&src=海龟租船";
-  var html = "<span class='glyphicon glyphicon-fullscreen'></span>"
-  var fullscreen = new ZoomControl(html, new BMap.Size(10, 10)); //自定义控件
-  var ctrfn = newMap("src-to-map", "modal-big-map", "map-modal", encodeURI(src));
+
+  var html = "<span class='glyphicon glyphicon-fullscreen'></span>";
+  
+  var fullscreen = new window.baiduMap.ZoomControl(html, new BMap.Size(10, 10)); //自定义控件
+  var ctrfn = window.baiduMap.modalMap("src-to-map", "modal-big-map", "map-modal", encodeURI(src));
   var geospatial = hgdata.geospatial;
 
-  initBaiduMap("boat-geospatial", geospatial, fullscreen, ctrfn);
+  window.baiduMap.initBaiduMap("boat-geospatial", geospatial, fullscreen, ctrfn);
   
   $("#quit-map").click(function(e){
     $("#map-modal").modal("hide");
   });
+})(window);
 </script>
 {% endif %}
 {% endblock %}
