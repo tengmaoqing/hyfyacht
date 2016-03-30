@@ -259,6 +259,7 @@
       "bookingProduct": "Product",
       "bookingPackage": "Package",
       "contract": "HGBOATING Lease Contract",
+      "invoice_tips": "Please contact our customer-service staff if you need invoice.",
       "book": "Book",
       "back": "Back",
       "next": "Next",

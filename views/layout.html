@@ -9,7 +9,7 @@
     <meta name="author" content="深圳市海云帆游艇发展有限公司">
     <title>{% block title %}{{ __('site.title') }}{% endblock %}</title>
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link href="{{ preset.staticHost }}/css/style.css?_=201603251" rel="stylesheet">
+    <link href="{{ preset.staticHost }}/css/style.css?_=20160328" rel="stylesheet">
     <link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ preset.staticHost }}/css/base.css?_=20160321" rel="stylesheet">
     {% block head %}{% endblock %}
@@ -44,74 +44,7 @@
     <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/Tocca.js/0.1.21/Tocca.min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="{{ preset.staticHost }}/js/lib.js"></script>
-    <script>
-      (function ($, window){
-        $.fn.CustomAlert = function(msg){
-          if(!msg || !$(this).hasClass("modal")){
-            return;
-          }
-
-          $(this).find(".modal-body").text(msg);
-          $(this).modal();
-        };
-
-        $(".dropdown-menu").BootstrapDropDown();
-
-        var navOpen = false;
-
-        $(".hyf-navbar-toggle").click(function(){
-          navOpen = !navOpen;
-          if(navOpen){
-            $("html, body").css("overflow", "hidden");
-          }else{
-            $("html, body").removeAttr("style");
-          }
-          $(".hyf-navbar-overlay").toggleClass("hyf-hide");
-          $(".hyf-navbar-nav").toggleClass("hyf-hide");
-        });
-
-        $(".btn-hide-navbar").click(function(){
-          navOpen = false;
-          $("html, body").removeAttr("style");
-          $(".hyf-navbar-overlay").addClass("hyf-hide");
-          $(".hyf-navbar-nav").addClass("hyf-hide");
-        });
-
-        $.fn.hyfdropdown = function(){
-          return this.each(function(){
-            var self = $(this);
-            self.find(".hyf-dropdown-toggle").on("click", function(){
-              self.toggleClass("open");
-            });
-          });
-        };
-
-        var bodyClickHandler = function(e){
-          var target = e.target || e.touches[0].target;
-
-          if(target.tagName === 'A'){
-            return ;
-          }
-
-          var dropdown = $(target).parent();
-
-          $(".hyf-dropdown-sm").each(function(){
-            if(dropdown.is(this)){
-              return;
-            }
-
-            $(this).removeClass("open");
-          });
-        };
-
-        $("body").on("click", bodyClickHandler);
-        $("body").on("tap", bodyClickHandler);
-
-        $(".hyf-dropdown-sm").hyfdropdown();
-
-      })(jQuery, window);
-    </script>
+    <script src="{{ preset.staticHost }}/js/lib.js?_=20160330"></script>
     {% block foot %}{% endblock %}
     <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256860309'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1256860309%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
   </body>

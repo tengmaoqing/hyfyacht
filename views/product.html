@@ -401,6 +401,7 @@
             <h3>{{ __('product.section.notice') }}</h3>
             <hr class="hr-divider">
             {% autoescape %}{{ product.attention }}{% endautoescape %}
+            <p class="alert alert-warning">{{ __('product.booking.invoice_tips') }}</p>
           </div>
         </div>
       </div>
@@ -639,7 +640,7 @@
     };
   })();
 </script>
-<script src="{{ preset.staticHost }}/js/view-product.js?_=20160321"></script>
+<script src="{{ preset.staticHost }}/js/view-product.js?_=20160328"></script>
 <script src="http://cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
 <script>
 (function($,w){
