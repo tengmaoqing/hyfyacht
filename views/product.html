@@ -155,7 +155,7 @@
               <div id="product-booking-person" class="product-booking-container">
                 <p data-ng-cloak><strong>{{ __('product.booking.numberOfPeople') }} (1 - {% raw %}{{ packages[currPackage].maxPersons }}{% endraw %})</strong></p>
                 
-                <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" placeholder="{{ __('product.booking.error.numberOfPeople.required') }}" min="1" max="{% raw %}{{ packages[currPackage].maxPersons }}{% endraw %}" required data-ng-cloak>
+                <input type="number" name="numberOfPersons" class="form-control" data-ng-model="numberOfPersons" data-ng-change="personChange()" placeholder="{{ __('product.booking.error.numberOfPeople.required') }}" min="1" max="{% raw %}{{ packages[currPackage].maxPersons }}{% endraw %}" required data-ng-cloak>
               </div>
               <div id="product-booking-items" class="product-booking-container" data-ng-if="currPackage > -1" data-ng-cloak>
                 
@@ -357,7 +357,7 @@
               </div>
             </div>
             <div class="product-booking-container">
-              <div class="row product-booking-container">
+              <div class="row product-booking-container" id="btns-div">
                 <div class="col-md-2 col-md-offset-8 col-sm-4 col-sm-offset-4 col-xs-6">
                   <div data-ng-cloak>
                     <button type="button" class="btn btn-primary btn-block" back id="backStep">{{ __('product.booking.back') }}</button>
@@ -503,15 +503,24 @@
     </div>
   </div>
   <div class="navbar-fixed-bottom fix-container">
-    <div class="container text-center">
-      <ul id="product-nav" class="nav nav-pills">
-        <li role="presentation" class="hidden-xs"><a href="#product-base">{{ __('product.section.info') }}</a></li>
-        <li role="presentation"><a href="#product-booking">{{ __('product.section.booking') }}</a></li>
-        <li role="presentation"><a href="#product-detail">{{ __('product.section.desc') }}</a></li>
-        <li role="presentation" class="hidden-xs"><a href="#product-include">{{ __('product.section.include') }}</a></li>
-        <li role="presentation" class="hidden-xs"><a href="#product-exclude">{{ __('product.section.exclude') }}</a></li>
-        <li role="presentation"><a href="#product-notice">{{ __('product.section.notice') }}</a></li>
-      </ul>
+    <div class="container">
+      <div class="row nav-bottom-font" data-ng-cloak>
+        <div class="col-xs-12 col-sm-offset-3 col-sm-6 text-center text-primary text-out text-hidden">
+          <span class="nav-bottom-margin" data-ng-show="selectedDate">已选:</span>
+          <span class="nav-bottom-margin" data-ng-show="selectedDate">
+            <span class="glyphicon glyphicon-calendar "></span> {% raw %}{{ selectedDate }}{% endraw %}
+          </span>
+          <span class="nav-bottom-margin" data-ng-show="currPackage">
+            <span class="glyphicon glyphicon-th-list"></span> {% raw %}{{ currPackage }}{% endraw %}
+          </span>
+        </div>
+        <div class="col-xs-12 col-sm-3 text-center text-out nav-bottom-font large-font" data-ng-show="total">
+          <span class="text-primary">{{ __('product.booking.package.total') }}:</span><span class="text-danger">{% raw %}{{ displayAmount(total) || "0.00" }}{% endraw %}</span>
+        </div>
+        <div class="col-sm-2 col-sm-offset-10 col-xs-6 col-xs-offset-6" data-ng-show="!selectedDate">
+          <a href="#product-booking"  class="btn btn-primary btn-block"><span>{{ __('boat.detail.instant_book') }}</span></a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -644,28 +653,24 @@
 <script src="http://cdn.bootcss.com/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
 <script>
 (function($,w){
-  $("#product-nav").onePageNav();
 
-  var show = false;
-
+  $(".navbar-fixed-bottom").css("position", "relative");
   $(w).on("scroll", function(){
-    if($(this).scrollTop() < 80){
-      if(show){
-        $("#selected-package").hide();
-        show = false;
-      }
-    }else{
-      if(!show){
-        $("#selected-package").show();
-        show = true;
-      }
+
+    if ($("#data-selected-date").val()) {
+      $(".navbar-fixed-bottom").css("position", "fixed");
     }
 
     if($(".hyf-info").hadScrollToEl()){
       $(".navbar-fixed-bottom").css("position", "relative");
-    }else{
+
+      return
+    }
+
+    if($(this).scrollTop() > $("#btns-div").offset().top){
       $(".navbar-fixed-bottom").css("position", "fixed");
     }
+
   });
 
 })(jQuery, window);

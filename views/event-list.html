@@ -15,28 +15,28 @@
     <li class="active">{{ __('nav.event') }}</li>
   </ol>
   <div class="page-header">
-    <h3>{{ __('common.filter') }}/<a href="/event/list">{{ __('event.all') }}</a></h3>
+    <h3>{{ __('common.filter') }}</h3>
   </div>
   <div class="row search-field">
     <div class="col-md-2">
       <label>{{ __('event.type') }}</label>
     </div>
     <div class="col-md-4 col-sm-6">
-      <div class="btn-group btn-group-justified">
-        <a href="/event/list?type=all&selectStartDate={{ query.selectStartDate }}&selectEndDate={{ query.selectEndDate }}&status={{ query.status }}" class="btn {% if query.type == 'all' || query.type == '' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.all') }}</a>
-        <a href="/event/list?type=free&selectStartDate={{ query.selectStartDate }}&selectEndDate={{ query.selectEndDate }}&status={{ query.status }}" class="btn {% if query.type == 'free' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.free') }}</a>
-      </div>
+      <a href="/event/list?free={{ query.free }}&type=all&selectStartDate={{ query.selectStartDate }}&selectEndDate={{ query.selectEndDate }}&status={{ query.status }}" class="btn {% if query.type == 'all' || query.type == '' %}btn-primary{% else %}btn-default{% endif %}">{{ __('common.unlimited') }}</a>
+      <a href="/event/list?free={{ query.free }}&type=fish&selectStartDate={{ query.selectStartDate }}&selectEndDate={{ query.selectEndDate }}&status={{ query.status }}" class="btn {% if query.type == 'fish' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.event.type.fish') }}</a>
+      <a href="/event/list?free={{ query.free }}&type=train&selectStartDate={{ query.selectStartDate }}&selectEndDate={{ query.selectEndDate }}&status={{ query.status }}" class="btn {% if query.type == 'train' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.event.type.train') }}</a>
+      <a href="/event/list?free={{ query.free }}&type=sailing&selectStartDate={{ query.selectStartDate }}&selectEndDate={{ query.selectEndDate }}&status={{ query.status }}" class="btn {% if query.type == 'sailing' %}btn-primary{% else %}btn-default{% endif %}">{{ __('db.event.type.sailing') }}</a>
     </div>
   </div>
   <div class="row search-field">
     <div class="col-md-2">
-      <label>{{ __('event.status') }}</label>
+      <label>{{ __('common.extra') }}</label>
     </div>
     <div class="col-md-4 col-sm-6">
-      <div class="btn-group btn-group-justified">
-        <a href="/event/list?type={{ query.type }}&selectStartDate={{ query.selectStartDate }}&selectEndDate={{ query.selectEndDate }}&status=all" class="btn {% if query.status == 'all' || query.status == '' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.all') }}</a>
-        <a href="/event/list?type={{ query.type }}&selectStartDate={{ query.selectStartDate }}&selectEndDate={{ query.selectEndDate }}&status=ongoing" class="btn {% if query.status == 'ongoing' %}btn-primary{% else %}btn-default{% endif %}">{{ __('event.ongoing_item') }}</a>
-      </div>
+       <!--  <a href="/event/list?free={{ query.free }}&type={{ query.type }}&selectStartDate={{ query.selectStartDate }}&selectEndDate={{ query.selectEndDate }}&status=all" class="btn {% if query.status == 'all' || query.status == '' %}btn-primary{% else %}btn-default{% endif %}">{{ __('common.unlimited') }}</a> -->
+
+        <a href="/event/list?{% if query.free == '1' %}free=0{% else %}free=1{% endif %}&type={{ query.type }}&selectStartDate={{ query.selectStartDate }}&selectEndDate={{ query.selectEndDate }}&status={{ query.status }}" class="btn {% if query.free == '1' %}btn-primary{% else %}btn-default{% endif %}"><span class="glyphicon {% if query.free == '1' %} glyphicon-ok {% else %} glyphicon-unchecked {% endif %}"></span> {{ __('event.free') }}</a>
+        <a href="/event/list?free={{ query.free }}&type={{ query.type }}&selectStartDate={{ query.selectStartDate }}&selectEndDate={{ query.selectEndDate }}&status={% if query.status == 'ongoing' %}all{% else %}ongoing{% endif %}" class="btn {% if query.status == 'ongoing' %}btn-primary{% else %}btn-default{% endif %}"><span class="glyphicon {% if query.status == 'ongoing' %} glyphicon-ok {% else %} glyphicon-unchecked {% endif %}"></span> {{ __('event.ongoing_item') }}</a>
     </div>
   </div>
   <div class="row search-field">
@@ -58,6 +58,11 @@
           <span class="glyphicon glyphicon-calendar"></span>
         </span>
       </div>
+    </div>
+  </div>
+  <div class="row search-field">
+    <div class="col-md-offset-2 col-md-4 col-sm-6 col-xs-12">
+      <a href="/event/list">{{ __('common.clear_filter') }}</a>
     </div>
   </div>
   <hr class="hr-divider">
@@ -149,7 +154,7 @@ $(function (){
   $("#datetimepicker2").datetimepicker(config);
 
   $("#datetimepicker1").on("dp.change", function(){
-    window.location.href = "/event/list?type={{ query.type }}&status={{ query.status }}&selectEndDate={{ query.selectEndDate }}&selectStartDate="+$("#timepick1").val();
+    window.location.href = "/event/list?free={{ query.free }}&type={{ query.type }}&status={{ query.status }}&selectEndDate={{ query.selectEndDate }}&selectStartDate="+$("#timepick1").val();
   });
 
   if($("#timepick1").val()){
@@ -157,7 +162,7 @@ $(function (){
   }
 
   $("#datetimepicker2").on("dp.change", function(){
-    window.location.href = "/event/list?type={{ query.type }}&status={{ query.status }}&selectStartDate={{ query.selectStartDate }}&selectEndDate="+$("#timepick2").val();
+    window.location.href = "/event/list?free={{ query.free }}&type={{ query.type }}&status={{ query.status }}&selectStartDate={{ query.selectStartDate }}&selectEndDate="+$("#timepick2").val();
   });
 
 });

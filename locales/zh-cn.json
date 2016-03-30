@@ -83,6 +83,7 @@
     "detail": "详情",
     "holiday": "节日",
     "filter": "筛选",
+    "clear_filter": "清除筛选",
     "coming_soon": "敬请期待",
     "click": "点击",
     "paypayl_pay_methods": "PayPal 支持以下付款方式："
@@ -407,6 +408,13 @@
       "hour":"小时",
       "day":"天",
       "half_day":"半天"
+    },
+    "event" : {
+      "type": {
+        "fish" : "海钓",
+        "train" : "培训",
+        "sailing" : "帆船体验"
+      }
     },
     "boat": {
       "type": {

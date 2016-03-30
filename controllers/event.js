@@ -67,7 +67,8 @@ exports.getEvents = function(req, res, next) {
     inStock: true
   };
 
-  (query.type && query.type != 'all') && (obj.baseCharge = 0);
+  query.type && query.type !== "all" && (obj.type = "db.event.type."+query.type);
+  query.free === '1' && (obj.baseCharge = 0);
   (query.status && query.status != 'all') && (obj.attendedDate = { $gt : new Date() });
 
   if ( query.selectStartDate ) {
