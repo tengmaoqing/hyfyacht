@@ -171,7 +171,7 @@ app.use(function(req, res, next){
   }
 
   util._extend(preset, {
-    staticHost: config.staticMode === 'express' ? '' : 'http://static.' + removeSubdomain(req),
+    staticHost: config.staticMode === 'express' ? '' : 'http://static.' + removeSubdomain(req) + '/client',
     imgHost: config.staticMode === 'express' ? '/img' : 'http://img.' + removeSubdomain(req) + '/base',
     originalUrl: req.originalUrl,
     username: username,
